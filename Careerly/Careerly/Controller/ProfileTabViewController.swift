@@ -1,0 +1,19 @@
+//
+//  ProfileTabViewController.swift
+//  Careerly
+//
+//  Created by 최유림 on 2021/11/22.
+//
+
+import UIKit
+
+class ProfileTabViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+    }
+    
+
+
+}
