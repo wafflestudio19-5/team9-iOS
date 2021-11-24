@@ -11,7 +11,12 @@ class NotificationTabViewController<View: NotificationTabView>: BaseViewControll
 
     override func loadView() { view = View() }
     
-    private final var notification: NotificationTabView { return view as! View }
+    private final var notification: NotificationTabView {
+        guard let view = view as? View else {
+            return NotificationTabView()
+        }
+        return view
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

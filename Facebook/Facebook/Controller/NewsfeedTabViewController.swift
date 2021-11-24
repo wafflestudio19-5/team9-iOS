@@ -12,7 +12,12 @@ class NewsfeedTabViewController<View: NewsfeedTabView>: BaseViewController {
 
     override func loadView() { view = View() }
     
-    private final var newsfeed: NewsfeedTabView { return view as! View }
+    private final var newsfeed: NewsfeedTabView {
+        guard let view = view as? View else {
+            return NewsfeedTabView()
+        }
+        return view
+    }
     
     private let disposeBag = DisposeBag()
     

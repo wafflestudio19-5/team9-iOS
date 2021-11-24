@@ -11,7 +11,12 @@ class ProfileTabViewController<View: ProfileTabView>: BaseViewController {
 
     override func loadView() { view = View() }
     
-    private final var profile: ProfileTabView { return view as! View }
+    private final var profile: ProfileTabView {
+        guard let view = view as? View else {
+            return ProfileTabView()
+        }
+        return view
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
