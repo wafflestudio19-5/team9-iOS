@@ -64,7 +64,6 @@
 				85874884AD382176DDEB43B5 /* Pods-Careerly.debug.xcconfig */,
 				28728F80A9264910007FE4F1 /* Pods-Careerly.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -89,7 +88,6 @@
 		B84DF034274C94AC00C8F1C1 /* Careerly */ = {
 			isa = PBXGroup;
 			children = (
-				B84DF049274C950800C8F1C1 /* Model */,
 				B84DF04A274C950F00C8F1C1 /* View */,
 				B84DF04B274C951700C8F1C1 /* Controller */,
 				B84DF035274C94AC00C8F1C1 /* AppDelegate.swift */,
@@ -99,13 +97,6 @@
 				B84DF043274C94AE00C8F1C1 /* Info.plist */,
 			);
 			path = Careerly;
-			sourceTree = "<group>";
-		};
-		B84DF049274C950800C8F1C1 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		B84DF04A274C950F00C8F1C1 /* View */ = {
