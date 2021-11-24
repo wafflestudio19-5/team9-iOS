@@ -7,11 +7,15 @@
 
 import UIKit
 
-class ProfileTabViewController: UIViewController {
+class ProfileTabViewController<View: ProfileTabView>: BaseViewController {
 
+    override func loadView() { view = View() }
+    
+    private final var profile: ProfileTabView { return view as! View }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        super.setNavigationBarItems(withEditButton: true)
     }
     
 
