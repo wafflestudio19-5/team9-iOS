@@ -22,4 +22,4 @@ jobs:
         with:
           args: --force-exclude
         env:
-          WORKING_DIRECTORY: Careerly
+          WORKING_DIRECTORY: Facebook
