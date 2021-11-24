@@ -1,8 +1,8 @@
 //
 //  ProfileTabViewController.swift
-//  Careerly
+//  Facebook
 //
-//  Created by 최유림 on 2021/11/23.
+//  Created by 최유림 on 2021/11/24.
 //
 
 import UIKit
@@ -12,8 +12,8 @@ class ProfileTabViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
     }
+    
 
 
 }
