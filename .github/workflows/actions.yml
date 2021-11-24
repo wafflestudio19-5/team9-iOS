@@ -1,10 +1,10 @@
-name: ActionsTest
+name: Actions
 
 on:
   pull_request
 
 jobs:
-  build:
+  Build:
 
     runs-on: macos-11
 
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: GitHub Action for SwiftLint
+      - name: Start SwiftLint
         uses: norio-nomura/action-swiftlint@3.2.1
         with:
           args: --force-exclude
