@@ -7,17 +7,8 @@
 
 import UIKit
 
-class NotificationTabViewController<View: NotificationTabView>: BaseViewController {
+class NotificationTabViewController: BaseTabViewController<NotificationTabView> {
 
-    override func loadView() { view = View() }
-    
-    private final var notification: NotificationTabView {
-        guard let view = view as? View else {
-            return NotificationTabView()
-        }
-        return view
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 

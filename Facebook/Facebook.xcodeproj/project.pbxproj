@@ -19,7 +19,7 @@
 		B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A921274E612B00FB67D3 /* NewsfeedTabView.swift */; };
 		B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A923274E61A900FB67D3 /* ProfileTabView.swift */; };
 		B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A925274E61D800FB67D3 /* NotificationTabView.swift */; };
-		B897A928274E69CF00FB67D3 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A927274E69CF00FB67D3 /* BaseViewController.swift */; };
+		B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +39,7 @@
 		B897A921274E612B00FB67D3 /* NewsfeedTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedTabView.swift; sourceTree = "<group>"; };
 		B897A923274E61A900FB67D3 /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
 		B897A925274E61D800FB67D3 /* NotificationTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTabView.swift; sourceTree = "<group>"; };
-		B897A927274E69CF00FB67D3 /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				B897A914274E372300FB67D3 /* RootTabBarController.swift */,
-				B897A927274E69CF00FB67D3 /* BaseViewController.swift */,
+				B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */,
 				B897A91E274E389000FB67D3 /* NewsfeedTabViewController.swift */,
 				B897A918274E378300FB67D3 /* ProfileTabViewController.swift */,
 				B897A91C274E387300FB67D3 /* NotificationTabViewController.swift */,
@@ -244,7 +244,7 @@
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
-				B897A928274E69CF00FB67D3 /* BaseViewController.swift in Sources */,
+				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,

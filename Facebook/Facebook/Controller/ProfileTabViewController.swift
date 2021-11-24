@@ -7,16 +7,9 @@
 
 import UIKit
 
-class ProfileTabViewController<View: ProfileTabView>: BaseViewController {
+class ProfileTabViewController: BaseTabViewController<ProfileTabView> {
 
-    override func loadView() { view = View() }
-    
-    private final var profile: ProfileTabView {
-        guard let view = view as? View else {
-            return ProfileTabView()
-        }
-        return view
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
