@@ -1,4 +1,4 @@
-${PODS_ROOT}/Target Support Files/Pods-Careerly/Pods-Careerly-frameworks.sh
+${PODS_ROOT}/Target Support Files/Pods-Facebook/Pods-Facebook-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework
 ${BUILT_PRODUCTS_DIR}/KakaoSDKAuth/KakaoSDKAuth.framework

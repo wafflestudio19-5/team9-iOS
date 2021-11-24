@@ -1,18 +1,19 @@
 //
 //  RootTabBarController.swift
-//  Careerly
+//  Facebook
 //
-//  Created by 최유림 on 2021/11/23.
+//  Created by 최유림 on 2021/11/24.
 //
 
 import UIKit
 
-class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
+class RootTabBarController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
     }
     
+
 
 }

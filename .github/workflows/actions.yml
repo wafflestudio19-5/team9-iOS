@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Start Xcode Build
-      run: xcodebuild clean -project Careerly/Careerly.xcodeproj -scheme Careerly -destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=15.0'
+      run: xcodebuild clean -project Facebook/Facebook.xcodeproj -scheme Facebook -destination 'platform=iOS Simulator,name=iPhone 11 Pro,OS=15.0'
   
   SwiftLint:
     runs-on: ubuntu-latest
@@ -22,4 +22,4 @@ jobs:
         with:
           args: --force-exclude
         env:
-          WORKING_DIRECTORY: Careerly
+          WORKING_DIRECTORY: Facebook
