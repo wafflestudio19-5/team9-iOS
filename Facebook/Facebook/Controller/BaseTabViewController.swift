@@ -14,14 +14,19 @@ class BaseTabViewController<View: UIView>: UIViewController {
     
     private let editButton = UIBarButtonItem(image: UIImage(systemName: "pencil", withConfiguration: UIImage.SymbolConfiguration(weight: .black)), style: .plain, target: nil, action: nil)
     
-    private let disposeBag = DisposeBag()
+    let disposeBag = DisposeBag()
     
     override func loadView() { view = View() }
+    
+    var tabView: View {
+        guard let view = view as? View else { return View() }
+        return view
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBarItems()
-        bindView()
+        bindNavigationBarItems()
     }
     
     func setNavigationBarItems(withEditButton: Bool = false) {
@@ -31,7 +36,7 @@ class BaseTabViewController<View: UIView>: UIViewController {
         }
     }
     
-    private func bindView() {
+    private func bindNavigationBarItems() {
         searchButton.rx.tap.bind { _ in
             print("search button tapped")
             // searchViewController 띄우기

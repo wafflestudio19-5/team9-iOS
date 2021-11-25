@@ -9,13 +9,8 @@ import UIKit
 
 class ProfileTabViewController: BaseTabViewController<ProfileTabView> {
 
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         super.setNavigationBarItems(withEditButton: true)
     }
-    
-
-
 }

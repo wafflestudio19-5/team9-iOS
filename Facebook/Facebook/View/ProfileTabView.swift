@@ -9,6 +9,8 @@ import UIKit
 
 class ProfileTabView: UIView {
 
+    let profilelabel = UILabel()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
