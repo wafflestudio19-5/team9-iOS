@@ -7,7 +7,7 @@
 
 import UIKit
 
-class NotificationViewCell: UITableViewCell {
+class NotificationTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var notificationContentLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
