@@ -19,13 +19,15 @@ class NotificationTabView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setViewComponents() {
+    private func setLayoutForView() {
         self.addSubview(notificationTableView)
         
         notificationTableView.translatesAutoresizingMaskIntoConstraints = false
-        notificationTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        notificationTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        notificationTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        notificationTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            notificationTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            notificationTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            notificationTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            notificationTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
+        ])
     }
 }
