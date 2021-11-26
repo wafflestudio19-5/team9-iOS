@@ -9,12 +9,26 @@ import UIKit
 
 class NewsfeedTabView: UIView {
     
+    let newsfeedTableView = UITableView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setLayoutForView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setLayoutForView() {
+        self.addSubview(newsfeedTableView)
+        
+        newsfeedTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            newsfeedTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            newsfeedTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            newsfeedTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            newsfeedTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
+        ])
+    }
 }
