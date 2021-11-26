@@ -27,6 +27,7 @@ class BaseTabViewController<View: UIView>: UIViewController {
         super.viewDidLoad()
         setNavigationBarItems()
         bindNavigationBarItems()
+        self.navigationItem.backButtonTitle = ""
     }
     
     func setNavigationBarItems(withEditButton: Bool = false) {
