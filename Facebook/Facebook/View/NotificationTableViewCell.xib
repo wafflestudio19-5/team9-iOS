@@ -66,7 +66,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="alarmContentLabel" destination="tw1-26-wj1" id="0rp-t7-kFC"/>
+                <outlet property="notificationContentLabel" destination="tw1-26-wj1" id="0rp-t7-kFC"/>
                 <outlet property="detailButton" destination="Rgb-oN-M1c" id="QVT-lM-PG1"/>
                 <outlet property="profileImage" destination="5Cn-f1-ykP" id="nDE-6w-bRS"/>
                 <outlet property="timeLabel" destination="6Ne-od-84d" id="ZC4-9M-r6b"/>
