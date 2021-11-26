@@ -13,20 +13,22 @@ class ProfileTabView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setViewComponents()
+        setLayoutForView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setViewComponents() {
+    private func setLayoutForView() {
         self.addSubview(profileTableView)
         
         profileTableView.translatesAutoresizingMaskIntoConstraints = false
-        profileTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor).isActive = true
-        profileTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        profileTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor).isActive = true
-        profileTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            profileTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            profileTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            profileTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            profileTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
+        ])
     }
 }
