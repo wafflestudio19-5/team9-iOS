@@ -13,6 +13,7 @@ class NotificationTabView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setLayoutForView()
     }
     
     required init?(coder: NSCoder) {
