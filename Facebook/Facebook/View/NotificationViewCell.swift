@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AlarmTableViewCell: UITableViewCell {
+class NotificationViewCell: UITableViewCell {
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var alarmContentLabel: UILabel!
     @IBOutlet weak var timeLabel: UILabel!
