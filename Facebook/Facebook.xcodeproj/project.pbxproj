@@ -20,6 +20,8 @@
 		B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A923274E61A900FB67D3 /* ProfileTabView.swift */; };
 		B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A925274E61D800FB67D3 /* NotificationTabView.swift */; };
 		B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */; };
+		BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834AD275123FD00D6EC95 /* Endpoint.swift */; };
+		BEA834B2275126A600D6EC95 /* Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B1275126A600D6EC95 /* Ping.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		B897A923274E61A900FB67D3 /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
 		B897A925274E61D800FB67D3 /* NotificationTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTabView.swift; sourceTree = "<group>"; };
 		B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabViewController.swift; sourceTree = "<group>"; };
+		BEA834AD275123FD00D6EC95 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		BEA834B1275126A600D6EC95 /* Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ping.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,7 @@
 		B897A8FC274E303600FB67D3 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
+				BEA834AC275123A300D6EC95 /* Endpoint */,
 				B897A920274E611400FB67D3 /* View */,
 				B897A913274E36FC00FB67D3 /* Controller */,
 				B897A8FD274E303600FB67D3 /* AppDelegate.swift */,
@@ -115,6 +120,23 @@
 				B897A925274E61D800FB67D3 /* NotificationTabView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		BEA834AC275123A300D6EC95 /* Endpoint */ = {
+			isa = PBXGroup;
+			children = (
+				BEA834AD275123FD00D6EC95 /* Endpoint.swift */,
+				BEA834B02751268200D6EC95 /* SampleGroup */,
+			);
+			path = Endpoint;
+			sourceTree = "<group>";
+		};
+		BEA834B02751268200D6EC95 /* SampleGroup */ = {
+			isa = PBXGroup;
+			children = (
+				BEA834B1275126A600D6EC95 /* Ping.swift */,
+			);
+			path = SampleGroup;
 			sourceTree = "<group>";
 		};
 		C012E5AC2AFFD2D68B2B2EE8 /* Frameworks */ = {
@@ -242,12 +264,14 @@
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
+				BEA834B2275126A600D6EC95 /* Ping.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
+				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
