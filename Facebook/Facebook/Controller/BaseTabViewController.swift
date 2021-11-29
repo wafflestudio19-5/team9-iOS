@@ -27,6 +27,7 @@ class BaseTabViewController<View: UIView>: UIViewController {
         super.viewDidLoad()
         setNavigationBarItems()
         bindNavigationBarItems()
+        self.navigationItem.backButtonTitle = ""
     }
     
     func setNavigationBarItems(withEditButton: Bool = false) {
@@ -40,6 +41,9 @@ class BaseTabViewController<View: UIView>: UIViewController {
         searchButton.rx.tap.bind { _ in
             print("search button tapped")
             // searchViewController 띄우기
+            let searchViewController = SearchViewController()
+            
+            self.navigationController?.pushViewController(searchViewController, animated: true)
         }.disposed(by: disposeBag)
         
         editButton.rx.tap.bind { _ in

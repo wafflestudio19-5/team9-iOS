@@ -11,7 +11,6 @@ import RxAlamofire
 
 class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,5 +18,5 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             .observe(on: MainScheduler.instance)
             .subscribe { print($0) }
     }
-    
 }
+
