@@ -17,6 +17,8 @@ class LoginView: UIView {
     let idTextField = FacebookTextField(placeholderText: "전화번호 또는 이메일 주소", width: UIScreen.main.bounds.width - 32.0)
     let passwordTextField = FacebookTextField(placeholderText: "비밀번호", width: UIScreen.main.bounds.width - 32.0)
     
+    var bottomConstraint: NSLayoutConstraint?
+    
     let orLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -53,6 +55,13 @@ class LoginView: UIView {
         createAccountButton.translatesAutoresizingMaskIntoConstraints = false
         orLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        // createAccountButton의 하단 Constraint 설정
+        bottomConstraint = createAccountButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+        
+        guard let bottomConstraint = bottomConstraint else {
+            return
+        }
+        
         NSLayoutConstraint.activate([
             idTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50.0),
             idTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
@@ -73,7 +82,7 @@ class LoginView: UIView {
             orLabel.bottomAnchor.constraint(equalTo: createAccountButton.topAnchor, constant: -18.0),
             
             createAccountButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            createAccountButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -16.0),
+            bottomConstraint,
         ])
     }
 }

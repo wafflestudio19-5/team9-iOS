@@ -7,6 +7,7 @@
 
 import RxSwift
 import RxGesture
+import RxKeyboard
 
 class LoginViewController<View: LoginView>: UIViewController {
 
@@ -39,6 +40,10 @@ class LoginViewController<View: LoginView>: UIViewController {
         loginView.backButton.rx.tap.bind {
             
         }.disposed(by: disposeBag)
+        
+        loginView.createAccountButton.rx.tap.bind {
+            // navigate to createAccountView
+        }.disposed(by: disposeBag)
 
         
         // textfield가 비어있지 않은가?에 대한 Bool형 event 방출
@@ -55,19 +60,38 @@ class LoginViewController<View: LoginView>: UIViewController {
         
         // 두 개의 textfield가 비어있지 않을 경우에는 loginButton label 흰색, 그렇지 않을 경우에는 회색
         hasEnteredBoth
-            .subscribe(onNext: { [weak self] hasEnteredBoth in
+            .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
                 self.loginView.loginButton.changeLabelTextColor(to: {
-                    return hasEnteredBoth ? UIColor.white : UIColor.systemGray3
+                    return result ? UIColor.white : UIColor.systemGray3
                 }())
             }).disposed(by: disposeBag)
+
+        // Keyboard의 높이에 따라 "새 계정 만들기" 버튼 위치 조정
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self = self else { return }
+                guard let bottomConstraint = self.loginView.bottomConstraint else { return }
+
+                if keyboardVisibleHeight == 0 {
+                    bottomConstraint.constant = -16.0
+                } else {
+                    let height = keyboardVisibleHeight - self.view.safeAreaInsets.bottom
+                    print(height)
+                    bottomConstraint.constant = -height - 16.0
+                }
+                self.loginView.layoutIfNeeded()
+            })
+            .disposed(by: disposeBag)
         
+        // view의 아무 곳이나 누르면 textfield 입력 상태 종료
         view.rx.tapGesture()
             .asObservable()
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 if self.loginView.idTextField.isEditing {
                     self.loginView.idTextField.endEditing(true)
+                    
                 } else if self.loginView.passwordTextField.isEditing {
                     self.loginView.passwordTextField.endEditing(true)
                 }
