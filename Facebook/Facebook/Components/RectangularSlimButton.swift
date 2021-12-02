@@ -25,6 +25,10 @@ class RectangularSlimButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func changeLabelTextColor(to color: UIColor) {
+        self.buttonLabel.textColor = color
+    }
+    
     private func setButtonLabel(as text: String) {
         buttonLabel.text = text
         buttonLabel.font = .systemFont(ofSize: 16.0, weight: .semibold)
