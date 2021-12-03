@@ -14,6 +14,7 @@ class NewsfeedTabView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
+        setStyleForView()
     }
     
     required init?(coder: NSCoder) {
@@ -30,5 +31,11 @@ class NewsfeedTabView: UIView {
             newsfeedTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             newsfeedTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
         ])
+    }
+    
+    private func setStyleForView() {
+        newsfeedTableView.tableHeaderView = UIView()  // removes the separator at the top
+        newsfeedTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "PostCell")
+        newsfeedTableView.allowsSelection = false
     }
 }

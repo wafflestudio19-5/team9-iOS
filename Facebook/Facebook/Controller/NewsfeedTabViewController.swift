@@ -11,12 +11,22 @@ import RxAlamofire
 
 class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
+    var tableView: UITableView {
+        tabView.newsfeedTableView
+    }
+    
+    let dummyObservable = Observable.just(1...200)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        _ = NetworkService.get(endpoint: .pingWithQuery(query: "test"))
-            .observe(on: MainScheduler.instance)
-            .subscribe { print($0) }
+        bindTableView()
+    }
+    
+    func bindTableView() {
+        dummyObservable.bind(to: tableView.rx.items(cellIdentifier: "PostCell", cellType: PostTableViewCell.self)) {
+            row, item, cell in
+            cell.contentLabel.text = "\(item)번째 포스트"
+        }.disposed(by: disposeBag)
     }
 }
 
