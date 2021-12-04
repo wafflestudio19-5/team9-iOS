@@ -85,7 +85,11 @@ class LoginViewController<View: LoginView>: UIViewController {
             .disposed(by: disposeBag)
         
         // view의 아무 곳이나 누르면 textfield 입력 상태 종료
-        view.rx.tapGesture()
+        view.rx.tapGesture(configuration: { _, delegate in
+            delegate.touchReceptionPolicy = .custom { _, shouldReceive in
+                return !(shouldReceive.view is UIControl)
+            }
+        })
             .asObservable()
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
