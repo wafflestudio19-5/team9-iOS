@@ -29,6 +29,8 @@
 		B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */; };
 		B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAD275504AA00513B77 /* LoginViewController.swift */; };
 		B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAF2755119500513B77 /* FacebookTextField.swift */; };
+		B846BDB22759208500513B77 /* BaseAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDB12759208400513B77 /* BaseAlertController.swift */; };
+		B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDB32759250400513B77 /* BaseSignUpView.swift */; };
 		B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FD274E303600FB67D3 /* AppDelegate.swift */; };
 		B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FF274E303600FB67D3 /* SceneDelegate.swift */; };
 		B897A907274E303700FB67D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B897A906274E303700FB67D3 /* Assets.xcassets */; };
@@ -71,6 +73,8 @@
 		B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularSlimButton.swift; sourceTree = "<group>"; };
 		B846BDAD275504AA00513B77 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B846BDAF2755119500513B77 /* FacebookTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookTextField.swift; sourceTree = "<group>"; };
+		B846BDB12759208400513B77 /* BaseAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAlertController.swift; sourceTree = "<group>"; };
+		B846BDB32759250400513B77 /* BaseSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSignUpView.swift; sourceTree = "<group>"; };
 		B897A8FA274E303600FB67D3 /* Facebook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facebook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B897A8FD274E303600FB67D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B897A8FF274E303600FB67D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +128,7 @@
 				B846BDA92754F5A900513B77 /* FacebookColor.swift */,
 				B846BDAF2755119500513B77 /* FacebookTextField.swift */,
 				B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */,
+				B846BDB12759208400513B77 /* BaseAlertController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -184,6 +189,7 @@
 				B897A923274E61A900FB67D3 /* ProfileTabView.swift */,
 				B897A925274E61D800FB67D3 /* NotificationTabView.swift */,
 				B846BDA62754F35800513B77 /* LoginView.swift */,
+				B846BDB32759250400513B77 /* BaseSignUpView.swift */,
 				77799318274FD8E4007A3898 /* PostTableViewCell.swift */,
 				77799319274FD8E4007A3898 /* PostTableViewCell.xib */,
 				7779931F2750CD41007A3898 /* CreatePostTableViewCell.swift */,
@@ -361,6 +367,7 @@
 				7740943E2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift in Sources */,
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
 				BEA834B2275126A600D6EC95 /* Ping.swift in Sources */,
+				B846BDB22759208500513B77 /* BaseAlertController.swift in Sources */,
 				B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
@@ -374,6 +381,7 @@
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
+				B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */,
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
 				B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,

@@ -24,12 +24,18 @@ class LoginViewController<View: LoginView>: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationItem.backButtonTitle = ""
         bindView()
     }
     
     private func bindView() {
         loginView.loginButton.rx.tap.bind {
             print("login button tapped")
+            
+            // 로그인에 실패한 경우 보이는 알림창 sample
+            self.alert(title: "잘못된 사용자 이름", message: "입력하신 사용자 이름에 해당하는 계정을 찾을 수 없습니다. 사용자 이름을 확인하고 다시 시도하세요.", action: "확인")
+            
             // login validation
         }.disposed(by: disposeBag)
         
@@ -41,8 +47,10 @@ class LoginViewController<View: LoginView>: UIViewController {
             
         }.disposed(by: disposeBag)
         
-        loginView.createAccountButton.rx.tap.bind {
+        loginView.createAccountButton.rx.tap.bind { [weak self] _ in
             // navigate to createAccountView
+            print("createAccountButton tapped")
+            guard let self = self else { return }
         }.disposed(by: disposeBag)
 
         
@@ -60,6 +68,7 @@ class LoginViewController<View: LoginView>: UIViewController {
         
         // 두 개의 textfield가 비어있지 않을 경우에는 loginButton label 흰색, 그렇지 않을 경우에는 회색
         hasEnteredBoth
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
                 self.loginView.loginButton.changeLabelTextColor(to: {

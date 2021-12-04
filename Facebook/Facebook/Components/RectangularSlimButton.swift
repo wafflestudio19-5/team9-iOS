@@ -10,10 +10,12 @@ import UIKit
 class RectangularSlimButton: UIButton {
     
     private let buttonLabel = UILabel()
+    private var buttonWidth: CGFloat = 0.0
     
-    init(title: String, titleColor: UIColor, backgroundColor: UIColor) {
+    init(title: String, titleColor: UIColor, backgroundColor: UIColor, width: CGFloat = UIScreen.main.bounds.width - 32.0) {
         super.init(frame: CGRect.zero)
         
+        setButtonWidth(to: width)
         setButtonLabel(as: title)
         setButtonBackgroundColor(as: backgroundColor)
         setButtonTextColor(as: titleColor)
@@ -26,7 +28,12 @@ class RectangularSlimButton: UIButton {
     }
     
     func changeLabelTextColor(to color: UIColor) {
-        self.buttonLabel.textColor = color
+        buttonLabel.textColor = color
+    }
+    
+    private func setButtonWidth(to width: CGFloat) {
+        buttonWidth = width
+        print(buttonWidth)
     }
     
     private func setButtonLabel(as text: String) {
@@ -49,7 +56,7 @@ class RectangularSlimButton: UIButton {
         
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: 40.0),
-            self.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 32.0),
+            self.widthAnchor.constraint(equalToConstant: buttonWidth),
             
             buttonLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             buttonLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
