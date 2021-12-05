@@ -56,7 +56,7 @@ class LoginView: UIView {
         createAccountButton.translatesAutoresizingMaskIntoConstraints = false
         orLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        // FacebookTextField의 UITemporaryLayoutHeight와의 충돌 방지
+        // FacebookTextField 및 RectangularSlimButton의 UITemporaryLayoutHeight와의 충돌 방지
         layoutIfNeeded()
         
         // createAccountButton의 하단 Constraint 설정
@@ -76,7 +76,8 @@ class LoginView: UIView {
             passwordTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 12.0),
-            loginButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            loginButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            loginButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -32.0),
             
             forgotPasswordButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 16.0),
             forgotPasswordButton.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
