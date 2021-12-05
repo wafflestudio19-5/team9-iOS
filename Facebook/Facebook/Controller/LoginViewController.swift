@@ -51,6 +51,8 @@ class LoginViewController<View: LoginView>: UIViewController {
             // navigate to createAccountView
             print("createAccountButton tapped")
             guard let self = self else { return }
+            let viewController = EnterUsernameViewController()
+            self.navigationController?.pushViewController(viewController, animated: true)
         }.disposed(by: disposeBag)
 
         
