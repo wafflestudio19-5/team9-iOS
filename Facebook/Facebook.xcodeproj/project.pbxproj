@@ -133,6 +133,20 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
+		B86194E7275D135300957BBC /* SignUpViewGroup */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SignUpViewGroup;
+			sourceTree = "<group>";
+		};
+		B86194EA275D15A700957BBC /* SignUpViewControllerGroup */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = SignUpViewControllerGroup;
+			sourceTree = "<group>";
+		};
 		B897A8F1274E303600FB67D3 = {
 			isa = PBXGroup;
 			children = (
@@ -178,6 +192,7 @@
 				B897A91C274E387300FB67D3 /* NotificationTabViewController.swift */,
 				7779931C2750843B007A3898 /* SearchViewController.swift */,
 				B846BDAD275504AA00513B77 /* LoginViewController.swift */,
+				B86194EA275D15A700957BBC /* SignUpViewControllerGroup */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -190,6 +205,7 @@
 				B897A925274E61D800FB67D3 /* NotificationTabView.swift */,
 				B846BDA62754F35800513B77 /* LoginView.swift */,
 				B846BDB32759250400513B77 /* BaseSignUpView.swift */,
+				B86194E7275D135300957BBC /* SignUpViewGroup */,
 				77799318274FD8E4007A3898 /* PostTableViewCell.swift */,
 				77799319274FD8E4007A3898 /* PostTableViewCell.xib */,
 				7779931F2750CD41007A3898 /* CreatePostTableViewCell.swift */,

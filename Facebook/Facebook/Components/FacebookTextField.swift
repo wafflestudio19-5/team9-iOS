@@ -9,10 +9,10 @@ import RxSwift
 
 class FacebookTextField: UITextField {
     
-    init(placeholderText: String, width: CGFloat) {
+    init(placeholderText: String) {
         super.init(frame: CGRect.zero)
         setStyleForView(placeholderText: placeholderText)
-        setLayoutForView(width: width)
+        setLayoutForView()
     }
     
     required init?(coder: NSCoder) {
@@ -26,14 +26,9 @@ class FacebookTextField: UITextField {
         self.borderStyle = .roundedRect
     }
     
-    private func setLayoutForView(width: CGFloat) {
+    private func setLayoutForView() {
         NSLayoutConstraint.activate([
             self.heightAnchor.constraint(equalToConstant: 42.0),
-            self.widthAnchor.constraint(equalToConstant: width),
         ])
     }
-}
-
-func pushViewController(viewController: UIViewController) {
-    
 }

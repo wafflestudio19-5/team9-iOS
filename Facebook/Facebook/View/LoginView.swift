@@ -14,8 +14,8 @@ class LoginView: UIView {
     let backButton = RectangularSlimButton(title: "돌아가기", titleColor: FacebookColor.blue.color(), backgroundColor: .white)
     let createAccountButton = RectangularSlimButton(title: "새 계정 만들기", titleColor: FacebookColor.blue.color(), backgroundColor: FacebookColor.mildBlue.color())
     
-    let idTextField = FacebookTextField(placeholderText: "전화번호 또는 이메일 주소", width: UIScreen.main.bounds.width - 32.0)
-    let passwordTextField = FacebookTextField(placeholderText: "비밀번호", width: UIScreen.main.bounds.width - 32.0)
+    let idTextField = FacebookTextField(placeholderText: "전화번호 또는 이메일 주소")
+    let passwordTextField = FacebookTextField(placeholderText: "비밀번호")
     
     var bottomConstraint: NSLayoutConstraint?
     
@@ -24,6 +24,7 @@ class LoginView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
+        
         setStyleForView()
         setLayoutForView()
     }
@@ -55,6 +56,9 @@ class LoginView: UIView {
         createAccountButton.translatesAutoresizingMaskIntoConstraints = false
         orLabel.translatesAutoresizingMaskIntoConstraints = false
         
+        // FacebookTextField의 UITemporaryLayoutHeight와의 충돌 방지
+        layoutIfNeeded()
+        
         // createAccountButton의 하단 Constraint 설정
         bottomConstraint = createAccountButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         
@@ -64,10 +68,12 @@ class LoginView: UIView {
         
         NSLayoutConstraint.activate([
             idTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50.0),
-            idTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            idTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            idTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             
             passwordTextField.topAnchor.constraint(equalTo: idTextField.bottomAnchor, constant: 4.0),
-            passwordTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            passwordTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            passwordTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 12.0),
             loginButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
