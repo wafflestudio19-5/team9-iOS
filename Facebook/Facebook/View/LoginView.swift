@@ -77,7 +77,7 @@ class LoginView: UIView {
             
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 12.0),
             loginButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            loginButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -32.0),
+            loginButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             
             forgotPasswordButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 16.0),
             forgotPasswordButton.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
@@ -88,7 +88,8 @@ class LoginView: UIView {
             orLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             orLabel.bottomAnchor.constraint(equalTo: createAccountButton.topAnchor, constant: -18.0),
             
-            createAccountButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            createAccountButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            createAccountButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             bottomConstraint,
         ])
     }
