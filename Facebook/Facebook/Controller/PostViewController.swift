@@ -6,10 +6,14 @@
 //
 
 import UIKit
-import SwiftUI
 
 class PostViewController<View: PostView>: UIViewController {
-
+    
+    let titleView = UIView()
+    let writerImage = UIImageView()
+    let writeLabel = UILabel()
+    let timeLabel = UILabel()
+    
     override func loadView() {
         view = View()
     }
@@ -27,19 +31,13 @@ class PostViewController<View: PostView>: UIViewController {
 
     //Post의 writer프로필 이미지와 이름, 작성 시간에 대한 정보를 navigationBar에 추가
     func setNavigationBarItems() {
-        let titleView = UIView()
-        
-        let writerImage = UIImageView()
         writerImage.contentMode = .scaleAspectFit
         let image = UIImage(systemName: "person.circle.fill")
         writerImage.image = image
         
-        let writeLabel = UILabel()
         writeLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         writeLabel.text = "writer"
         
-        
-        let timeLabel = UILabel()
         timeLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         timeLabel.textColor = .darkGray
         timeLabel.text = "17시간 전"
