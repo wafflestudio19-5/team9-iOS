@@ -58,7 +58,9 @@ class EnterBirthdateView: UIView {
     private func setLimitForBirthdatePicker() {
         var minimumYear = DateComponents()
         minimumYear.year = 1905
+       
         birthDatePicker.minimumDate = Calendar.autoupdatingCurrent.date(from: minimumYear)
+        birthDatePicker.maximumDate = Date()
     }
     
     private func setLayoutForView() {
