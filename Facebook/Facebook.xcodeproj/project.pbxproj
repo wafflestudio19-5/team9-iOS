@@ -33,6 +33,8 @@
 		B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDB32759250400513B77 /* BaseSignUpView.swift */; };
 		B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194ED275D28D000957BBC /* EnterUsernameView.swift */; };
 		B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194EF275D290600957BBC /* EnterUsernameViewController.swift */; };
+		B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */; };
+		B86194F4275DC49100957BBC /* EnterBirthdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194F3275DC49100957BBC /* EnterBirthdateViewController.swift */; };
 		B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FD274E303600FB67D3 /* AppDelegate.swift */; };
 		B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FF274E303600FB67D3 /* SceneDelegate.swift */; };
 		B897A907274E303700FB67D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B897A906274E303700FB67D3 /* Assets.xcassets */; };
@@ -79,6 +81,8 @@
 		B846BDB32759250400513B77 /* BaseSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSignUpView.swift; sourceTree = "<group>"; };
 		B86194ED275D28D000957BBC /* EnterUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameView.swift; sourceTree = "<group>"; };
 		B86194EF275D290600957BBC /* EnterUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameViewController.swift; sourceTree = "<group>"; };
+		B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterBirthdateView.swift; sourceTree = "<group>"; };
+		B86194F3275DC49100957BBC /* EnterBirthdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterBirthdateViewController.swift; sourceTree = "<group>"; };
 		B897A8FA274E303600FB67D3 /* Facebook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facebook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B897A8FD274E303600FB67D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B897A8FF274E303600FB67D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -141,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				B86194ED275D28D000957BBC /* EnterUsernameView.swift */,
+				B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */,
 			);
 			path = SignUpViewGroup;
 			sourceTree = "<group>";
@@ -149,6 +154,7 @@
 			isa = PBXGroup;
 			children = (
 				B86194EF275D290600957BBC /* EnterUsernameViewController.swift */,
+				B86194F3275DC49100957BBC /* EnterBirthdateViewController.swift */,
 			);
 			path = SignUpViewControllerGroup;
 			sourceTree = "<group>";
@@ -381,6 +387,7 @@
 				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */,
 				774094442750EBF600AD8DC2 /* ShowProfileTableViewCell.swift in Sources */,
+				B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */,
 				B846BDA72754F35800513B77 /* LoginView.swift in Sources */,
@@ -403,6 +410,7 @@
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
+				B86194F4275DC49100957BBC /* EnterBirthdateViewController.swift in Sources */,
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
 				B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */,
