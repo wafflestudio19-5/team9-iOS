@@ -2,7 +2,7 @@
 //  EnterBirthdateViewController.swift
 //  Facebook
 //
-//  Created by peng on 2021/12/06.
+//  Created by 최유림 on 2021/12/06.
 //
 
 import RxSwift
@@ -43,8 +43,8 @@ class EnterBirthdateViewController<View: EnterBirthdateView>: UIViewController {
         }.disposed(by: disposeBag)
         
         enterBirthdateView.nextButton.rx.tap.bind {
-            print("nextButton tapped")
-            // navigate to enterPhoneNumberView
+            let enterEmailViewController = EnterEmailViewController()
+            self.navigationController?.pushViewController(enterEmailViewController, animated: true)
         }.disposed(by: disposeBag)
         
         view.rx.tapGesture(configuration: { _, delegate in

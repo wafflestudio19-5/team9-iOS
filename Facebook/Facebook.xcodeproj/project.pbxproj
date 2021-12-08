@@ -35,6 +35,8 @@
 		B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194EF275D290600957BBC /* EnterUsernameViewController.swift */; };
 		B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */; };
 		B86194F4275DC49100957BBC /* EnterBirthdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194F3275DC49100957BBC /* EnterBirthdateViewController.swift */; };
+		B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194FC2760FEC700957BBC /* EnterEmailView.swift */; };
+		B86194FF2760FED800957BBC /* EnterEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194FE2760FED800957BBC /* EnterEmailViewController.swift */; };
 		B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FD274E303600FB67D3 /* AppDelegate.swift */; };
 		B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FF274E303600FB67D3 /* SceneDelegate.swift */; };
 		B897A907274E303700FB67D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B897A906274E303700FB67D3 /* Assets.xcassets */; };
@@ -83,6 +85,8 @@
 		B86194EF275D290600957BBC /* EnterUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameViewController.swift; sourceTree = "<group>"; };
 		B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterBirthdateView.swift; sourceTree = "<group>"; };
 		B86194F3275DC49100957BBC /* EnterBirthdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterBirthdateViewController.swift; sourceTree = "<group>"; };
+		B86194FC2760FEC700957BBC /* EnterEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterEmailView.swift; sourceTree = "<group>"; };
+		B86194FE2760FED800957BBC /* EnterEmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterEmailViewController.swift; sourceTree = "<group>"; };
 		B897A8FA274E303600FB67D3 /* Facebook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facebook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B897A8FD274E303600FB67D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B897A8FF274E303600FB67D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -146,6 +150,7 @@
 			children = (
 				B86194ED275D28D000957BBC /* EnterUsernameView.swift */,
 				B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */,
+				B86194FC2760FEC700957BBC /* EnterEmailView.swift */,
 			);
 			path = SignUpViewGroup;
 			sourceTree = "<group>";
@@ -155,6 +160,7 @@
 			children = (
 				B86194EF275D290600957BBC /* EnterUsernameViewController.swift */,
 				B86194F3275DC49100957BBC /* EnterBirthdateViewController.swift */,
+				B86194FE2760FED800957BBC /* EnterEmailViewController.swift */,
 			);
 			path = SignUpViewControllerGroup;
 			sourceTree = "<group>";
@@ -402,10 +408,12 @@
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
 				B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */,
+				B86194FF2760FED800957BBC /* EnterEmailViewController.swift in Sources */,
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
 				7779931D2750843C007A3898 /* SearchViewController.swift in Sources */,
 				B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */,
+				B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */,
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,

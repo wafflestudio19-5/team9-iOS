@@ -14,7 +14,7 @@ class LoginView: UIView {
     let backButton = RectangularSlimButton(title: "돌아가기", titleColor: FacebookColor.blue.color(), backgroundColor: .white)
     let createAccountButton = RectangularSlimButton(title: "새 계정 만들기", titleColor: FacebookColor.blue.color(), backgroundColor: FacebookColor.mildBlue.color())
     
-    let idTextField = FacebookTextField(placeholderText: "전화번호 또는 이메일 주소")
+    let idTextField = FacebookTextField(placeholderText: "이메일 주소")
     let passwordTextField = FacebookTextField(placeholderText: "비밀번호")
     
     var bottomConstraint: NSLayoutConstraint?
