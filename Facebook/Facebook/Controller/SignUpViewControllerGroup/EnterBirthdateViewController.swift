@@ -8,24 +8,12 @@
 import RxSwift
 import RxGesture
 
-class EnterBirthdateViewController<View: EnterBirthdateView>: UIViewController {
+class EnterBirthdateViewController: BaseSignUpViewController<EnterBirthdateView> {
     
-    private let disposeBag = DisposeBag()
     private let dateFormatter = DateFormatter()
-    
-    override func loadView() {
-        view = View()
-    }
-    
-    private var enterBirthdateView: View {
-        guard let view = view as? View else { return View() }
-        return view
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.title = "Facebook 가입하기"
-        self.navigationItem.backButtonTitle = ""
         
         configureDateFormatter()
         bindView()
@@ -35,14 +23,14 @@ class EnterBirthdateViewController<View: EnterBirthdateView>: UIViewController {
         
         // "선택" 버튼을 누를 경우에 DatePicker의 선택값을 textField의 text로 지정
         // 그 외 view를 터치할 경우에는 입력 상태만 false로 변경하고, 값이 반영되지는 않음
-        enterBirthdateView.selectButton.rx.tap.bind { [weak self] in
+        customView.selectButton.rx.tap.bind { [weak self] in
             guard let self = self else { return }
-            let selectedDate = self.enterBirthdateView.birthDatePicker.date
-            self.enterBirthdateView.birthDateTextField.text = self.dateFormatter.string(from: selectedDate)
-            self.enterBirthdateView.birthDateTextField.endEditing(true)
+            let selectedDate = self.customView.birthDatePicker.date
+            self.customView.birthDateTextField.text = self.dateFormatter.string(from: selectedDate)
+            self.customView.birthDateTextField.endEditing(true)
         }.disposed(by: disposeBag)
         
-        enterBirthdateView.nextButton.rx.tap.bind {
+        customView.nextButton.rx.tap.bind {
             let enterEmailViewController = EnterEmailViewController()
             self.navigationController?.pushViewController(enterEmailViewController, animated: true)
         }.disposed(by: disposeBag)
@@ -53,8 +41,8 @@ class EnterBirthdateViewController<View: EnterBirthdateView>: UIViewController {
             }
         }).bind { [weak self] _ in
             guard let self = self else { return }
-            if self.enterBirthdateView.birthDateTextField.isEditing {
-                self.enterBirthdateView.birthDateTextField.endEditing(true)
+            if self.customView.birthDateTextField.isEditing {
+                self.customView.birthDateTextField.endEditing(true)
             }
         }.disposed(by: disposeBag)
     }
