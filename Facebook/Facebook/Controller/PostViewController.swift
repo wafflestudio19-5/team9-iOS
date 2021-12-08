@@ -26,12 +26,12 @@ class PostViewController<View: PostView>: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setNavigationItemStyle()
-        setNavigationItemLayout()
+        setStyleForNavigationBar()
+        setLayoutForNavigationBar()
     }
 
     //Post의 writer프로필 이미지와 이름, 작성 시간에 대한 정보를 navigationBar에 추가
-    func setNavigationItemStyle() {
+    func setStyleForNavigationBar() {
         writerImage.contentMode = .scaleAspectFit
         let image = UIImage(systemName: "person.circle.fill")
         writerImage.image = image
@@ -44,7 +44,7 @@ class PostViewController<View: PostView>: UIViewController {
         timeLabel.text = "17시간 전"
     }
     
-    func setNavigationItemLayout() {
+    func setLayoutForNavigationBar() {
         titleView.addSubview(writerImage)
         titleView.addSubview(writeLabel)
         titleView.addSubview(timeLabel)
