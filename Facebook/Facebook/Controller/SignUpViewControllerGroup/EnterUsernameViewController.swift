@@ -31,7 +31,7 @@ class EnterUsernameViewController<View: EnterUsernameView>: UIViewController {
     private func bindView() {
         enterUsernameView.nextButton.rx.tap.bind {
             let enterBirthdateViewController = EnterBirthdateViewController()
-            self.navigationController?.pushViewController(enterBirthdateViewController, animated: false)
+            self.navigationController?.pushViewController(enterBirthdateViewController, animated: true)
         }.disposed(by: disposeBag)
     }
 

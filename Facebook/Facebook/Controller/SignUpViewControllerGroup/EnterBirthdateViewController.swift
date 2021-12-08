@@ -30,12 +30,6 @@ class EnterBirthdateViewController<View: EnterBirthdateView>: UIViewController {
         configureDateFormatter()
         bindView()
     }
-    
-    // 뒤로가기 애니메이션 제거
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(false)
-        UIView.setAnimationsEnabled(false)
-    }
 
     private func bindView() {
         
