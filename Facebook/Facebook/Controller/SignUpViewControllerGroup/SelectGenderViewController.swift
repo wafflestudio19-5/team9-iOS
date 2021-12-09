@@ -45,7 +45,8 @@ class SelectGenderViewController: BaseSignUpViewController<SelectGenderView>, UI
             }.disposed(by: disposeBag)
         
         customView.nextButton.rx.tap.bind {
-            // navigate to enterPasswordView
+            let enterPasswordViewController = EnterPasswordViewController()
+            self.navigationController?.pushViewController(enterPasswordViewController, animated: true)
         }.disposed(by: disposeBag)
     }
 }

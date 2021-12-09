@@ -54,6 +54,8 @@
 		B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A923274E61A900FB67D3 /* ProfileTabView.swift */; };
 		B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A925274E61D800FB67D3 /* NotificationTabView.swift */; };
 		B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */; };
+		B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F82F2761FC5F00F659D2 /* EnterPasswordView.swift */; };
+		B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */; };
 		BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834AD275123FD00D6EC95 /* Endpoint.swift */; };
 		BEA834B2275126A600D6EC95 /* Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B1275126A600D6EC95 /* Ping.swift */; };
 		BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B427513B7700D6EC95 /* NetworkService.swift */; };
@@ -111,6 +113,8 @@
 		B897A923274E61A900FB67D3 /* ProfileTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileTabView.swift; sourceTree = "<group>"; };
 		B897A925274E61D800FB67D3 /* NotificationTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTabView.swift; sourceTree = "<group>"; };
 		B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabViewController.swift; sourceTree = "<group>"; };
+		B8A7F82F2761FC5F00F659D2 /* EnterPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordView.swift; sourceTree = "<group>"; };
+		B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
 		BEA834AD275123FD00D6EC95 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BEA834B1275126A600D6EC95 /* Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ping.swift; sourceTree = "<group>"; };
 		BEA834B427513B7700D6EC95 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -165,6 +169,7 @@
 				B86194FC2760FEC700957BBC /* EnterEmailView.swift */,
 				B8619502276103AE00957BBC /* SelectGenderView.swift */,
 				B8619506276198B400957BBC /* GenderTableViewCell.swift */,
+				B8A7F82F2761FC5F00F659D2 /* EnterPasswordView.swift */,
 			);
 			path = SignUpViewGroup;
 			sourceTree = "<group>";
@@ -177,6 +182,7 @@
 				B86194F3275DC49100957BBC /* EnterBirthdateViewController.swift */,
 				B86194FE2760FED800957BBC /* EnterEmailViewController.swift */,
 				B86195042761051900957BBC /* SelectGenderViewController.swift */,
+				B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */,
 			);
 			path = SignUpViewControllerGroup;
 			sourceTree = "<group>";
@@ -411,6 +417,7 @@
 				B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */,
+				B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */,
 				B846BDA72754F35800513B77 /* LoginView.swift in Sources */,
 				777993212750CD41007A3898 /* CreatePostTableViewCell.swift in Sources */,
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
@@ -441,6 +448,7 @@
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
 				B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */,
+				B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */,
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
 				B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
