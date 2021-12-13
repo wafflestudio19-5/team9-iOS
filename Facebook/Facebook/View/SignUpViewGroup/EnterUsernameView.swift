@@ -13,6 +13,9 @@ class EnterUsernameView: UIView {
     let lastNameTextField = FacebookTextField(placeholderText: "이름")
     
     let horizontalStackForTextFields = UIStackView()
+    let verticalStackWithAlertLabel = UIStackView()
+    
+    let alertLabel = LabelWithPadding(padding: UIEdgeInsets(top: 10.0, left: 7.0, bottom: 10.0, right: 7.0))
     
     let baseSignUpView = BaseSignUpView(title: "이름이 무엇인가요?", instruction: "실명을 입력하세요.")
     
@@ -30,11 +33,29 @@ class EnterUsernameView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setAlertLabelText(as text: String) {
+        if text != "" {
+            verticalStackWithAlertLabel.addArrangedSubview(alertLabel)
+            alertLabel.text = text
+            return
+        }
+        verticalStackWithAlertLabel.removeArrangedSubview(alertLabel)
+        alertLabel.removeFromSuperview()
+    }
+    
     private func setStyleForView() {
         horizontalStackForTextFields.axis = .horizontal
         horizontalStackForTextFields.contentMode = .center
         horizontalStackForTextFields.distribution = .fillEqually
         horizontalStackForTextFields.spacing = 10.0
+        
+        verticalStackWithAlertLabel.axis = .vertical
+        verticalStackWithAlertLabel.contentMode = .center
+        verticalStackWithAlertLabel.spacing = 14.0
+        
+        alertLabel.font = .systemFont(ofSize: 14.0)
+        alertLabel.textColor = .white
+        alertLabel.backgroundColor = .red
     }
     
     private func setLayoutForView() {
@@ -42,12 +63,14 @@ class EnterUsernameView: UIView {
         horizontalStackForTextFields.addArrangedSubview(firstNameTextField)
         horizontalStackForTextFields.addArrangedSubview(lastNameTextField)
         
+        verticalStackWithAlertLabel.addArrangedSubview(horizontalStackForTextFields)
+        
         self.addSubview(baseSignUpView)
-        self.addSubview(horizontalStackForTextFields)
+        self.addSubview(verticalStackWithAlertLabel)
         self.addSubview(nextButton)
         
         baseSignUpView.translatesAutoresizingMaskIntoConstraints = false
-        horizontalStackForTextFields.translatesAutoresizingMaskIntoConstraints = false
+        verticalStackWithAlertLabel.translatesAutoresizingMaskIntoConstraints = false
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -56,11 +79,11 @@ class EnterUsernameView: UIView {
             baseSignUpView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             baseSignUpView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             
-            horizontalStackForTextFields.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 18.0),
-            horizontalStackForTextFields.topAnchor.constraint(equalTo: baseSignUpView.bottomAnchor, constant: 24.0),
-            horizontalStackForTextFields.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18.0),
+            verticalStackWithAlertLabel.topAnchor.constraint(equalTo: baseSignUpView.bottomAnchor, constant: 24.0),
+            verticalStackWithAlertLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 18.0),
+            verticalStackWithAlertLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18.0),
             
-            nextButton.topAnchor.constraint(equalTo: horizontalStackForTextFields.bottomAnchor, constant: 16.0),
+            nextButton.topAnchor.constraint(equalTo: verticalStackWithAlertLabel.bottomAnchor, constant: 16.0),
             nextButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 72.0),
             nextButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -72.0),
         ])
