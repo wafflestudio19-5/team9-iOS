@@ -74,8 +74,7 @@ class EnterUsernameViewController: BaseSignUpViewController<EnterUsernameView> {
                     print(self.firstName.value)
                     print(self.lastName.value)
                     
-                    let enterBirthdateViewController = EnterBirthdateViewController()
-                    self.navigationController?.pushViewController(enterBirthdateViewController, animated: true)
+                    self.push(viewController: EnterBirthdateViewController())
                 } else {
                     self.customView.setAlertLabelText(as: isFirstNameEmpty && isLastNameEmpty ? Validation.emptyBoth.message()
                                                            : (isFirstNameEmpty ? Validation.emptyFirstName.message() : Validation.emptyLastName.message()))

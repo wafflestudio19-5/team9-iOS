@@ -31,8 +31,7 @@ class EnterBirthdateViewController: BaseSignUpViewController<EnterBirthdateView>
         }.disposed(by: disposeBag)
         
         customView.nextButton.rx.tap.bind {
-            let enterEmailViewController = EnterEmailViewController()
-            self.navigationController?.pushViewController(enterEmailViewController, animated: true)
+            self.push(viewController: EnterEmailViewController())
         }.disposed(by: disposeBag)
         
         view.rx.tapGesture(configuration: { _, delegate in

@@ -29,9 +29,9 @@ class EnterEmailViewController: BaseSignUpViewController<EnterEmailView> {
             }
         }.disposed(by: disposeBag)
         
-        customView.nextButton.rx.tap.bind {
-            let selectGenderViewController = SelectGenderViewController()
-            self.navigationController?.pushViewController(selectGenderViewController, animated: true)
+        customView.nextButton.rx.tap.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.push(viewController: SelectGenderViewController())
         }.disposed(by: disposeBag)
     }
 }

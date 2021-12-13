@@ -29,7 +29,6 @@
 		B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */; };
 		B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAD275504AA00513B77 /* LoginViewController.swift */; };
 		B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAF2755119500513B77 /* FacebookTextField.swift */; };
-		B846BDB22759208500513B77 /* BaseAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDB12759208400513B77 /* BaseAlertController.swift */; };
 		B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDB32759250400513B77 /* BaseSignUpView.swift */; };
 		B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194ED275D28D000957BBC /* EnterUsernameView.swift */; };
 		B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194EF275D290600957BBC /* EnterUsernameViewController.swift */; };
@@ -57,6 +56,7 @@
 		B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F82F2761FC5F00F659D2 /* EnterPasswordView.swift */; };
 		B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */; };
 		B8A7F8342767507000F659D2 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8332767507000F659D2 /* LabelWithPadding.swift */; };
+		B8A7F8372767690F00F659D2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8362767690F00F659D2 /* Extensions.swift */; };
 		BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834AD275123FD00D6EC95 /* Endpoint.swift */; };
 		BEA834B2275126A600D6EC95 /* Ping.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B1275126A600D6EC95 /* Ping.swift */; };
 		BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B427513B7700D6EC95 /* NetworkService.swift */; };
@@ -87,7 +87,6 @@
 		B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularSlimButton.swift; sourceTree = "<group>"; };
 		B846BDAD275504AA00513B77 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B846BDAF2755119500513B77 /* FacebookTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookTextField.swift; sourceTree = "<group>"; };
-		B846BDB12759208400513B77 /* BaseAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAlertController.swift; sourceTree = "<group>"; };
 		B846BDB32759250400513B77 /* BaseSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSignUpView.swift; sourceTree = "<group>"; };
 		B86194ED275D28D000957BBC /* EnterUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameView.swift; sourceTree = "<group>"; };
 		B86194EF275D290600957BBC /* EnterUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +116,7 @@
 		B8A7F82F2761FC5F00F659D2 /* EnterPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordView.swift; sourceTree = "<group>"; };
 		B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
 		B8A7F8332767507000F659D2 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
+		B8A7F8362767690F00F659D2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		BEA834AD275123FD00D6EC95 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BEA834B1275126A600D6EC95 /* Ping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ping.swift; sourceTree = "<group>"; };
 		BEA834B427513B7700D6EC95 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -156,7 +156,6 @@
 				B846BDA92754F5A900513B77 /* FacebookColor.swift */,
 				B846BDAF2755119500513B77 /* FacebookTextField.swift */,
 				B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */,
-				B846BDB12759208400513B77 /* BaseAlertController.swift */,
 				B86195082761AFAE00957BBC /* ContentSizeFitTableView.swift */,
 				B8A7F8332767507000F659D2 /* LabelWithPadding.swift */,
 			);
@@ -211,6 +210,7 @@
 		B897A8FC274E303600FB67D3 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
+				B8A7F835276768FE00F659D2 /* Extension */,
 				B846BDA82754F59100513B77 /* Components */,
 				BEA834AC275123A300D6EC95 /* Network */,
 				7779931E27509170007A3898 /* Model */,
@@ -264,6 +264,14 @@
 				774094492750ECDC00AD8DC2 /* EditProfileTableViewCell.xib */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		B8A7F835276768FE00F659D2 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				B8A7F8362767690F00F659D2 /* Extensions.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		BEA834AC275123A300D6EC95 /* Network */ = {
@@ -428,7 +436,6 @@
 				7740943E2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift in Sources */,
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
 				BEA834B2275126A600D6EC95 /* Ping.swift in Sources */,
-				B846BDB22759208500513B77 /* BaseAlertController.swift in Sources */,
 				B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
@@ -445,6 +452,7 @@
 				B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */,
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
+				B8A7F8372767690F00F659D2 /* Extensions.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
 				B8A7F8342767507000F659D2 /* LabelWithPadding.swift in Sources */,
