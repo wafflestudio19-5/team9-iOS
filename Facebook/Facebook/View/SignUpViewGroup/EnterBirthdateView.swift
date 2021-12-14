@@ -2,7 +2,7 @@
 //  EnterBirthdateView.swift
 //  Facebook
 //
-//  Created by peng on 2021/12/06.
+//  Created by 최유림 on 2021/12/06.
 //
 
 import UIKit
@@ -11,11 +11,16 @@ class EnterBirthdateView: UIView {
 
     let birthDatePicker = UIDatePicker()
     
-    let birthDatePickerToolbar = UIToolbar()
-    let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    private let birthDatePickerToolbar = UIToolbar()
+    private let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     let selectButton = UIBarButtonItem(title: "선택", style: .plain, target: nil, action: nil)
     
     let birthDateTextField = FacebookTextField(placeholderText: "생년월일")
+    
+    private let verticalStackWithAlertLabel = UIStackView()
+    
+    let alertLabel = LabelWithPadding(padding: UIEdgeInsets(top: 10.0, left: 7.0, bottom: 10.0, right: 7.0))
+    let ageLabel = UILabel()
     
     let baseSignUpView = BaseSignUpView(title: "생일을 알려주세요", instruction: "생년월일을 선택하세요. 나중에 언제든지 비공개로 변경할 수 있습니다.")
     
@@ -35,6 +40,20 @@ class EnterBirthdateView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setBirthDateText(as birthDate: String) {
+        birthDateTextField.text = birthDate
+    }
+    
+    func setAlertLabelText(as text: String) {
+        if text != "" {
+            verticalStackWithAlertLabel.addArrangedSubview(alertLabel)
+            alertLabel.text = text
+            return
+        }
+        verticalStackWithAlertLabel.removeArrangedSubview(alertLabel)
+        alertLabel.removeFromSuperview()
+    }
+    
     private func setStyleForView() {
         birthDatePicker.datePickerMode = .date
         birthDatePicker.preferredDatePickerStyle = .wheels
@@ -44,6 +63,17 @@ class EnterBirthdateView: UIView {
 
         birthDateTextField.inputView = birthDatePicker
         birthDateTextField.textColor = FacebookColor.blue.color()
+        
+        verticalStackWithAlertLabel.axis = .vertical
+        verticalStackWithAlertLabel.contentMode = .center
+        verticalStackWithAlertLabel.spacing = 14.0
+        
+        alertLabel.font = .systemFont(ofSize: 12.0)
+        alertLabel.textColor = .white
+        alertLabel.backgroundColor = .red
+        
+        ageLabel.font = .systemFont(ofSize: 14.0)
+        ageLabel.textAlignment = .center
     }
     
     private func addButtonToBirthdatePicker() {
@@ -66,11 +96,15 @@ class EnterBirthdateView: UIView {
     private func setLayoutForView() {
 
         self.addSubview(baseSignUpView)
-        self.addSubview(birthDateTextField)
+        self.addSubview(verticalStackWithAlertLabel)
+        self.addSubview(ageLabel)
         self.addSubview(nextButton)
         
+        verticalStackWithAlertLabel.addArrangedSubview(birthDateTextField)
+        
         baseSignUpView.translatesAutoresizingMaskIntoConstraints = false
-        birthDateTextField.translatesAutoresizingMaskIntoConstraints = false
+        verticalStackWithAlertLabel.translatesAutoresizingMaskIntoConstraints = false
+        ageLabel.translatesAutoresizingMaskIntoConstraints = false
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -79,11 +113,15 @@ class EnterBirthdateView: UIView {
             baseSignUpView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             baseSignUpView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             
-            birthDateTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 18.0),
-            birthDateTextField.topAnchor.constraint(equalTo: baseSignUpView.bottomAnchor, constant: 24.0),
-            birthDateTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18.0),
+            verticalStackWithAlertLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 18.0),
+            verticalStackWithAlertLabel.topAnchor.constraint(equalTo: baseSignUpView.bottomAnchor, constant: 24.0),
+            verticalStackWithAlertLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18.0),
+            
+            ageLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 18.0),
+            ageLabel.topAnchor.constraint(equalTo: verticalStackWithAlertLabel.bottomAnchor, constant: 14.0),
+            ageLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18.0),
 
-            nextButton.topAnchor.constraint(equalTo: birthDateTextField.bottomAnchor, constant: 16.0),
+            nextButton.topAnchor.constraint(equalTo: ageLabel.bottomAnchor, constant: 16.0),
             nextButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 72.0),
             nextButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -72.0),
         ])

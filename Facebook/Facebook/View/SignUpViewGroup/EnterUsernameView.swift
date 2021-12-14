@@ -53,7 +53,7 @@ class EnterUsernameView: UIView {
         verticalStackWithAlertLabel.contentMode = .center
         verticalStackWithAlertLabel.spacing = 14.0
         
-        alertLabel.font = .systemFont(ofSize: 14.0)
+        alertLabel.font = .systemFont(ofSize: 12.0)
         alertLabel.textColor = .white
         alertLabel.backgroundColor = .red
     }
