@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol MainProfileTableViewCellDelegate: class {
+    
+}
+
 class MainProfileTableViewCell: UITableViewCell {
 
     @IBOutlet weak var profileImage: UIImageView!
@@ -16,6 +20,9 @@ class MainProfileTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        editProfileButton.layer.cornerRadius = 5
+        profileImage.layer.cornerRadius = profileImage.frame.width / 2
+        profileImage.clipsToBounds = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -24,4 +31,5 @@ class MainProfileTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    weak var deletegate: MainProfileTableViewCellDelegate?
 }

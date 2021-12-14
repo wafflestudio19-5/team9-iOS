@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ShowProfileTableViewCellDelegate: class {
+    
+}
+
 class ShowProfileTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
@@ -20,4 +24,5 @@ class ShowProfileTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    weak var deletegate: ShowProfileTableViewCellDelegate?
 }
