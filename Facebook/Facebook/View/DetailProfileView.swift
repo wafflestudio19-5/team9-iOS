@@ -14,6 +14,7 @@ class DetailProfileView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
+        setStyleForView()
     }
     
     required init?(coder: NSCoder) {
@@ -30,5 +31,11 @@ class DetailProfileView: UIView {
             detailProfileTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             detailProfileTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
         ])
+    }
+    
+    private func setStyleForView() {
+        //profileTableView.tableHeaderView = UIView()  // removes the separator at the top
+        detailProfileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
+        detailProfileTableView.allowsSelection = false
     }
 }

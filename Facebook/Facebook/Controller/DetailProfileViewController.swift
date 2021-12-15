@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+import RxGesture
 
 class DetailProfileViewController<View: DetailProfileView>: UIViewController {
 
@@ -22,6 +25,10 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController {
         detailProfileView.detailProfileTableView
     }
     
+    let disposeBag = DisposeBag()
+    
+    let dummyObservable = Observable.just(1...10)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,17 +37,9 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController {
     }
     
     func bindTableView() {
-        
+        dummyObservable.bind(to: tableView.rx.items) { (tableView, row, item) -> UITableViewCell in
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: IndexPath.init(row: row, section: 0))
+            return cell
+        }.disposed(by: disposeBag)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

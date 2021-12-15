@@ -35,7 +35,7 @@ class CreatePostView: UIView {
         nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         nameLabel.text = "writer"
         
-        contentTextfield.placeholder = "무슨 생각을 하고 계신가요?"
+        contentTextfield.attributedPlaceholder = NSAttributedString(string: "무슨 생각을 하고 계신가요?", attributes: [NSAttributedString.Key.foregroundColor : UIColor.systemGray2])
     }
     
     private func setLayoutForView() {
@@ -54,8 +54,8 @@ class CreatePostView: UIView {
             profileImage.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             nameLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 18),
             nameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15),
-            contentTextfield.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 30),
-            contentTextfield.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10)
+            contentTextfield.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 20),
+            contentTextfield.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15)
         ])
     }
 }

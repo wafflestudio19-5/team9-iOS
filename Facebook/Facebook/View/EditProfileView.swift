@@ -32,4 +32,9 @@ class EditProfileView: UIView {
         ])
     }
 
+    private func setStyleForView() {
+        //profileTableView.tableHeaderView = UIView()  // removes the separator at the top
+        editProfileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
+        editProfileTableView.allowsSelection = false
+    }
 }
