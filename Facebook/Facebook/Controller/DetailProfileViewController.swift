@@ -38,7 +38,15 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController {
     
     func bindTableView() {
         dummyObservable.bind(to: tableView.rx.items) { (tableView, row, item) -> UITableViewCell in
-            let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: IndexPath.init(row: row, section: 0))
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: IndexPath.init(row: row, section: 0)) as? DetailProfileTableViewCell else { return UITableViewCell() }
+            
+            cell.informationImage.layer.cornerRadius = cell.informationImage.frame.width / 2
+            cell.informationImage.clipsToBounds = true
+            
+            cell.informationImage.backgroundColor = .systemGray4
+            cell.informationImage.tintColor = .lightGray
+            cell.informationLabel.textColor = .systemBlue
+            
             return cell
         }.disposed(by: disposeBag)
     }
