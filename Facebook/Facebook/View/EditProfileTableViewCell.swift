@@ -6,19 +6,25 @@
 //
 
 import UIKit
+import RxSwift
+import RxGesture
+import RxCocoa
 
-protocol EditProfileTableViewCellDelegate: class {
-    
+protocol EditProfileTableViewCellDelegate: AnyObject {
+    func goEditProfileView()
 }
 
 class EditProfileTableViewCell: UITableViewCell {
 
     @IBOutlet weak var editProfileButton: UIButton!
     
+    let disposeBag = DisposeBag()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         editProfileButton.layer.cornerRadius = 5
+        bindButton()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -26,6 +32,11 @@ class EditProfileTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-        
-    weak var deletegate: EditProfileTableViewCellDelegate?
+    weak var delegate: EditProfileTableViewCellDelegate?
+    
+    func bindButton() {
+        editProfileButton.rx.tap.bind { _ in
+            self.delegate?.goEditProfileView()
+        }.disposed(by: disposeBag)
+    }
 }

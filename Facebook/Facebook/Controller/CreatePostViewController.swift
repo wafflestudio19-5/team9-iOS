@@ -1,37 +1,29 @@
 //
-//  DetailProfileViewController.swift
+//  CreatePostViewController.swift
 //  Facebook
 //
-//  Created by 김우성 on 2021/12/14.
+//  Created by 김우성 on 2021/12/15.
 //
 
 import UIKit
 
-class DetailProfileViewController<View: DetailProfileView>: UIViewController {
+class CreatePostViewController<View: CreatePostView>: UIViewController {
 
     override func loadView() {
         view = View()
     }
     
-    var detailProfileView: View {
+    var creatPostView: View {
         guard let view = view as? View else { return View() }
         return view
-    }
-    
-    var tableView: UITableView {
-        detailProfileView.detailProfileTableView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        bindTableView()
     }
     
-    func bindTableView() {
-        
-    }
 
     /*
     // MARK: - Navigation

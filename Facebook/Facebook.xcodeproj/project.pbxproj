@@ -33,6 +33,8 @@
 		77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B635432768B2E200C41EB3 /* DetailProfileViewController.swift */; };
 		77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B635452768B2F900C41EB3 /* EditProfileView.swift */; };
 		77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B635472768B30A00C41EB3 /* EditProfileViewController.swift */; };
+		77E12FA22769A97800B8F191 /* CreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA12769A97800B8F191 /* CreatePostView.swift */; };
+		77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA32769A98900B8F191 /* CreatePostViewController.swift */; };
 		B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FD274E303600FB67D3 /* AppDelegate.swift */; };
 		B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FF274E303600FB67D3 /* SceneDelegate.swift */; };
 		B897A907274E303700FB67D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B897A906274E303700FB67D3 /* Assets.xcassets */; };
@@ -78,6 +80,8 @@
 		77B635432768B2E200C41EB3 /* DetailProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProfileViewController.swift; sourceTree = "<group>"; };
 		77B635452768B2F900C41EB3 /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		77B635472768B30A00C41EB3 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		77E12FA12769A97800B8F191 /* CreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostView.swift; sourceTree = "<group>"; };
+		77E12FA32769A98900B8F191 /* CreatePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewController.swift; sourceTree = "<group>"; };
 		AF0AA20D3E5E391258D676CE /* Pods-Facebook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.release.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.release.xcconfig"; sourceTree = "<group>"; };
 		B897A8FA274E303600FB67D3 /* Facebook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facebook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B897A8FD274E303600FB67D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -172,6 +176,7 @@
 				77547903275CE66A0065711C /* PostViewController.swift */,
 				77B635432768B2E200C41EB3 /* DetailProfileViewController.swift */,
 				77B635472768B30A00C41EB3 /* EditProfileViewController.swift */,
+				77E12FA32769A98900B8F191 /* CreatePostViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -203,6 +208,7 @@
 				77AC749D275E19C200F10BD5 /* PostContentTableViewCell.xib */,
 				77B635412768B2C100C41EB3 /* DetailProfileView.swift */,
 				77B635452768B2F900C41EB3 /* EditProfileView.swift */,
+				77E12FA12769A97800B8F191 /* CreatePostView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -376,12 +382,14 @@
 				77547904275CE66A0065711C /* PostViewController.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
+				77E12FA22769A97800B8F191 /* CreatePostView.swift in Sources */,
 				7779931D2750843C007A3898 /* SearchViewController.swift in Sources */,
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
+				77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */,
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,

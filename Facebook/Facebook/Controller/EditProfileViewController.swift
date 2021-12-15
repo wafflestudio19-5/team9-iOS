@@ -18,6 +18,9 @@ class EditProfileViewController<View: EditProfileView>: UIViewController {
         return view
     }
 
+    var tableView: UITableView {
+        editProfileView.editProfileTableView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
