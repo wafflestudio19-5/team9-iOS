@@ -10,15 +10,24 @@ import Foundation
 struct Endpoint {
     var path: String
     var queryItems: [URLQueryItem] = []
-}
-
-extension Endpoint {
+    var page: Int?  // special case로 처리
+    
     var url: URL {
         var components = URLComponents()
         components.scheme = "http"
-        components.host = "ec2-3-34-188-255.ap-northeast-2.compute.amazonaws.com"
-        components.path = "/" + path
+        components.path = "/api/v1/" + path
         components.queryItems = queryItems
+        
+        if let page = page {
+            components.queryItems?.append(URLQueryItem(name: "page", value: String(page)))
+        }
+        
+        // for development
+        components.host = "localhost"
+        components.port = 8000
+        
+        // for production
+//        components.host = "ec2-3-34-188-255.ap-northeast-2.compute.amazonaws.com"
         
         guard let url = components.url else {
             preconditionFailure(
@@ -27,5 +36,12 @@ extension Endpoint {
         }
         
         return url
+    }
+}
+
+extension Endpoint {
+    mutating func withPage(page: Int) -> Self {
+        self.page = page
+        return self
     }
 }
