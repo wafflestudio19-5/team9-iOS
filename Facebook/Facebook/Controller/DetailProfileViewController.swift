@@ -33,6 +33,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.title = "정보"
         bindTableView()
     }
     

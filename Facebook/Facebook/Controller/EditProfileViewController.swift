@@ -26,6 +26,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
+        self.title = "프로필 편집"
         bindTableView()
     }
     

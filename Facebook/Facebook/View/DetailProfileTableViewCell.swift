@@ -35,8 +35,8 @@ class DetailProfileTableViewCell: UITableViewCell {
     weak var delegate: DetailProfileTableViewCellDelegate?
     
     private func bindCellTapGesture() {
-        self.rx.tapGesture().when(.recognized).subscribe(onNext: { _ in
-            self.delegate?.goEditDetailProfileView()
+        self.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+            self?.delegate?.goEditDetailProfileView()
         }).disposed(by: disposeBag)
     }
 }

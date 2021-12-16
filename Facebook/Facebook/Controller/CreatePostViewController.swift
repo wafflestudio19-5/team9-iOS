@@ -10,8 +10,6 @@ import RxSwift
 import RxGesture
 
 class CreatePostViewController<View: CreatePostView>: UIViewController {
-
-    let postButton = UIButton()
     
     let disposeBag = DisposeBag()
     
@@ -28,28 +26,27 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
         super.viewDidLoad()
         
         self.title = "게시글 만들기"
-        setStyleForNavigationBarItems()
         setNavigationBarItems()
         bindNavigationBarItems()
     }
-    
-    func setStyleForNavigationBarItems() {
-        self.navigationController?.navigationBar.backIndicatorImage = UIImage(systemName: "xmark")
-        self.navigationController?.navigationBar.backIndicatorTransitionMaskImage = UIImage(systemName: "xmark")
-        
-        postButton.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
-        postButton.setTitle("게시", for: .normal)
-        postButton.setTitleColor(UIColor.lightGray, for: .normal)
-        postButton.backgroundColor = .systemGray4
-        postButton.layer.cornerRadius = 5
-    }
-    
+
     func setNavigationBarItems() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: postButton)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "xmark"),
+            style: .plain,
+            target: self,
+            action: #selector(popToPrevious)
+        )
+        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(customView: creatPostView.postButton)
     }
+    
+    @objc private func popToPrevious() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     
     func bindNavigationBarItems() {
-        postButton.rx.tap.bind { _ in
+        creatPostView.postButton.rx.tap.bind { _ in
             print("postButton tapped")
         }.disposed(by: disposeBag)
         
@@ -57,17 +54,17 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
         let hasEnteredContent = creatPostView.contentTextfield.rx.text.orEmpty.map { !$0.isEmpty }
         
         //contentTextField의 내용 유뮤에 따라 버튼 활성화
-        hasEnteredContent.bind(to: self.postButton.rx.isEnabled).disposed(by: disposeBag)
+        hasEnteredContent.bind(to: self.creatPostView.postButton.rx.isEnabled).disposed(by: disposeBag)
         
         //contentTextField의 내용 유뮤에 따라 버튼 색상 변화
         hasEnteredContent
                     .observe(on: MainScheduler.instance)
                     .subscribe(onNext: { [weak self] result in
                         guard let self = self else { return }
-                        self.postButton.titleLabel?.textColor = {
+                        self.creatPostView.postButton.titleLabel?.textColor = {
                             return result ? UIColor.white : UIColor.lightGray
                         }()
-                        self.postButton.backgroundColor = {
+                        self.creatPostView.postButton.backgroundColor = {
                             return result ? UIColor.systemBlue : UIColor.systemGray4
                         }()
                     }).disposed(by: disposeBag)

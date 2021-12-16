@@ -38,8 +38,8 @@ class MainProfileTableViewCell: UITableViewCell {
     weak var delegate: MainProfileTableViewCellDelegate?
     
     func bindButton() {
-        editProfileButton.rx.tap.bind { _ in
-            self.delegate?.goEditProfileView()
+        editProfileButton.rx.tap.bind { [weak self] in
+            self?.delegate?.goEditProfileView()
         }.disposed(by: disposeBag)
     }
 }

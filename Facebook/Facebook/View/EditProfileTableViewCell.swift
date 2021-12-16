@@ -32,11 +32,12 @@ class EditProfileTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
+    
     weak var delegate: EditProfileTableViewCellDelegate?
     
     func bindButton() {
-        editProfileButton.rx.tap.bind { _ in
-            self.delegate?.goEditProfileView()
+        editProfileButton.rx.tap.bind { [weak self] in
+            self?.delegate?.goEditProfileView()
         }.disposed(by: disposeBag)
     }
 }

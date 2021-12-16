@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwiftUI
 import Kingfisher
 
 class CreatePostView: UIView {
@@ -14,6 +13,8 @@ class CreatePostView: UIView {
     let profileImage = UIImageView()
     let nameLabel = UILabel()
     let contentTextfield = UITextField()
+    
+    let postButton = UIButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,7 +36,16 @@ class CreatePostView: UIView {
         nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         nameLabel.text = "writer"
         
-        contentTextfield.attributedPlaceholder = NSAttributedString(string: "무슨 생각을 하고 계신가요?", attributes: [NSAttributedString.Key.foregroundColor : UIColor.systemGray2])
+        contentTextfield.attributedPlaceholder = NSAttributedString(
+            string: "무슨 생각을 하고 계신가요?",
+            attributes:  [NSAttributedString.Key.foregroundColor: UIColor.gray]
+        )
+        
+        postButton.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
+        postButton.setTitle("게시", for: .normal)
+        postButton.setTitleColor(UIColor.lightGray, for: .normal)
+        postButton.backgroundColor = .systemGray4
+        postButton.layer.cornerRadius = 5
     }
     
     private func setLayoutForView() {
