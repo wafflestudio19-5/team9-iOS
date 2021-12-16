@@ -31,4 +31,8 @@ class PostTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func configureLabels(with post: Post) {
+        contentLabel.text = post.content
+        likeLabel.text = String(post.likes)
+    }
 }

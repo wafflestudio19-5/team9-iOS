@@ -19,8 +19,20 @@ class PaginationViewModel<DataModel: Codable> {
     private var currentPage: Int = 1
     private var hasNext: Bool = true
     
-    let loadMoreToggle = PublishSubject<Void>()
+    private let loadMoreToggle = PublishSubject<Void>()
+    private let refreshToggle = PublishSubject<Void>()
+    
     let dataList = BehaviorRelay<[DataModel]>(value: [])
+    
+    /// 로딩 인디케이터와 새로고침 인디케이터는 독립적으로 작동하므로 별도의 변수로 두었습니다.
+    /// `refreshComplete`은 새로고침 인디케이터의 작동을 멈추기 위해 사용됩니다.
+    let isLoading = BehaviorRelay<Bool>(value: false)
+    let isRefreshing = BehaviorRelay<Bool>(value: false)
+    let refreshComplete = BehaviorRelay<Bool>(value: false)
+    
+    var isFetchingData: Bool {
+        return isLoading.value || isRefreshing.value
+    }
     
     init(endpoint: Endpoint) {
         self.endpoint = endpoint
@@ -29,25 +41,41 @@ class PaginationViewModel<DataModel: Codable> {
     }
     
     func loadMore() {
+        if isFetchingData || !hasNext { return }
         loadMoreToggle.onNext(())
+    }
+    
+    func refresh() {
+        if isFetchingData { return }
+        refreshToggle.onNext(())
     }
     
     private func bind() {
         loadMoreToggle
             .subscribe { [weak self] _ in
                 if let hasNext = self?.hasNext, hasNext {
+                    self?.isLoading.accept(true)
                     self?.publishToDataList()
                 }
             }
             .disposed(by: disposeBag)
+        
+        refreshToggle
+            .subscribe { [weak self] _ in
+                self?.currentPage = 1
+                self?.isRefreshing.accept(true)
+                self?.publishToDataList(isRefreshing: true)
+            }
+            .disposed(by: disposeBag)
     }
-    
-    private func publishToDataList() {
+        
+    private func publishToDataList(isRefreshing: Bool = false) {
         let endpoint = endpoint.withPage(page: currentPage)
         NetworkService
             .get(endpoint: endpoint, as: PaginatedResponse<DataModel>.self)
             .observe(on: MainScheduler.instance)
-            .subscribe { event in
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
                 
                 if event.isCompleted {
                     return
@@ -58,9 +86,17 @@ class PaginationViewModel<DataModel: Codable> {
                     return
                 }
                 
-                self.dataList.accept(self.dataList.value + paginatedResponse.results)
                 self.currentPage += 1
                 self.hasNext = (paginatedResponse.next != nil)
+                
+                if isRefreshing {
+                    self.dataList.accept(paginatedResponse.results)
+                    self.isRefreshing.accept(false)
+                    self.refreshComplete.accept(true)
+                } else {
+                    self.dataList.accept(self.dataList.value + paginatedResponse.results)
+                    self.isLoading.accept(false)
+                }
             }
             .disposed(by: disposeBag)
     }

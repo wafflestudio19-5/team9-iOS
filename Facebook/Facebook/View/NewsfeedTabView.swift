@@ -10,11 +10,12 @@ import UIKit
 class NewsfeedTabView: UIView {
     
     let newsfeedTableView = UITableView()
+    let refreshControl = UIRefreshControl()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
-        setStyleForView()
+        configureTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -33,9 +34,34 @@ class NewsfeedTabView: UIView {
         ])
     }
     
-    private func setStyleForView() {
+    private func configureTableView() {
         newsfeedTableView.tableHeaderView = UIView()  // removes the separator at the top
         newsfeedTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "PostCell")
         newsfeedTableView.allowsSelection = false
+        newsfeedTableView.refreshControl = refreshControl
+    }
+    
+    // MARK: Bottom Spinner
+    
+    private lazy var bottomSpinner: UIView = {
+        let view = UIView(frame: CGRect(
+            x: 0,
+            y: 0,
+            width: self.frame.size.width,
+            height: 100)
+        )
+        let spinner = UIActivityIndicatorView()
+        spinner.center = view.center
+        view.addSubview(spinner)
+        spinner.startAnimating()
+        return view
+    }()
+    
+    func showBottomSpinner() {
+        self.newsfeedTableView.tableFooterView = self.bottomSpinner
+    }
+    
+    func hideBottomSpinner() {
+        self.newsfeedTableView.tableFooterView = UIView(frame: .zero)
     }
 }
