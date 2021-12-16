@@ -79,6 +79,7 @@ extension ProfileTabViewController: ShowProfileTableViewCellDelegate {
 extension ProfileTabViewController: CreatePostTableViewCellDelegate {
     func goCreatePostView() {
         let createPostViewController = CreatePostViewController()
+        createPostViewController.view.backgroundColor = .white
         
         self.navigationController?.pushViewController(createPostViewController, animated: true)
     }
