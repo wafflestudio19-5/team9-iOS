@@ -73,7 +73,6 @@ class PaginationViewModel<DataModel: Codable> {
         let endpoint = endpoint.withPage(page: currentPage)
         NetworkService
             .get(endpoint: endpoint, as: PaginatedResponse<DataModel>.self)
-            .observe(on: MainScheduler.instance)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
                 
