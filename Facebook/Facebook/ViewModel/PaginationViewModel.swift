@@ -30,7 +30,7 @@ class PaginationViewModel<DataModel: Codable> {
     let isRefreshing = BehaviorRelay<Bool>(value: false)
     let refreshComplete = BehaviorRelay<Bool>(value: false)
     
-    var isFetchingData: Bool {
+    private var isFetchingData: Bool {
         return isLoading.value || isRefreshing.value
     }
     
