@@ -6,11 +6,13 @@
 //
 
 import Foundation
+import Alamofire
 
 struct Endpoint {
     var path: String
     var queryItems: [URLQueryItem] = []
     var page: Int?  // special case로 처리
+    var parameters: Parameters?  // request body (data)
     
     var url: URL {
         var components = URLComponents()

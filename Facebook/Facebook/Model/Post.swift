@@ -12,4 +12,6 @@ struct Post: Codable {
     let author: Int
     let content: String
     let likes: Int
+    let posted_at: String?
+    let images: [String]?
 }

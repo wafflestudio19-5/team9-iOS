@@ -47,6 +47,7 @@ class PaginationViewModel<DataModel: Codable> {
     
     func refresh() {
         if isFetchingData { return }
+        NetworkService.cancelAllRequests()
         refreshToggle.onNext(())
     }
     
