@@ -22,7 +22,7 @@ class PostTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        contentLabel.text = "테스트입니다."
+        setButtonStyle()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -34,5 +34,12 @@ class PostTableViewCell: UITableViewCell {
     func configureLabels(with post: Post) {
         contentLabel.text = post.content
         likeLabel.text = String(post.likes)
+    }
+    
+    func setButtonStyle() {
+        let likeImageConfig = UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold)
+        likeButton.setImage(UIImage(systemName: "hand.thumbsup", withConfiguration: likeImageConfig), for: .normal)
+        likeButton.titleLabel?.text = "싫어요"
+        likeButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
     }
 }
