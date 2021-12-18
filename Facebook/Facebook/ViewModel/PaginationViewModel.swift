@@ -16,8 +16,19 @@ class PaginationViewModel<DataModel: Codable> {
     private let disposeBag = DisposeBag()
     private var endpoint: Endpoint
     
-    private var currentPage: Int = 1
-    private var hasNext: Bool = true
+//    private var currentPage: Int = 1
+//    private var hasNext: Bool = true
+    private var lastResponse: PaginatedResponse<DataModel>?
+    private var hasNext: Bool {
+        guard let lastResponse = lastResponse else { return true }
+        return lastResponse.next != nil
+    }
+    private var nextCursor: String? {
+        guard let lastResponse = lastResponse else { return nil }
+        guard let nextUrl = lastResponse.next else { return nil }
+        let url = URL(string: nextUrl)
+        return url?.queryParameters["cursor"]
+    }
     
     private let loadMoreToggle = PublishSubject<Void>()
     private let refreshToggle = PublishSubject<Void>()
@@ -36,8 +47,22 @@ class PaginationViewModel<DataModel: Codable> {
     
     init(endpoint: Endpoint) {
         self.endpoint = endpoint
-        bind()
-        loadMore()
+        NetworkService.post(endpoint: .login(email: "team9@test.com", password: "team9"), as: LoginResponse.self)
+            .subscribe { event in
+                if event.isCompleted {
+                    return
+                }
+                
+                guard let response = event.element?.1 else {
+                    print("로그인 오류")
+                    print(event)
+                    return
+                }
+                NetworkService.registerToken(token: response.token)
+                self.bind()
+                self.loadMore()
+            }
+            .disposed(by: disposeBag)
     }
     
     func loadMore() {
@@ -47,7 +72,6 @@ class PaginationViewModel<DataModel: Codable> {
     
     func refresh() {
         if isFetchingData { return }
-        NetworkService.cancelAllRequests()
         refreshToggle.onNext(())
     }
     
@@ -63,7 +87,8 @@ class PaginationViewModel<DataModel: Codable> {
         
         refreshToggle
             .subscribe { [weak self] _ in
-                self?.currentPage = 1
+                NetworkService.cancelAllRequests()
+                self?.lastResponse = nil
                 self?.isRefreshing.accept(true)
                 self?.publishToDataList(isRefreshing: true)
             }
@@ -71,7 +96,7 @@ class PaginationViewModel<DataModel: Codable> {
     }
         
     private func publishToDataList(isRefreshing: Bool = false) {
-        let endpoint = endpoint.withPage(page: currentPage)
+        let endpoint = endpoint.withCursor(cursor: nextCursor)
         NetworkService
             .get(endpoint: endpoint, as: PaginatedResponse<DataModel>.self)
             .subscribe { [weak self] event in
@@ -83,11 +108,11 @@ class PaginationViewModel<DataModel: Codable> {
                 
                 guard let paginatedResponse = event.element?.1 else {
                     print("데이터 로드 중 오류 발생: \(endpoint.url)")
+                    print(event)
                     return
                 }
                 
-                self.currentPage += 1
-                self.hasNext = (paginatedResponse.next != nil)
+                self.lastResponse = paginatedResponse
                 
                 if isRefreshing {
                     self.dataList.accept(paginatedResponse.results)

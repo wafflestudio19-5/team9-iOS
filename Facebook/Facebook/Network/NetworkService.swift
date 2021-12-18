@@ -21,7 +21,6 @@ struct NetworkService {
     }
     
     static func registerToken(token: String) {
-        print("register")
         self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [JWTAdapter(token: token)]))
     }
     
@@ -69,7 +68,6 @@ struct JWTAdapter: RequestInterceptor {
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var urlRequest = urlRequest
         urlRequest.headers.add(.authorization("JWT \(self.token)"))
-        print(urlRequest.headers)
         completion(.success(urlRequest))
     }
 }

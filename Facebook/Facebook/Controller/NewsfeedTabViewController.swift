@@ -15,7 +15,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         tabView.newsfeedTableView
     }
     
-    let viewModel = PaginationViewModel<Post>(endpoint: .newsfeed(page: 1))
+    let viewModel = PaginationViewModel<Post>(endpoint: .newsfeed())
     
     override func viewDidLoad() {
         super.viewDidLoad()

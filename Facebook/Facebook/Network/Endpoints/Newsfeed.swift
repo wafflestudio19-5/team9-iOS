@@ -8,7 +8,7 @@
 import Foundation
 
 extension Endpoint {
-    static func newsfeed(page: Int) -> Self {
-        return Endpoint(path: "newsfeed/", page: page)
+    static func newsfeed(cursor: String? = nil) -> Self {
+        return Endpoint(path: "newsfeed/", cursor: cursor)
     }
 }

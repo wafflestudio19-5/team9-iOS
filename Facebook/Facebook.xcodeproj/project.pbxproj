@@ -37,6 +37,8 @@
 		B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */; };
 		BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */; };
 		BE9C7C92276CDF230089247F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C91276CDF230089247F /* User.swift */; };
+		BE9C7C9A276E3F480089247F /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C99276E3F480089247F /* LoginResponse.swift */; };
+		BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */; };
 		BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834AD275123FD00D6EC95 /* Endpoint.swift */; };
 		BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B427513B7700D6EC95 /* NetworkService.swift */; };
 		BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFFAA6276B126D009CBF25 /* Post.swift */; };
@@ -79,6 +81,8 @@
 		B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabViewController.swift; sourceTree = "<group>"; };
 		BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
 		BE9C7C91276CDF230089247F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		BE9C7C99276E3F480089247F /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
+		BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+QueryParameters.swift"; sourceTree = "<group>"; };
 		BEA834AD275123FD00D6EC95 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BEA834B427513B7700D6EC95 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		BEFFFAA6276B126D009CBF25 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 		B897A8FC274E303600FB67D3 /* Facebook */ = {
 			isa = PBXGroup;
 			children = (
+				BE9C7C9B276E41190089247F /* Extensions */,
 				BEFFFAAE276B1DE6009CBF25 /* ViewModel */,
 				BEFFFAA5276B125E009CBF25 /* Model */,
 				BEA834AC275123A300D6EC95 /* Network */,
@@ -183,8 +188,17 @@
 			isa = PBXGroup;
 			children = (
 				BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */,
+				BE9C7C99276E3F480089247F /* LoginResponse.swift */,
 			);
 			path = Responses;
+			sourceTree = "<group>";
+		};
+		BE9C7C9B276E41190089247F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		BEA834AC275123A300D6EC95 /* Network */ = {
@@ -356,8 +370,10 @@
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */,
 				BE9C7C92276CDF230089247F /* User.swift in Sources */,
+				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				774094442750EBF600AD8DC2 /* ShowProfileTableViewCell.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
+				BE9C7C9A276E3F480089247F /* LoginResponse.swift in Sources */,
 				777993212750CD41007A3898 /* CreatePostTableViewCell.swift in Sources */,
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
 				7740943E2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift in Sources */,

@@ -9,7 +9,7 @@ import Foundation
 
 struct Post: Codable {
     let id: Int?
-    let author: Int
+//    let author: Int
     let content: String
     let likes: Int
     let posted_at: String?

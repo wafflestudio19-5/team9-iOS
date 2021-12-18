@@ -12,6 +12,7 @@ struct Endpoint {
     var path: String
     var queryItems: [URLQueryItem] = []
     var page: Int?  // special case로 처리
+    var cursor: String?  // special case로 처리
     var parameters: Parameters?  // request body (data)
     
     var url: URL {
@@ -23,13 +24,16 @@ struct Endpoint {
         if let page = page {
             components.queryItems?.append(URLQueryItem(name: "page", value: String(page)))
         }
+        if let cursor = cursor {
+            components.queryItems?.append(URLQueryItem(name: "cursor", value: cursor))
+        }
         
         // for development
-        components.host = "localhost"
-        components.port = 8000
+//        components.host = "localhost"
+//        components.port = 8000
         
         // for production
-//        components.host = "ec2-3-34-188-255.ap-northeast-2.compute.amazonaws.com"
+        components.host = "ec2-3-34-188-255.ap-northeast-2.compute.amazonaws.com"
         
         guard let url = components.url else {
             preconditionFailure(
@@ -44,6 +48,11 @@ struct Endpoint {
 extension Endpoint {
     mutating func withPage(page: Int) -> Self {
         self.page = page
+        return self
+    }
+    
+    mutating func withCursor(cursor: String?) -> Self {
+        self.cursor = cursor
         return self
     }
 }
