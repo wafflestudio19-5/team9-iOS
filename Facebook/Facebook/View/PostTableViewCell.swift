@@ -14,15 +14,16 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var contentImage: UIImageView!
     @IBOutlet weak var likeLabel: UILabel!
-    @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var commentLabel: UILabel!
-    @IBOutlet weak var commentButton: UIButton!
     
+    
+    
+    @IBOutlet weak var likeButton: LikeButton!
+    @IBOutlet weak var commentButton: CommentButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        setButtonStyle()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -34,12 +35,5 @@ class PostTableViewCell: UITableViewCell {
     func configureLabels(with post: Post) {
         contentLabel.text = post.content
         likeLabel.text = String(post.likes)
-    }
-    
-    func setButtonStyle() {
-        let likeImageConfig = UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold)
-        likeButton.setImage(UIImage(systemName: "hand.thumbsup", withConfiguration: likeImageConfig), for: .normal)
-        likeButton.titleLabel?.text = "싫어요"
-        likeButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
     }
 }

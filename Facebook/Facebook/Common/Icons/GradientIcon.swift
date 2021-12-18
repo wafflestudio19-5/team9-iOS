@@ -9,8 +9,12 @@ import SwiftUI
 
 class GradientIcon: UIView {
     
-    private var iconSize: CGFloat {
+    private lazy var iconSize: CGFloat = {
         return self.frame.size.width
+    }()
+    
+    convenience init(width: CGFloat) {
+        self.init(frame: CGRect(x: 0, y: 0, width: width, height: width))
     }
     
     override init(frame: CGRect) {

@@ -36,7 +36,8 @@
 		B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A925274E61D800FB67D3 /* NotificationTabView.swift */; };
 		B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */; };
 		BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */; };
-		BE9C7C90276C71DB0089247F /* InteractionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C8F276C71DB0089247F /* InteractionButton.swift */; };
+		BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */; };
+		BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C95276DB3C30089247F /* PostCell.swift */; };
 		BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834AD275123FD00D6EC95 /* Endpoint.swift */; };
 		BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B427513B7700D6EC95 /* NetworkService.swift */; };
 		BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBDA766276C296F0004FFD7 /* GradientIcon.swift */; };
@@ -79,7 +80,8 @@
 		B897A925274E61D800FB67D3 /* NotificationTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTabView.swift; sourceTree = "<group>"; };
 		B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabViewController.swift; sourceTree = "<group>"; };
 		BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
-		BE9C7C8F276C71DB0089247F /* InteractionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionButton.swift; sourceTree = "<group>"; };
+		BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionButtons.swift; sourceTree = "<group>"; };
+		BE9C7C95276DB3C30089247F /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		BEA834AD275123FD00D6EC95 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BEA834B427513B7700D6EC95 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		BEBDA766276C296F0004FFD7 /* GradientIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientIcon.swift; sourceTree = "<group>"; };
@@ -193,7 +195,8 @@
 		BE9C7C8E276C71C50089247F /* PostCell */ = {
 			isa = PBXGroup;
 			children = (
-				BE9C7C8F276C71DB0089247F /* InteractionButton.swift */,
+				BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */,
+				BE9C7C95276DB3C30089247F /* PostCell.swift */,
 			);
 			path = PostCell;
 			sourceTree = "<group>";
@@ -383,7 +386,8 @@
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */,
 				774094442750EBF600AD8DC2 /* ShowProfileTableViewCell.swift in Sources */,
-				BE9C7C90276C71DB0089247F /* InteractionButton.swift in Sources */,
+				BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */,
+				BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				777993212750CD41007A3898 /* CreatePostTableViewCell.swift in Sources */,
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
