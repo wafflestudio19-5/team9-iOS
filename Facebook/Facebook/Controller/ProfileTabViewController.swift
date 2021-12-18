@@ -35,25 +35,27 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView> {
                 cell.delegate = self
                 return cell
             }else if (row >= 1 && row <= 5){
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: IndexPath.init(row: row-1, section: 1))
+                let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: IndexPath.init(row: row - 1, section: 1))
                 return cell
             }else if row == 6 {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "ShowProfileCell", for: IndexPath.init(row: row-1, section: 1)) as? ShowProfileTableViewCell else { return UITableViewCell() }
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "ShowProfileCell", for: IndexPath.init(row: row - 1, section: 1)) as? ShowProfileTableViewCell else { return UITableViewCell() }
                 
                 cell.delegate = self
                 return cell
             }else if row == 7{
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: IndexPath.init(row: row-1, section: 1)) as? EditProfileTableViewCell else { return UITableViewCell() }
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: IndexPath.init(row: row - 1, section: 1)) as? EditProfileTableViewCell else { return UITableViewCell() }
                 
                 cell.delegate = self
                 return cell
             }else if row == 8{
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CreatePostCell", for: IndexPath.init(row: row-8, section: 2)) as? CreatePostTableViewCell else { return UITableViewCell() }
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CreatePostCell", for: IndexPath.init(row: row - 8, section: 2)) as? CreatePostTableViewCell else { return UITableViewCell() }
                 
                 cell.delegate = self
                 return cell
             }else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: IndexPath.init(row: row-9, section: 3))
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: IndexPath.init(row: row - 9, section: 3)) as? PostTableViewCell else { return UITableViewCell() }
+                
+                cell.delegate = self
                 return cell
             }
         }.disposed(by: disposeBag)
@@ -82,6 +84,14 @@ extension ProfileTabViewController: CreatePostTableViewCellDelegate {
         createPostViewController.view.backgroundColor = .white
         
         self.navigationController?.pushViewController(createPostViewController, animated: true)
+    }
+}
+
+extension ProfileTabViewController: PostTableViewCellDelegate {
+    func goPostView() {
+        let postViewController = PostViewController()
+        
+        self.navigationController?.pushViewController(postViewController, animated: true)
     }
 }
 

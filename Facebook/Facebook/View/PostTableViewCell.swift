@@ -6,6 +6,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxGesture
+
+protocol PostTableViewCellDelegate: AnyObject {
+    func goPostView()
+}
 
 class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var writerImage: UIImageView!
@@ -18,15 +24,25 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var commentLabel: UILabel!
     @IBOutlet weak var commentButton: UIButton!
     
+    let disposeBag = DisposeBag()
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        bindCellTapGesture()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    weak var delegate: PostTableViewCellDelegate?
+    
+    private func bindCellTapGesture() {
+        self.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+            self?.delegate?.goPostView()
+        }).disposed(by: disposeBag)
     }
 }

@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class PostViewController<View: PostView>: UIViewController {
     
@@ -13,6 +15,10 @@ class PostViewController<View: PostView>: UIViewController {
     let writerImage = UIImageView()
     let writeLabel = UILabel()
     let timeLabel = UILabel()
+    
+    let disposeBag = DisposeBag()
+    
+    let dummyObservable = Observable.just(1...10)
     
     override func loadView() {
         view = View()
@@ -23,11 +29,17 @@ class PostViewController<View: PostView>: UIViewController {
         return view
     }
     
+    var tableView: UITableView {
+        postView.postTableView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setStyleForNavigationBar()
         setLayoutForNavigationBar()
+        
+        bindTableView()
     }
 
     //Post의 writer프로필 이미지와 이름, 작성 시간에 대한 정보를 navigationBar에 추가
@@ -66,6 +78,20 @@ class PostViewController<View: PostView>: UIViewController {
         ])
         
         navigationItem.titleView = titleView
+    }
+    
+    func bindTableView(){
+        dummyObservable.bind(to: tableView.rx.items) { (tableView, row, item) -> UITableViewCell in
+            if row == 0 {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostContentCell", for: IndexPath.init(row: row, section: 0)) as? PostContentTableViewCell else { return UITableViewCell() }
+                
+                return cell
+            } else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CommentCell", for: IndexPath.init(row: row - 1, section: 1)) as? CommentTableViewCell else { return UITableViewCell() }
+                
+                return cell
+            }
+        }.disposed(by: disposeBag)
     }
 }
 
