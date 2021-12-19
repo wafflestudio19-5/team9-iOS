@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EnterBirthdateView: UIView {
+class EnterBirthdateView: BaseSignUpView {
 
     let birthDatePicker = UIDatePicker()
     
@@ -17,19 +17,13 @@ class EnterBirthdateView: UIView {
     
     let birthDateTextField = FacebookTextField(placeholderText: "생년월일")
     
-    private let verticalStackWithAlertLabel = UIStackView()
-    
-    let alertLabel = LabelWithPadding(padding: UIEdgeInsets(top: 10.0, left: 7.0, bottom: 10.0, right: 7.0))
     let ageLabel = UILabel()
-    
-    let baseSignUpView = BaseSignUpView(title: "생일을 알려주세요", instruction: "생년월일을 선택하세요. 나중에 언제든지 비공개로 변경할 수 있습니다.")
-    
+
     let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: FacebookColor.blue.color())
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init() {
+        super.init(title: "생일을 알려주세요", instruction: "생년월일을 선택하세요. 나중에 언제든지 비공개로 변경할 수 있습니다.")
         
-        self.backgroundColor = .white
         setStyleForView()
         setLimitForBirthdatePicker()
         addButtonToBirthdatePicker()
@@ -45,13 +39,8 @@ class EnterBirthdateView: UIView {
     }
     
     func setAlertLabelText(as text: String) {
-        if text != "" {
-            verticalStackWithAlertLabel.addArrangedSubview(alertLabel)
-            alertLabel.text = text
-            return
-        }
-        verticalStackWithAlertLabel.removeArrangedSubview(alertLabel)
-        alertLabel.removeFromSuperview()
+        if !text.isEmpty { showAlertLabel(as: text) }
+        else { hideAlertLabel() }
     }
     
     private func setStyleForView() {
@@ -63,14 +52,6 @@ class EnterBirthdateView: UIView {
 
         birthDateTextField.inputView = birthDatePicker
         birthDateTextField.textColor = FacebookColor.blue.color()
-        
-        verticalStackWithAlertLabel.axis = .vertical
-        verticalStackWithAlertLabel.contentMode = .center
-        verticalStackWithAlertLabel.spacing = 14.0
-        
-        alertLabel.font = .systemFont(ofSize: 12.0)
-        alertLabel.textColor = .white
-        alertLabel.backgroundColor = .red
         
         ageLabel.font = .systemFont(ofSize: 14.0)
         ageLabel.textAlignment = .center
@@ -95,28 +76,14 @@ class EnterBirthdateView: UIView {
     
     private func setLayoutForView() {
 
-        self.addSubview(baseSignUpView)
-        self.addSubview(verticalStackWithAlertLabel)
+        self.addCustomView(view: birthDateTextField)
         self.addSubview(ageLabel)
         self.addSubview(nextButton)
         
-        verticalStackWithAlertLabel.addArrangedSubview(birthDateTextField)
-        
-        baseSignUpView.translatesAutoresizingMaskIntoConstraints = false
-        verticalStackWithAlertLabel.translatesAutoresizingMaskIntoConstraints = false
         ageLabel.translatesAutoresizingMaskIntoConstraints = false
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            
-            baseSignUpView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            baseSignUpView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            baseSignUpView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            
-            verticalStackWithAlertLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 18.0),
-            verticalStackWithAlertLabel.topAnchor.constraint(equalTo: baseSignUpView.bottomAnchor, constant: 24.0),
-            verticalStackWithAlertLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18.0),
-            
             ageLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 18.0),
             ageLabel.topAnchor.constraint(equalTo: verticalStackWithAlertLabel.bottomAnchor, constant: 14.0),
             ageLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18.0),
