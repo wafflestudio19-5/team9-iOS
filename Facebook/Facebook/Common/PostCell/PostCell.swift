@@ -33,8 +33,6 @@ class PostCell: UITableViewCell {
     
     // MARK: Setup
     
-    // MARK: Dummy Fields
-    
     private func initialSetup() {
         let commentLabel = commentCountLabel
         commentLabel.text = "43개"
@@ -81,6 +79,13 @@ class PostCell: UITableViewCell {
             postDateLabel.topAnchor.constraint(equalTo: authorNameLabel.bottomAnchor),
         ])
         
+        contentView.addSubview(textContentLabel)
+        NSLayoutConstraint.activate([
+            textContentLabel.topAnchor.constraint(equalTo: postHeader.bottomAnchor, constant: 10),
+            textContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+        ])
+        
         contentView.addSubview(statHorizontalStackView)
         NSLayoutConstraint.activate([
             statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
@@ -119,7 +124,7 @@ class PostCell: UITableViewCell {
     let commentButton: UIButton = CommentButton()
     let shareButton: UIButton = ShareButton()
     
-    // Profile Image
+    // Profile Image가 표시되는 뷰 (현재는 아이콘으로 구현)
     private lazy var profileImageView: UIImageView = {
         let config = UIImage.SymbolConfiguration(hierarchicalColor: .systemFill)
         let image = UIImage(systemName: "person.crop.circle.fill", withConfiguration: config)
@@ -129,6 +134,7 @@ class PostCell: UITableViewCell {
         return imageView
     }()
     
+    // 작성자 이름 라벨
     private lazy var authorNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -137,6 +143,7 @@ class PostCell: UITableViewCell {
         return label
     }()
     
+    // 작성 시간 라벨
     private lazy var postDateLabel: UILabel = {
         let label = createStatLabel()
         return label
@@ -196,19 +203,13 @@ class PostCell: UITableViewCell {
         return divider
     }()
     
+    // 본문 텍스트 라벨
     private lazy var textContentLabel: UILabel = {
         let textContentLabel = UILabel()
-        textContentLabel.text = "테스트 테스트 테스트 이에요. 테스트 테스트 테스트이에요.테스트 테스트 테스트 이에요.테스트 테스트 테스트 이에요.테스트 테스트 테스트 이에요.테스트 테스트 테스트 이에요."
         textContentLabel.textColor = .black
         textContentLabel.numberOfLines = 3
         textContentLabel.font = .systemFont(ofSize: 16)
-        contentView.addSubview(textContentLabel)
         textContentLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            textContentLabel.topAnchor.constraint(equalTo: postHeader.bottomAnchor, constant: 10),
-            textContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-        ])
         return textContentLabel
     }()
     
@@ -217,6 +218,7 @@ class PostCell: UITableViewCell {
         return createHorizontalDivider()
     }()
     
+    // 피드와 피드 사이의 회색 리바이더
     private lazy var divider: UIView = {
         let divider = UIView()
         divider.backgroundColor = UIColor(red: 211/255.0, green: 214/255.0, blue: 216/255.0, alpha: 1)
