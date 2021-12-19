@@ -14,15 +14,16 @@ class PostTableViewCell: UITableViewCell {
     @IBOutlet weak var contentLabel: UILabel!
     @IBOutlet weak var contentImage: UIImageView!
     @IBOutlet weak var likeLabel: UILabel!
-    @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var commentLabel: UILabel!
-    @IBOutlet weak var commentButton: UIButton!
     
+    
+    
+    @IBOutlet weak var likeButton: LikeButton!
+    @IBOutlet weak var commentButton: CommentButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        contentLabel.text = "테스트입니다."
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
