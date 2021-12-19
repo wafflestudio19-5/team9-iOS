@@ -7,6 +7,7 @@
 
 import RxSwift
 import RxGesture
+import RxCocoa
 import RxKeyboard
 
 class LoginViewController<View: LoginView>: UIViewController {
@@ -21,6 +22,9 @@ class LoginViewController<View: LoginView>: UIViewController {
         guard let view = view as? View else { return View() }
         return view
     }
+    
+    private let id = BehaviorRelay<String>(value: "")
+    private let password = BehaviorRelay<String>(value: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,19 +52,20 @@ class LoginViewController<View: LoginView>: UIViewController {
         }.disposed(by: disposeBag)
         
         loginView.createAccountButton.rx.tap.bind { [weak self] _ in
-            // navigate to createAccountView
-            print("createAccountButton tapped")
             guard let self = self else { return }
             self.push(viewController: EnterUsernameViewController())
         }.disposed(by: disposeBag)
 
+        loginView.idTextField.rx.text.orEmpty
+            .bind(to: id)
+            .disposed(by: disposeBag)
         
-        // textfield가 비어있지 않은가?에 대한 Bool형 event 방출
-        let hasEnteredId = loginView.idTextField.rx.text.orEmpty.map { !$0.isEmpty }
-        let hasEnteredPassword = loginView.passwordTextField.rx.text.orEmpty.map { !$0.isEmpty }
+        loginView.passwordTextField.rx.text.orEmpty
+            .bind(to: password)
+            .disposed(by: disposeBag)
         
         // 두 개의 textfield가 모두 비어있지 않은가?에 대한 event 방출
-        let hasEnteredBoth = Observable.combineLatest(hasEnteredId, hasEnteredPassword, resultSelector: { ($0 && $1) })
+        let hasEnteredBoth = Observable.combineLatest(id, password, resultSelector: { (!$0.isEmpty && !$1.isEmpty) })
         
         // 두 개의 textfield가 비어있지 않을 경우에 loginButton 활성화
         hasEnteredBoth
@@ -72,9 +77,7 @@ class LoginViewController<View: LoginView>: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
-                self.loginView.loginButton.changeLabelTextColor(to: {
-                    return result ? UIColor.white : UIColor.systemGray3
-                }())
+                self.loginView.loginButton.changeLabelTextColor(to: result ? .white : .systemGray3)
             }).disposed(by: disposeBag)
 
         // Keyboard의 높이에 따라 "새 계정 만들기" 버튼 위치 조정
@@ -87,29 +90,23 @@ class LoginViewController<View: LoginView>: UIViewController {
                     bottomConstraint.constant = -16.0
                 } else {
                     let height = keyboardVisibleHeight - self.view.safeAreaInsets.bottom
-                    print(height)
                     bottomConstraint.constant = -height - 16.0
                 }
                 self.loginView.layoutIfNeeded()
-            })
-            .disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
         
         // view의 아무 곳이나 누르면 textfield 입력 상태 종료
         view.rx.tapGesture(configuration: { _, delegate in
             delegate.touchReceptionPolicy = .custom { _, shouldReceive in
                 return !(shouldReceive.view is UIControl)
             }
-        })
-            .asObservable()
-            .subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                if self.loginView.idTextField.isEditing {
-                    self.loginView.idTextField.endEditing(true)
-                    
-                } else if self.loginView.passwordTextField.isEditing {
-                    self.loginView.passwordTextField.endEditing(true)
-                }
-            })
-            .disposed(by: disposeBag)
+        }).bind { [weak self] _ in
+            guard let self = self else { return }
+            if self.loginView.idTextField.isEditing {
+                self.loginView.idTextField.endEditing(true)
+            } else if self.loginView.passwordTextField.isEditing {
+                self.loginView.passwordTextField.endEditing(true)
+            }
+        }.disposed(by: disposeBag)
     }
 }
