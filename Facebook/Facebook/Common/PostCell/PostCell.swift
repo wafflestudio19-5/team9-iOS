@@ -121,7 +121,8 @@ class PostCell: UITableViewCell {
     
     // Profile Image
     private lazy var profileImageView: UIImageView = {
-        let image = UIImage(systemName: "person.crop.circle")
+        let config = UIImage.SymbolConfiguration(hierarchicalColor: .systemFill)
+        let image = UIImage(systemName: "person.crop.circle.fill", withConfiguration: config)
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
