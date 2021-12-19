@@ -10,6 +10,8 @@ import SwiftUI
 
 class PostCell: UITableViewCell {
     
+    static let reuseIdentifier = "PostCell"
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setLayout()
