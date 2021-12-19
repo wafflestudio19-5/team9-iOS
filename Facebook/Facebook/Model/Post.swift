@@ -13,5 +13,5 @@ struct Post: Codable {
     let content: String
     let likes: Int
     let posted_at: String?
-    let images: [String]?
+//    let images: [String]?
 }

@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class LikeButton: UIButton {
+class InteractionButton: UIButton {
     
     /*
      // Only override draw() if you perform custom drawing.
@@ -18,8 +18,8 @@ class LikeButton: UIButton {
      }
      */
     
-    var symbolName: String { "hand.thumbsup" }
-    var textLabel: String { "좋아요" }
+    var symbolName: String { fatalError("Property symbolName is required.") }
+    var textLabel: String { fatalError("Property textLabel is required.") }
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -32,25 +32,30 @@ class LikeButton: UIButton {
     }
     
     func setButtonStyle() {
-        let iconConfig = UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold)
-        
         var container = AttributeContainer()
         container.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        
         var configuration = UIButton.Configuration.plain()
         configuration.baseForegroundColor = .darkGray
-        configuration.image = UIImage(systemName: symbolName, withConfiguration: iconConfig)?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
+        configuration.image = UIImage(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
         configuration.imagePadding = 5
         configuration.attributedTitle = AttributedString(textLabel, attributes: container)
+        
         self.configuration = configuration
     }
 }
 
-class CommentButton: LikeButton {
+class LikeButton: InteractionButton {
+    override var textLabel: String { "좋아요" }
+    override var symbolName: String { "hand.thumbsup" }
+}
+
+class CommentButton: InteractionButton {
     override var textLabel: String { "댓글 달기" }
     override var symbolName: String { "bubble.right" }
 }
 
-class ShareButton: LikeButton {
+class ShareButton: InteractionButton {
     override var textLabel: String { "공유하기" }
     override var symbolName: String { "arrowshape.turn.up.forward" }
 }
