@@ -9,7 +9,7 @@ import UIKit
 
 class GenderTableViewCell: UITableViewCell {
 
-    static let genderTableViewCellID = "genderTableViewCell"
+    static let reuseIdentifier = "genderTableViewCell"
     
     private let titleLabel = UILabel()
     private let selectedImage = UIImage(systemName: "circle.fill")
@@ -32,6 +32,10 @@ class GenderTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setLabelTextColor(as color: UIColor) {
+        titleLabel.textColor = color
     }
 
     func setLabelText(as text: String) {

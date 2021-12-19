@@ -15,6 +15,9 @@ class SelectGenderView: UIView {
     
     let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: FacebookColor.blue.color())
     
+    let alertLabel = LabelWithPadding(padding: UIEdgeInsets(top: 10.0, left: 7.0, bottom: 10.0, right: 7.0))
+    private let verticalStackWithAlertLabel = UIStackView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -26,20 +29,40 @@ class SelectGenderView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func setAlertLabelText(as text: String) {
+        if text != "" {
+            verticalStackWithAlertLabel.insertArrangedSubview(alertLabel, at: 0)
+            alertLabel.text = text
+            return
+        }
+        verticalStackWithAlertLabel.removeArrangedSubview(alertLabel)
+        alertLabel.removeFromSuperview()
+    }
 
     private func setStyleForView() {
         genderTableView.separatorStyle = .none
         genderTableView.isScrollEnabled = false
+        
+        verticalStackWithAlertLabel.axis = .vertical
+        verticalStackWithAlertLabel.contentMode = .center
+        verticalStackWithAlertLabel.spacing = 14.0
+        
+        alertLabel.font = .systemFont(ofSize: 12.0)
+        alertLabel.textColor = .white
+        alertLabel.backgroundColor = .red
     }
     
     private func setLayoutForView() {
 
         self.addSubview(baseSignUpView)
-        self.addSubview(genderTableView)
+        self.addSubview(verticalStackWithAlertLabel)
         self.addSubview(nextButton)
         
+        verticalStackWithAlertLabel.addArrangedSubview(genderTableView)
+        
         baseSignUpView.translatesAutoresizingMaskIntoConstraints = false
-        genderTableView.translatesAutoresizingMaskIntoConstraints = false
+        verticalStackWithAlertLabel.translatesAutoresizingMaskIntoConstraints = false
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -48,11 +71,11 @@ class SelectGenderView: UIView {
             baseSignUpView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             baseSignUpView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             
-            genderTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 18.0),
-            genderTableView.topAnchor.constraint(equalTo: baseSignUpView.bottomAnchor, constant: 24.0),
-            genderTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18.0),
+            verticalStackWithAlertLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 18.0),
+            verticalStackWithAlertLabel.topAnchor.constraint(equalTo: baseSignUpView.bottomAnchor, constant: 24.0),
+            verticalStackWithAlertLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -18.0),
             
-            nextButton.topAnchor.constraint(equalTo: genderTableView.bottomAnchor, constant: 16.0),
+            nextButton.topAnchor.constraint(equalTo: verticalStackWithAlertLabel.bottomAnchor, constant: 16.0),
             nextButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 72.0),
             nextButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -72.0),
         ])
