@@ -36,13 +36,14 @@
 		B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A925274E61D800FB67D3 /* NotificationTabView.swift */; };
 		B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */; };
 		BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */; };
-		BE9C7C92276CDF230089247F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C91276CDF230089247F /* User.swift */; };
+		BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C91276CDF230089247F /* Endpoint+User.swift */; };
 		BE9C7C9A276E3F480089247F /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C99276E3F480089247F /* LoginResponse.swift */; };
 		BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */; };
+		BE9C7C9F276EC6EC0089247F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9E276EC6EC0089247F /* User.swift */; };
 		BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834AD275123FD00D6EC95 /* Endpoint.swift */; };
 		BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B427513B7700D6EC95 /* NetworkService.swift */; };
 		BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFFAA6276B126D009CBF25 /* Post.swift */; };
-		BEFFFAAD276B1BA2009CBF25 /* Newsfeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFFAAC276B1BA2009CBF25 /* Newsfeed.swift */; };
+		BEFFFAAD276B1BA2009CBF25 /* Endpoint+Newsfeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */; };
 		BEFFFAB0276B1E08009CBF25 /* PaginationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFFAAF276B1E08009CBF25 /* PaginationViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -80,13 +81,14 @@
 		B897A925274E61D800FB67D3 /* NotificationTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTabView.swift; sourceTree = "<group>"; };
 		B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabViewController.swift; sourceTree = "<group>"; };
 		BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
-		BE9C7C91276CDF230089247F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		BE9C7C91276CDF230089247F /* Endpoint+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+User.swift"; sourceTree = "<group>"; };
 		BE9C7C99276E3F480089247F /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+QueryParameters.swift"; sourceTree = "<group>"; };
+		BE9C7C9E276EC6EC0089247F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		BEA834AD275123FD00D6EC95 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BEA834B427513B7700D6EC95 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		BEFFFAA6276B126D009CBF25 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
-		BEFFFAAC276B1BA2009CBF25 /* Newsfeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Newsfeed.swift; sourceTree = "<group>"; };
+		BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Newsfeed.swift"; sourceTree = "<group>"; };
 		BEFFFAAF276B1E08009CBF25 /* PaginationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -216,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				BEFFFAA6276B126D009CBF25 /* Post.swift */,
+				BE9C7C9E276EC6EC0089247F /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -223,8 +226,8 @@
 		BEFFFAAB276B1B8E009CBF25 /* Endpoints */ = {
 			isa = PBXGroup;
 			children = (
-				BEFFFAAC276B1BA2009CBF25 /* Newsfeed.swift */,
-				BE9C7C91276CDF230089247F /* User.swift */,
+				BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */,
+				BE9C7C91276CDF230089247F /* Endpoint+User.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -369,7 +372,7 @@
 				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */,
-				BE9C7C92276CDF230089247F /* User.swift in Sources */,
+				BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */,
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				774094442750EBF600AD8DC2 /* ShowProfileTableViewCell.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
@@ -386,9 +389,10 @@
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
+				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
 				BEFFFAB0276B1E08009CBF25 /* PaginationViewModel.swift in Sources */,
-				BEFFFAAD276B1BA2009CBF25 /* Newsfeed.swift in Sources */,
+				BEFFFAAD276B1BA2009CBF25 /* Endpoint+Newsfeed.swift in Sources */,
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
