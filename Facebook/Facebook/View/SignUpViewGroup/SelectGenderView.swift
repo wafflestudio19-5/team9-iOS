@@ -2,7 +2,7 @@
 //  SelectGenderView.swift
 //  Facebook
 //
-//  Created by peng on 2021/12/09.
+//  Created by 최유림 on 2021/12/09.
 //
 
 import UIKit
