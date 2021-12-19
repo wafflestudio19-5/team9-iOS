@@ -13,7 +13,7 @@ class PostCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setLayout()
-        setup()
+        initialSetup()
     }
 
     required init?(coder: NSCoder) {
@@ -33,11 +33,21 @@ class PostCell: UITableViewCell {
     
     // MARK: Setup
     
-    private func setup() {
+    // MARK: Dummy Fields
+    
+    private func initialSetup() {
         let commentLabel = commentCountLabel
         commentLabel.text = "43개"
         let likeLabel = likeCountLabel
         likeLabel.text = "4,234개"
+    }
+    
+    func configureCell(with post: Post) {
+        commentCountLabel.text = "댓글 \(Int.random(in: 10...100).withCommas(unit: "개"))"
+        likeCountLabel.text = post.likes.withCommas(unit: "개")
+        authorNameLabel.text = post.author.username
+        postDateLabel.text = post.posted_at
+        textContentLabel.text = post.content
     }
     
     // MARK: AutoLayout Constraints
@@ -47,7 +57,7 @@ class PostCell: UITableViewCell {
         NSLayoutConstraint.activate([
             postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
             postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            postHeader.topAnchor.constraint(equalTo: contentView.topAnchor),
+            postHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             postHeader.heightAnchor.constraint(equalToConstant: 50),
         ])
         
@@ -88,26 +98,20 @@ class PostCell: UITableViewCell {
         
         contentView.addSubview(buttonHorizontalStackView)
         NSLayoutConstraint.activate([
-            buttonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-            buttonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+            buttonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            buttonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
             buttonHorizontalStackView.topAnchor.constraint(equalTo: topBorder.bottomAnchor, constant: 5)
         ])
         
         contentView.addSubview(divider)
         NSLayoutConstraint.activate([
             divider.topAnchor.constraint(equalTo: buttonHorizontalStackView.bottomAnchor, constant: 5),
+            divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             divider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             divider.heightAnchor.constraint(equalToConstant: 5),
         ])
     }
-    
-    // MARK: Dummy Fields
-    
-    let likeCount: Int = 3482
-    let commentCount: Int = 392
-    let authorName: String = "Shinhong Park"
-    let postedAt: String = "1 days"
     
     // MARK: Initialize View Components
     
@@ -126,7 +130,6 @@ class PostCell: UITableViewCell {
     
     private lazy var authorNameLabel: UILabel = {
         let label = UILabel()
-        label.text = authorName
         label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 16, weight: .medium)
@@ -135,7 +138,6 @@ class PostCell: UITableViewCell {
     
     private lazy var postDateLabel: UILabel = {
         let label = createStatLabel()
-        label.text = postedAt
         return label
     }()
     

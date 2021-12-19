@@ -36,7 +36,7 @@ class NewsfeedTabView: UIView {
     
     private func configureTableView() {
         newsfeedTableView.tableHeaderView = UIView()  // removes the separator at the top
-        newsfeedTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "PostCell")
+        newsfeedTableView.register(PostCell.self, forCellReuseIdentifier: "PostCell")
         newsfeedTableView.allowsSelection = false
         newsfeedTableView.refreshControl = refreshControl
     }

@@ -48,7 +48,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LHr-8M-gJK" customClass="LikeButton" customModule="Facebook" customModuleProvider="target">
-                        <rect key="frame" x="15" y="392" width="59.5" height="26"/>
+                        <rect key="frame" x="15" y="392" width="64.5" height="26"/>
                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
                         <state key="normal" title="Button" image="hand.thumbsup" catalog="system">
@@ -58,7 +58,7 @@
                         </state>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0jt-rf-gUC" customClass="CommentButton" customModule="Facebook" customModuleProvider="target">
-                        <rect key="frame" x="74.5" y="398" width="78.5" height="20"/>
+                        <rect key="frame" x="79.5" y="394" width="83.5" height="24"/>
                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
                         <state key="normal" title="댓글 달기" image="bubble.left" catalog="system"/>

@@ -36,12 +36,13 @@
 		B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A925274E61D800FB67D3 /* NotificationTabView.swift */; };
 		B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */; };
 		BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */; };
+		BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */; };
 		BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C91276CDF230089247F /* Endpoint+User.swift */; };
+		BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C95276DB3C30089247F /* PostCell.swift */; };
 		BE9C7C9A276E3F480089247F /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C99276E3F480089247F /* LoginResponse.swift */; };
 		BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */; };
 		BE9C7C9F276EC6EC0089247F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9E276EC6EC0089247F /* User.swift */; };
-		BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */; };
-		BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C95276DB3C30089247F /* PostCell.swift */; };
+		BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7CA0276ECA1F0089247F /* Int+Formatter.swift */; };
 		BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834AD275123FD00D6EC95 /* Endpoint.swift */; };
 		BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B427513B7700D6EC95 /* NetworkService.swift */; };
 		BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBDA766276C296F0004FFD7 /* GradientIcon.swift */; };
@@ -84,12 +85,13 @@
 		B897A925274E61D800FB67D3 /* NotificationTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTabView.swift; sourceTree = "<group>"; };
 		B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTabViewController.swift; sourceTree = "<group>"; };
 		BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
+		BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionButtons.swift; sourceTree = "<group>"; };
 		BE9C7C91276CDF230089247F /* Endpoint+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+User.swift"; sourceTree = "<group>"; };
+		BE9C7C95276DB3C30089247F /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		BE9C7C99276E3F480089247F /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+QueryParameters.swift"; sourceTree = "<group>"; };
 		BE9C7C9E276EC6EC0089247F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionButtons.swift; sourceTree = "<group>"; };
-		BE9C7C95276DB3C30089247F /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
+		BE9C7CA0276ECA1F0089247F /* Int+Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Formatter.swift"; sourceTree = "<group>"; };
 		BEA834AD275123FD00D6EC95 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BEA834B427513B7700D6EC95 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		BEBDA766276C296F0004FFD7 /* GradientIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientIcon.swift; sourceTree = "<group>"; };
@@ -202,23 +204,24 @@
 			path = Responses;
 			sourceTree = "<group>";
 		};
+		BE9C7C8E276C71C50089247F /* PostCell */ = {
+			isa = PBXGroup;
+			children = (
+				BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */,
+				BE9C7C95276DB3C30089247F /* PostCell.swift */,
+			);
+			path = PostCell;
+			sourceTree = "<group>";
+		};
 		BE9C7C9B276E41190089247F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
 				BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */,
+				BE9C7CA0276ECA1F0089247F /* Int+Formatter.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-        BE9C7C8E276C71C50089247F /* PostCell */ = {
-            isa = PBXGroup;
-            children = (
-                BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */,
-                BE9C7C95276DB3C30089247F /* PostCell.swift */,
-            );
-            path = PostCell;
-            sourceTree = "<group>";
-        };
 		BEA834AC275123A300D6EC95 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -426,6 +429,7 @@
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
+				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
 				BEFFFAB0276B1E08009CBF25 /* PaginationViewModel.swift in Sources */,
 				BEFFFAAD276B1BA2009CBF25 /* Endpoint+Newsfeed.swift in Sources */,

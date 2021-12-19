@@ -25,8 +25,8 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     func bind() {
         /// `viewModel.dataList`와 `tableView`의 dataSource를 바인딩합니다.
         viewModel.dataList
-            .bind(to: tableView.rx.items(cellIdentifier: "PostCell", cellType: PostTableViewCell.self)) { row, post, cell in
-                cell.configureLabels(with: post)
+            .bind(to: tableView.rx.items(cellIdentifier: "PostCell", cellType: PostCell.self)) { row, post, cell in
+                cell.configureCell(with: post)
             }
             .disposed(by: disposeBag)
         
