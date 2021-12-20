@@ -46,6 +46,9 @@ class BaseTabViewController<View: UIView>: UIViewController {
         editButton.rx.tap.bind { _ in
             print("edit button tapped")
             // editProfileViewController 띄우기
+            let editProfileViewController = EditProfileViewController()
+            
+            self.navigationController?.pushViewController(editProfileViewController, animated: true)
         }.disposed(by: disposeBag)
     }
 

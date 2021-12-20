@@ -14,6 +14,7 @@ class ProfileTabView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
+        setStyleForView()
     }
     
     required init?(coder: NSCoder) {
@@ -30,5 +31,16 @@ class ProfileTabView: UIView {
             profileTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             profileTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
         ])
+    }
+    
+    private func setStyleForView() {
+        //profileTableView.tableHeaderView = UIView()  // removes the separator at the top
+        profileTableView.register(UINib(nibName: "PostTableViewCell", bundle: nil), forCellReuseIdentifier: "PostCell")
+        profileTableView.register(UINib(nibName: "CreatePostTableViewCell", bundle: nil), forCellReuseIdentifier: "CreatePostCell")
+        profileTableView.register(UINib(nibName: "MainProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "MainProfileCell")
+        profileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
+        profileTableView.register(UINib(nibName: "ShowProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "ShowProfileCell")
+        profileTableView.register(UINib(nibName: "EditProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "EditProfileCell")
+        profileTableView.allowsSelection = false
     }
 }
