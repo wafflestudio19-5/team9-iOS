@@ -12,5 +12,6 @@ ${BUILT_PRODUCTS_DIR}/RxGesture/RxGesture.framework
 ${BUILT_PRODUCTS_DIR}/RxKakaoSDKAuth/RxKakaoSDKAuth.framework
 ${BUILT_PRODUCTS_DIR}/RxKakaoSDKCommon/RxKakaoSDKCommon.framework
 ${BUILT_PRODUCTS_DIR}/RxKakaoSDKUser/RxKakaoSDKUser.framework
+${BUILT_PRODUCTS_DIR}/RxKeyboard/RxKeyboard.framework
 ${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework
 ${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework

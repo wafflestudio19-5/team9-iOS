@@ -19,10 +19,11 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.view.backgroundColor = .white
         self.view.tintColor = .darkGray
         self.navigationItem.backButtonTitle = ""
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
         
+        setTabBarController()
+    }
+    
+    private func setTabBarController() {
         let newsfeedTabViewController = UINavigationController(rootViewController: NewsfeedTabViewController())
         let newsfeedTabViewIcon = UITabBarItem(title: "뉴스피드", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         newsfeedTabViewController.tabBarItem = newsfeedTabViewIcon
@@ -42,5 +43,4 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.viewControllers = controllers
         self.tabBar.backgroundColor = UIColor.white
     }
-
 }

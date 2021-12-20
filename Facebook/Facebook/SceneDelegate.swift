@@ -11,14 +11,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    // 로그인 여부를 확인하는 변수
+    private var didLogin: Bool {
+        guard let didLogin = UserDefaults.standard.value(forKey: "didLogin") as? Bool else {
+            print("\n로그인 정보가 없습니다!\n")
+            return false
+        }
+        if didLogin {
+            print("\n로그인 정보가 있습니다!\n")
+            return true
+        } else { return false }
+    }
+    
+    func changeRootViewController(_ viewController: UIViewController, animated: Bool = true) {
+        guard let window = self.window else {
+            return
+        }
 
+        window.rootViewController = viewController
+    }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = RootTabBarController()
+        
+        window.rootViewController = {
+            if didLogin { return RootTabBarController() }
+            else { return UINavigationController(rootViewController: LoginViewController()) }
+        }()
+        
         window.makeKeyAndVisible()
         self.window = window
     }
