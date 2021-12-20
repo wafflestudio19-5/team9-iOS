@@ -38,12 +38,9 @@ class BaseTabViewController<View: UIView>: UIViewController {
     }
     
     private func bindNavigationBarItems() {
-        searchButton.rx.tap.bind { _ in
-            print("search button tapped")
+        searchButton.rx.tap.bind { [weak self] _ in
             // searchViewController 띄우기
-            let searchViewController = SearchViewController()
-            
-            self.navigationController?.pushViewController(searchViewController, animated: true)
+            self?.push(viewController: SearchViewController())
         }.disposed(by: disposeBag)
         
         editButton.rx.tap.bind { _ in

@@ -12,6 +12,7 @@ target 'Facebook' do
   pod 'RxCocoa'
   pod 'RxGesture'
   pod 'RxDataSources'
+  pod 'RxKeyboard'
 
   # Kakao
   pod 'RxKakaoSDKCommon'

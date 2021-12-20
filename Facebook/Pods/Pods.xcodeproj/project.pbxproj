@@ -202,6 +202,8 @@
 		529BDA5E8CE104C4B384017447D0DC60 /* _RXObjCRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = 686E367A65F700CB4874A44F45FBCF64 /* _RXObjCRuntime.m */; };
 		52BE6F747C26DF2A24532458E55DC10F /* HTTPHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F0145B25EA383E325C519375400FD11 /* HTTPHeaders.swift */; };
 		52F542350FE2FC30315734FE3B069BC7 /* Pods-Facebook-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEDE730876ABF63EA0FE674E5F0C74A7 /* Pods-Facebook-dummy.m */; };
+		536B0C4E14A1F494386C5EA18CFC906E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE16F15DDF6B4A132FB65F10EA8AC5BF /* Foundation.framework */; };
+		53E0B37CDF91621A0D39A7CD8CCA5EC2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5B15BDA51BDC454532ED2D9A1907C74 /* UIKit.framework */; };
 		548B9145185925F281D9B1951379E6D1 /* RxTabBarControllerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351130E37D13EE1BDCB6E9A4FC942216 /* RxTabBarControllerDelegateProxy.swift */; };
 		54A2DBB2F62F239D4B7255B7E367E9E9 /* UILongPressGestureRecognizer+RxGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACE99760D963A3A862A49ECDEDFABCF8 /* UILongPressGestureRecognizer+RxGesture.swift */; };
 		56D81BE6090F052ED016CA0AC7474408 /* First.swift in Sources */ = {isa = PBXBuildFile; fileRef = 801418C6F5B325D80F0B672CBEB1052D /* First.swift */; };
@@ -261,6 +263,7 @@
 		70FEC06F54286257E1BA1ECA0C99198D /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9980711EBD1CB6494771EBD96BD03937 /* Image.swift */; };
 		71396D7E024EAE89519810C8F06461D9 /* SynchronizedUnsubscribeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3622F6AF6C2605570432C8C21650AB7E /* SynchronizedUnsubscribeType.swift */; };
 		71D5BDF4D210C1DC54AB197B1D2E9D13 /* ControlEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 919E7F919E7D52913F81621E41877DA5 /* ControlEvent.swift */; };
+		71F8FE6657A31D837311FCE8E9B02200 /* RxKeyboard-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 95D20AC6765794F217B4A14A4170D826 /* RxKeyboard-dummy.m */; };
 		721C83B19F8AB0D5BCCF1954A6C4CCCA /* RxKakaoSDKUser-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9693AE0D4BC528E5B187D69A9236B /* RxKakaoSDKUser-dummy.m */; };
 		759C14209969BE8BD4BBB367662C4EB1 /* UIPanGestureRecognizer+RxGesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4904967D572220E3BA1023ED32A734F1 /* UIPanGestureRecognizer+RxGesture.swift */; };
 		76008F696AA23EF30C607BE37DC3ED53 /* Zip.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31091BCCF33799E3EC981F05683FD76 /* Zip.swift */; };
@@ -302,6 +305,7 @@
 		8B194C03CFEE1CC734834FDC7B9A8601 /* SectionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E643A19F137CCB0853B67D9BE4B955 /* SectionModel.swift */; };
 		8B7686A732E13434E997809196B15955 /* UIRefreshControl+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF7845476D2A531D74837811BF7E790 /* UIRefreshControl+Rx.swift */; };
 		8B9CDBE3FFD712120CD66DD8B06C44E4 /* ParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C11ED63D20269B5A50E435AE56E9700F /* ParameterEncoder.swift */; };
+		8CA97A230D877B2B8E1AA646A0078592 /* RxKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 302CDAFEA2FBCFA71AAC727B79AF003B /* RxKeyboard.swift */; };
 		8CFF4B3155D059A2F66D9901C95D731E /* SdkCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9F3F4302C53CA04069A7AA05A65F29A /* SdkCrypto.swift */; };
 		8DB9075F30BEE41117A81E27D1EAA49A /* SerialDispatchQueueScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D11B38E49F9E35CEDF12E58DA02A61 /* SerialDispatchQueueScheduler.swift */; };
 		8DC7E7E752566D80C5A4E07DEE42878C /* Observable+Bind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 758E5F0051E093AB22D37FDB03E083A3 /* Observable+Bind.swift */; };
@@ -316,6 +320,7 @@
 		93CCAB1DAA1D9B698C471C826D61279A /* DataSources.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC3519758A15D0FC0F7C68FFB77A6C /* DataSources.swift */; };
 		941822CDF68EB8F4D49F150457A82616 /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA5F9E9534677F1FFDFE42B8CDF6278 /* ResponseSerialization.swift */; };
 		945DBBCB62542CD24B29F83FAFEF13B1 /* NSObject+Rx+KVORepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A8323FEC640687F362A64526C452AD /* NSObject+Rx+KVORepresentable.swift */; };
+		94918BE2F87C41D7DC850BE05B06B7A8 /* RxKeyboard-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7E518788F2B7DBB3B0A41B5ED0DC9360 /* RxKeyboard-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		94EE80424269D380283499E49E226DBD /* Sink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98152D958863FE6ECE97BC8CA0F05CAF /* Sink.swift */; };
 		95181366D610146E29AD34636DB9EFB7 /* Platform.Darwin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C61B1D29670CB5D5D357188B87C157D6 /* Platform.Darwin.swift */; };
 		954C6C8CFB9874942963F13CB16CE675 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6B0F267B6E8E7F557259FEDB2F2C84 /* Timer.swift */; };
@@ -624,6 +629,13 @@
 			remoteGlobalIDString = 7AD0C6DCDC9CEC8A3C7C10C7FEE07BE6;
 			remoteInfo = RxCocoa;
 		};
+		69E5303D75DE25CB2D57E96C07FAA846 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EA9EA43B3B503823EE36C60D9C8A865F;
+			remoteInfo = RxSwift;
+		};
 		760194A3B9DE1514F01E6935C6167EF3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
@@ -658,6 +670,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 205D6EF1B8DCC8419E2F53266F6ADCDC;
 			remoteInfo = KakaoSDKCommon;
+		};
+		9030B5E5E7780790B2B842F5E26DE8DF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7AD0C6DCDC9CEC8A3C7C10C7FEE07BE6;
+			remoteInfo = RxCocoa;
 		};
 		93A913D6403221682ED536743BA3F833 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -719,8 +738,15 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 83CA882AD877ED964BDF66235E416BC1;
-			remoteInfo = KakaoSDKAuth;
+			remoteGlobalIDString = 1A538A5499B1706F0983D6826042657B;
+			remoteInfo = RxAlamofire;
+		};
+		C2559C2961C99486AC7D1C9FA3B5B030 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 46E48C41E3556F8E41D231C8FD9B7471;
+			remoteInfo = RxKeyboard;
 		};
 		C59BA14837D18024280E19A9ED039090 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -814,10 +840,12 @@
 		11EF5A30C3D7348BEAFFA51FDD7AAC65 /* Platform.Darwin.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Platform.Darwin.swift; path = Platform/Platform.Darwin.swift; sourceTree = "<group>"; };
 		120C8DBF3ED2D899591461A11D3241CC /* ImageBinder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ImageBinder.swift; path = Sources/SwiftUI/ImageBinder.swift; sourceTree = "<group>"; };
 		126805B9523EA9F219B9E2E54740DEB6 /* CollectionViewSectionedDataSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CollectionViewSectionedDataSource.swift; path = Sources/RxDataSources/CollectionViewSectionedDataSource.swift; sourceTree = "<group>"; };
+		12FA43B23136056437400F6D4DA288CC /* RxKeyboard-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RxKeyboard-prefix.pch"; sourceTree = "<group>"; };
 		1353D6A467F43A6A3EA21D310BD35A31 /* KakaoSDKUser */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = KakaoSDKUser; path = KakaoSDKUser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13EADC8BA5516738E0613D1138B6AE2A /* CPListItem+Kingfisher.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "CPListItem+Kingfisher.swift"; path = "Sources/Extensions/CPListItem+Kingfisher.swift"; sourceTree = "<group>"; };
 		14BBA5CC675A8EF8116D354B5A166533 /* Debug.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Debug.swift; path = RxSwift/Observables/Debug.swift; sourceTree = "<group>"; };
 		157A268F7C54A31507EAF8907FF96CFD /* _RXDelegateProxy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = _RXDelegateProxy.m; path = RxCocoa/Runtime/_RXDelegateProxy.m; sourceTree = "<group>"; };
+		15A2690515E24811B71D6BD79AD4047B /* RxKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RxKeyboard.debug.xcconfig; sourceTree = "<group>"; };
 		15BC0B7FC6E4DD5D33B2C0955106EA8E /* RxTextViewDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxTextViewDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxTextViewDelegateProxy.swift; sourceTree = "<group>"; };
 		15BFD1B45E194058D5B7FCDC9A80DFE8 /* KakaoSDKCommon-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "KakaoSDKCommon-Info.plist"; sourceTree = "<group>"; };
 		16216B5D3BAB51B32E1FEF0ADE16382C /* RxPickerViewDelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxPickerViewDelegateProxy.swift; path = RxCocoa/iOS/Proxies/RxPickerViewDelegateProxy.swift; sourceTree = "<group>"; };
@@ -880,15 +908,18 @@
 		2D0E94CB0D693C16046A1ED04EC8FBF9 /* CachedResponseHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CachedResponseHandler.swift; path = Source/CachedResponseHandler.swift; sourceTree = "<group>"; };
 		2DF353B63C070B7A58760E0C6F4F4576 /* Session.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Session.swift; path = Source/Session.swift; sourceTree = "<group>"; };
 		2E1EE3E465913174D06DC566BD52C21B /* GroupedObservable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GroupedObservable.swift; path = RxSwift/GroupedObservable.swift; sourceTree = "<group>"; };
+		2E440EE2D45ED0860AC18996D90CEFA4 /* RxKeyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RxKeyboard.release.xcconfig; sourceTree = "<group>"; };
 		2E5EC4B534D9B1992D4872AFDCBF19F5 /* FormatIndicatedCacheSerializer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FormatIndicatedCacheSerializer.swift; path = Sources/Cache/FormatIndicatedCacheSerializer.swift; sourceTree = "<group>"; };
 		2F8E4B86AC75A11B085BE87B229F3B94 /* DelegateProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DelegateProxy.swift; path = RxCocoa/Common/DelegateProxy.swift; sourceTree = "<group>"; };
 		2FE16D774D5CB704EC74C004585B62B8 /* UISearchController+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UISearchController+Rx.swift"; path = "RxCocoa/iOS/UISearchController+Rx.swift"; sourceTree = "<group>"; };
 		2FF67E2B9382F80FC99AA5C6861A1B85 /* RxGesture-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RxGesture-umbrella.h"; sourceTree = "<group>"; };
+		302CDAFEA2FBCFA71AAC727B79AF003B /* RxKeyboard.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxKeyboard.swift; path = Sources/RxKeyboard/RxKeyboard.swift; sourceTree = "<group>"; };
 		3075DFEEBEE550E7EF3D3AE83E30CF5A /* KakaoSDKUser-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KakaoSDKUser-umbrella.h"; sourceTree = "<group>"; };
 		319D0C20732A743F91BDBAAEFFF48CD9 /* Response.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Response.swift; path = Source/Response.swift; sourceTree = "<group>"; };
 		3223AE1863C4CFA0D06AABEB8109EFA1 /* KakaoSDKAuth-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KakaoSDKAuth-prefix.pch"; sourceTree = "<group>"; };
 		32BB5C04BDE135689B32C7BEC9F87C18 /* Using.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Using.swift; path = RxSwift/Observables/Using.swift; sourceTree = "<group>"; };
 		33292AAA111F0B4AA207F70BC42DB0B3 /* PrimitiveSequence.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PrimitiveSequence.swift; path = RxSwift/Traits/PrimitiveSequence/PrimitiveSequence.swift; sourceTree = "<group>"; };
+		334B46EF04EB373B1358BA0E532C3D90 /* RxKeyboard-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "RxKeyboard-Info.plist"; sourceTree = "<group>"; };
 		334EC447E9A09636444034FA1AE64630 /* ExtensionHelpers.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExtensionHelpers.swift; path = Sources/Utility/ExtensionHelpers.swift; sourceTree = "<group>"; };
 		346DB4838EAE2DC09D41B216AF56E1CF /* SynchronizedOnType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SynchronizedOnType.swift; path = RxSwift/Concurrency/SynchronizedOnType.swift; sourceTree = "<group>"; };
 		34E730F4D91A39CEF800E0E1A3BED010 /* UIGestureRecognizer+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIGestureRecognizer+Rx.swift"; path = "RxCocoa/iOS/UIGestureRecognizer+Rx.swift"; sourceTree = "<group>"; };
@@ -903,6 +934,7 @@
 		37D0BF88573BC8CE26B65DB1851FFD59 /* AuthController+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "AuthController+Rx.swift"; path = "sources/RxKakaoSDKAuth/AuthController+Rx.swift"; sourceTree = "<group>"; };
 		37D403EC0C90ED222B28C5D21B9C2F56 /* NetworkReachabilityManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkReachabilityManager.swift; path = Source/NetworkReachabilityManager.swift; sourceTree = "<group>"; };
 		37E8CDBD6326D4422092C62B2C48B181 /* KakaoSDKAuth-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "KakaoSDKAuth-Info.plist"; sourceTree = "<group>"; };
+		38B05587552A2C1CC56A9560B7556ADD /* RxKeyboard */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = RxKeyboard; path = RxKeyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		39755832F7024A4809F4CDCAC33E6E15 /* AuthErrorInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthErrorInfo.swift; path = sources/KakaoSDKCommon/common/model/AuthErrorInfo.swift; sourceTree = "<group>"; };
 		3A5DC83AEEE726590B652464715EC148 /* KingfisherManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KingfisherManager.swift; path = Sources/General/KingfisherManager.swift; sourceTree = "<group>"; };
 		3B0DA50860F927865A6846E63260A9B4 /* ControlEvent+Driver.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ControlEvent+Driver.swift"; path = "RxCocoa/Traits/Driver/ControlEvent+Driver.swift"; sourceTree = "<group>"; };
@@ -1049,6 +1081,7 @@
 		7D84755E17CF2CD0A0529E87B4355E32 /* EventMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventMonitor.swift; path = Source/EventMonitor.swift; sourceTree = "<group>"; };
 		7DB87662CD97A66248CA78C0602995B0 /* Alamofire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Alamofire.swift; path = Source/Alamofire.swift; sourceTree = "<group>"; };
 		7E1D31E10B01FCEB543416CF35ED6F47 /* Differentiator-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Differentiator-prefix.pch"; sourceTree = "<group>"; };
+		7E518788F2B7DBB3B0A41B5ED0DC9360 /* RxKeyboard-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RxKeyboard-umbrella.h"; sourceTree = "<group>"; };
 		7EB2B77BBC9AE33E2B1FC0547869938B /* RxTableViewDataSourceProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxTableViewDataSourceProxy.swift; path = RxCocoa/iOS/Proxies/RxTableViewDataSourceProxy.swift; sourceTree = "<group>"; };
 		7EE98178909934D833FB35A994C6F2B5 /* DispatchQueue+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "DispatchQueue+Extensions.swift"; path = "Platform/DispatchQueue+Extensions.swift"; sourceTree = "<group>"; };
 		7F1E770D1AD733C660CF143C2D160162 /* Queue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Queue.swift; path = Platform/DataStructures/Queue.swift; sourceTree = "<group>"; };
@@ -1063,7 +1096,7 @@
 		82653A95CE248F7B8440FFDE10F056DA /* Zip+arity.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "Zip+arity.swift"; path = "RxSwift/Observables/Zip+arity.swift"; sourceTree = "<group>"; };
 		82C18476728AA7C901D3CE121B406029 /* ForceTouchGestureRecognizer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ForceTouchGestureRecognizer.swift; path = Pod/Classes/iOS/ForceTouchGestureRecognizer.swift; sourceTree = "<group>"; };
 		82F1475AA0F9C33F7EA4A1459305D2AB /* RxAlamofire */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = RxAlamofire; path = RxAlamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8350F8C1C34B817ABBA9936B98ACDB9A /* Pods_Facebook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Facebook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8350F8C1C34B817ABBA9936B98ACDB9A /* Pods-Facebook */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Facebook"; path = Pods_Facebook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		83850E867D67DCBD85112153AE1A40BB /* SubjectType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SubjectType.swift; path = RxSwift/Subjects/SubjectType.swift; sourceTree = "<group>"; };
 		843CACB9C927CDB2C9E0CD7E38644DC4 /* ViewTransition.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ViewTransition.swift; path = Sources/RxDataSources/ViewTransition.swift; sourceTree = "<group>"; };
 		847C35048C3C658D48364B6371AF70AD /* ObservableConvertibleType+Infallible.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ObservableConvertibleType+Infallible.swift"; path = "RxSwift/Traits/Infallible/ObservableConvertibleType+Infallible.swift"; sourceTree = "<group>"; };
@@ -1116,6 +1149,7 @@
 		94958E0630E61AEF2EC53BAC3FE0B497 /* OperationQueue+Alamofire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "OperationQueue+Alamofire.swift"; path = "Source/OperationQueue+Alamofire.swift"; sourceTree = "<group>"; };
 		94A4EB2F77057F62DDFF875A0485F3C4 /* RxGesture.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RxGesture.debug.xcconfig; sourceTree = "<group>"; };
 		95CAFB76638050152EE393B6F0B927F9 /* Queue.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Queue.swift; path = Platform/DataStructures/Queue.swift; sourceTree = "<group>"; };
+		95D20AC6765794F217B4A14A4170D826 /* RxKeyboard-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RxKeyboard-dummy.m"; sourceTree = "<group>"; };
 		95D328F6EF8D023390464B373DFDF844 /* AuthApi.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthApi.swift; path = sources/KakaoSDKAuth/auth/AuthApi.swift; sourceTree = "<group>"; };
 		95F64F5150D1183A001F98CA2B0157C6 /* SectionedViewDataSourceType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SectionedViewDataSourceType.swift; path = RxCocoa/Common/SectionedViewDataSourceType.swift; sourceTree = "<group>"; };
 		9641968D62B8A2F4D41AEA4E7998B2FA /* SchedulerType+SharedSequence.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "SchedulerType+SharedSequence.swift"; path = "RxCocoa/Traits/SharedSequence/SchedulerType+SharedSequence.swift"; sourceTree = "<group>"; };
@@ -1135,7 +1169,7 @@
 		9CD7B6A79A1EEDC57F641877E2683CD0 /* RxDataSources-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "RxDataSources-Info.plist"; sourceTree = "<group>"; };
 		9D3EB3500F734E525AB86D4C484BDCE3 /* RxCollectionViewReactiveArrayDataSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxCollectionViewReactiveArrayDataSource.swift; path = RxCocoa/iOS/DataSources/RxCollectionViewReactiveArrayDataSource.swift; sourceTree = "<group>"; };
 		9D405753AC398F3088331A42B8CBE18B /* Differentiator-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Differentiator-umbrella.h"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9D9C13A07688E65D15D77F85AA1A787A /* UITextField+Rx.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UITextField+Rx.swift"; path = "RxCocoa/iOS/UITextField+Rx.swift"; sourceTree = "<group>"; };
 		9DC472BC3010A95596532B420F6747A9 /* Timeout.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Timeout.swift; path = RxSwift/Observables/Timeout.swift; sourceTree = "<group>"; };
 		9DC74599E6A4164846DFD8C4424F44D7 /* SizeExtensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SizeExtensions.swift; path = Sources/Utility/SizeExtensions.swift; sourceTree = "<group>"; };
@@ -1242,6 +1276,7 @@
 		C8AA068754E93747B13B573EE70F6798 /* RedirectHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RedirectHandler.swift; path = Sources/Networking/RedirectHandler.swift; sourceTree = "<group>"; };
 		C8B2993D8A945213885A90B2E9569ED0 /* KakaoSDKCommon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = KakaoSDKCommon.debug.xcconfig; sourceTree = "<group>"; };
 		C8F9AC85B41D2E31ECBFDC7DCC68A9E8 /* Alamofire-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Alamofire-Info.plist"; sourceTree = "<group>"; };
+		C93EF276EE3FFCA439B876BC6F9D2204 /* RxKeyboard.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = RxKeyboard.modulemap; sourceTree = "<group>"; };
 		CA0DA10297C1AB2F0F88CBCA8F97E91F /* RxKakaoSDKUser.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = RxKakaoSDKUser.modulemap; sourceTree = "<group>"; };
 		CA4D5049E0575F2F7E3DB97DBD41FF81 /* RxCollectionViewDataSourcePrefetchingProxy.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RxCollectionViewDataSourcePrefetchingProxy.swift; path = RxCocoa/iOS/Proxies/RxCollectionViewDataSourcePrefetchingProxy.swift; sourceTree = "<group>"; };
 		CA7C1AC9E714BE70A11AA06F199AE741 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
@@ -1461,6 +1496,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		93A3E0EE7B6F9A19D9BF9730B09D35F1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				536B0C4E14A1F494386C5EA18CFC906E /* Foundation.framework in Frameworks */,
+				53E0B37CDF91621A0D39A7CD8CCA5EC2 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9FF13CEEDD2827372E78DE0C48BBE85C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1511,6 +1555,7 @@
 				50E6D499B3351ACA074278B2EDA67660 /* UserApi+Rx.swift */,
 				E8CEC1C429EDB6259095696EDC795266 /* Support Files */,
 			);
+			name = RxKakaoSDKUser;
 			path = RxKakaoSDKUser;
 			sourceTree = "<group>";
 		};
@@ -1535,6 +1580,7 @@
 				843CACB9C927CDB2C9E0CD7E38644DC4 /* ViewTransition.swift */,
 				B5B469D5F1DE3AC5BC7E86A247022000 /* Support Files */,
 			);
+			name = RxDataSources;
 			path = RxDataSources;
 			sourceTree = "<group>";
 		};
@@ -1589,6 +1635,7 @@
 				C45AA52A2F748AEEA5A1D1DA448F9793 /* Core */,
 				B7326C5C32632A1A1EA98860DC026E06 /* Support Files */,
 			);
+			name = RxAlamofire;
 			path = RxAlamofire;
 			sourceTree = "<group>";
 		};
@@ -1607,6 +1654,7 @@
 				8A864871DBA240703378F25AACEA7B6A /* TokenManager.swift */,
 				9E41A21E3CB2D0AB7C719556141BFC27 /* Support Files */,
 			);
+			name = KakaoSDKAuth;
 			path = KakaoSDKAuth;
 			sourceTree = "<group>";
 		};
@@ -1627,6 +1675,7 @@
 				E545786D06B768C36B3F560546265EC7 /* Utilities.swift */,
 				5042C802F9894A6D7B998BA8520506C7 /* Support Files */,
 			);
+			name = Differentiator;
 			path = Differentiator;
 			sourceTree = "<group>";
 		};
@@ -1711,6 +1760,7 @@
 				B9FE7C899E7B16B010AE00EB522C6951 /* WKInterfaceImage+Kingfisher.swift */,
 				5B5F926D0B640E4D6F9003E948FEEEFE /* Support Files */,
 			);
+			name = Kingfisher;
 			path = Kingfisher;
 			sourceTree = "<group>";
 		};
@@ -1722,6 +1772,21 @@
 				17C28AD2399BCF4361066DDA1DEFDBC4 /* Support Files */,
 			);
 			path = RxKakaoSDKCommon;
+			sourceTree = "<group>";
+		};
+		36CED1D63996554CCF92A901756AF7FE /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				C93EF276EE3FFCA439B876BC6F9D2204 /* RxKeyboard.modulemap */,
+				95D20AC6765794F217B4A14A4170D826 /* RxKeyboard-dummy.m */,
+				334B46EF04EB373B1358BA0E532C3D90 /* RxKeyboard-Info.plist */,
+				12FA43B23136056437400F6D4DA288CC /* RxKeyboard-prefix.pch */,
+				7E518788F2B7DBB3B0A41B5ED0DC9360 /* RxKeyboard-umbrella.h */,
+				15A2690515E24811B71D6BD79AD4047B /* RxKeyboard.debug.xcconfig */,
+				2E440EE2D45ED0860AC18996D90CEFA4 /* RxKeyboard.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/RxKeyboard";
 			sourceTree = "<group>";
 		};
 		37544E57CB5ADEFCB75DDC5487E3D5E8 /* Network */ = {
@@ -1796,6 +1861,7 @@
 				E6B47E400478B25E42036FDB0CFDCC00 /* RxKakaoSDKAuth */,
 				343DC82DDEA03E763E19039A0108DEEA /* RxKakaoSDKCommon */,
 				027F46E7BEB14D2538CF311B2721166D /* RxKakaoSDKUser */,
+				77D682EE0E26BAD860D30D3916D064E8 /* RxKeyboard */,
 				DCE6C62CA283173F8B922B1C191E13B4 /* RxRelay */,
 				E2B09FFA95785FD814363A7AEE54BD3F /* RxSwift */,
 			);
@@ -1864,6 +1930,16 @@
 			path = "Target Support Files/Pods-Facebook";
 			sourceTree = "<group>";
 		};
+		77D682EE0E26BAD860D30D3916D064E8 /* RxKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				302CDAFEA2FBCFA71AAC727B79AF003B /* RxKeyboard.swift */,
+				36CED1D63996554CCF92A901756AF7FE /* Support Files */,
+			);
+			name = RxKeyboard;
+			path = RxKeyboard;
+			sourceTree = "<group>";
+		};
 		77F7ABF25CB8D8BDC8B10D8B758F72AB /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -1924,6 +2000,7 @@
 				626DAAFB796B8C4D568D98CC30617D27 /* View+RxGesture.swift */,
 				57B2DAC88117FF34A6599D878FACC452 /* Support Files */,
 			);
+			name = RxGesture;
 			path = RxGesture;
 			sourceTree = "<group>";
 		};
@@ -1934,6 +2011,7 @@
 				77F7ABF25CB8D8BDC8B10D8B758F72AB /* Network */,
 				40E53C34F6BA3F626CB554721770A451 /* Support Files */,
 			);
+			name = KakaoSDKCommon;
 			path = KakaoSDKCommon;
 			sourceTree = "<group>";
 		};
@@ -1964,6 +2042,7 @@
 				8AE179FDFB5C647C2CDE60EF3E3AC17F /* UserShippingAddresses.swift */,
 				CEC1E9A8358A422DE3D7A616AF191622 /* Support Files */,
 			);
+			name = KakaoSDKUser;
 			path = KakaoSDKUser;
 			sourceTree = "<group>";
 		};
@@ -2044,7 +2123,7 @@
 				25BDA6E824AD6CBD857358A023C694AD /* KakaoSDKCommon */,
 				1353D6A467F43A6A3EA21D310BD35A31 /* KakaoSDKUser */,
 				C3F44C782D64D7EB20B61CE3844EBFAD /* Kingfisher */,
-				8350F8C1C34B817ABBA9936B98ACDB9A /* Pods_Facebook.framework */,
+				8350F8C1C34B817ABBA9936B98ACDB9A /* Pods-Facebook */,
 				82F1475AA0F9C33F7EA4A1459305D2AB /* RxAlamofire */,
 				BC432FD48A5932251F1CAFBC4BF74894 /* RxCocoa */,
 				692F92D73EC27270EA9CC9575C3E65B6 /* RxDataSources */,
@@ -2052,6 +2131,7 @@
 				ADA3B17C122C5AE746103CB91668E4A9 /* RxKakaoSDKAuth */,
 				DB148B48BF8B71B715C5C79CFAF7F556 /* RxKakaoSDKCommon */,
 				EE005FD3C78C1878735E39D11E7A2A73 /* RxKakaoSDKUser */,
+				38B05587552A2C1CC56A9560B7556ADD /* RxKeyboard */,
 				FF8B264DFE802855D5D67E7CDDABFC3C /* RxRelay */,
 				809C5FAB588354C9BA37DC3EAB8CB45C /* RxSwift */,
 			);
@@ -2068,6 +2148,7 @@
 				A119A65FB7D57997F9BF21B5DA30DA70 /* Utils.swift */,
 				17BB1FB34B1B2489B6B47B869E13E96A /* Support Files */,
 			);
+			name = RxRelay;
 			path = RxRelay;
 			sourceTree = "<group>";
 		};
@@ -2233,6 +2314,7 @@
 				AD404131BF72A8AF5C3AE1B9B8AC94DA /* Zip+Collection.swift */,
 				8DC7B2D93D50318D1754FFB48462F11F /* Support Files */,
 			);
+			name = RxSwift;
 			path = RxSwift;
 			sourceTree = "<group>";
 		};
@@ -2245,6 +2327,7 @@
 				59B9944208F4FA661E444866EA49B834 /* RxKakaoSDKAuth.h */,
 				FA159EC209364E83507938B8C84B3D32 /* Support Files */,
 			);
+			name = RxKakaoSDKAuth;
 			path = RxKakaoSDKAuth;
 			sourceTree = "<group>";
 		};
@@ -2386,6 +2469,7 @@
 				BD5576C4D2E0F756ED157B11CC418E9F /* WKWebView+Rx.swift */,
 				18A4123A0D41EDA0C812431B7FB07F84 /* Support Files */,
 			);
+			name = RxCocoa;
 			path = RxCocoa;
 			sourceTree = "<group>";
 		};
@@ -2429,6 +2513,7 @@
 				D032CC7F7C7CE1AF188ED86968FA3975 /* Validation.swift */,
 				2D3BEF6309B33C2795A126A82E2BF886 /* Support Files */,
 			);
+			name = Alamofire;
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
@@ -2450,6 +2535,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		0BB88D8B14383748A8CE24805678071B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94918BE2F87C41D7DC850BE05B06B7A8 /* RxKeyboard-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14FF1799C5ADBC71E1DB963F2AF8853D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -2502,6 +2595,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				7FFF425B3B94B7878B60467D4F6045EC /* Differentiator-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		405F444A1B6A226C3DB927EF98AB5957 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AF60D688FF1FAA8EFAE4F5A3981B4F11 /* KakaoSDKCommon-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2673,6 +2774,7 @@
 				07E9F82456C3E1F1A9B51977336A44B3 /* PBXTargetDependency */,
 				CEF7CFBD15BD9855955DFBDC1DF1EBC6 /* PBXTargetDependency */,
 				393761894AACD7DA2EA2C4EE5DAFC4D0 /* PBXTargetDependency */,
+				7DEF8CF854966A12A1F2F9E81B95DB72 /* PBXTargetDependency */,
 				372332D242823B97F09FBBD6FF8C6E6E /* PBXTargetDependency */,
 				6BBC7D02E7EFCD9135F9A8F8794C3562 /* PBXTargetDependency */,
 			);
@@ -2760,6 +2862,26 @@
 			name = RxRelay;
 			productName = RxRelay;
 			productReference = FF8B264DFE802855D5D67E7CDDABFC3C /* RxRelay */;
+			productType = "com.apple.product-type.framework";
+		};
+		46E48C41E3556F8E41D231C8FD9B7471 /* RxKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 118582A4C199009B322ABE63765C9C43 /* Build configuration list for PBXNativeTarget "RxKeyboard" */;
+			buildPhases = (
+				0BB88D8B14383748A8CE24805678071B /* Headers */,
+				1FE75DC8004B2D4E2280578BDBC2D2FD /* Sources */,
+				93A3E0EE7B6F9A19D9BF9730B09D35F1 /* Frameworks */,
+				36779CF4702B8300B8F200A7E41E873F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				85EE48772BEA8DB0450683EE1A87598F /* PBXTargetDependency */,
+				48C94270935E2B0CE8968BE99B231F87 /* PBXTargetDependency */,
+			);
+			name = RxKeyboard;
+			productName = RxKeyboard;
+			productReference = 38B05587552A2C1CC56A9560B7556ADD /* RxKeyboard */;
 			productType = "com.apple.product-type.framework";
 		};
 		7AD0C6DCDC9CEC8A3C7C10C7FEE07BE6 /* RxCocoa */ = {
@@ -2951,6 +3073,7 @@
 				86A8BFD73716C8F16A75B769DDE203B8 /* RxKakaoSDKAuth */,
 				408AA6B759CC44A70895B4D2E6D068FC /* RxKakaoSDKCommon */,
 				FD9434407091FC63C62B536468AA0416 /* RxKakaoSDKUser */,
+				46E48C41E3556F8E41D231C8FD9B7471 /* RxKeyboard */,
 				4622BFEF3DC16E8BD15EEFC30D4D0084 /* RxRelay */,
 				EA9EA43B3B503823EE36C60D9C8A865F /* RxSwift */,
 			);
@@ -2980,6 +3103,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		2C70A1E59F6BC25A57F98D0CB67DA51D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		36779CF4702B8300B8F200A7E41E873F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3114,6 +3244,15 @@
 				AA9A632861DC12CE0A5862F7CAD4B008 /* TableViewSectionedDataSource.swift in Sources */,
 				5147EF85E6DB971E6D486F641192FDF5 /* UI+SectionedViewType.swift in Sources */,
 				C05AFD68EDF8F0299468566A93E59275 /* ViewTransition.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1FE75DC8004B2D4E2280578BDBC2D2FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CA97A230D877B2B8E1AA646A0078592 /* RxKeyboard.swift in Sources */,
+				71F8FE6657A31D837311FCE8E9B02200 /* RxKeyboard-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3760,6 +3899,12 @@
 			target = EA9EA43B3B503823EE36C60D9C8A865F /* RxSwift */;
 			targetProxy = 95394104B1A90095F4913B02B2A99543 /* PBXContainerItemProxy */;
 		};
+		48C94270935E2B0CE8968BE99B231F87 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RxSwift;
+			target = EA9EA43B3B503823EE36C60D9C8A865F /* RxSwift */;
+			targetProxy = 69E5303D75DE25CB2D57E96C07FAA846 /* PBXContainerItemProxy */;
+		};
 		58F4F101A24BE8AEC1F5B9604A584713 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Differentiator;
@@ -3814,11 +3959,23 @@
 			target = D77CA6E20D3F659D26E05339EBA33B59 /* RxGesture */;
 			targetProxy = 261EDA8B5378FCD360D03DAB56215845 /* PBXContainerItemProxy */;
 		};
+		7DEF8CF854966A12A1F2F9E81B95DB72 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RxKeyboard;
+			target = 46E48C41E3556F8E41D231C8FD9B7471 /* RxKeyboard */;
+			targetProxy = C2559C2961C99486AC7D1C9FA3B5B030 /* PBXContainerItemProxy */;
+		};
 		829E8B8438B78627B8F7A447E193A3B9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = RxRelay;
 			target = 4622BFEF3DC16E8BD15EEFC30D4D0084 /* RxRelay */;
 			targetProxy = CB85394436092313BCB4A55A9F071297 /* PBXContainerItemProxy */;
+		};
+		85EE48772BEA8DB0450683EE1A87598F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = RxCocoa;
+			target = 7AD0C6DCDC9CEC8A3C7C10C7FEE07BE6 /* RxCocoa */;
+			targetProxy = 9030B5E5E7780790B2B842F5E26DE8DF /* PBXContainerItemProxy */;
 		};
 		8853D3400167206ECD2AD3453BA191EB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4112,6 +4269,41 @@
 			};
 			name = Debug;
 		};
+		4F18CCB175E70484BF6775AFF52DA9BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E440EE2D45ED0860AC18996D90CEFA4 /* RxKeyboard.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/RxKeyboard/RxKeyboard-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/RxKeyboard/RxKeyboard-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/RxKeyboard/RxKeyboard.modulemap";
+				PRODUCT_MODULE_NAME = RxKeyboard;
+				PRODUCT_NAME = RxKeyboard;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.1;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		63FA92C742BBDF34B0920B1BBD03B397 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 05B640A3DC9BA69FC893374352C06B6C /* RxKakaoSDKUser.debug.xcconfig */;
@@ -4278,6 +4470,40 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		75990901EA5EBF7AC50176D252123103 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 15A2690515E24811B71D6BD79AD4047B /* RxKeyboard.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/RxKeyboard/RxKeyboard-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/RxKeyboard/RxKeyboard-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/RxKeyboard/RxKeyboard.modulemap";
+				PRODUCT_MODULE_NAME = RxKeyboard;
+				PRODUCT_NAME = RxKeyboard;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.1;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
 		};
 		79FDB89F6CA57D6734D528EAF266BD7B /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -5135,6 +5361,15 @@
 			buildConfigurations = (
 				6C76BC8D98D8C8DC98CD10D4749A9F13 /* Debug */,
 				2C0182D85B260662E8DECAEA1C129ACA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		118582A4C199009B322ABE63765C9C43 /* Build configuration list for PBXNativeTarget "RxKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				75990901EA5EBF7AC50176D252123103 /* Debug */,
+				4F18CCB175E70484BF6775AFF52DA9BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -45,6 +45,9 @@ PODS:
   - RxKakaoSDKUser (2.8.3):
     - KakaoSDKUser (= 2.8.3)
     - RxKakaoSDKAuth (= 2.8.3)
+  - RxKeyboard (2.0.0):
+    - RxCocoa (~> 6.0)
+    - RxSwift (~> 6.0)
   - RxRelay (6.2.0):
     - RxSwift (= 6.2.0)
   - RxSwift (6.2.0)
@@ -58,6 +61,7 @@ DEPENDENCIES:
   - RxKakaoSDKAuth
   - RxKakaoSDKCommon
   - RxKakaoSDKUser
+  - RxKeyboard
   - RxSwift
 
 SPEC REPOS:
@@ -75,6 +79,7 @@ SPEC REPOS:
     - RxKakaoSDKAuth
     - RxKakaoSDKCommon
     - RxKakaoSDKUser
+    - RxKeyboard
     - RxRelay
     - RxSwift
 
@@ -92,9 +97,10 @@ SPEC CHECKSUMS:
   RxKakaoSDKAuth: 67b6554bf90855264c168aa56b3d58c798d413aa
   RxKakaoSDKCommon: 3ab55711bc4868392436d747d780a74be3cc804a
   RxKakaoSDKUser: 5d5628dc4782a509bd7826468328ad7d5c07db41
+  RxKeyboard: 4f5863f43b4ff0cbb2a20b94688d6b80c8a43c14
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
 
-PODFILE CHECKSUM: 0c61d26e44ee50f3947b1668f0f06478ae18d83c
+PODFILE CHECKSUM: 3248c764a8c27889595c30228c7b891b04bb4e54
 
 COCOAPODS: 1.11.2
