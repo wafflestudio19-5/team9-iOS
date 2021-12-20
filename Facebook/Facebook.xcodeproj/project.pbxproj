@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4C1F3D1EBBA69784AF1CB7FC /* Pods_Facebook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74F8DC55374F2CDB24937D2A /* Pods_Facebook.framework */; };
+		771DF5A027707DD900B69351 /* ProfileImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771DF59E27707DD900B69351 /* ProfileImageTableViewCell.swift */; };
+		771DF5A127707DD900B69351 /* ProfileImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 771DF59F27707DD900B69351 /* ProfileImageTableViewCell.xib */; };
 		774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */; };
 		774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */; };
 		7740943E2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift */; };
@@ -55,6 +57,8 @@
 /* Begin PBXFileReference section */
 		6359F47475B70FE61F708C89 /* Pods-Facebook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.debug.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.debug.xcconfig"; sourceTree = "<group>"; };
 		74F8DC55374F2CDB24937D2A /* Pods_Facebook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Facebook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		771DF59E27707DD900B69351 /* ProfileImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageTableViewCell.swift; sourceTree = "<group>"; };
+		771DF59F27707DD900B69351 /* ProfileImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileImageTableViewCell.xib; sourceTree = "<group>"; };
 		774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileTableViewCell.swift; sourceTree = "<group>"; };
 		774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7740943C2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProfileTableViewCell.swift; sourceTree = "<group>"; };
@@ -123,13 +127,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		7779931E27509170007A3898 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		B897A8F1274E303600FB67D3 = {
 			isa = PBXGroup;
 			children = (
@@ -152,7 +149,6 @@
 			isa = PBXGroup;
 			children = (
 				BEA834AC275123A300D6EC95 /* Network */,
-				7779931E27509170007A3898 /* Model */,
 				B897A920274E611400FB67D3 /* View */,
 				B897A913274E36FC00FB67D3 /* Controller */,
 				B897A8FD274E303600FB67D3 /* AppDelegate.swift */,
@@ -193,21 +189,23 @@
 				77799319274FD8E4007A3898 /* PostTableViewCell.xib */,
 				777993232750D280007A3898 /* NotificationTableViewCell.swift */,
 				777993242750D280007A3898 /* NotificationTableViewCell.xib */,
+				77B635412768B2C100C41EB3 /* DetailProfileView.swift */,
+				77B635452768B2F900C41EB3 /* EditProfileView.swift */,
 				774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */,
 				774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */,
-				77547905275CE6CC0065711C /* CommentTableViewCell.swift */,
+				771DF59E27707DD900B69351 /* ProfileImageTableViewCell.swift */,
+				771DF59F27707DD900B69351 /* ProfileImageTableViewCell.xib */,
 				7740943C2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift */,
 				7740943D2750E7E400AD8DC2 /* DetailProfileTableViewCell.xib */,
 				774094422750EBF600AD8DC2 /* ShowProfileTableViewCell.swift */,
 				774094432750EBF600AD8DC2 /* ShowProfileTableViewCell.xib */,
 				774094482750ECDC00AD8DC2 /* EditProfileTableViewCell.swift */,
 				774094492750ECDC00AD8DC2 /* EditProfileTableViewCell.xib */,
-				77547906275CE6CC0065711C /* CommentTableViewCell.xib */,
 				77AC749A275CEDAD00F10BD5 /* PostView.swift */,
+				77547905275CE6CC0065711C /* CommentTableViewCell.swift */,
+				77547906275CE6CC0065711C /* CommentTableViewCell.xib */,
 				77AC749C275E19C200F10BD5 /* PostContentTableViewCell.swift */,
 				77AC749D275E19C200F10BD5 /* PostContentTableViewCell.xib */,
-				77B635412768B2C100C41EB3 /* DetailProfileView.swift */,
-				77B635452768B2F900C41EB3 /* EditProfileView.swift */,
 				77E12FA12769A97800B8F191 /* CreatePostView.swift */,
 			);
 			path = View;
@@ -300,6 +298,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7740944B2750ECDC00AD8DC2 /* EditProfileTableViewCell.xib in Resources */,
+				771DF5A127707DD900B69351 /* ProfileImageTableViewCell.xib in Resources */,
 				777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */,
 				7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */,
 				774094452750EBF600AD8DC2 /* ShowProfileTableViewCell.xib in Resources */,
@@ -379,6 +378,7 @@
 				77AC749B275CEDAD00F10BD5 /* PostView.swift in Sources */,
 				77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
+				771DF5A027707DD900B69351 /* ProfileImageTableViewCell.swift in Sources */,
 				77547904275CE66A0065711C /* PostViewController.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,

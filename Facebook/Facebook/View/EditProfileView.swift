@@ -14,6 +14,7 @@ class EditProfileView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
+        setStyleForView()
     }
     
     required init?(coder: NSCoder) {
@@ -34,6 +35,7 @@ class EditProfileView: UIView {
 
     private func setStyleForView() {
         //profileTableView.tableHeaderView = UIView()  // removes the separator at the top
+        editProfileTableView.register(UINib(nibName: "ProfileImageTableViewCell", bundle: nil), forCellReuseIdentifier: "ProfileImageCell")
         editProfileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
         editProfileTableView.allowsSelection = false
     }
