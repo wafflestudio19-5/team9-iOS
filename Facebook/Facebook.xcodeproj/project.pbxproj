@@ -70,7 +70,7 @@
 		B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F82F2761FC5F00F659D2 /* EnterPasswordView.swift */; };
 		B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */; };
 		B8A7F8342767507000F659D2 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8332767507000F659D2 /* LabelWithPadding.swift */; };
-		B8A7F8372767690F00F659D2 /* UIViewController+PushAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8362767690F00F659D2 /* UIViewController+PushAlert.swift */; };
+		B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */; };
 		BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */; };
 		BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */; };
 		BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C91276CDF230089247F /* Endpoint+User.swift */; };
@@ -155,7 +155,7 @@
 		B8A7F82F2761FC5F00F659D2 /* EnterPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordView.swift; sourceTree = "<group>"; };
 		B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
 		B8A7F8332767507000F659D2 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
-		B8A7F8362767690F00F659D2 /* UIViewController+PushAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PushAlert.swift"; sourceTree = "<group>"; };
+		B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
 		BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionButtons.swift; sourceTree = "<group>"; };
 		BE9C7C91276CDF230089247F /* Endpoint+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+User.swift"; sourceTree = "<group>"; };
@@ -196,6 +196,11 @@
 		B846BDA82754F59100513B77 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				BEBDA763276C28EC0004FFD7 /* Icons */,
+				BE9C7CA427716E5A0089247F /* Buttons */,
+				BE9C7CA327716E450089247F /* Colors */,
+				BE9C7CA227716E280089247F /* TextFields */,
+				BE9C7C8E276C71C50089247F /* PostCell */,
 				B86195082761AFAE00957BBC /* ContentSizeFitTableView.swift */,
 				B8A7F8332767507000F659D2 /* LabelWithPadding.swift */,
 			);
@@ -255,8 +260,6 @@
 				BEBDA762276C28DA0004FFD7 /* Common */,
 				B846BDA82754F59100513B77 /* Components */,
 				BEA834AC275123A300D6EC95 /* Network */,
-				B897A920274E611400FB67D3 /* View */,
-				B897A913274E36FC00FB67D3 /* Controller */,
 				B897A8FD274E303600FB67D3 /* AppDelegate.swift */,
 				B897A8FF274E303600FB67D3 /* SceneDelegate.swift */,
 				B897A906274E303700FB67D3 /* Assets.xcassets */,
@@ -264,32 +267,6 @@
 				B897A90B274E303700FB67D3 /* Info.plist */,
 			);
 			path = Facebook;
-			sourceTree = "<group>";
-		};
-		B897A913274E36FC00FB67D3 /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				77547903275CE66A0065711C /* PostViewController.swift */,
-				77E12FA32769A98900B8F191 /* CreatePostViewController.swift */,
-			);
-			path = Controller;
-			sourceTree = "<group>";
-		};
-		B897A920274E611400FB67D3 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				7779931F2750CD41007A3898 /* CreatePostTableViewCell.swift */,
-				777993202750CD41007A3898 /* CreatePostTableViewCell.xib */,
-				77799318274FD8E4007A3898 /* PostTableViewCell.swift */,
-				77799319274FD8E4007A3898 /* PostTableViewCell.xib */,
-				77AC749A275CEDAD00F10BD5 /* PostView.swift */,
-				77547905275CE6CC0065711C /* CommentTableViewCell.swift */,
-				77547906275CE6CC0065711C /* CommentTableViewCell.xib */,
-				77AC749C275E19C200F10BD5 /* PostContentTableViewCell.swift */,
-				77AC749D275E19C200F10BD5 /* PostContentTableViewCell.xib */,
-				77E12FA12769A97800B8F191 /* CreatePostView.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		BE8015A9276B6CB30014FEFA /* Responses */ = {
@@ -314,7 +291,7 @@
 			isa = PBXGroup;
 			children = (
 				BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */,
-				B8A7F8362767690F00F659D2 /* UIViewController+PushAlert.swift */,
+				B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */,
 				BE9C7CA0276ECA1F0089247F /* Int+Formatter.swift */,
 			);
 			path = Extensions;
@@ -355,6 +332,8 @@
 		BE9C7CA62771700C0089247F /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				BE9C7CB9277200760089247F /* CreatePost */,
+				BE9C7CB8277200480089247F /* ShowPost */,
 				BE9C7CB52771731D0089247F /* Search */,
 				BE9C7CAF277171A20089247F /* Authentication */,
 				BE9C7CAE277171320089247F /* Notification */,
@@ -509,6 +488,64 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		BE9C7CB8277200480089247F /* ShowPost */ = {
+			isa = PBXGroup;
+			children = (
+				BE9C7CBD277200C30089247F /* Views */,
+				BE9C7CBC277200B70089247F /* Controllers */,
+			);
+			path = ShowPost;
+			sourceTree = "<group>";
+		};
+		BE9C7CB9277200760089247F /* CreatePost */ = {
+			isa = PBXGroup;
+			children = (
+				BE9C7CBB277200A60089247F /* Views */,
+				BE9C7CBA277200A00089247F /* Controllers */,
+			);
+			path = CreatePost;
+			sourceTree = "<group>";
+		};
+		BE9C7CBA277200A00089247F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				77E12FA32769A98900B8F191 /* CreatePostViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		BE9C7CBB277200A60089247F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				77E12FA12769A97800B8F191 /* CreatePostView.swift */,
+				7779931F2750CD41007A3898 /* CreatePostTableViewCell.swift */,
+				777993202750CD41007A3898 /* CreatePostTableViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BE9C7CBC277200B70089247F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				77547903275CE66A0065711C /* PostViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		BE9C7CBD277200C30089247F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				77AC749A275CEDAD00F10BD5 /* PostView.swift */,
+				77AC749D275E19C200F10BD5 /* PostContentTableViewCell.xib */,
+				77547906275CE6CC0065711C /* CommentTableViewCell.xib */,
+				77AC749C275E19C200F10BD5 /* PostContentTableViewCell.swift */,
+				77547905275CE6CC0065711C /* CommentTableViewCell.swift */,
+				77799318274FD8E4007A3898 /* PostTableViewCell.swift */,
+				77799319274FD8E4007A3898 /* PostTableViewCell.xib */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		BEA834AC275123A300D6EC95 /* Network */ = {
 			isa = PBXGroup;
 			children = (
@@ -526,11 +563,6 @@
 				BE9C7CB4277172CA0089247F /* Controllers */,
 				BEFFFAA5276B125E009CBF25 /* Models */,
 				BE9C7CA527716EC00089247F /* ViewModels */,
-				BE9C7CA427716E5A0089247F /* Buttons */,
-				BE9C7CA327716E450089247F /* Colors */,
-				BE9C7CA227716E280089247F /* TextFields */,
-				BE9C7C8E276C71C50089247F /* PostCell */,
-				BEBDA763276C28EC0004FFD7 /* Icons */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -744,7 +776,7 @@
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
-				B8A7F8372767690F00F659D2 /* UIViewController+PushAlert.swift in Sources */,
+				B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
 				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
