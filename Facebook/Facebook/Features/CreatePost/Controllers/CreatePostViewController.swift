@@ -29,7 +29,7 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
         setNavigationBarItems()
         bindNavigationBarItems()
     }
-
+    
     func setNavigationBarItems() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "xmark"),
@@ -58,16 +58,17 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
         
         //contentTextField의 내용 유뮤에 따라 버튼 색상 변화
         hasEnteredContent
-                    .observe(on: MainScheduler.instance)
-                    .subscribe(onNext: { [weak self] result in
-                        guard let self = self else { return }
-                        self.creatPostView.postButton.titleLabel?.textColor = {
-                            return result ? UIColor.white : UIColor.lightGray
-                        }()
-                        self.creatPostView.postButton.backgroundColor = {
-                            return result ? UIColor.systemBlue : UIColor.systemGray4
-                        }()
-                    }).disposed(by: disposeBag)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] result in
+                guard let self = self else { return }
+                self.creatPostView.postButton.titleLabel?.textColor = {
+                    return result ? UIColor.white : UIColor.lightGray
+                }()
+                self.creatPostView.postButton.backgroundColor = {
+                    return result ? UIColor.systemBlue : UIColor.systemGray4
+                }()
+            })
+            .disposed(by: disposeBag)
     }
 }
 
