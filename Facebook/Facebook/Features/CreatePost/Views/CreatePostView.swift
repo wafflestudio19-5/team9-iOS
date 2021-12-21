@@ -27,6 +27,7 @@ class CreatePostView: UIView {
     }
     
     private func setStyleForView() {
+        self.backgroundColor = .white
         profileImage.contentMode = .scaleAspectFit
         let image = UIImage(systemName: "person.circle.fill")
         profileImage.image = image

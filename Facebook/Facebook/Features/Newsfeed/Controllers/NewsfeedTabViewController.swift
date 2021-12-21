@@ -8,6 +8,7 @@
 import Alamofire
 import RxSwift
 import RxAlamofire
+import UIKit
 
 class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
@@ -23,6 +24,16 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     }
     
     func bind() {
+        
+        /// `무슨 생각을 하고 계신가요?` 버튼을 클릭하면 포스트 작성 화면으로 넘어가도록 바인딩
+        tabView.createPostHeaderView.createPostButton.rx.tap.bind {
+            let createPostViewController = CreatePostViewController()
+            let navigationController = UINavigationController(rootViewController: createPostViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            self.present(navigationController, animated: true, completion: nil)
+        }
+        .disposed(by: disposeBag)
+        
         /// `viewModel.dataList`와 `tableView`의 dataSource를 바인딩합니다.
         viewModel.dataList
             .bind(to: tableView.rx.items(cellIdentifier: "PostCell", cellType: PostCell.self)) { row, post, cell in
