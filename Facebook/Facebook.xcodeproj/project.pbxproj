@@ -376,7 +376,6 @@
 		BE9C7CA8277170310089247F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B897A91E274E389000FB67D3 /* NewsfeedTabViewController.swift */,
 				B897A921274E612B00FB67D3 /* NewsfeedTabView.swift */,
 			);
 			path = Views;
@@ -385,6 +384,7 @@
 		BE9C7CA92771703E0089247F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B897A91E274E389000FB67D3 /* NewsfeedTabViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -451,7 +451,6 @@
 		BE9C7CB0277171AE0089247F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B897A91C274E387300FB67D3 /* NotificationTabViewController.swift */,
 				777993232750D280007A3898 /* NotificationTableViewCell.swift */,
 				777993242750D280007A3898 /* NotificationTableViewCell.xib */,
 				B897A925274E61D800FB67D3 /* NotificationTabView.swift */,
@@ -462,6 +461,7 @@
 		BE9C7CB1277171D50089247F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B897A91C274E387300FB67D3 /* NotificationTabViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
