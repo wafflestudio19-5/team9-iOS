@@ -14,6 +14,10 @@ extension Endpoint {
         return Endpoint(path: "newsfeed/", cursor: cursor)
     }
     
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 240cdb5 (Edit files to resolve conflict)
     static func newsfeed(content: String, files: [Data] = [], subcontents: [String] = []) -> Self {
         assert(files.count == subcontents.count, "파일 개수와 캡션의 개수는 일치해야합니다.")
         let filesCount = files.count
@@ -36,5 +40,12 @@ extension Endpoint {
     
     static func newsfeedLike(postId: Int) -> Self {
         return Endpoint(path: "newsfeed/\(postId)/like/")
+<<<<<<< HEAD
+=======
+    static func newsfeed(id: Int, cursor: String? = nil) -> Self {
+        return Endpoint(path: "user/\(id)/newsfeed/", cursor: cursor)
+>>>>>>> 522a3b2 (프로필 탭 유저 프로필 데이터 불러오기)
+=======
+>>>>>>> 240cdb5 (Edit files to resolve conflict)
     }
 }

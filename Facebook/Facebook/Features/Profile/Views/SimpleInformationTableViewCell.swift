@@ -24,8 +24,11 @@ class SimpleInformationTableViewCell: UITableViewCell {
     
     var cellStyle: Style = .style1
     
+<<<<<<< HEAD
+=======
     lazy var informationIsSelected: Bool = false
     
+>>>>>>> 7080fa7 (파일 이름 에러 수정)
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
@@ -57,9 +60,14 @@ class SimpleInformationTableViewCell: UITableViewCell {
     
     func initialSetup(cellStyle: Style) {
         self.cellStyle = cellStyle
+<<<<<<< HEAD
+        setStyle()
+        setLayout()
+=======
         
         setLayout()
         setStyle()
+>>>>>>> 7080fa7 (파일 이름 에러 수정)
     }
     
     private func setStyle(){
@@ -74,18 +82,32 @@ class SimpleInformationTableViewCell: UITableViewCell {
             informationLabel.font = UIFont.systemFont(ofSize: 18)
         case .style3:
             informationImage.contentMode = .scaleAspectFit
+<<<<<<< HEAD
+            informationImage.layer.cornerRadius = informationImage.frame.width / 2
+            informationImage.clipsToBounds = true
+            informationImage.backgroundColor = .systemGray4
+=======
             informationImage.layer.cornerRadius = 17.5
             informationImage.clipsToBounds = true
+>>>>>>> 7080fa7 (파일 이름 에러 수정)
             informationImage.tintColor = .gray
             
             informationLabel.font = UIFont.systemFont(ofSize: 18)
             informationLabel.textColor = .systemBlue
         case .style4:
             informationImage.contentMode = .scaleAspectFit
+<<<<<<< HEAD
+            informationImage.layer.cornerRadius = informationImage.frame.width / 2
+            informationImage.clipsToBounds = true
+            informationImage.layer.borderColor = CGColor(gray: 0.5, alpha: 1)
+            informationImage.layer.borderWidth - 1
+            informationImage.backgroundColor = .systemGray6
+=======
             informationImage.layer.cornerRadius = 17.5
             informationImage.clipsToBounds = true
             informationImage.layer.borderColor = CGColor(gray: 1, alpha: 1)
             informationImage.layer.borderWidth = 1
+>>>>>>> 7080fa7 (파일 이름 에러 수정)
             informationImage.tintColor = .gray
             
             informationLabel.font = UIFont.systemFont(ofSize: 20)
@@ -102,8 +124,13 @@ class SimpleInformationTableViewCell: UITableViewCell {
                 informationImage.heightAnchor.constraint(equalToConstant: 20),
                 informationImage.widthAnchor.constraint(equalToConstant: 20),
                 informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+<<<<<<< HEAD
+                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
+=======
                 informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
                 informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+>>>>>>> 7080fa7 (파일 이름 에러 수정)
                 informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
             ])
             
@@ -113,6 +140,17 @@ class SimpleInformationTableViewCell: UITableViewCell {
                 informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
             ])
+<<<<<<< HEAD
+        case .style3, .style4:
+            addSubview(informationImage)
+            informationImage.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                informationImage.heightAnchor.constraint(equalToConstant: 30),
+                informationImage.widthAnchor.constraint(equalToConstant: 30),
+                informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
+=======
         case .style3:
             addSubview(informationImage)
             informationImage.translatesAutoresizingMaskIntoConstraints = false
@@ -122,6 +160,7 @@ class SimpleInformationTableViewCell: UITableViewCell {
                 informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
                 informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+>>>>>>> 7080fa7 (파일 이름 에러 수정)
                 informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
             ])
             
@@ -129,6 +168,10 @@ class SimpleInformationTableViewCell: UITableViewCell {
             informationLabel.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+<<<<<<< HEAD
+                informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
+            ])
+=======
                 informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 20)
             ])
         case .style4:
@@ -159,11 +202,14 @@ class SimpleInformationTableViewCell: UITableViewCell {
                 deleteButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -15)
             ])
             deleteButton.isHidden = true
+>>>>>>> 7080fa7 (파일 이름 에러 수정)
         }
     }
     
     let informationImage = UIImageView()
     let informationLabel = UILabel()
+<<<<<<< HEAD
+=======
     
     lazy var deleteButton: UIButton = {
         let button = UIButton()
@@ -172,4 +218,5 @@ class SimpleInformationTableViewCell: UITableViewCell {
         
         return button
     }()
+>>>>>>> 7080fa7 (파일 이름 에러 수정)
 }

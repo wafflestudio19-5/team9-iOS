@@ -9,12 +9,13 @@ import UIKit
 
 class DetailProfileView: UIView {
 
-    let detailProfileTableView = UITableView()
+    let detailProfileTableView = UITableView(frame: .zero, style: .grouped)
+    let refreshControl = UIRefreshControl()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
-        setStyleForView()
+        configureTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -33,9 +34,35 @@ class DetailProfileView: UIView {
         ])
     }
     
-    private func setStyleForView() {
-        //profileTableView.tableHeaderView = UIView()  // removes the separator at the top
-        detailProfileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
+    private func configureTableView() {
+        detailProfileTableView.tableHeaderView = UIView(frame: .zero)
+        detailProfileTableView.separatorStyle = .none  
+        detailProfileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
+        detailProfileTableView.register(DetailInformationTableViewCell.self, forCellReuseIdentifier: DetailInformationTableViewCell.reuseIdentifier)
         detailProfileTableView.allowsSelection = false
+    }
+    
+    private lazy var bottomSpinner: UIView = {
+        let view = UIView(frame: CGRect(
+            x: 0,
+            y: 0,
+            width: self.frame.size.width,
+            height: 100)
+        )
+        let spinner = UIActivityIndicatorView()
+        view.addSubview(spinner)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        spinner.startAnimating()
+        return view
+    }()
+    
+    func showBottomSpinner() {
+        self.detailProfileTableView.tableFooterView = self.bottomSpinner
+    }
+    
+    func hideBottomSpinner() {
+        self.detailProfileTableView.tableFooterView = UIView(frame: .zero)
     }
 }

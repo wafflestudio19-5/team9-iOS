@@ -9,12 +9,12 @@ import UIKit
 
 class EditProfileView: UIView {
 
-    let editProfileTableView = UITableView()
+    let editProfileTableView = UITableView(frame: .zero, style: .grouped)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
-        setStyleForView()
+        configureTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -33,10 +33,13 @@ class EditProfileView: UIView {
         ])
     }
 
-    private func setStyleForView() {
-        //profileTableView.tableHeaderView = UIView()  // removes the separator at the top
-        editProfileTableView.register(UINib(nibName: "ProfileImageTableViewCell", bundle: nil), forCellReuseIdentifier: "ProfileImageCell")
-        editProfileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
+    private func configureTableView() {
+        editProfileTableView.tableHeaderView = UIView(frame: .zero)
+        editProfileTableView.separatorStyle = .none //cell과 cell사이 separator line 제거
+        editProfileTableView.register(UINib(nibName: "ImageTableViewCell", bundle: nil), forCellReuseIdentifier: "ImageCell")
+        editProfileTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)
+        editProfileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
+        editProfileTableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.reuseIdentifier)
         editProfileTableView.allowsSelection = false
     }
 }
