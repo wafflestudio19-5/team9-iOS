@@ -26,7 +26,7 @@
                         <color key="tintColor" systemColor="tintColor"/>
                         <state key="normal" title="Button"/>
                         <buttonConfiguration key="configuration" style="plain" title="전체 공개 정보 수정">
-                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="17"/>
+                            <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="17"/>
                             <color key="baseForegroundColor" systemColor="tintColor"/>
                         </buttonConfiguration>
                     </button>

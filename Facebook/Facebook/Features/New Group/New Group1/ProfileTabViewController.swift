@@ -32,66 +32,46 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView> {
             if row == 0 {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: IndexPath.init(row: row, section: 0)) as? MainProfileTableViewCell else { return UITableViewCell() }
                 
-                cell.delegate = self
+                cell.editProfileButton.rx.tap.bind { [weak self] _ in
+                    let editProfileViewController = EditProfileViewController()
+                    self?.push(viewController: editProfileViewController)
+                }.disposed(by: self.disposeBag)
                 return cell
             }else if (row >= 1 && row <= 5){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: IndexPath.init(row: row - 1, section: 1))
+                
+                cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                    let detailProfileViewController = DetailProfileViewController()
+                    self?.push(viewController: detailProfileViewController)
+                }).disposed(by: self.disposeBag)
                 return cell
             }else if row == 6 {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "ShowProfileCell", for: IndexPath.init(row: row - 1, section: 1)) as? ShowProfileTableViewCell else { return UITableViewCell() }
                 
-                cell.delegate = self
+                cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                    let detailProfileViewController = DetailProfileViewController()
+                    self?.push(viewController: detailProfileViewController)
+                }).disposed(by: self.disposeBag)
                 return cell
             }else if row == 7{
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: IndexPath.init(row: row - 1, section: 1)) as? EditProfileTableViewCell else { return UITableViewCell() }
                 
-                cell.delegate = self
+                cell.editProfileButton.rx.tap.bind { [weak self] _ in
+                    let editProfileViewController = EditProfileViewController()
+                    self?.push(viewController: editProfileViewController)
+                }.disposed(by: self.disposeBag)
                 return cell
             }else if row == 8{
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "CreatePostCell", for: IndexPath.init(row: row - 8, section: 2)) as? CreatePostTableViewCell else { return UITableViewCell() }
                 
-                cell.delegate = self
+                
                 return cell
             }else {
                 guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: IndexPath.init(row: row - 9, section: 3)) as? PostTableViewCell else { return UITableViewCell() }
                 
-                cell.delegate = self
+                
                 return cell
             }
         }.disposed(by: disposeBag)
     }
 }
-
-extension ProfileTabViewController: MainProfileTableViewCellDelegate,EditProfileTableViewCellDelegate {
-    func goEditProfileView() {
-        let editProfileViewController = EditProfileViewController()
-        
-        self.navigationController?.pushViewController(editProfileViewController, animated: true)
-    }
-}
-
-extension ProfileTabViewController: ShowProfileTableViewCellDelegate {
-    func goDetailProfileView() {
-        let detailProfileViewController = DetailProfileViewController()
-        
-        self.navigationController?.pushViewController(detailProfileViewController, animated: true)
-    }
-}
-
-extension ProfileTabViewController: CreatePostTableViewCellDelegate {
-    func goCreatePostView() {
-        let createPostViewController = CreatePostViewController()
-        createPostViewController.view.backgroundColor = .white
-        
-        self.navigationController?.pushViewController(createPostViewController, animated: true)
-    }
-}
-
-extension ProfileTabViewController: PostTableViewCellDelegate {
-    func goPostView() {
-        let postViewController = PostViewController()
-        
-        self.navigationController?.pushViewController(postViewController, animated: true)
-    }
-}
-

@@ -9,6 +9,8 @@ import UIKit
 
 class SelfIntroTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var selfIntroLabel: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

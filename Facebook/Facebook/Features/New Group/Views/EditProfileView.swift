@@ -9,7 +9,7 @@ import UIKit
 
 class EditProfileView: UIView {
 
-    let editProfileTableView = UITableView()
+    let editProfileTableView = UITableView(frame: .zero, style: .grouped)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,9 +34,11 @@ class EditProfileView: UIView {
     }
 
     private func setStyleForView() {
-        //profileTableView.tableHeaderView = UIView()  // removes the separator at the top
-        editProfileTableView.register(UINib(nibName: "ProfileImageTableViewCell", bundle: nil), forCellReuseIdentifier: "ProfileImageCell")
+        editProfileTableView.separatorStyle = .none //cell과 cell사이 separator line 제거
+        editProfileTableView.register(UINib(nibName: "ImageTableViewCell", bundle: nil), forCellReuseIdentifier: "ImageCell")
+        editProfileTableView.register(UINib(nibName: "SelfIntroTableViewCell", bundle: nil), forCellReuseIdentifier: "SelfIntroCell")
         editProfileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
+        editProfileTableView.register(UINib(nibName: "EditProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "EditProfileCell")
         editProfileTableView.allowsSelection = false
     }
 }

@@ -8,8 +8,8 @@
 import UIKit
 
 class ImageTableViewCell: UITableViewCell {
-
-    @IBOutlet weak var profileImage: UIImageView!
+    
+    @IBOutlet weak var imgView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
