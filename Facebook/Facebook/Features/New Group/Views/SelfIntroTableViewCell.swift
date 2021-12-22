@@ -1,16 +1,14 @@
 //
-//  ProfileImageTableViewCell.swift
+//  SelfIntroTableViewCell.swift
 //  Facebook
 //
-//  Created by 김우성 on 2021/12/20.
+//  Created by 김우성 on 2021/12/22.
 //
 
 import UIKit
 
-class ProfileImageTableViewCell: UITableViewCell {
+class SelfIntroTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var profileImage: UIImageView!
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
