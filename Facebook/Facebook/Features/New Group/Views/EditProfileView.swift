@@ -14,7 +14,7 @@ class EditProfileView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
-        setStyleForView()
+        configureTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -33,7 +33,7 @@ class EditProfileView: UIView {
         ])
     }
 
-    private func setStyleForView() {
+    private func configureTableView() {
         editProfileTableView.separatorStyle = .none //cell과 cell사이 separator line 제거
         editProfileTableView.register(UINib(nibName: "ImageTableViewCell", bundle: nil), forCellReuseIdentifier: "ImageCell")
         editProfileTableView.register(UINib(nibName: "SelfIntroTableViewCell", bundle: nil), forCellReuseIdentifier: "SelfIntroCell")

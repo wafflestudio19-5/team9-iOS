@@ -14,7 +14,7 @@ class DetailProfileView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
-        setStyleForView()
+        configureTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -33,7 +33,7 @@ class DetailProfileView: UIView {
         ])
     }
     
-    private func setStyleForView() {
+    private func configureTableView() {
         detailProfileTableView.separatorStyle = .none  
         detailProfileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
         detailProfileTableView.allowsSelection = false

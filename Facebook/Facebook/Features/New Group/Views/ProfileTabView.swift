@@ -15,7 +15,7 @@ class ProfileTabView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
-        setStyleForView()
+        configureTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -34,7 +34,7 @@ class ProfileTabView: UIView {
         ])
     }
     
-    private func setStyleForView() {
+    private func configureTableView() {
         profileTableView.tableHeaderView = UIView()  // removes the separator at the top
         profileTableView.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "PostCell")
         profileTableView.register(UINib(nibName: "CreatePostTableViewCell", bundle: nil), forCellReuseIdentifier: "CreatePostCell")
