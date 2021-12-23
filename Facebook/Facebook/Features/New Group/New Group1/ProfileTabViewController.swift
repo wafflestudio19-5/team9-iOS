@@ -12,66 +12,184 @@ import RxCocoa
 import RxAlamofire
 import RxDataSources
 
-class ProfileTabViewController: BaseTabViewController<ProfileTabView> {
+class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableViewDelegate {
 
     var tableView: UITableView {
         tabView.profileTableView
     }
+
+    let sections: [MultipleSectionModel] = [
+        .ProfileImageSection(title: "메인 프로필", items: [
+            .MainProfileItem(profileImage: UIImage(systemName: "person.fill")!, coverImage: UIImage(), name: "name")
+        ]),
+        .DetailInformationSection(title: "상세 정보", items: [
+            .DetailInformationItem(image: UIImage(systemName: "briefcase.fill")!, information: "경력"),
+            .DetailInformationItem(image: UIImage(systemName: "graduationcap.fill")!, information: "학력"),
+            .DetailInformationItem(image: UIImage(systemName: "ellipsis")!, information: "내 정보 보기"),
+            .EditProfileItem(title: "전체 공개 정보 수정")
+        ]),
+        .PostSection(title: "내가 쓴 글", items: [
+            
+        ])
+    ]
+
+    let postData = PaginationViewModel<Post>(endpoint: .newsfeed())
     
-    let dummyObservable = Observable.just(1...15)
+    let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
     
+    private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
+    
+    private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
+        switch dataSource[idxPath] {
+        case let .MainProfileItem(profileImage, coverImage, name):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
+            
+            cell.profileImage.image = profileImage
+            cell.coverImage.image = coverImage
+            cell.nameLabel.text = name
+            
+            cell.profileImage.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                print("profile image Tap")
+            }).disposed(by: self.disposeBag)
+            
+            cell.coverImageButton.rx.tap.bind { [weak self] in
+                print("cover image button tap")
+            }.disposed(by: self.disposeBag)
+            
+            cell.editProfileButton.rx.tap.bind { [weak self] in
+                let editProfileViewController = EditProfileViewController()
+                self?.push(viewController: editProfileViewController)
+            }.disposed(by: self.disposeBag)
+            
+            return cell
+        case let .ProfileImageItem(image):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
+            
+            cell.imgView.image = image
+            return cell
+        case let .CoverImageItem(image):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
+            
+            cell.imgView.image = image
+            return cell
+        case let .SelfIntroItem(intro):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SelfIntroCell", for: idxPath) as? SelfIntroTableViewCell else { return UITableViewCell() }
+            
+            cell.selfIntroLabel.text = intro
+            return cell
+        case let .DetailInformationItem(image,information):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
+            
+            cell.informationImage.image = image
+            cell.informationLabel.text = information
+            
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                let detailProfileViewController = DetailProfileViewController()
+                self?.push(viewController: detailProfileViewController)
+            }).disposed(by: self.disposeBag)
+            
+            return cell
+        case let .EditProfileItem(title):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: idxPath) as? EditProfileTableViewCell else { return UITableViewCell() }
+            
+            cell.editProfileButton.setTitleColor(.tintColor, for: .normal)
+            cell.editProfileButton.setTitle(title, for: .normal)
+            cell.editProfileButton.setImage(UIImage(systemName: "person.text.rectangle"), for: .normal)
+            
+            cell.editProfileButton.rx.tap.bind { [weak self] in
+                let editProfileViewController = EditProfileViewController()
+                self?.push(viewController: editProfileViewController)
+            }.disposed(by: self.disposeBag)
+            
+            return cell
+        case let .PostItem(post):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: idxPath) as? PostCell else { return UITableViewCell() }
+
+            cell.configureCell(with: post)
+            return cell
+        }
+    }
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
         super.setNavigationBarItems(withEditButton: true)
         
+        sectionsBR.accept(sections)
         bindTableView()
     }
     
     func bindTableView() {
-        dummyObservable.bind(to: tableView.rx.items) { (tableView, row, item) -> UITableViewCell in
-            if row == 0 {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: IndexPath.init(row: row, section: 0)) as? MainProfileTableViewCell else { return UITableViewCell() }
-                
-                cell.editProfileButton.rx.tap.bind { [weak self] _ in
-                    let editProfileViewController = EditProfileViewController()
-                    self?.push(viewController: editProfileViewController)
-                }.disposed(by: self.disposeBag)
-                return cell
-            }else if (row >= 1 && row <= 5){
-                let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: IndexPath.init(row: row - 1, section: 1))
-                
-                cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                    let detailProfileViewController = DetailProfileViewController()
-                    self?.push(viewController: detailProfileViewController)
-                }).disposed(by: self.disposeBag)
-                return cell
-            }else if row == 6 {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "ShowProfileCell", for: IndexPath.init(row: row - 1, section: 1)) as? ShowProfileTableViewCell else { return UITableViewCell() }
-                
-                cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                    let detailProfileViewController = DetailProfileViewController()
-                    self?.push(viewController: detailProfileViewController)
-                }).disposed(by: self.disposeBag)
-                return cell
-            }else if row == 7{
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: IndexPath.init(row: row - 1, section: 1)) as? EditProfileTableViewCell else { return UITableViewCell() }
-                
-                cell.editProfileButton.rx.tap.bind { [weak self] _ in
-                    let editProfileViewController = EditProfileViewController()
-                    self?.push(viewController: editProfileViewController)
-                }.disposed(by: self.disposeBag)
-                return cell
-            }else if row == 8{
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "CreatePostCell", for: IndexPath.init(row: row - 8, section: 2)) as? CreatePostTableViewCell else { return UITableViewCell() }
-                
-                
-                return cell
-            }else {
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: IndexPath.init(row: row - 9, section: 3)) as? PostTableViewCell else { return UITableViewCell() }
-                
-                
-                return cell
+        sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        
+        tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
+        postData.isLoading
+            .asDriver()
+            .drive(onNext: { [weak self] isLoading in
+                if isLoading {
+                    self?.tabView.showBottomSpinner()
+                } else {
+                    self?.tabView.hideBottomSpinner()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        /// 새로고침 제스쳐가 인식될 때마다 `refresh` 함수를 실행합니다.
+        tabView.refreshControl.rx.controlEvent(.valueChanged)
+            .subscribe(onNext: { [weak self] in
+                self?.postData.refresh()
+            })
+            .disposed(by: disposeBag)
+        
+        /// 새로고침이 완료될 때마다 `refreshControl`의 애니메이션을 중단시킵니다.
+        postData.refreshComplete
+            .asDriver()
+            .drive(onNext : { [weak self] refreshComplete in
+                if refreshComplete {
+                    self?.tabView.refreshControl.endRefreshing()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        /// 테이블 맨 아래까지 스크롤할 때마다 `loadMore` 함수를 실행합니다.
+        tableView.rx.didScroll.subscribe { [weak self] _ in
+            guard let self = self else { return }
+            let offSetY = self.tableView.contentOffset.y
+            let contentHeight = self.tableView.contentSize.height
+            
+            if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
+                self.postData.loadMore()
             }
-        }.disposed(by: disposeBag)
+        }
+        .disposed(by: disposeBag)
     }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    
+        let footerView = UIView()
+        footerView.backgroundColor = .white
+        
+        let width = tableView.bounds.width - 20
+        let sepframe = CGRect(x: 10, y: 0, width: width, height: 0.5)
+        
+        let sep = CALayer()
+        sep.frame = sepframe
+        sep.backgroundColor = CGColor(red: 0, green: 0, blue: 0, alpha: 1)
+        footerView.layer.addSublayer(sep)
+        
+        return footerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 5
+    }
+    
+//    static func dataSource(navigation: UINavigationController) -> RxTableViewSectionedReloadDataSource<MultipleSectionModel>{
+//    }
 }

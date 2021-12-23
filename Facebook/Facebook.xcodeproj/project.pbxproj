@@ -23,6 +23,7 @@
 		77547908275CE6CC0065711C /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77547906275CE6CC0065711C /* CommentTableViewCell.xib */; };
 		775F150C2772DF0E00C9872F /* SelfIntroTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* SelfIntroTableViewCell.swift */; };
 		775F150D2772DF0E00C9872F /* SelfIntroTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 775F150B2772DF0E00C9872F /* SelfIntroTableViewCell.xib */; };
+		775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150E27730BA000C9872F /* DataSourceModel.swift */; };
 		7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77799318274FD8E4007A3898 /* PostTableViewCell.swift */; };
 		7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77799319274FD8E4007A3898 /* PostTableViewCell.xib */; };
 		7779931D2750843C007A3898 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7779931C2750843B007A3898 /* SearchViewController.swift */; };
@@ -107,6 +108,7 @@
 		77547906275CE6CC0065711C /* CommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
 		775F150A2772DF0E00C9872F /* SelfIntroTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroTableViewCell.swift; sourceTree = "<group>"; };
 		775F150B2772DF0E00C9872F /* SelfIntroTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelfIntroTableViewCell.xib; sourceTree = "<group>"; };
+		775F150E27730BA000C9872F /* DataSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceModel.swift; sourceTree = "<group>"; };
 		77799318274FD8E4007A3898 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		77799319274FD8E4007A3898 /* PostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
 		7779931C2750843B007A3898 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 		BE9C7CAA2771706A0089247F /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				775F150E27730BA000C9872F /* DataSourceModel.swift */,
 				BE9C7CAC277170840089247F /* Controllers */,
 				BE9C7CAB2771707A0089247F /* Views */,
 			);
@@ -759,6 +762,7 @@
 				7740943E2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift in Sources */,
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
 				77AC749E275E19C200F10BD5 /* PostContentTableViewCell.swift in Sources */,
+				775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */,
 				77AC749B275CEDAD00F10BD5 /* PostView.swift in Sources */,
 				77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,

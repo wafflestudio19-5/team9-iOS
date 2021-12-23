@@ -9,7 +9,7 @@ import UIKit
 
 class DetailProfileView: UIView {
 
-    let detailProfileTableView = UITableView()
+    let detailProfileTableView = UITableView(frame: .zero, style: .grouped)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,7 +34,7 @@ class DetailProfileView: UIView {
     }
     
     private func setStyleForView() {
-        //profileTableView.tableHeaderView = UIView()  // removes the separator at the top
+        detailProfileTableView.separatorStyle = .none  
         detailProfileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
         detailProfileTableView.allowsSelection = false
     }

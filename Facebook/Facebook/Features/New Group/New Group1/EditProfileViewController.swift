@@ -29,16 +29,22 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     let disposeBag = DisposeBag()
     
     let sections: [MultipleSectionModel] = [
-        .ProfileImageSection(title: "프로필 사진", items: [.ProfileImageItem(image: UIImage(systemName: "person.circle.fill")!)]),
-        .CoverImageSection(title: "커버 사진", items: [.CoverImageItem(image: UIImage(systemName: "photo")!)]),
-        .SelfIntroSection(title: "소개", items: [.SelfIntroItem(intro: "회원님에 대해 설명해주세요...")]),
-        .DetailInformationSection(title: "상세 정보", items:
-            [.DetailInformationItem(information:"거주지"),
-            .DetailInformationItem(information: "직장"),
-            .DetailInformationItem(information: "학력"),
-            .DetailInformationItem(information: "출신지"),
-            .DetailInformationItem(information: "결혼/연애 상태")]),
-        .EditProfileSection(title: "정보 수정", items: [.EditProfileItem(title: "정보 수정")])
+        .ProfileImageSection(title: "프로필 사진", items: [
+            .ProfileImageItem(image: UIImage(systemName: "person.circle.fill")!)
+        ]),
+        .CoverImageSection(title: "커버 사진", items: [
+            .CoverImageItem(image: UIImage(systemName: "photo")!)
+        ]),
+        .SelfIntroSection(title: "소개", items: [
+            .SelfIntroItem(intro: "회원님에 대해 설명해주세요...")
+        ]),
+        .DetailInformationSection(title: "상세 정보", items: [
+            .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "직장"),
+            .DetailInformationItem(image: UIImage(systemName: "graduationcap")!, information: "학력"),
+        ]),
+        .EditProfileSection(title: "정보 수정", items: [
+            .EditProfileItem(title: "정보 수정")
+        ])
     ]
     
     let dataSource = EditProfileViewController.dataSource()
@@ -55,7 +61,6 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         Observable.just(sections).bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        
     }
     
     //UITableView의 custom header적용
@@ -143,12 +148,18 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     }
 }
 
-
 extension EditProfileViewController {
     static func dataSource() -> RxTableViewSectionedReloadDataSource<MultipleSectionModel>{
         return RxTableViewSectionedReloadDataSource<MultipleSectionModel>(
             configureCell: { dataSource, tableView, idxPath, _ in
                 switch dataSource[idxPath] {
+                case let .MainProfileItem(profileImage, coverImage, name):
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
+                    
+                    cell.profileImage.image = profileImage
+                    cell.coverImage.image = coverImage
+                    cell.nameLabel.text = name
+                    return cell
                 case let .ProfileImageItem(image):
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
                     
@@ -164,9 +175,10 @@ extension EditProfileViewController {
                     
                     cell.selfIntroLabel.text = intro
                     return cell
-                case let .DetailInformationItem(information):
+                case let .DetailInformationItem(image,information):
                     guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
                     
+                    cell.informationImage.image = image
                     cell.informationLabel.text = information
                     return cell
                 case let .EditProfileItem(title):
@@ -175,76 +187,15 @@ extension EditProfileViewController {
                     cell.editProfileButton.setTitleColor(.tintColor, for: .normal)
                     cell.editProfileButton.setTitle(title, for: .normal)
                     cell.editProfileButton.setImage(UIImage(systemName: "person.text.rectangle"), for: .normal)
+                    
+                    return cell
+                case let .PostItem(post):
+                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: idxPath) as? PostCell else { return UITableViewCell() }
+                    
+                    cell.configureCell(with: post)
                     return cell
                 }
             }
         )
-    }
-}
-
-enum MultipleSectionModel {
-    case ProfileImageSection(title: String, items: [SectionItem])
-    case CoverImageSection(title: String, items: [SectionItem])
-    case SelfIntroSection(title: String, items: [SectionItem])
-    case DetailInformationSection(title: String, items: [SectionItem])
-    case EditProfileSection(title: String, items: [SectionItem])
-}
-
-enum SectionItem {
-    case ProfileImageItem(image: UIImage)
-    case CoverImageItem(image: UIImage)
-    case SelfIntroItem(intro: String)
-    case DetailInformationItem(information: String)
-    case EditProfileItem(title: String)
-}
-
-extension MultipleSectionModel: SectionModelType {
-    typealias Item = SectionItem
-    
-    var items: [SectionItem] {
-        switch  self {
-        case .ProfileImageSection(title: _, items: let items):
-            return items.map { $0 }
-        case .CoverImageSection(title: _, items: let items):
-            return items.map { $0 }
-        case .SelfIntroSection(title: _, items: let items):
-            return items.map { $0 }
-        case .DetailInformationSection(title: _, items: let items):
-            return items.map { $0 }
-        case .EditProfileSection(title: _, items: let items):
-            return items.map { $0 }
-        }
-    }
-    
-    init(original: MultipleSectionModel, items: [Item]) {
-        switch original {
-        case let .ProfileImageSection(title: title, items: _):
-            self = .ProfileImageSection(title: title, items: items)
-        case let .CoverImageSection(title: title, items: _):
-            self = .CoverImageSection(title: title, items: items)
-        case let .SelfIntroSection(title: title, items: _):
-            self = .SelfIntroSection(title: title, items: items)
-        case let .DetailInformationSection(title, _):
-            self = .DetailInformationSection(title: title, items: items)
-        case let .EditProfileSection(title: title, items: _):
-            self = .EditProfileSection(title: title, items: items)
-        }
-    }
-}
-
-extension MultipleSectionModel {
-    var title: String {
-        switch self {
-        case .ProfileImageSection(title: let title, items: _):
-            return title
-        case .CoverImageSection(title: let title, items: _):
-            return title
-        case .SelfIntroSection(title: let title, items: _):
-            return title
-        case .DetailInformationSection(title: let title, items: _):
-            return title
-        case .EditProfileSection(title: let title, items: _):
-            return title
-        }
     }
 }
