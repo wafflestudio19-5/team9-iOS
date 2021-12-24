@@ -45,6 +45,9 @@
 		77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B635472768B30A00C41EB3 /* EditProfileViewController.swift */; };
 		77E12FA22769A97800B8F191 /* CreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA12769A97800B8F191 /* CreatePostView.swift */; };
 		77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA32769A98900B8F191 /* CreatePostViewController.swift */; };
+		77FE72872775E00600482CE7 /* SelectInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72862775E00600482CE7 /* SelectInformationView.swift */; };
+		77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */; };
+		77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728A2776021600482CE7 /* SearchHeaderView.swift */; };
 		B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA42754E53700513B77 /* KakaoAuthManager.swift */; };
 		B846BDA72754F35800513B77 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA62754F35800513B77 /* LoginView.swift */; };
 		B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA92754F5A900513B77 /* FacebookColor.swift */; };
@@ -135,6 +138,9 @@
 		77B635472768B30A00C41EB3 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		77E12FA12769A97800B8F191 /* CreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostView.swift; sourceTree = "<group>"; };
 		77E12FA32769A98900B8F191 /* CreatePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewController.swift; sourceTree = "<group>"; };
+		77FE72862775E00600482CE7 /* SelectInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectInformationView.swift; sourceTree = "<group>"; };
+		77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectInformationViewController.swift; sourceTree = "<group>"; };
+		77FE728A2776021600482CE7 /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
 		AF0AA20D3E5E391258D676CE /* Pods-Facebook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.release.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.release.xcconfig"; sourceTree = "<group>"; };
 		B846BDA42754E53700513B77 /* KakaoAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthManager.swift; sourceTree = "<group>"; };
 		B846BDA62754F35800513B77 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -404,6 +410,8 @@
 				77ABC5D32774A906000431E1 /* EditDetailInformationView.swift */,
 				77ABC5DB2774B696000431E1 /* Header&FooterView.swift */,
 				77ABC5D72774A998000431E1 /* AddInformationView.swift */,
+				77FE72862775E00600482CE7 /* SelectInformationView.swift */,
+				77FE728A2776021600482CE7 /* SearchHeaderView.swift */,
 				774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */,
 				774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */,
 				771DF59E27707DD900B69351 /* ImageTableViewCell.swift */,
@@ -428,6 +436,7 @@
 				77B635472768B30A00C41EB3 /* EditProfileViewController.swift */,
 				77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */,
 				77ABC5D92774A9B0000431E1 /* AddInformationViewController.swift */,
+				77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */,
 			);
 			name = Controllers;
 			path = "New Group1";
@@ -798,6 +807,7 @@
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
 				77E12FA22769A97800B8F191 /* CreatePostView.swift in Sources */,
 				BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */,
+				77FE72872775E00600482CE7 /* SelectInformationView.swift in Sources */,
 				7779931D2750843C007A3898 /* SearchViewController.swift in Sources */,
 				B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */,
 				B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */,
@@ -808,6 +818,7 @@
 				B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
+				77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */,
 				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
 				77ABC5DC2774B696000431E1 /* Header&FooterView.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
@@ -823,6 +834,7 @@
 				B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */,
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
 				B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */,
+				77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
 				775F150C2772DF0E00C9872F /* SelfIntroTableViewCell.swift in Sources */,

@@ -14,17 +14,18 @@ class HeaderView: UIView {
     let subTitleText = "선택하신 상세 정보는 전체 공개됩니다."
     
     override init(frame: CGRect) {
-        super.init(frame: .zero)
-        setLayourForView()
+        super.init(frame: frame)
+        setLayoutForView()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setLayourForView() {
+    private func setLayoutForView() {
+        self.backgroundColor = .white
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        self.heightAnchor.constraint(equalToConstant: 75).isActive = true
         
         self.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -39,6 +40,7 @@ class HeaderView: UIView {
         NSLayoutConstraint.activate([
             subTitleLabel.heightAnchor.constraint(equalToConstant: 20),
             subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
+            subTitleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
             subTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
         ])
     }
@@ -63,7 +65,7 @@ class FooterView: UIView {
     let buttonLabel = "저장"
     
     override init(frame: CGRect) {
-        super.init(frame: .zero)
+        super.init(frame: frame)
         setLayoutForView()
     }
     
@@ -74,7 +76,7 @@ class FooterView: UIView {
     private func setLayoutForView() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.heightAnchor.constraint(equalToConstant: 50)
-        
+    
         self.addSubview(saveButton)
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -82,7 +84,7 @@ class FooterView: UIView {
             saveButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             saveButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             saveButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-            saveButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 15)
+            saveButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
         ])
     }
     

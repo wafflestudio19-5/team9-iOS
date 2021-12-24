@@ -25,14 +25,14 @@ class EditDetailInformationView: UIView {
     
     private func setLayoutforView() {
         self.addSubview(editDetailInformationTableView)
-        //self.addSubview(footerView)
+        self.addSubview(footerView)
         
         editDetailInformationTableView.translatesAutoresizingMaskIntoConstraints = false
-        //footerView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-//            footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-//            footerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-//            footerView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
+            footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            footerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            footerView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             editDetailInformationTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             editDetailInformationTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
             editDetailInformationTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
@@ -41,9 +41,9 @@ class EditDetailInformationView: UIView {
     }
     
     private func configureTableView() {
-        editDetailInformationTableView.tableHeaderView = headerView
+        //editDetailInformationTableView.tableHeaderView = headerView
         
-        headerView.widthAnchor.constraint(equalTo: editDetailInformationTableView.widthAnchor).isActive = true
+        //headerView.widthAnchor.constraint(equalTo: editDetailInformationTableView.widthAnchor).isActive = true
         
         editDetailInformationTableView.separatorStyle = .none
         editDetailInformationTableView.register(UINib(nibName: "EditProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "EditProfileCell")

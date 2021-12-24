@@ -84,7 +84,6 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         self.title = "상세 정보 수정"
         bindTableView()
@@ -139,7 +138,7 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 30
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

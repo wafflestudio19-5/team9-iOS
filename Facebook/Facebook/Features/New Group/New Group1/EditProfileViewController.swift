@@ -90,8 +90,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.editProfileButton.setImage(UIImage(systemName: "person.text.rectangle"), for: .normal)
             
             cell.editProfileButton.rx.tap.bind { [weak self] in
-                let editProfileViewController = EditProfileViewController()
-                self?.push(viewController: editProfileViewController)
+                let detailProfileViewController = DetailProfileViewController()
+                self?.push(viewController: detailProfileViewController)
             }.disposed(by: self.disposeBag)
             
             return cell

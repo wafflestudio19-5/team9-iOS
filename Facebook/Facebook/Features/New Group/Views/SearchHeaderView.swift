@@ -27,6 +27,7 @@ class SearchHeaderView: UIView {
         
         self.addSubview(searchBar)
         NSLayoutConstraint.activate([
+            searchBar.heightAnchor.constraint(equalToConstant: 35),
             searchBar.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor)
@@ -34,7 +35,7 @@ class SearchHeaderView: UIView {
         
         self.addSubview(divider)
         NSLayoutConstraint.activate([
-            divider.heightAnchor.constraint(equalToConstant: 5),
+            divider.heightAnchor.constraint(equalToConstant: 1),
             divider.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             divider.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: self.trailingAnchor),
@@ -43,6 +44,9 @@ class SearchHeaderView: UIView {
     
     private lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        searchBar.backgroundColor = .lightGray
+        searchBar.setImage(UIImage(named: "icSearchNonW"), for: UISearchBar.Icon.search, state: .normal)
+        searchBar.setImage(UIImage(named: "icCancel"), for: .clear, state: .normal)
         searchBar.placeholder = "직장 선택"
         searchBar.searchTextField.backgroundColor = UIColor.clear
         searchBar.searchTextField.font = UIFont.systemFont(ofSize: 18)
