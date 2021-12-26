@@ -13,6 +13,6 @@ extension Endpoint {
     }
     
     static func newsfeed(content: String) -> Self {
-        return Endpoint(path: "newsfeed/", parameters: ["content": content])
+        return Endpoint(path: "newsfeed/", parameters: ["content": content, "files": []])
     }
 }
