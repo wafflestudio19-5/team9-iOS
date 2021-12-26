@@ -14,7 +14,12 @@ class CreatePostView: UIView {
     let nameLabel = UILabel()
     let contentTextfield = UITextField()
     
-    let postButton = UIButton()
+    lazy var postButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("게시", for: .normal)
+        button.setTitleColor(UIColor.lightGray, for: .normal)
+        return button
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,6 +29,14 @@ class CreatePostView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func enablePostButton() {
+        postButton.titleLabel?.textColor = .systemBlue
+    }
+    
+    func disablePostButton () {
+        postButton.titleLabel?.textColor = .lightGray
     }
     
     private func setStyleForView() {
@@ -41,12 +54,6 @@ class CreatePostView: UIView {
             string: "무슨 생각을 하고 계신가요?",
             attributes:  [NSAttributedString.Key.foregroundColor: UIColor.gray]
         )
-        
-        postButton.frame = CGRect(x: 0, y: 0, width: 50, height: 30)
-        postButton.setTitle("게시", for: .normal)
-        postButton.setTitleColor(UIColor.lightGray, for: .normal)
-        postButton.backgroundColor = .systemGray4
-        postButton.layer.cornerRadius = 5
     }
     
     private func setLayoutForView() {

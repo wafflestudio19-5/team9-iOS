@@ -70,12 +70,12 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
-                self.creatPostView.postButton.titleLabel?.textColor = {
-                    return result ? UIColor.white : UIColor.lightGray
-                }()
-                self.creatPostView.postButton.backgroundColor = {
-                    return result ? UIColor.systemBlue : UIColor.systemGray4
-                }()
+                
+                if result {
+                    self.creatPostView.enablePostButton()
+                } else {
+                    self.creatPostView.disablePostButton()
+                }
             })
             .disposed(by: disposeBag)
     }
