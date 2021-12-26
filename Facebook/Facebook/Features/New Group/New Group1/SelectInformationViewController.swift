@@ -55,6 +55,10 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
             cell.informationImage.image = image
             cell.informationLabel.text = information
             
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: {  [weak self] _ in
+                self?.navigationController?.popViewController(animated: true)
+            }).disposed(by: self.disposeBag)
+            
             return cell
         case let .EditProfileItem(title):
             let cell = UITableViewCell()
@@ -64,30 +68,42 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
             let cell = UITableViewCell()
             
             return cell
+        case let .SelectDateItem(title):
+            let cell = UITableViewCell()
+            
+            return cell
         }
     }
+    
+    var inforomationType: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.title = "\(inforomationType) 선택"
+        selectInformationView.searchHeaderView.searchTextField.placeholder = "\(inforomationType) 선택"
         bindTableView()
     }
 
     private func bindTableView() {
-//        searchController.searchBar.rx.text.orEmpty.debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)
-//            .distinctUntilChanged()
-//            .subscribe(onNext: { text in
-//                //searchBar 입력값이 없으면 추가 셀을 띄우기 않음
-//                if text == "" {
-//                    self.searchResultBR.accept([])
-//                } else {
-//                    let addCellData: SectionItem = .DetailInformationItem(image: UIImage(), information: "\"\(text)\" 추가")
-//                    let searchData: [MultipleSectionModel] = [.DetailInformationSection(title: "검색 결과", items: [addCellData])]
-//                    self.searchResultBR.accept(searchData)
-//                }
-//            }).disposed(by: disposeBag)
+        selectInformationView.searchHeaderView.searchTextField.rx.text.orEmpty.debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .subscribe(onNext: { text in
+                //searchBar 입력값이 없으면 추가 셀을 띄우기 않음
+                if text == "" {
+                    self.searchResultBR.accept([])
+                } else {
+                    let addCellData: SectionItem = .DetailInformationItem(image: UIImage(), information: "\"\(text)\" 추가")
+                    let searchData: [MultipleSectionModel] = [.DetailInformationSection(title: "검색 결과", items: [addCellData])]
+                    self.searchResultBR.accept(searchData)
+                }
+            }).disposed(by: disposeBag)
         
         searchResultBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
     }
+}
+
+protocol SelectInformationDelegate {
+    func didSelectInformation()
 }

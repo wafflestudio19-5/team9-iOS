@@ -48,6 +48,7 @@
 		77FE72872775E00600482CE7 /* SelectInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72862775E00600482CE7 /* SelectInformationView.swift */; };
 		77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */; };
 		77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728A2776021600482CE7 /* SearchHeaderView.swift */; };
+		77FE728D2777512000482CE7 /* DateSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */; };
 		B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA42754E53700513B77 /* KakaoAuthManager.swift */; };
 		B846BDA72754F35800513B77 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA62754F35800513B77 /* LoginView.swift */; };
 		B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA92754F5A900513B77 /* FacebookColor.swift */; };
@@ -141,6 +142,7 @@
 		77FE72862775E00600482CE7 /* SelectInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectInformationView.swift; sourceTree = "<group>"; };
 		77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectInformationViewController.swift; sourceTree = "<group>"; };
 		77FE728A2776021600482CE7 /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
+		77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectTableViewCell.swift; sourceTree = "<group>"; };
 		AF0AA20D3E5E391258D676CE /* Pods-Facebook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.release.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.release.xcconfig"; sourceTree = "<group>"; };
 		B846BDA42754E53700513B77 /* KakaoAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthManager.swift; sourceTree = "<group>"; };
 		B846BDA62754F35800513B77 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -424,6 +426,7 @@
 				774094492750ECDC00AD8DC2 /* EditProfileTableViewCell.xib */,
 				775F150A2772DF0E00C9872F /* SelfIntroTableViewCell.swift */,
 				775F150B2772DF0E00C9872F /* SelfIntroTableViewCell.xib */,
+				77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -828,6 +831,7 @@
 				B8A7F8342767507000F659D2 /* LabelWithPadding.swift in Sources */,
 				B86194F4275DC49100957BBC /* EnterBirthdateViewController.swift in Sources */,
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
+				77FE728D2777512000482CE7 /* DateSelectTableViewCell.swift in Sources */,
 				77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */,
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
 				B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */,

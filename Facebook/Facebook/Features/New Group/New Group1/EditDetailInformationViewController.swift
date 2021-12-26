@@ -37,6 +37,8 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
         ])
     ]
     
+    let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay<[MultipleSectionModel]>(value: [])
+    
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
@@ -71,11 +73,16 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
             
             cell.editProfileButton.rx.tap.bind { [weak self] in
                 let addInformationViewController = AddInformationViewController()
+                addInformationViewController.informationType = title.components(separatedBy: " ")[0]
                 self?.push(viewController: addInformationViewController)
             }.disposed(by: self.disposeBag)
             
             return cell
         case let .PostItem(post):
+            let cell = UITableViewCell()
+            
+            return cell
+        case let .SelectDateItem(title):
             let cell = UITableViewCell()
             
             return cell
@@ -86,11 +93,12 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.title = "상세 정보 수정"
+        sectionsBR.accept(sections)
         bindTableView()
     }
 
     func bindTableView() {
-        Observable.just(sections).bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }

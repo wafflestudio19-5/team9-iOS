@@ -30,7 +30,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let sections: [MultipleSectionModel] = [
         .DetailInformationSection(title: "직장", items: [
-            .DetailInformationItem(image: UIImage(systemName: "briefcase")!,information: "경력 추가")
+            .DetailInformationItem(image: UIImage(systemName: "briefcase")!,information: "직장 추가")
         ]),
         .DetailInformationSection(title: "학력", items:[
             .DetailInformationItem(image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
@@ -45,7 +45,58 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         ])
     ]
     
-    let dataSource = DetailProfileViewController.dataSource()
+    private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
+    
+    private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
+        switch dataSource[idxPath] {
+        case let .MainProfileItem(profileImage, coverImage, name):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
+            
+            cell.profileImage.image = profileImage
+            cell.coverImage.image = coverImage
+            cell.nameLabel.text = name
+            return cell
+        case let .ProfileImageItem(image):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
+            
+            cell.imgView.image = image
+            return cell
+        case let .CoverImageItem(image):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
+            
+            cell.imgView.image = image
+            return cell
+        case let .SelfIntroItem(intro):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SelfIntroCell", for: idxPath) as? SelfIntroTableViewCell else { return UITableViewCell() }
+            
+            cell.selfIntroLabel.text = intro
+            return cell
+        case let .DetailInformationItem(image,information):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
+            
+            cell.configureCell(style: .style3)
+            cell.informationImage.image = image
+            cell.informationLabel.text = information
+            return cell
+        case let .EditProfileItem(title):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: idxPath) as? EditProfileTableViewCell else { return UITableViewCell() }
+            
+            cell.editProfileButton.setTitleColor(.tintColor, for: .normal)
+            cell.editProfileButton.setTitle(title, for: .normal)
+            cell.editProfileButton.setImage(UIImage(systemName: "person.text.rectangle"), for: .normal)
+            
+            return cell
+        case let .PostItem(post):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: idxPath) as? PostCell else { return UITableViewCell() }
+            
+            cell.configureCell(with: post)
+            return cell
+        case let .SelectDateItem(title):
+            let cell = UITableViewCell()
+            
+            return cell
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,57 +185,5 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 5
-    }
-}
-
-extension DetailProfileViewController {
-    static func dataSource() -> RxTableViewSectionedReloadDataSource<MultipleSectionModel>{
-        return RxTableViewSectionedReloadDataSource<MultipleSectionModel>(
-            configureCell: { dataSource, tableView, idxPath, _ in
-                switch dataSource[idxPath] {
-                case let .MainProfileItem(profileImage, coverImage, name):
-                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
-                    
-                    cell.profileImage.image = profileImage
-                    cell.coverImage.image = coverImage
-                    cell.nameLabel.text = name
-                    return cell
-                case let .ProfileImageItem(image):
-                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
-                    
-                    cell.imgView.image = image
-                    return cell
-                case let .CoverImageItem(image):
-                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
-                    
-                    cell.imgView.image = image
-                    return cell
-                case let .SelfIntroItem(intro):
-                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "SelfIntroCell", for: idxPath) as? SelfIntroTableViewCell else { return UITableViewCell() }
-                    
-                    cell.selfIntroLabel.text = intro
-                    return cell
-                case let .DetailInformationItem(image,information):
-                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
-                    
-                    cell.informationImage.image = image
-                    cell.informationLabel.text = information
-                    return cell
-                case let .EditProfileItem(title):
-                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: idxPath) as? EditProfileTableViewCell else { return UITableViewCell() }
-                    
-                    cell.editProfileButton.setTitleColor(.tintColor, for: .normal)
-                    cell.editProfileButton.setTitle(title, for: .normal)
-                    cell.editProfileButton.setImage(UIImage(systemName: "person.text.rectangle"), for: .normal)
-                    
-                    return cell
-                case let .PostItem(post):
-                    guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: idxPath) as? PostCell else { return UITableViewCell() }
-                    
-                    cell.configureCell(with: post)
-                    return cell
-                }
-            }
-        )
     }
 }

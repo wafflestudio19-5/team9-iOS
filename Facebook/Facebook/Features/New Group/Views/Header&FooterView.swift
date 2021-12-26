@@ -43,12 +43,22 @@ class HeaderView: UIView {
             subTitleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
             subTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
         ])
+        
+        self.addSubview(divider)
+        NSLayoutConstraint.activate([
+            divider.heightAnchor.constraint(equalToConstant: 0.5),
+            divider.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            divider.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            divider.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
+        ])
     }
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = titleText
         label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
     }()
     
@@ -57,7 +67,16 @@ class HeaderView: UIView {
         label.text = subTitleText
         label.textColor = .systemGray4
         label.font = UIFont.systemFont(ofSize: 18)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
         return label
+    }()
+    
+    private lazy var divider: UIView = {
+        let divider = UIView()
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = .lightGray
+        return divider
     }()
 }
 
@@ -88,12 +107,14 @@ class FooterView: UIView {
         ])
     }
     
-    private lazy var saveButton: UIButton = {
+    lazy var saveButton: UIButton = {
         let button = UIButton()
         button.setTitle(buttonLabel, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 5
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
         return button
     }()
 }

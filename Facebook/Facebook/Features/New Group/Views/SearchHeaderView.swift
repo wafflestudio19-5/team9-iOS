@@ -25,33 +25,46 @@ class SearchHeaderView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        self.addSubview(searchBar)
+        self.addSubview(searchImage)
         NSLayoutConstraint.activate([
-            searchBar.heightAnchor.constraint(equalToConstant: 35),
-            searchBar.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            searchBar.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            searchImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            searchImage.widthAnchor.constraint(equalToConstant: 30),
+            searchImage.heightAnchor.constraint(equalToConstant: 30),
+            searchImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10)
+        ])
+        
+        self.addSubview(searchTextField)
+        NSLayoutConstraint.activate([
+            searchTextField.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            searchTextField.heightAnchor.constraint(equalToConstant: 30),
+            searchTextField.leadingAnchor.constraint(equalTo: searchImage.trailingAnchor, constant: 10),
+            searchTextField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
         ])
         
         self.addSubview(divider)
         NSLayoutConstraint.activate([
-            divider.heightAnchor.constraint(equalToConstant: 1),
+            divider.heightAnchor.constraint(equalToConstant: 0.5),
             divider.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            divider.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            divider.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 50),
             divider.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
     }
     
-    private lazy var searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.backgroundColor = .lightGray
-        searchBar.setImage(UIImage(named: "icSearchNonW"), for: UISearchBar.Icon.search, state: .normal)
-        searchBar.setImage(UIImage(named: "icCancel"), for: .clear, state: .normal)
-        searchBar.placeholder = "직장 선택"
-        searchBar.searchTextField.backgroundColor = UIColor.clear
-        searchBar.searchTextField.font = UIFont.systemFont(ofSize: 18)
+    private lazy var searchImage: UIImageView = {
+        let image = UIImage(systemName: "magnifyingglass")
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         
-        return searchBar
+        return imageView
+    }()
+    
+    lazy var searchTextField: UITextField = {
+        let textField = UITextField()
+        textField.font = UIFont.systemFont(ofSize: 18)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        return textField
     }()
     
     private lazy var divider: UIView = {

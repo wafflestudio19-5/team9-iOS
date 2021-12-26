@@ -29,8 +29,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController {
     let disposeBag = DisposeBag()
     
     let sections: [MultipleSectionModel] = [
-        .EditProfileSection(title: "직장", items: [
-            .EditProfileItem(title: "직장 추가")
+        .DetailInformationSection(title: "직장", items: [
+            .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름")
+        ]),
+        .DetailInformationSection(title: "직장", items: [
+            .SelectDateItem(title: "직장이름")
         ])
     ]
     
@@ -57,35 +60,43 @@ class AddInformationViewController<View: AddInformationView>: UIViewController {
             
             return cell
         case let .DetailInformationItem(image,information):
-            let cell = UITableViewCell()
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
+            
+            cell.configureCell(style: .style4)
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                let selectInformationViewController = SelectInformationViewController()
+                selectInformationViewController.inforomationType = information.components(separatedBy: " ")[0]
+                
+                self?.push(viewController: selectInformationViewController)
+                
+            }).disposed(by: self.disposeBag)
             
             return cell
         case let .EditProfileItem(title):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: idxPath) as? EditProfileTableViewCell else { return UITableViewCell() }
-            
-            cell.editProfileButton.setTitleColor(.black, for: .normal)
-            cell.editProfileButton.setTitle(title, for: .normal)
-            
-            cell.editProfileButton.backgroundColor = .systemGray4
-            
-            cell.editProfileButton.rx.tap.bind { [weak self] in
-                let selectInformationViewController = SelectInformationViewController()
-                self?.push(viewController: selectInformationViewController)
-            }.disposed(by: self.disposeBag)
+            let cell = UITableViewCell()
             
             return cell
         case let .PostItem(post):
             let cell = UITableViewCell()
             
             return cell
+        case let .SelectDateItem(title):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DateSelectTableViewCell.reuseIdentifier, for: idxPath) as? DateSelectTableViewCell else { return UITableViewCell() }
+            
+            cell.configureCell(style: .startDateStyle)
+            cell.setLayout(style: .startDateStyle)
+            
+            return cell
         }
     }
+    
+    var informationType: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.title = "정보 추가"
+        self.title = "\(informationType) 추가"
         sectionsBR.accept(sections)
         
         bindTableView()

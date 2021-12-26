@@ -80,6 +80,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         case let .DetailInformationItem(image,information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
             
+            cell.configureCell(style: .style1)
             cell.informationImage.image = image
             cell.informationLabel.text = information
             
@@ -106,6 +107,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: idxPath) as? PostCell else { return UITableViewCell() }
 
             cell.configureCell(with: post)
+            return cell
+        case let .SelectDateItem(title):
+            let cell = UITableViewCell()
+            
             return cell
         }
     }

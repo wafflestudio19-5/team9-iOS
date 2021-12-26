@@ -9,7 +9,7 @@ import UIKit
 
 class EditDetailInformationView: UIView {
 
-    let editDetailInformationTableView = UITableView(frame: .zero, style: .grouped)
+    let editDetailInformationTableView = UITableView()
     let headerView = HeaderView()
     let footerView = FooterView()
     
