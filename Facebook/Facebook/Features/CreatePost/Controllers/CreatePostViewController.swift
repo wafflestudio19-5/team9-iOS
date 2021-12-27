@@ -57,14 +57,14 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
     func bindNavigationBarItems() {
         creatPostView.postButton.rx.tap.bind { _ in
             NetworkService.post(endpoint: .newsfeed(content: self.creatPostView.contentTextfield.text ?? ""), as: Post.self)
-                .subscribe(onNext: { [weak self] element in
+                .subscribe { [weak self] _ in
                     guard let self = self else { return }
                     guard let rootTabBarController = self.presentingViewController as? RootTabBarController,
                           let newsfeedVC = rootTabBarController.newsfeedNavController.viewControllers.first as? NewsfeedTabViewController
                     else { return }
                     newsfeedVC.viewModel.refresh()
                     self.dismiss(animated: true, completion: nil)
-                })
+                }
                 .disposed(by: self.disposeBag)
         }.disposed(by: disposeBag)
         
