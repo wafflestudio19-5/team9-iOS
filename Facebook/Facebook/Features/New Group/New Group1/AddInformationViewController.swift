@@ -67,6 +67,27 @@ class AddInformationViewController<View: AddInformationView>: UIViewController {
                 let selectInformationViewController = SelectInformationViewController()
                 selectInformationViewController.inforomationType = information.components(separatedBy: " ")[0]
                 
+                //SelectInformationViewContoller로 부터 데이터를 받음
+                selectInformationViewController.selectedInformation
+                    .observe(on: MainScheduler.instance)
+                    .subscribe(onNext: { [weak self] item in
+                        
+                        let sections: [MultipleSectionModel] = [
+                            .DetailInformationSection(title: "직장", items: [
+                                .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
+                                .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "직책(선택 사항)"),
+                                .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "위치(선택 사항)"),
+                                .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "직업에 대해 설명해주세요(선택 사항)")
+                            ]),
+                            .DetailInformationSection(title: "직장", items: [
+                                .SelectDateItem(title: "직장이름")
+                            ])
+                        ]
+                        
+                        self?.sectionsBR.accept(sections)
+                        
+                    }).disposed(by: cell.disposeBag)
+                
                 self?.push(viewController: selectInformationViewController)
                 
             }).disposed(by: self.disposeBag)

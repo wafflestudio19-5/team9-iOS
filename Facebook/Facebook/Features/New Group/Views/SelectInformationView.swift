@@ -42,7 +42,6 @@ class SelectInformationView: UIView {
         
         selectInformationTableView.separatorStyle = .none
         selectInformationTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
-        selectInformationTableView.allowsSelection = false
     }
 
 }

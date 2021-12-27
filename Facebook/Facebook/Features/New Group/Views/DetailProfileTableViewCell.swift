@@ -14,7 +14,7 @@ class DetailProfileTableViewCell: UITableViewCell {
     @IBOutlet weak var informationImage: UIImageView!
     @IBOutlet weak var informationLabel: UILabel!
 
-    let disposesBag = DisposeBag()
+    let disposeBag = DisposeBag()
     
     enum Style {
         case style1

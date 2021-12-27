@@ -14,13 +14,36 @@ class DateSelectTableViewCell: UITableViewCell {
 
     static let reuseIdentifier = "DataSelectTableViewCell"
     
+    let yearPickerView = UIPickerView()
+    let monthPickerView = UIPickerView()
+    let dayPickerView = UIPickerView()
+    let yearPickerToolbar = UIToolbar()
+    let monthPickerToolbar = UIToolbar()
+    let dayPickerToolbar = UIToolbar()
+    
+    let doneButton = UIBarButtonItem(title: "확인", style: .plain, target: nil, action: nil)
+    let deleteButton = UIBarButtonItem(title: "삭제", style: .plain, target: nil, action: nil)
+    let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let cancelButton = UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil)
+    
+    var yearData: [Int] = [Int]()
+    let monthData = ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"]
+    var dayData: [Int] = [Int]()
+    
     enum Style {
         case startDateStyle
         case endDateStyle
     }
     
+    let disposedBag = DisposeBag()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.backgroundColor = .systemBlue
+        setStyle()
+        setLimitForPicker()
+        bindPickerToolbar()
     }
     
     required init?(coder: NSCoder) {
@@ -30,7 +53,6 @@ class DateSelectTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.backgroundColor = .systemBlue
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -43,12 +65,45 @@ class DateSelectTableViewCell: UITableViewCell {
         switch style {
         case .startDateStyle:
             dateKindLabel.text = "시작 날짜"
-            yearTextField.text = "2021"
-            monthTextField.text = "12월"
-            dayTextField.text = "26"
+            
+            let now = Date()
+            let calender = Calendar.current
+            let currentYear = calender.component(.year, from: now)
+            let currentMonth = calender.component(.month, from: now)
+            let currentDay = calender.component(.day, from: now)
+            
+            yearTextField.text = String(currentYear)
+            monthTextField.text = "\(currentMonth)월"
+            dayTextField.text = String(currentDay)
+            
         case .endDateStyle:
             dateKindLabel.text = "종료 날짜"
         }
+    }
+    
+    func setStyle() {
+        yearPickerToolbar.sizeToFit()
+        monthPickerToolbar.sizeToFit()
+        dayPickerToolbar.sizeToFit()
+        
+        yearPickerToolbar.setItems([cancelButton, flexibleSpace, deleteButton, doneButton], animated: true)
+        monthPickerToolbar.setItems([cancelButton, flexibleSpace, deleteButton, doneButton], animated: true)
+        dayPickerToolbar.setItems([cancelButton, flexibleSpace, deleteButton, doneButton], animated: true)
+        
+        yearTextField.inputAccessoryView = yearPickerToolbar
+        yearTextField.inputView = yearPickerView
+        monthTextField.inputAccessoryView = monthPickerToolbar
+        monthTextField.inputView = monthPickerView
+        dayTextField.inputAccessoryView = dayPickerToolbar
+        dayTextField.inputView = dayPickerView
+    }
+    
+    func setLimitForPicker() {
+        let now = Date()
+        let calender = Calendar.current
+        let currentYear = calender.component(.year, from: now)
+        
+        yearData = Array(1905...currentYear)
     }
     
     func setLayout(style: Style) {
@@ -64,15 +119,17 @@ class DateSelectTableViewCell: UITableViewCell {
             ])
             
             self.addSubview(yearTextField)
+            yearTextField.layer.zPosition = 10
             yearTextField.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
-                yearTextField.topAnchor.constraint(equalTo: dateKindLabel.bottomAnchor, constant: 3),
+                yearTextField.topAnchor.constraint(equalTo: dateKindLabel.bottomAnchor, constant: 10),
                 yearTextField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
                 yearTextField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
             ])
             
             self.addSubview(monthTextField)
+            monthTextField.layer.zPosition = 10
             monthTextField.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
@@ -81,6 +138,7 @@ class DateSelectTableViewCell: UITableViewCell {
             ])
             
             self.addSubview(dayTextField)
+            dayTextField.layer.zPosition = 10
             dayTextField.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
@@ -92,9 +150,27 @@ class DateSelectTableViewCell: UITableViewCell {
         }
     }
     
+    func bindPickerToolbar() {
+        Observable.just(yearData).bind(to: yearPickerView.rx.itemTitles) { (row, element) in
+            return "\(element)"
+        }.disposed(by: disposedBag)
+        
+        Observable.just(monthData).bind(to: monthPickerView.rx.itemTitles) { (row, element) in
+            return "element"
+        }.disposed(by: disposedBag)
+        
+        Observable.just(dayData).bind(to: dayPickerView.rx.itemTitles) { (row, element) in
+            return "\(element)"
+        }.disposed(by: disposedBag)
+
+        yearTextField.rx.tapGesture().when(.recognized).subscribe(onNext: { _ in
+            print("tap")
+        }).disposed(by: disposedBag)
+    }
+    
     lazy var dateKindLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont.systemFont(ofSize: 16)
         
         return label
     }()
@@ -102,7 +178,16 @@ class DateSelectTableViewCell: UITableViewCell {
     lazy var yearTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
+        
+        textField.attributedPlaceholder = NSAttributedString(string: "연도 추가", attributes:[ NSAttributedString.Key.foregroundColor : UIColor.darkGray,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)
+        ])
+        
+        textField.addLeftPadding()
+        textField.addLeftimage(image: UIImage(systemName: "plus")!)
+        
         textField.font = UIFont.systemFont(ofSize: 14)
+    
         
         return textField
     }()
@@ -110,6 +195,14 @@ class DateSelectTableViewCell: UITableViewCell {
     lazy var monthTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
+        
+        textField.attributedPlaceholder = NSAttributedString(string: "월 추가", attributes:[ NSAttributedString.Key.foregroundColor : UIColor.darkGray,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)
+        ])
+        
+        textField.addLeftPadding()
+        textField.addLeftimage(image: UIImage(systemName: "plus")!)
+        
         textField.font = UIFont.systemFont(ofSize: 14)
         
         return textField
@@ -118,9 +211,44 @@ class DateSelectTableViewCell: UITableViewCell {
     lazy var dayTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
+        
+        textField.attributedPlaceholder = NSAttributedString(string: "일 추가", attributes:[ NSAttributedString.Key.foregroundColor : UIColor.darkGray,
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)
+        ])
+        
+        textField.addLeftimage(image: UIImage(systemName: "plus")!)
+        
         textField.font = UIFont.systemFont(ofSize: 14)
         
         return textField
     }()
+}
+
+extension UITextField {
     
+    func addLeftPadding() {
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: self.frame.height))
+        self.leftView = paddingView
+        self.leftViewMode = ViewMode.always
+    }
+    
+    func addRightPadding() {
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: self.frame.height))
+        self.rightView = paddingView
+        self.rightViewMode = ViewMode.always
+    }
+    
+    func addLeftimage(image:UIImage) {
+        let leftimage = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: self.frame.height))
+        leftimage.image = image
+        self.leftView = leftimage
+        self.leftViewMode = .always
+    }
+    
+    func addRightImage(image: UIImage) {
+        let rightImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: self.frame.height))
+        rightImage.image = image
+        self.rightView = rightImage
+        self.rightViewMode = .always
+    }
 }

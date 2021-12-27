@@ -7,9 +7,15 @@
 
 import UIKit
 
-class SelfIntroTableViewCell: UITableViewCell {
+class LabelTableViewCell: UITableViewCell {
 
     @IBOutlet weak var selfIntroLabel: UILabel!
+    
+    enum Style {
+        case style1
+        case style2
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,4 +28,12 @@ class SelfIntroTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func setStyle(style: Style) {
+        switch style {
+        case .style1:
+            print("Styl")
+        case .style2:
+            print("Styl")
+        }
+    }
 }

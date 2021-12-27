@@ -55,10 +55,6 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
             cell.informationImage.image = image
             cell.informationLabel.text = information
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: {  [weak self] _ in
-                self?.navigationController?.popViewController(animated: true)
-            }).disposed(by: self.disposeBag)
-            
             return cell
         case let .EditProfileItem(title):
             let cell = UITableViewCell()
@@ -76,6 +72,8 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
     }
     
     var inforomationType: String = ""
+    var information = ""
+    let selectedInformation: PublishSubject<SectionItem> = PublishSubject<SectionItem>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,6 +85,7 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
     }
 
     private func bindTableView() {
+        //search TextField입력값에 따른 셀 추가
         selectInformationView.searchHeaderView.searchTextField.rx.text.orEmpty.debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .subscribe(onNext: { text in
@@ -94,6 +93,7 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
                 if text == "" {
                     self.searchResultBR.accept([])
                 } else {
+                    self.information = text
                     let addCellData: SectionItem = .DetailInformationItem(image: UIImage(), information: "\"\(text)\" 추가")
                     let searchData: [MultipleSectionModel] = [.DetailInformationSection(title: "검색 결과", items: [addCellData])]
                     self.searchResultBR.accept(searchData)
@@ -101,6 +101,11 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
             }).disposed(by: disposeBag)
         
         searchResultBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(SectionItem.self).subscribe(onNext: { [weak self] item in
+            self?.selectedInformation.onNext(item)
+            self?.navigationController?.popViewController(animated: true)
+        })
     }
 }
 

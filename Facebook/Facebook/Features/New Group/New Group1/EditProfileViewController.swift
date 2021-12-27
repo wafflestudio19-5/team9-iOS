@@ -66,7 +66,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.imgView.image = image
             return cell
         case let .SelfIntroItem(intro):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SelfIntroCell", for: idxPath) as? SelfIntroTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SelfIntroCell", for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
             
             cell.selfIntroLabel.text = intro
             return cell

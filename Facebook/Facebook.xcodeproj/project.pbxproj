@@ -21,8 +21,7 @@
 		77547904275CE66A0065711C /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77547903275CE66A0065711C /* PostViewController.swift */; };
 		77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77547905275CE6CC0065711C /* CommentTableViewCell.swift */; };
 		77547908275CE6CC0065711C /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77547906275CE6CC0065711C /* CommentTableViewCell.xib */; };
-		775F150C2772DF0E00C9872F /* SelfIntroTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* SelfIntroTableViewCell.swift */; };
-		775F150D2772DF0E00C9872F /* SelfIntroTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 775F150B2772DF0E00C9872F /* SelfIntroTableViewCell.xib */; };
+		775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */; };
 		775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150E27730BA000C9872F /* DataSourceModel.swift */; };
 		7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77799318274FD8E4007A3898 /* PostTableViewCell.swift */; };
 		7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77799319274FD8E4007A3898 /* PostTableViewCell.xib */; };
@@ -115,8 +114,7 @@
 		77547903275CE66A0065711C /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		77547905275CE6CC0065711C /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		77547906275CE6CC0065711C /* CommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
-		775F150A2772DF0E00C9872F /* SelfIntroTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfIntroTableViewCell.swift; sourceTree = "<group>"; };
-		775F150B2772DF0E00C9872F /* SelfIntroTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelfIntroTableViewCell.xib; sourceTree = "<group>"; };
+		775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		775F150E27730BA000C9872F /* DataSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceModel.swift; sourceTree = "<group>"; };
 		77799318274FD8E4007A3898 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		77799319274FD8E4007A3898 /* PostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
@@ -249,8 +247,8 @@
 			isa = PBXGroup;
 			children = (
 				B8619500276101AD00957BBC /* BaseSignUpViewController.swift */,
-				B86194EF275D290600957BBC /* EnterUsernameViewController.swift */,
 				B86194F3275DC49100957BBC /* EnterBirthdateViewController.swift */,
+				B86194EF275D290600957BBC /* EnterUsernameViewController.swift */,
 				B86194FE2760FED800957BBC /* EnterEmailViewController.swift */,
 				B86195042761051900957BBC /* SelectGenderViewController.swift */,
 				B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */,
@@ -424,8 +422,7 @@
 				774094432750EBF600AD8DC2 /* ShowProfileTableViewCell.xib */,
 				774094482750ECDC00AD8DC2 /* EditProfileTableViewCell.swift */,
 				774094492750ECDC00AD8DC2 /* EditProfileTableViewCell.xib */,
-				775F150A2772DF0E00C9872F /* SelfIntroTableViewCell.swift */,
-				775F150B2772DF0E00C9872F /* SelfIntroTableViewCell.xib */,
+				775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */,
 				77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */,
 			);
 			path = Views;
@@ -703,7 +700,6 @@
 				777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */,
 				7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */,
 				774094452750EBF600AD8DC2 /* ShowProfileTableViewCell.xib in Resources */,
-				775F150D2772DF0E00C9872F /* SelfIntroTableViewCell.xib in Resources */,
 				777993222750CD41007A3898 /* CreatePostTableViewCell.xib in Resources */,
 				7740943F2750E7E400AD8DC2 /* DetailProfileTableViewCell.xib in Resources */,
 				B897A90A274E303700FB67D3 /* LaunchScreen.storyboard in Resources */,
@@ -841,7 +837,7 @@
 				77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
-				775F150C2772DF0E00C9872F /* SelfIntroTableViewCell.swift in Sources */,
+				775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
