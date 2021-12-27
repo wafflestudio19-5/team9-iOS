@@ -223,7 +223,7 @@ class PostCell: UITableViewCell {
     // 피드와 피드 사이의 회색 리바이더
     private lazy var divider: UIView = {
         let divider = UIView()
-        divider.backgroundColor = UIColor(red: 211/255.0, green: 214/255.0, blue: 216/255.0, alpha: 1)
+        divider.backgroundColor = .Grayscales.gray1
         divider.translatesAutoresizingMaskIntoConstraints = false
         return divider
     }()

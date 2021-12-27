@@ -17,15 +17,35 @@ protocol CreatePostTableViewCellDelegate: AnyObject {
 
 class CreatePostTableViewCell: UITableViewCell {
     
+    static let reuseIdentifier = "CreatePostCell"
+    
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var createPostButton: UIButton!
     
+    private lazy var divider: UIView = {
+        let divider = UIView()
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = .Grayscales.gray1
+        return divider
+    }()
+    
     let disposeBag = DisposeBag()
+    
+    private func setLayout() {
+        contentView.addSubview(divider)
+        NSLayoutConstraint.activate([
+            divider.heightAnchor.constraint(equalToConstant: 5),
+            divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            divider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        ])
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         bindButton()
+        setLayout()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

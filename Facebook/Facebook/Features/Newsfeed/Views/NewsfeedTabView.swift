@@ -11,6 +11,7 @@ class NewsfeedTabView: UIView {
     
     let newsfeedTableView = UITableView()
     let refreshControl = UIRefreshControl()
+    let createPostHeaderView = CreatePostHeaderView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,7 +25,6 @@ class NewsfeedTabView: UIView {
     
     private func setLayoutForView() {
         self.addSubview(newsfeedTableView)
-        
         newsfeedTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             newsfeedTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
@@ -35,7 +35,9 @@ class NewsfeedTabView: UIView {
     }
     
     private func configureTableView() {
-        newsfeedTableView.tableHeaderView = UIView()  // removes the separator at the top
+        newsfeedTableView.tableHeaderView = createPostHeaderView
+        createPostHeaderView.widthAnchor.constraint(equalTo: newsfeedTableView.widthAnchor).isActive = true
+        
         newsfeedTableView.register(PostCell.self, forCellReuseIdentifier: PostCell.reuseIdentifier)
         newsfeedTableView.allowsSelection = false
         newsfeedTableView.refreshControl = refreshControl

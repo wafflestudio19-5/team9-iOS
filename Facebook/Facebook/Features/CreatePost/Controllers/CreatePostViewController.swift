@@ -24,24 +24,33 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.title = "게시글 만들기"
+        self.title = "게시물 만들기"
+        setNavigationBarStyle()
         setNavigationBarItems()
         bindNavigationBarItems()
     }
     
+    func setNavigationBarStyle() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .lightGray.withAlphaComponent(0.1)
+        navigationItem.standardAppearance = appearance
+        navigationItem.scrollEdgeAppearance = appearance
+        navigationItem.compactAppearance = appearance
+    }
+    
     func setNavigationBarItems() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark"),
+            image: UIImage(systemName: "xmark")?.withTintColor(.black, renderingMode: .alwaysOriginal),
             style: .plain,
             target: self,
             action: #selector(popToPrevious)
         )
-        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(customView: creatPostView.postButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: creatPostView.postButton)
     }
     
     @objc private func popToPrevious() {
-        navigationController?.popViewController(animated: true)
+        navigationController?.dismiss(animated: true, completion: nil)
     }
     
     
