@@ -62,13 +62,13 @@ class PostCell: UITableViewCell {
         NSLayoutConstraint.activate([
             postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
             postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
-            postHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            postHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
             postHeader.heightAnchor.constraint(equalToConstant: .profileImageSize),
         ])
         
         contentView.addSubview(textContentLabel)
         NSLayoutConstraint.activate([
-            textContentLabel.topAnchor.constraint(equalTo: postHeader.bottomAnchor, constant: 10),
+            textContentLabel.topAnchor.constraint(equalTo: postHeader.bottomAnchor, constant: .standardTopMargin),
             textContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
             textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
         ])
@@ -77,16 +77,16 @@ class PostCell: UITableViewCell {
         NSLayoutConstraint.activate([
             statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
             statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin - 5),
-            statHorizontalStackView.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: 10)
+            statHorizontalStackView.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: .standardTopMargin)
         ])
         
         contentView.addSubview(buttonHorizontalStackView)
         contentView.addSubview(divider)
         NSLayoutConstraint.activate([
-            buttonHorizontalStackView.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: 10),
+            buttonHorizontalStackView.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: .standardTopMargin),
             buttonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
             buttonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
-            buttonHorizontalStackView.heightAnchor.constraint(equalToConstant: 37.5)
+            buttonHorizontalStackView.heightAnchor.constraint(equalToConstant: .buttonGroupHeight)
         ])
         
         
@@ -123,6 +123,7 @@ class PostCell: UITableViewCell {
     // 따봉 아이콘 + 좋아요 수
     private lazy var likeCountLabelWithIcon: UIStackView = {
         let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
         stack.spacing = 5
         stack.addArrangedSubview(GradientIcon(width: .gradientIconWidth))
         stack.addArrangedSubview(likeCountLabel)

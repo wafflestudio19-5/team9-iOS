@@ -11,8 +11,8 @@ class InteractionStackView: UIStackView {
     
     /// 좋아요, 댓글, (공유) 버튼이 있는 Horizontal Stack 뷰
     
-    let likeButton: UIButton = LikeButton()
-    let commentButton: UIButton = CommentButton()
+    let likeButton = LikeButton()
+    let commentButton = CommentButton()
     
     // 버튼 스택 뷰 위에 보이는 디바이더
     private lazy var topBorder: UIView = {
