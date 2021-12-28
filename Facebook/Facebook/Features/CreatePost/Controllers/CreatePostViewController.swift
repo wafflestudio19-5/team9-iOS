@@ -56,7 +56,7 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
     
     func bindNavigationBarItems() {
         creatPostView.postButton.rx.tap.bind { _ in
-            NetworkService.post(endpoint: .newsfeed(content: self.creatPostView.contentTextfield.text ?? ""), as: Post.self)
+            NetworkService.post(endpoint: .newsfeed(content: self.creatPostView.contentTextView.text ?? ""), as: Post.self)
                 .subscribe { [weak self] _ in
                     guard let self = self else { return }
                     guard let rootTabBarController = self.presentingViewController as? RootTabBarController,
@@ -69,7 +69,7 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
         }.disposed(by: disposeBag)
         
         //contentTextField가 비어있는 가에 대한 Bool형 event방출
-        let hasEnteredContent = creatPostView.contentTextfield.rx.text.orEmpty.map { !$0.isEmpty }
+        let hasEnteredContent = creatPostView.contentTextView.rx.text.orEmpty.map { !$0.isEmpty }
         
         //contentTextField의 내용 유뮤에 따라 버튼 활성화
         hasEnteredContent.bind(to: self.creatPostView.postButton.rx.isEnabled).disposed(by: disposeBag)
