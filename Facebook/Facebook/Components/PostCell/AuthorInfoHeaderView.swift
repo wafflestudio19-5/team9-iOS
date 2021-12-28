@@ -20,7 +20,7 @@ class AuthorInfoHeaderView: UIView {
             profileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -3),
             profileImageView.topAnchor.constraint(equalTo: self.topAnchor),
             profileImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            profileImageView.widthAnchor.constraint(equalToConstant: 50)
+            profileImageView.widthAnchor.constraint(equalToConstant: .profileImageSize)
         ])
         
         self.addSubview(authorNameLabel)

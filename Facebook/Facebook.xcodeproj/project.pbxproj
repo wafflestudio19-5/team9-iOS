@@ -89,6 +89,8 @@
 		BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254E7277AD3C700FBAACB /* InfoLabel.swift */; };
 		BEF254EA277AD95600FBAACB /* PostCellContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254E9277AD95600FBAACB /* PostCellContentView.swift */; };
 		BEF254EC277ADBE800FBAACB /* InteractionStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254EB277ADBE800FBAACB /* InteractionStackView.swift */; };
+		BEF254EE277B062800FBAACB /* PostContentLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254ED277B062800FBAACB /* PostContentLabel.swift */; };
+		BEF254F2277B079D00FBAACB /* CGFloat+LayoutConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254F1277B079D00FBAACB /* CGFloat+LayoutConstants.swift */; };
 		BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFFAA6276B126D009CBF25 /* Post.swift */; };
 		BEFFFAAD276B1BA2009CBF25 /* Endpoint+Newsfeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */; };
 		BEFFFAB0276B1E08009CBF25 /* PaginationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEFFFAAF276B1E08009CBF25 /* PaginationViewModel.swift */; };
@@ -181,6 +183,8 @@
 		BEF254E7277AD3C700FBAACB /* InfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoLabel.swift; sourceTree = "<group>"; };
 		BEF254E9277AD95600FBAACB /* PostCellContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellContentView.swift; sourceTree = "<group>"; };
 		BEF254EB277ADBE800FBAACB /* InteractionStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionStackView.swift; sourceTree = "<group>"; };
+		BEF254ED277B062800FBAACB /* PostContentLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentLabel.swift; sourceTree = "<group>"; };
+		BEF254F1277B079D00FBAACB /* CGFloat+LayoutConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+LayoutConstants.swift"; sourceTree = "<group>"; };
 		BEFFFAA6276B126D009CBF25 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Newsfeed.swift"; sourceTree = "<group>"; };
 		BEFFFAAF276B1E08009CBF25 /* PaginationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationViewModel.swift; sourceTree = "<group>"; };
@@ -311,6 +315,7 @@
 				BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */,
 				B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */,
 				BE9C7CA0276ECA1F0089247F /* Int+Formatter.swift */,
+				BEF254F1277B079D00FBAACB /* CGFloat+LayoutConstants.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -599,6 +604,7 @@
 			isa = PBXGroup;
 			children = (
 				BEF254E7277AD3C700FBAACB /* InfoLabel.swift */,
+				BEF254ED277B062800FBAACB /* PostContentLabel.swift */,
 				B8A7F8332767507000F659D2 /* LabelWithPadding.swift */,
 			);
 			path = Labels;
@@ -785,6 +791,7 @@
 				77AC749B275CEDAD00F10BD5 /* PostView.swift in Sources */,
 				77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
+				BEF254EE277B062800FBAACB /* PostContentLabel.swift in Sources */,
 				771DF5A027707DD900B69351 /* ProfileImageTableViewCell.swift in Sources */,
 				77547904275CE66A0065711C /* PostViewController.swift in Sources */,
 				B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */,
@@ -828,6 +835,7 @@
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
 				BEF254E3277AD0EA00FBAACB /* ProfileImageView.swift in Sources */,
 				B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */,
+				BEF254F2277B079D00FBAACB /* CGFloat+LayoutConstants.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
 			);

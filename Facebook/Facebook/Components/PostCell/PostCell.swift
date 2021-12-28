@@ -60,46 +60,38 @@ class PostCell: UITableViewCell {
     private func setLayout() {
         contentView.addSubview(postHeader)
         NSLayoutConstraint.activate([
-            postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
+            postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
             postHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            postHeader.heightAnchor.constraint(equalToConstant: 50),
+            postHeader.heightAnchor.constraint(equalToConstant: .profileImageSize),
         ])
-        
-        
         
         contentView.addSubview(textContentLabel)
         NSLayoutConstraint.activate([
             textContentLabel.topAnchor.constraint(equalTo: postHeader.bottomAnchor, constant: 10),
-            textContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            textContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
+            textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
         ])
         
         contentView.addSubview(statHorizontalStackView)
         NSLayoutConstraint.activate([
-            statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
+            statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin - 5),
             statHorizontalStackView.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: 10)
         ])
         
-        contentView.addSubview(topBorder)
-        NSLayoutConstraint.activate([
-            topBorder.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            topBorder.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            topBorder.heightAnchor.constraint(equalToConstant: 1),
-            topBorder.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: 10)
-        ])
-        
         contentView.addSubview(buttonHorizontalStackView)
-        NSLayoutConstraint.activate([
-            buttonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            buttonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            buttonHorizontalStackView.topAnchor.constraint(equalTo: topBorder.bottomAnchor, constant: 5)
-        ])
-        
         contentView.addSubview(divider)
         NSLayoutConstraint.activate([
-            divider.topAnchor.constraint(equalTo: buttonHorizontalStackView.bottomAnchor, constant: 5),
+            buttonHorizontalStackView.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: 10),
+            buttonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
+            buttonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
+            buttonHorizontalStackView.heightAnchor.constraint(equalToConstant: 37.5)
+        ])
+        
+        
+        NSLayoutConstraint.activate([
+            divider.topAnchor.constraint(equalTo: buttonHorizontalStackView.bottomAnchor),
             divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             divider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             divider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
@@ -109,24 +101,11 @@ class PostCell: UITableViewCell {
     
     // MARK: Initialize View Components
     
-    let likeButton: UIButton = LikeButton()
-    let commentButton: UIButton = CommentButton()
-    let shareButton: UIButton = ShareButton()
-    
-    
     // 포스트 헤더 (프로필 이미지, 작성자, 날짜, 각종 버튼이 들어가는 곳)
     private lazy var postHeader = AuthorInfoHeaderView()
     
     // 좋아요, 댓글, 공유 버튼 나란히 있는 스택 뷰
-    private lazy var buttonHorizontalStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.distribution = .fillProportionally
-        stack.addArrangedSubview(likeButton)
-        stack.addArrangedSubview(commentButton)
-//        stack.addArrangedSubview(shareButton)
-        return stack
-    }()
+    lazy var buttonHorizontalStackView = InteractionStackView()
     
     // 좋아요 수, 댓글 수 등 각종 통계가 보이는 스택 뷰
     private lazy var statHorizontalStackView: UIStackView = {
@@ -145,7 +124,7 @@ class PostCell: UITableViewCell {
     private lazy var likeCountLabelWithIcon: UIStackView = {
         let stack = UIStackView()
         stack.spacing = 5
-        stack.addArrangedSubview(GradientIcon(width: 16))
+        stack.addArrangedSubview(GradientIcon(width: .gradientIconWidth))
         stack.addArrangedSubview(likeCountLabel)
         return stack
     }()
@@ -153,26 +132,8 @@ class PostCell: UITableViewCell {
     // 댓글 수 라벨
     private lazy var commentCountLabel: UILabel = InfoLabel()
     
-    // 버튼 스택 뷰 위에 보이는 디바이더
-    private lazy var topBorder: UIView = {
-        let divider = createHorizontalDivider()
-        return divider
-    }()
-    
     // 본문 텍스트 라벨
-    private lazy var textContentLabel: UILabel = {
-        let textContentLabel = UILabel()
-        textContentLabel.textColor = .black
-        textContentLabel.numberOfLines = 3
-        textContentLabel.font = .systemFont(ofSize: 16)
-        textContentLabel.translatesAutoresizingMaskIntoConstraints = false
-        return textContentLabel
-    }()
-    
-    // 버튼 스택 뷰 아래 보이는 디바이더 (댓글이 있을때만 표시)
-    private lazy var bottomBorder: UIView = {
-        return createHorizontalDivider()
-    }()
+    private lazy var textContentLabel = PostContentLabel()
     
     // 피드와 피드 사이의 회색 리바이더
     private lazy var divider: UIView = {
@@ -181,13 +142,6 @@ class PostCell: UITableViewCell {
         divider.translatesAutoresizingMaskIntoConstraints = false
         return divider
     }()
-    
-    private func createHorizontalDivider() -> UIView {
-        let line = UIView()
-        line.backgroundColor = .gray.withAlphaComponent(0.2)
-        line.translatesAutoresizingMaskIntoConstraints = false
-        return line
-    }
 }
 
 /*

@@ -89,9 +89,9 @@ extension ProfileTabViewController: CreatePostTableViewCellDelegate {
 
 extension ProfileTabViewController: PostTableViewCellDelegate {
     func goPostView() {
-        let postViewController = PostViewController()
-        
-        self.navigationController?.pushViewController(postViewController, animated: true)
+//        let postViewController = PostViewController()
+//        
+//        self.navigationController?.pushViewController(postViewController, animated: true)
     }
 }
 
