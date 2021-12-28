@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class DetailProfileTableViewCell: UITableViewCell {
+class InformationTableViewCell: UITableViewCell {
 
     @IBOutlet weak var informationImage: UIImageView!
     @IBOutlet weak var informationLabel: UILabel!
