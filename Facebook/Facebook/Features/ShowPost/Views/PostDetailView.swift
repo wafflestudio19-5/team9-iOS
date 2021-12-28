@@ -11,7 +11,7 @@ import KakaoSDKCommon
 class PostDetailView: UIView {
     
     let commentTableView = UITableView()
-    let postContentHeaderView = PostContentHeaderView()
+    let postContentHeaderView = PostDetailHeaderView()
     
     var likeButton: LikeButton {
         postContentHeaderView.buttonStackView.likeButton

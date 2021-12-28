@@ -6,33 +6,42 @@
 //
 
 import UIKit
+import SwiftUI
 
 class AuthorInfoHeaderView: UIView {
 
     /// 피드 상단, 게시자의 프로필 이미지와 닉네임, 작성 시각 등이 표시되는 뷰
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(imageWidth: CGFloat = .profileImageSize) {
+        super.init(frame: .zero)
         self.translatesAutoresizingMaskIntoConstraints = false
+        authorNameLabel.text = "일론 머스크"  // preview 용도
+        postDateLabel.text = "17시간 전"
         
         self.addSubview(profileImageView)
         NSLayoutConstraint.activate([
             profileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -3),
-            profileImageView.topAnchor.constraint(equalTo: self.topAnchor),
-            profileImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            profileImageView.widthAnchor.constraint(equalToConstant: .profileImageSize)
+            profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            profileImageView.widthAnchor.constraint(equalToConstant: imageWidth),
+            profileImageView.heightAnchor.constraint(equalToConstant: imageWidth)
         ])
         
-        self.addSubview(authorNameLabel)
+        let labelStack = UIView()
+        labelStack.translatesAutoresizingMaskIntoConstraints = false
+        labelStack.addSubview(authorNameLabel)
+        labelStack.addSubview(postDateLabel)
         NSLayoutConstraint.activate([
-            authorNameLabel.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 5),
-            authorNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 7)
+            authorNameLabel.topAnchor.constraint(equalTo: labelStack.topAnchor),
+            authorNameLabel.leadingAnchor.constraint(equalTo: labelStack.leadingAnchor),
+            postDateLabel.leadingAnchor.constraint(equalTo: labelStack.leadingAnchor),
+            postDateLabel.bottomAnchor.constraint(equalTo: labelStack.bottomAnchor),
+            postDateLabel.topAnchor.constraint(equalTo: authorNameLabel.bottomAnchor)
         ])
         
-        self.addSubview(postDateLabel)
+        self.addSubview(labelStack)
         NSLayoutConstraint.activate([
-            postDateLabel.leadingAnchor.constraint(equalTo: authorNameLabel.leadingAnchor),
-            postDateLabel.topAnchor.constraint(equalTo: authorNameLabel.bottomAnchor),
+            labelStack.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            labelStack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 5)
         ])
     }
     
@@ -53,6 +62,12 @@ class AuthorInfoHeaderView: UIView {
     
     // 작성 시간 라벨
     private lazy var postDateLabel: UILabel = InfoLabel()
-    
-    
+}
+
+
+struct AuthorInfoHeaderView_Previews: PreviewProvider {
+    static var previews: some View {
+        let authorInfoHeaderView = AuthorInfoHeaderView()
+        SwiftUIRepresentable(view: authorInfoHeaderView)
+    }
 }

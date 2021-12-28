@@ -7,12 +7,13 @@
 
 import UIKit
 
-class PostContentHeaderView: UIView {
+class PostDetailHeaderView: UIView {
     
-    /// 포스팅 상세페이지 상단의 게시글 뷰. 댓글 TableView의 헤더 형식으로 구현함.
+    /// 포스팅 상세페이지 상단의 게시글 뷰. 댓글 TableView의 헤더로 들어간다.
     
     private let contentLabel = PostContentLabel()
     let buttonStackView = InteractionStackView(useBottomBorder: true)
+    private let authorHeaderView = AuthorInfoHeaderView()
     
     // 좋아요 수 라벨
     private lazy var likeCountLabel: UILabel = InfoLabel(color: .black, weight: .semibold)
@@ -34,6 +35,12 @@ class PostContentHeaderView: UIView {
         return divider
     }()
     
+    func configure(with post: Post) {
+        contentLabel.text = post.content
+        likeCountLabel.text = post.likes.withCommas(unit: "개")
+        authorHeaderView.configure(with: post)
+    }
+    
     init() {
         super.init(frame: .zero)
         setLayout()
@@ -46,7 +53,7 @@ class PostContentHeaderView: UIView {
     func setLayout() {
         self.addSubview(contentLabel)
         NSLayoutConstraint.activate([
-            contentLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: .standardTopMargin),
+            contentLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: .standardTopMargin + 5),
             contentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
             contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
         ])
@@ -76,9 +83,6 @@ class PostContentHeaderView: UIView {
         
     }
     
-    func configure(with post: Post) {
-        contentLabel.text = post.content
-        likeCountLabel.text = post.likes.withCommas(unit: "개")
-    }
+    
 
 }
