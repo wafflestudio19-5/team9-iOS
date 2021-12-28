@@ -41,8 +41,8 @@ class PostDetailHeaderView: UIView {
         authorHeaderView.configure(with: post)
     }
     
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setLayout()
     }
     
@@ -52,17 +52,21 @@ class PostDetailHeaderView: UIView {
     
     func setLayout() {
         self.addSubview(contentLabel)
+        var trailing = contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin)
+        trailing.priority = .defaultHigh
         NSLayoutConstraint.activate([
             contentLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: .standardTopMargin + 5),
             contentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
-            contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
+            trailing,
         ])
         
         self.addSubview(buttonStackView)
+        trailing = buttonStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin)
+        trailing.priority = .defaultHigh
         NSLayoutConstraint.activate([
             buttonStackView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: .standardTopMargin),
             buttonStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
-            buttonStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
+            trailing,
             buttonStackView.heightAnchor.constraint(equalToConstant: .buttonGroupHeight),
         ])
         
