@@ -12,7 +12,6 @@ import RxCocoa
 class PostViewController: UIViewController {
     var post: Post
     let disposeBag = DisposeBag()
-    let dummyObservable = Observable.just(1...10)
     
     init(post: Post) {
         self.post = post
