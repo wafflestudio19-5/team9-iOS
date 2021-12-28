@@ -297,8 +297,6 @@
 		BE9C7C8E276C71C50089247F /* PostCell */ = {
 			isa = PBXGroup;
 			children = (
-				BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */,
-				BE9C7C95276DB3C30089247F /* PostCell.swift */,
 				BEF254EB277ADBE800FBAACB /* InteractionStackView.swift */,
 				BEF254E2277AD0EA00FBAACB /* ProfileImageView.swift */,
 				BEF254E4277AD28200FBAACB /* AuthorInfoHeaderView.swift */,
@@ -337,6 +335,7 @@
 		BE9C7CA427716E5A0089247F /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */,
 				B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */,
 			);
 			path = Buttons;
@@ -376,6 +375,7 @@
 		BE9C7CA8277170310089247F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				BE9C7C95276DB3C30089247F /* PostCell.swift */,
 				B897A921274E612B00FB67D3 /* NewsfeedTabView.swift */,
 				BE827A1227722ABD00BD3566 /* CreatePostTableViewCell.swift */,
 				BE827A1627722B9400BD3566 /* CreatePostTableViewCell.xib */,
