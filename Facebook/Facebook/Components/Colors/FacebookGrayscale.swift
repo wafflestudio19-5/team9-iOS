@@ -12,5 +12,8 @@ extension UIColor {
     struct Grayscales {
         // background gray color (for newsfeed divider)
         static var gray1 = UIColor(red: 211/255.0, green: 214/255.0, blue: 216/255.0, alpha: 1)
+        
+        // 1px border gray color
+        static var gray2 = UIColor.gray.withAlphaComponent(0.2)
     }
 }

@@ -1,43 +1,14 @@
 //
-//  PostCell.swift
+//  PostCellself.swift
 //  Facebook
 //
-//  Created by 박신홍 on 2021/12/18.
+//  Created by 박신홍 on 2021/12/28.
 //
 
 import UIKit
-import SwiftUI
-import RxSwift
 
-class PostCell: UITableViewCell {
-    var disposeBag = DisposeBag()
-    static let reuseIdentifier = "PostCell"
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setLayout()
-        initialSetup()
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        self.disposeBag = DisposeBag()
-    }
+class PostCellself: UIView {
 
-    required init?(coder: NSCoder) {
-        fatalError("Do not use storyboard. Load programmatically.")
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-    }
     
     // MARK: Setup
     
@@ -48,7 +19,7 @@ class PostCell: UITableViewCell {
         likeLabel.text = "4,234개"
     }
     
-    func configureCell(with post: Post) {
+    func configure(with post: Post) {
         commentCountLabel.text = "댓글 \(Int.random(in: 10...100).withCommas(unit: "개"))"
         likeCountLabel.text = post.likes.withCommas(unit: "개")
         textContentLabel.text = post.content
@@ -58,51 +29,51 @@ class PostCell: UITableViewCell {
     // MARK: AutoLayout Constraints
     
     private func setLayout() {
-        contentView.addSubview(postHeader)
+        self.addSubview(postHeader)
         NSLayoutConstraint.activate([
-            postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
-            postHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
+            postHeader.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            postHeader.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
+            postHeader.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
             postHeader.heightAnchor.constraint(equalToConstant: 50),
         ])
         
         
         
-        contentView.addSubview(textContentLabel)
+        self.addSubview(textContentLabel)
         NSLayoutConstraint.activate([
             textContentLabel.topAnchor.constraint(equalTo: postHeader.bottomAnchor, constant: 10),
-            textContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            textContentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            textContentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
         ])
         
-        contentView.addSubview(statHorizontalStackView)
+        self.addSubview(statHorizontalStackView)
         NSLayoutConstraint.activate([
-            statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            statHorizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            statHorizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             statHorizontalStackView.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: 10)
         ])
         
-        contentView.addSubview(topBorder)
+        self.addSubview(topBorder)
         NSLayoutConstraint.activate([
-            topBorder.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
-            topBorder.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            topBorder.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            topBorder.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
             topBorder.heightAnchor.constraint(equalToConstant: 1),
             topBorder.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: 10)
         ])
         
-        contentView.addSubview(buttonHorizontalStackView)
+        self.addSubview(buttonHorizontalStackView)
         NSLayoutConstraint.activate([
-            buttonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            buttonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
+            buttonHorizontalStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
+            buttonHorizontalStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             buttonHorizontalStackView.topAnchor.constraint(equalTo: topBorder.bottomAnchor, constant: 5)
         ])
         
-        contentView.addSubview(divider)
+        self.addSubview(divider)
         NSLayoutConstraint.activate([
             divider.topAnchor.constraint(equalTo: buttonHorizontalStackView.bottomAnchor, constant: 5),
-            divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            divider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            divider.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            divider.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             divider.heightAnchor.constraint(equalToConstant: 5),
         ])
     }
@@ -184,31 +155,9 @@ class PostCell: UITableViewCell {
     
     private func createHorizontalDivider() -> UIView {
         let line = UIView()
-        line.backgroundColor = .gray.withAlphaComponent(0.2)
+        line.backgroundColor = .Grayscales.gray2
         line.translatesAutoresizingMaskIntoConstraints = false
         return line
     }
-}
 
-/*
- MARK: SwiftUI Preview
- */
-
-struct PostCellRepresentable: UIViewRepresentable {
-    func makeUIView(context: Context) -> some UIView {
-        let view = PostCell().contentView
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
-}
-
-struct PostCellPreview: PreviewProvider {
-    static var previews: some View {
-        VStack{
-            Spacer()
-            PostCellRepresentable()
-            Spacer()
-        }.background(.white)
-    }
 }
