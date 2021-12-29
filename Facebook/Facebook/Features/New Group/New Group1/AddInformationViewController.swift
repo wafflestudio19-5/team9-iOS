@@ -30,15 +30,10 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     let sections: [MultipleSectionModel] = [
         .DetailInformationSection(title: "직장", items: [
-            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-            .LabelItem(labelText: "직책(선택 사항)"),
-            .LabelItem(labelText: "위치(선택 사항)"),
-            .LabelItem(labelText: "직업에 대해 설명해주세요(선택 사항)")
-        ]),
-        .DetailInformationSection(title: "직장", items: [
-            .SelectDateItem(style: .startDateStyle)
+            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름")
         ])
     ]
+    
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay<[MultipleSectionModel]>(value: [])
     
@@ -72,6 +67,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             cell.configureCell(image: image, information: information)
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                
                 let selectInformationViewController = SelectInformationViewController()
                 selectInformationViewController.inforomationType = information.components(separatedBy: " ")[0]
                 
@@ -83,8 +79,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     }).disposed(by: cell.disposeBag)
                 
                 self?.push(viewController: selectInformationViewController)
-                
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: cell.disposeBag)
             
             return cell
         case let .ButtonItem(buttonText):
@@ -132,7 +127,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 .LabelItem(labelText: "직업에 대해 설명해주세요(선택 사항)")
             ]),
             .DetailInformationSection(title: "직장", items: [
-                .SelectDateItem(style: .startDateStyle)
             ])
         ]
         
@@ -182,10 +176,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                             .LabelItem(labelText: "직업에 대해 설명해주세요(선택 사항)")
                         ]),
                         .DetailInformationSection(title: "직장", items: [
-                            .SelectDateItem(style: .startDateStyle)
+                            //.SelectDateItem(style: .startDateStyle),
+                            //.SelectDateItem(style: .endDateStyle)
+                            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
+                            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름")
                         ])
                     ]
-                    
+
                     self.sectionsBR.accept(sections)
                 } else {
                     let sections: [MultipleSectionModel] = [
@@ -196,12 +193,12 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                             .LabelItem(labelText: "직업에 대해 설명해주세요(선택 사항)")
                         ]),
                         .DetailInformationSection(title: "직장", items: [
-                            .SelectDateItem(style: .startDateStyle),
-                            .SelectDateItem(style: .endDateStyle)
+                            //.SelectDateItem(style: .startDateStyle)
                         ])
                     ]
-                    
+
                     self.sectionsBR.accept(sections)
+                    print("switch off")
                 }
             })
             .disposed(by: disposeBag)
