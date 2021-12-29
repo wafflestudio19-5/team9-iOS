@@ -46,7 +46,7 @@ class EditDetailInformationView: UIView {
         //headerView.widthAnchor.constraint(equalTo: editDetailInformationTableView.widthAnchor).isActive = true
         
         editDetailInformationTableView.separatorStyle = .none
-        editDetailInformationTableView.register(UINib(nibName: "EditProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "EditProfileCell")
+        editDetailInformationTableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.reuseIdentifier)
         editDetailInformationTableView.allowsSelection = false
     }
 }

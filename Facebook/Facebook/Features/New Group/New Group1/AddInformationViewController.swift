@@ -30,10 +30,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController {
     
     let sections: [MultipleSectionModel] = [
         .DetailInformationSection(title: "직장", items: [
-            .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름")
+            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름")
         ]),
         .DetailInformationSection(title: "직장", items: [
-            .SelectDateItem(title: "직장이름")
+            .SelectDateItem(style: .startDateStyle),
+            .SelectDateItem(style: .endDateStyle)
         ])
     ]
     
@@ -55,14 +56,15 @@ class AddInformationViewController<View: AddInformationView>: UIViewController {
             let cell = UITableViewCell()
             
             return cell
-        case let .SelfIntroItem(intro):
+        case let .LabelItem(labelText):
             let cell = UITableViewCell()
             
             return cell
-        case let .DetailInformationItem(image,information):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
+        case let .InformationItem(image,information):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationTableViewCell.reuseIdentifier, for: idxPath) as? InformationTableViewCell else { return UITableViewCell() }
             
-            cell.configureCell(style: .style4)
+            cell.initialSetup(cellStyle: .style4)
+            cell.configureCell(image: image, information: information)
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let selectInformationViewController = SelectInformationViewController()
                 selectInformationViewController.inforomationType = information.components(separatedBy: " ")[0]
@@ -74,13 +76,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController {
                         
                         let sections: [MultipleSectionModel] = [
                             .DetailInformationSection(title: "직장", items: [
-                                .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-                                .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "직책(선택 사항)"),
-                                .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "위치(선택 사항)"),
-                                .DetailInformationItem(image: UIImage(systemName: "briefcase")!, information: "직업에 대해 설명해주세요(선택 사항)")
+                                .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
+                                .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직책(선택 사항)"),
+                                .InformationItem(image: UIImage(systemName: "briefcase")!, information: "위치(선택 사항)"),
+                                .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직업에 대해 설명해주세요(선택 사항)")
                             ]),
                             .DetailInformationSection(title: "직장", items: [
-                                .SelectDateItem(title: "직장이름")
+                                .SelectDateItem(style: .startDateStyle)
                             ])
                         ]
                         
@@ -93,7 +95,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController {
             }).disposed(by: self.disposeBag)
             
             return cell
-        case let .EditProfileItem(title):
+        case let .ButtonItem(buttonText):
             let cell = UITableViewCell()
             
             return cell
@@ -101,11 +103,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController {
             let cell = UITableViewCell()
             
             return cell
-        case let .SelectDateItem(title):
+        case let .SelectDateItem(style):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DateSelectTableViewCell.reuseIdentifier, for: idxPath) as? DateSelectTableViewCell else { return UITableViewCell() }
             
-            cell.configureCell(style: .startDateStyle)
-            cell.setLayout(style: .startDateStyle)
+            cell.initialSetup(cellStyle: style)
+            cell.configureCell()
             
             return cell
         }

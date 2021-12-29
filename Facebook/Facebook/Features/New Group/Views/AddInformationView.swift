@@ -35,7 +35,8 @@ class AddInformationView: UIView {
     
     private func configureTableView() {
         addInformationTableView.separatorStyle = .none
-        addInformationTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
+        addInformationTableView.register(InformationTableViewCell.self, forCellReuseIdentifier: InformationTableViewCell.reuseIdentifier)
+        addInformationTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)
         addInformationTableView.register(DateSelectTableViewCell.self, forCellReuseIdentifier: DateSelectTableViewCell.reuseIdentifier)
         addInformationTableView.allowsSelection = false
     }

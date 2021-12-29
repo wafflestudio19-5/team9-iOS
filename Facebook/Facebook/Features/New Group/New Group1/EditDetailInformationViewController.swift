@@ -29,11 +29,11 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
     
     let sections: [MultipleSectionModel] = [
         .EditProfileSection(title: "직장", items: [
-            .EditProfileItem(title: "직장 추가")
+            .ButtonItem(buttonText: "직장 추가")
         ]),
         .EditProfileSection(title: "학력", items: [
-            .EditProfileItem(title: "고등학교 추가"),
-            .EditProfileItem(title: "대학 추가")
+            .ButtonItem(buttonText: "고등학교 추가"),
+            .ButtonItem(buttonText: "대학 추가")
         ])
     ]
     
@@ -55,25 +55,23 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
             let cell = UITableViewCell()
             
             return cell
-        case let .SelfIntroItem(intro):
+        case let .LabelItem(labelText):
             let cell = UITableViewCell()
             
             return cell
-        case let .DetailInformationItem(image,information):
+        case let .InformationItem(image,information):
             let cell = UITableViewCell()
             
             return cell
-        case let .EditProfileItem(title):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: idxPath) as? EditProfileTableViewCell else { return UITableViewCell() }
+        case let .ButtonItem(buttonText):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.reuseIdentifier, for: idxPath) as? ButtonTableViewCell else { return UITableViewCell() }
             
-            cell.editProfileButton.setTitleColor(.black, for: .normal)
-            cell.editProfileButton.setTitle(title, for: .normal)
+            cell.initialSetup(cellStyle: .style3)
+            cell.configureCell(buttonText: buttonText)
             
-            cell.editProfileButton.backgroundColor = .systemGray4
-            
-            cell.editProfileButton.rx.tap.bind { [weak self] in
+            cell.button.rx.tap.bind { [weak self] in
                 let addInformationViewController = AddInformationViewController()
-                addInformationViewController.informationType = title.components(separatedBy: " ")[0]
+                addInformationViewController.informationType = buttonText.components(separatedBy: " ")[0]
                 self?.push(viewController: addInformationViewController)
             }.disposed(by: self.disposeBag)
             

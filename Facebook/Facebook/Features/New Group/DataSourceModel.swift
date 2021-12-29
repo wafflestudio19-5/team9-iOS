@@ -22,11 +22,11 @@ enum SectionItem {
     case MainProfileItem(profileImage: UIImage, coverImage: UIImage, name: String)
     case ProfileImageItem(image: UIImage)
     case CoverImageItem(image: UIImage)
-    case SelfIntroItem(intro: String)
-    case DetailInformationItem(image: UIImage, information: String)
-    case EditProfileItem(title: String)
+    case InformationItem(image: UIImage, information: String)
+    case ButtonItem(buttonText: String)
+    case LabelItem(labelText: String)
     case PostItem(post: Post)
-    case SelectDateItem(title: String)
+    case SelectDateItem(style: DateSelectTableViewCell.Style)
 }
 
 extension MultipleSectionModel: SectionModelType {

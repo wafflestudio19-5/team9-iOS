@@ -45,18 +45,18 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
             let cell = UITableViewCell()
             
             return cell
-        case let .SelfIntroItem(intro):
+        case let .LabelItem(labelText):
             let cell = UITableViewCell()
             
             return cell
-        case let .DetailInformationItem(image,information):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
+        case let .InformationItem(image,information):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationTableViewCell.reuseIdentifier, for: idxPath) as? InformationTableViewCell else { return UITableViewCell() }
             
-            cell.informationImage.image = image
-            cell.informationLabel.text = information
+            cell.initialSetup(cellStyle: .style4)
+            cell.configureCell(image: image, information: information)
             
             return cell
-        case let .EditProfileItem(title):
+        case let .ButtonItem(buttonText):
             let cell = UITableViewCell()
             
             return cell
@@ -94,7 +94,7 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
                     self.searchResultBR.accept([])
                 } else {
                     self.information = text
-                    let addCellData: SectionItem = .DetailInformationItem(image: UIImage(), information: "\"\(text)\" 추가")
+                    let addCellData: SectionItem = .InformationItem(image: UIImage(), information: "\"\(text)\" 추가")
                     let searchData: [MultipleSectionModel] = [.DetailInformationSection(title: "검색 결과", items: [addCellData])]
                     self.searchResultBR.accept(searchData)
                 }

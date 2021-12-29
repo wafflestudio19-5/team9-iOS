@@ -23,7 +23,6 @@ class MainProfileTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         setStyle()
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

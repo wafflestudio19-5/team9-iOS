@@ -23,10 +23,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .MainProfileItem(profileImage: UIImage(systemName: "person.fill")!, coverImage: UIImage(), name: "name")
         ]),
         .DetailInformationSection(title: "상세 정보", items: [
-            .DetailInformationItem(image: UIImage(systemName: "briefcase.fill")!, information: "경력"),
-            .DetailInformationItem(image: UIImage(systemName: "graduationcap.fill")!, information: "학력"),
-            .DetailInformationItem(image: UIImage(systemName: "ellipsis")!, information: "내 정보 보기"),
-            .EditProfileItem(title: "전체 공개 정보 수정")
+            .InformationItem(image: UIImage(systemName: "briefcase.fill")!, information: "경력"),
+            .InformationItem(image: UIImage(systemName: "graduationcap.fill")!, information: "학력"),
+            .InformationItem(image: UIImage(systemName: "ellipsis")!, information: "내 정보 보기"),
+            .ButtonItem(buttonText: "전체 공개 정보 수정")
         ]),
         .PostSection(title: "내가 쓴 글", items: [
             
@@ -63,26 +63,22 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             
             return cell
         case let .ProfileImageItem(image):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
+            let cell = UITableViewCell()
             
-            cell.imgView.image = image
             return cell
         case let .CoverImageItem(image):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
+            let cell = UITableViewCell()
             
-            cell.imgView.image = image
             return cell
-        case let .SelfIntroItem(intro):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SelfIntroCell", for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
+        case let .LabelItem(labelText):
+            let cell = UITableViewCell()
             
-            cell.selfIntroLabel.text = intro
             return cell
-        case let .DetailInformationItem(image,information):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
+        case let .InformationItem(image,information):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationTableViewCell.reuseIdentifier, for: idxPath) as? InformationTableViewCell else { return UITableViewCell() }
             
-            cell.configureCell(style: .style1)
-            cell.informationImage.image = image
-            cell.informationLabel.text = information
+            cell.initialSetup(cellStyle: .style1)
+            cell.configureCell(image: image, information: information)
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
@@ -90,21 +86,20 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             }).disposed(by: self.disposeBag)
             
             return cell
-        case let .EditProfileItem(title):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: idxPath) as? EditProfileTableViewCell else { return UITableViewCell() }
+        case let .ButtonItem(buttonText):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.reuseIdentifier, for: idxPath) as? ButtonTableViewCell else { return UITableViewCell() }
             
-            cell.editProfileButton.setTitleColor(.tintColor, for: .normal)
-            cell.editProfileButton.setTitle(title, for: .normal)
-            cell.editProfileButton.setImage(UIImage(systemName: "person.text.rectangle"), for: .normal)
+            cell.initialSetup(cellStyle: .style1)
+            cell.configureCell(buttonText: buttonText)
             
-            cell.editProfileButton.rx.tap.bind { [weak self] in
+            cell.button.rx.tap.bind { [weak self] in
                 let editProfileViewController = EditProfileViewController()
                 self?.push(viewController: editProfileViewController)
             }.disposed(by: self.disposeBag)
             
             return cell
         case let .PostItem(post):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: idxPath) as? PostCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
 
             cell.configureCell(with: post)
             return cell
@@ -194,7 +189,4 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 5
     }
-    
-//    static func dataSource(navigation: UINavigationController) -> RxTableViewSectionedReloadDataSource<MultipleSectionModel>{
-//    }
 }

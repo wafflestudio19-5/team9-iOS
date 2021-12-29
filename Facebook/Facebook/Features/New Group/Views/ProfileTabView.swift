@@ -36,12 +36,10 @@ class ProfileTabView: UIView {
     
     private func configureTableView() {
         profileTableView.tableHeaderView = UIView()  // removes the separator at the top
-        profileTableView.register(UINib(nibName: "PostCell", bundle: nil), forCellReuseIdentifier: "PostCell")
-        profileTableView.register(UINib(nibName: "CreatePostTableViewCell", bundle: nil), forCellReuseIdentifier: "CreatePostCell")
         profileTableView.register(UINib(nibName: "MainProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "MainProfileCell")
-        profileTableView.register(UINib(nibName: "DetailProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "DetailProfileCell")
-        profileTableView.register(UINib(nibName: "ShowProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "ShowProfileCell")
-        profileTableView.register(UINib(nibName: "EditProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "EditProfileCell")
+        profileTableView.register(InformationTableViewCell.self, forCellReuseIdentifier: InformationTableViewCell.reuseIdentifier)
+        profileTableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.reuseIdentifier)
+        profileTableView.register(PostCell.self, forCellReuseIdentifier: PostCell.reuseIdentifier)
         profileTableView.allowsSelection = false
         profileTableView.refreshControl = refreshControl
     }

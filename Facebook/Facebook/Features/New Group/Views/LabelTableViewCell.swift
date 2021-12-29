@@ -9,13 +9,22 @@ import UIKit
 
 class LabelTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var selfIntroLabel: UILabel!
+    static let reuseIdentifier = "LabelTableViewCell"
     
     enum Style {
         case style1
         case style2
     }
     
+    var cellStyle: Style = .style1
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,13 +36,52 @@ class LabelTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+
+    func initialSetup(cellStyle: Style) {
+        self.cellStyle = cellStyle
+        setStyle()
+        setLayout()
+    }
     
-    func setStyle(style: Style) {
-        switch style {
+    func configureCell(labelText: String) {
+        label.text = labelText
+    }
+    
+    private func setStyle() {
+        switch self.cellStyle {
         case .style1:
-            print("Styl")
+            label.font = UIFont.systemFont(ofSize: 20)
+            label.textColor = .gray
         case .style2:
-            print("Styl")
+            label.font = UIFont.systemFont(ofSize: 18)
+            label.textColor = .gray
         }
     }
+    
+    private func setLayout() {
+        switch self.cellStyle {
+        case .style1:
+            self.contentView.addSubview(label)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                label.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+                label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10)
+            ])
+        case .style2:
+            self.contentView.addSubview(label)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                label.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+                label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
+                label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
+            ])
+        }
+    }
+    
+    let label = UILabel()
 }

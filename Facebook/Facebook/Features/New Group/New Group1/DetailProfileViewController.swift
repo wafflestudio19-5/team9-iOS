@@ -30,18 +30,18 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let sections: [MultipleSectionModel] = [
         .DetailInformationSection(title: "직장", items: [
-            .DetailInformationItem(image: UIImage(systemName: "briefcase")!,information: "직장 추가")
+            .InformationItem(image: UIImage(systemName: "briefcase")!,information: "직장 추가")
         ]),
         .DetailInformationSection(title: "학력", items:[
-            .DetailInformationItem(image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
-            .DetailInformationItem(image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
+            .InformationItem(image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
+            .InformationItem(image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
         ]),
         .DetailInformationSection(title: "연락처 정보", items: [
-            .DetailInformationItem(image: UIImage(systemName: "phone.fill")!,information: "010-1234-5678")
+            .InformationItem(image: UIImage(systemName: "phone.fill")!,information: "010-1234-5678")
         ]),
         .DetailInformationSection(title: "기본 정보", items: [
-            .DetailInformationItem(image: UIImage(systemName: "person.fill")!,information: "남성"),
-            .DetailInformationItem(image: UIImage(systemName: "gift.fill")!,information: "0000년 00월 00일")
+            .InformationItem(image: UIImage(systemName: "person.fill")!,information: "남성"),
+            .InformationItem(image: UIImage(systemName: "gift.fill")!,information: "0000년 00월 00일")
         ])
     ]
     
@@ -66,28 +66,27 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             
             cell.imgView.image = image
             return cell
-        case let .SelfIntroItem(intro):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SelfIntroCell", for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
+        case let .LabelItem(labelText):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.reuseIdentifier, for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
             
-            cell.selfIntroLabel.text = intro
+            cell.initialSetup(cellStyle: .style1)
+            cell.configureCell(labelText: labelText)
             return cell
-        case let .DetailInformationItem(image,information):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DetailProfileCell", for: idxPath) as? DetailProfileTableViewCell else { return UITableViewCell() }
+        case let .InformationItem(image,information):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationTableViewCell.reuseIdentifier, for: idxPath) as? InformationTableViewCell else { return UITableViewCell() }
             
-            cell.configureCell(style: .style3)
-            cell.informationImage.image = image
-            cell.informationLabel.text = information
+            cell.initialSetup(cellStyle: .style3)
+            cell.configureCell(image: image, information: information)
             return cell
-        case let .EditProfileItem(title):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EditProfileCell", for: idxPath) as? EditProfileTableViewCell else { return UITableViewCell() }
+        case let .ButtonItem(buttonText):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.reuseIdentifier, for: idxPath) as? ButtonTableViewCell else { return UITableViewCell() }
             
-            cell.editProfileButton.setTitleColor(.tintColor, for: .normal)
-            cell.editProfileButton.setTitle(title, for: .normal)
-            cell.editProfileButton.setImage(UIImage(systemName: "person.text.rectangle"), for: .normal)
+            cell.initialSetup(cellStyle: .style2)
+            cell.configureCell(buttonText: buttonText)
             
             return cell
         case let .PostItem(post):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: idxPath) as? PostCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
             
             cell.configureCell(with: post)
             return cell

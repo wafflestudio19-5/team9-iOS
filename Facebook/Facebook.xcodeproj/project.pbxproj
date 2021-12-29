@@ -12,12 +12,8 @@
 		771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 771DF59F27707DD900B69351 /* ImageTableViewCell.xib */; };
 		774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */; };
 		774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */; };
-		7740943E2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift */; };
-		7740943F2750E7E400AD8DC2 /* DetailProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7740943D2750E7E400AD8DC2 /* DetailProfileTableViewCell.xib */; };
-		774094442750EBF600AD8DC2 /* ShowProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094422750EBF600AD8DC2 /* ShowProfileTableViewCell.swift */; };
-		774094452750EBF600AD8DC2 /* ShowProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094432750EBF600AD8DC2 /* ShowProfileTableViewCell.xib */; };
-		7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094482750ECDC00AD8DC2 /* EditProfileTableViewCell.swift */; };
-		7740944B2750ECDC00AD8DC2 /* EditProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094492750ECDC00AD8DC2 /* EditProfileTableViewCell.xib */; };
+		7740943E2750E7E400AD8DC2 /* InformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* InformationTableViewCell.swift */; };
+		7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094482750ECDC00AD8DC2 /* ButtonTableViewCell.swift */; };
 		77547904275CE66A0065711C /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77547903275CE66A0065711C /* PostViewController.swift */; };
 		77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77547905275CE6CC0065711C /* CommentTableViewCell.swift */; };
 		77547908275CE6CC0065711C /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77547906275CE6CC0065711C /* CommentTableViewCell.xib */; };
@@ -105,12 +101,8 @@
 		771DF59F27707DD900B69351 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
 		774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileTableViewCell.swift; sourceTree = "<group>"; };
 		774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainProfileTableViewCell.xib; sourceTree = "<group>"; };
-		7740943C2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailProfileTableViewCell.swift; sourceTree = "<group>"; };
-		7740943D2750E7E400AD8DC2 /* DetailProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailProfileTableViewCell.xib; sourceTree = "<group>"; };
-		774094422750EBF600AD8DC2 /* ShowProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowProfileTableViewCell.swift; sourceTree = "<group>"; };
-		774094432750EBF600AD8DC2 /* ShowProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowProfileTableViewCell.xib; sourceTree = "<group>"; };
-		774094482750ECDC00AD8DC2 /* EditProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileTableViewCell.swift; sourceTree = "<group>"; };
-		774094492750ECDC00AD8DC2 /* EditProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditProfileTableViewCell.xib; sourceTree = "<group>"; };
+		7740943C2750E7E400AD8DC2 /* InformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationTableViewCell.swift; sourceTree = "<group>"; };
+		774094482750ECDC00AD8DC2 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		77547903275CE66A0065711C /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		77547905275CE6CC0065711C /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		77547906275CE6CC0065711C /* CommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
@@ -416,12 +408,8 @@
 				774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */,
 				771DF59E27707DD900B69351 /* ImageTableViewCell.swift */,
 				771DF59F27707DD900B69351 /* ImageTableViewCell.xib */,
-				7740943C2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift */,
-				7740943D2750E7E400AD8DC2 /* DetailProfileTableViewCell.xib */,
-				774094422750EBF600AD8DC2 /* ShowProfileTableViewCell.swift */,
-				774094432750EBF600AD8DC2 /* ShowProfileTableViewCell.xib */,
-				774094482750ECDC00AD8DC2 /* EditProfileTableViewCell.swift */,
-				774094492750ECDC00AD8DC2 /* EditProfileTableViewCell.xib */,
+				7740943C2750E7E400AD8DC2 /* InformationTableViewCell.swift */,
+				774094482750ECDC00AD8DC2 /* ButtonTableViewCell.swift */,
 				775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */,
 				77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */,
 			);
@@ -695,13 +683,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7740944B2750ECDC00AD8DC2 /* EditProfileTableViewCell.xib in Resources */,
 				771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */,
 				777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */,
 				7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */,
-				774094452750EBF600AD8DC2 /* ShowProfileTableViewCell.xib in Resources */,
 				777993222750CD41007A3898 /* CreatePostTableViewCell.xib in Resources */,
-				7740943F2750E7E400AD8DC2 /* DetailProfileTableViewCell.xib in Resources */,
 				B897A90A274E303700FB67D3 /* LaunchScreen.storyboard in Resources */,
 				774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */,
 				77AC749F275E19C200F10BD5 /* PostContentTableViewCell.xib in Resources */,
@@ -763,10 +748,9 @@
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
 				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
-				7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */,
+				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
 				BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */,
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
-				774094442750EBF600AD8DC2 /* ShowProfileTableViewCell.swift in Sources */,
 				77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				77B635422768B2C100C41EB3 /* DetailProfileView.swift in Sources */,
@@ -783,7 +767,7 @@
 				77ABC5DA2774A9B0000431E1 /* AddInformationViewController.swift in Sources */,
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
 				B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */,
-				7740943E2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift in Sources */,
+				7740943E2750E7E400AD8DC2 /* InformationTableViewCell.swift in Sources */,
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
 				77AC749E275E19C200F10BD5 /* PostContentTableViewCell.swift in Sources */,
 				775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */,
