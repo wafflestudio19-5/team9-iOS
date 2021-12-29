@@ -11,6 +11,8 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
 
     let disposeBag = DisposeBag()
     
+    var newUser = NewUser()
+    
     var customView: View {
         guard let view = view as? View else { return View() }
         return view
@@ -20,9 +22,18 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("viewDidLoad called")
         self.navigationItem.title = "Facebook 가입하기"
         self.navigationItem.backButtonTitle = ""
-        
-        
+    }
+    
+    convenience init(newUser: NewUser) {
+        print("convenience init called")
+        self.init()
+        self.overwriteUser(newUser: newUser)
+    }
+    
+    func overwriteUser(newUser: NewUser) {
+        self.newUser = newUser
     }
 }

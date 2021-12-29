@@ -35,7 +35,6 @@ class EnterEmailViewController: BaseSignUpViewController<EnterEmailView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         bindView()
     }
     
@@ -73,8 +72,8 @@ class EnterEmailViewController: BaseSignUpViewController<EnterEmailView> {
                 self.customView.setAlertLabelText(as: isValidEmail.message())
                 
                 if isValidEmail == .valid {
-                    self.push(viewController: SelectGenderViewController())
-                    // TODO: email 전달
+                    self.newUser.email = self.emailAddress.value
+                    self.push(viewController: SelectGenderViewController(newUser: self.newUser))
                 }
         }.disposed(by: disposeBag)
     }

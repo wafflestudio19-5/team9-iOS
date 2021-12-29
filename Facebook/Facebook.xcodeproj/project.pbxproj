@@ -44,6 +44,9 @@
 		B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAD275504AA00513B77 /* LoginViewController.swift */; };
 		B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAF2755119500513B77 /* FacebookTextField.swift */; };
 		B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDB32759250400513B77 /* BaseSignUpView.swift */; };
+		B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67DF2775AC03002CCC04 /* NewUser.swift */; };
+		B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */; };
+		B85D67E4277C964F002CCC04 /* SignUpResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E3277C964F002CCC04 /* SignUpResponse.swift */; };
 		B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194ED275D28D000957BBC /* EnterUsernameView.swift */; };
 		B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194EF275D290600957BBC /* EnterUsernameViewController.swift */; };
 		B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */; };
@@ -127,6 +130,9 @@
 		B846BDAD275504AA00513B77 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B846BDAF2755119500513B77 /* FacebookTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookTextField.swift; sourceTree = "<group>"; };
 		B846BDB32759250400513B77 /* BaseSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSignUpView.swift; sourceTree = "<group>"; };
+		B85D67DF2775AC03002CCC04 /* NewUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
+		B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+NewUser.swift"; sourceTree = "<group>"; };
+		B85D67E3277C964F002CCC04 /* SignUpResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpResponse.swift; sourceTree = "<group>"; };
 		B86194ED275D28D000957BBC /* EnterUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameView.swift; sourceTree = "<group>"; };
 		B86194EF275D290600957BBC /* EnterUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameViewController.swift; sourceTree = "<group>"; };
 		B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterBirthdateView.swift; sourceTree = "<group>"; };
@@ -274,6 +280,7 @@
 			children = (
 				BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */,
 				BE9C7C99276E3F480089247F /* LoginResponse.swift */,
+				B85D67E3277C964F002CCC04 /* SignUpResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -580,6 +587,7 @@
 			children = (
 				BEFFFAA6276B126D009CBF25 /* Post.swift */,
 				BE9C7C9E276EC6EC0089247F /* User.swift */,
+				B85D67DF2775AC03002CCC04 /* NewUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -590,6 +598,7 @@
 				BEA834AD275123FD00D6EC95 /* Endpoint.swift */,
 				BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */,
 				BE9C7C91276CDF230089247F /* Endpoint+User.swift */,
+				B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -732,7 +741,9 @@
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */,
 				BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */,
+				B85D67E4277C964F002CCC04 /* SignUpResponse.swift in Sources */,
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
+				B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */,
 				774094442750EBF600AD8DC2 /* ShowProfileTableViewCell.swift in Sources */,
 				77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
@@ -761,6 +772,7 @@
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
+				B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */,
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
 				B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */,
 				B86194FF2760FED800957BBC /* EnterEmailViewController.swift in Sources */,

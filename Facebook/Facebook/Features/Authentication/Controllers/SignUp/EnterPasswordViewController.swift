@@ -70,10 +70,8 @@ class EnterPasswordViewController: BaseSignUpViewController<EnterPasswordView> {
                 self.customView.setAlertLabelText(as: isValidPassword.message())
                 
                 if isValidPassword == .valid {
-                    // TODO: User 등록
-                    let rootTabBarController = RootTabBarController()
-                    guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
-                    sceneDelegate.changeRootViewController(rootTabBarController)
+                    self.newUser.password = self.password.value
+                    self.registerUser()
                 }
         }.disposed(by: disposeBag)
     }
@@ -92,5 +90,24 @@ extension EnterPasswordViewController {
             }
             return PasswordValidation.invalidLetters
         }
+    }
+    
+    private func registerUser() {
+        NetworkService.post(endpoint: .createUser(newUser: newUser), as: SignUpResponse.self)
+            .subscribe { event in
+                if event.isCompleted {
+                    if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                        sceneDelegate.changeRootViewController(RootTabBarController())
+                    }
+                    return
+                }
+                
+                guard (event.element?.1) != nil else {
+                    print("회원가입 오류")
+                    print(event)
+                    return
+                }
+            }
+            .disposed(by: disposeBag)
     }
 }
