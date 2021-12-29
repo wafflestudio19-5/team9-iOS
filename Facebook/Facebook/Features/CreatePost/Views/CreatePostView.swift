@@ -31,6 +31,7 @@ class CreatePostView: UIView {
     lazy var contentTextView: UITextView = {
         let textView = UITextView()
         textView.font = .systemFont(ofSize: 17)
+        textView.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
@@ -42,13 +43,37 @@ class CreatePostView: UIView {
         return button
     }()
     
+    lazy var photosButton: UIButton = {
+        var config = UIButton.Configuration.tinted()
+        config.image = UIImage(systemName: "photo.on.rectangle.angled")
+        config.cornerStyle = .capsule
+        
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configuration = config
+        return button
+    }()
+    
+    lazy var keyboardInputAccessory: UIView = {
+        let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 50))
+        inputAccessory.addSubview(photosButton)
+        NSLayoutConstraint.activate([
+            photosButton.bottomAnchor.constraint(equalTo: inputAccessory.bottomAnchor, constant: -10),
+            photosButton.leadingAnchor.constraint(equalTo: inputAccessory.leadingAnchor, constant: 15),
+            photosButton.widthAnchor.constraint(equalToConstant: 50)
+        ])
+        return inputAccessory
+    }()
+    
     private let disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .red
         setStyleForView()
         setLayoutForView()
         bindPlaceholder()
+        contentTextView.inputAccessoryView = keyboardInputAccessory
     }
     
     required init?(coder: NSCoder) {
@@ -105,10 +130,10 @@ class CreatePostView: UIView {
             profileImage.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15),
             nameLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 18),
             nameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15),
-            contentTextView.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 20),
-            contentTextView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            contentTextView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            contentTextView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+            contentTextView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            contentTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            contentTextView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            contentTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }
