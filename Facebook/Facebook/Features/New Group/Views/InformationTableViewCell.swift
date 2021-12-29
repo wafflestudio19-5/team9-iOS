@@ -65,6 +65,7 @@ class InformationTableViewCell: UITableViewCell {
             
             informationLabel.font = UIFont.systemFont(ofSize: 18)
         case .style3:
+            informationImage.contentMode = .scaleAspectFit
             informationImage.layer.cornerRadius = informationImage.frame.width / 2
             informationImage.clipsToBounds = true
             informationImage.backgroundColor = .systemGray4
@@ -73,10 +74,11 @@ class InformationTableViewCell: UITableViewCell {
             informationLabel.font = UIFont.systemFont(ofSize: 18)
             informationLabel.textColor = .systemBlue
         case .style4:
+            informationImage.contentMode = .scaleAspectFit
             informationImage.layer.cornerRadius = informationImage.frame.width / 2
             informationImage.clipsToBounds = true
             informationImage.layer.borderColor = CGColor(gray: 0.5, alpha: 1)
-            informationImage.layer.borderWidth - 0.5
+            informationImage.layer.borderWidth - 1
             informationImage.backgroundColor = .systemGray6
             informationImage.tintColor = .gray
             
