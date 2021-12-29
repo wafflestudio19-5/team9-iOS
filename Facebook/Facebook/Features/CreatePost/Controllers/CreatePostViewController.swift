@@ -119,7 +119,7 @@ class CreatePostViewController: UIViewController {
         // Set the selection behavior to respect the user’s selection order.
         configuration.selection = .ordered
         // Set the selection limit to enable multiselection.
-        configuration.selectionLimit = 0
+        configuration.selectionLimit = 80
         // Set the preselected asset identifiers with the identifiers that the app tracks.
         configuration.preselectedAssetIdentifiers = selectedAssetIdentifiers
         
