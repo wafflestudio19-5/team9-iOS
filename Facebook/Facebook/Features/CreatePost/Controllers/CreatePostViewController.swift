@@ -13,6 +13,7 @@ import PhotosUI
 class CreatePostViewController: UIViewController {
     
     let disposeBag = DisposeBag()
+    private let dummyObservables = Observable.just([1,2,3,4,5])
     
     override func loadView() {
         view = CreatePostView()
@@ -31,6 +32,7 @@ class CreatePostViewController: UIViewController {
         setNavigationBarItems()
         bindNavigationBarItems()
         bindPhotosButton()
+        bindImageGridView()
     }
     
     func setNavigationBarStyle() {
@@ -153,3 +155,29 @@ extension CreatePostViewController: PHPickerViewControllerDelegate {
     }
 }
 
+
+// MARK: Image Grid
+
+extension CreatePostViewController: UICollectionViewDelegateFlowLayout {
+    func bindImageGridView() {
+        dummyObservables
+            .bind(to: createPostView.imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
+                cell.backgroundColor = .red
+            }
+            .disposed(by: disposeBag)
+        createPostView.imageGridCollectionView.delegate = self
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let item = indexPath.item
+        let width = collectionView.bounds.size.width
+        let padding:CGFloat = 5
+        if item < 2 {
+            let itemWidth:CGFloat = (width - padding) / 2.0
+            return CGSize(width: itemWidth, height: itemWidth)
+        } else {
+            let itemWidth:CGFloat = (width - 2 * padding) / 3.0
+            return CGSize(width: itemWidth, height: itemWidth)
+        }
+    }
+}

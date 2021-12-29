@@ -9,42 +9,20 @@ import UIKit
 import RxSwift
 
 class CreatePostView: UIView {
-    lazy var contentTextView: UITextView = {
-        let textView = UITextView()
-        textView.font = .systemFont(ofSize: 17)
-        textView.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        return textView
-    }()
     
-    lazy var postButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("게시", for: .normal)
-        button.setTitleColor(UIColor.lightGray, for: .normal)
-        return button
-    }()
-    
-    lazy var photosButton: UIButton = {
-        var config = UIButton.Configuration.tinted()
-        config.image = UIImage(systemName: "photo.on.rectangle.angled")
-        config.cornerStyle = .capsule
-        
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.configuration = config
-        return button
-    }()
     
     lazy var keyboardInputAccessory: UIView = {
         let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 50))
         inputAccessory.addSubview(photosButton)
         NSLayoutConstraint.activate([
-            photosButton.bottomAnchor.constraint(equalTo: inputAccessory.bottomAnchor, constant: -10),
-            photosButton.leadingAnchor.constraint(equalTo: inputAccessory.leadingAnchor, constant: 15),
+            photosButton.bottomAnchor.constraint(equalTo: inputAccessory.bottomAnchor, constant: .standardBottomMargin),
+            photosButton.leadingAnchor.constraint(equalTo: inputAccessory.leadingAnchor, constant: .standardLeadingMargin),
             photosButton.widthAnchor.constraint(equalToConstant: 50)
         ])
         return inputAccessory
     }()
+    
+    let imageGridCollectionView = ImageGridCollectionView()
     
     private let disposeBag = DisposeBag()
     
@@ -101,13 +79,48 @@ class CreatePostView: UIView {
     
     private func setLayoutForView() {
         self.addSubview(contentTextView)
+        self.addSubview(imageGridCollectionView)
+        
         
         NSLayoutConstraint.activate([
             contentTextView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             contentTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             contentTextView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            contentTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            contentTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+    
+            imageGridCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            imageGridCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            imageGridCollectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 0)
         ])
+        
+        
     }
+    
+    // MARK: UI Components
+    
+    lazy var contentTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = .systemFont(ofSize: 17)
+        textView.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
+    }()
+    
+    lazy var postButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("게시", for: .normal)
+        button.setTitleColor(UIColor.lightGray, for: .normal)
+        return button
+    }()
+    
+    lazy var photosButton: UIButton = {
+        var config = UIButton.Configuration.tinted()
+        config.image = UIImage(systemName: "photo.on.rectangle.angled")
+        config.cornerStyle = .capsule
+        
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configuration = config
+        return button
+    }()
 }
- 
