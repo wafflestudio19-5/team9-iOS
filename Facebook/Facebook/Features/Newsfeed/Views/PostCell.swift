@@ -105,7 +105,7 @@ class PostCell: UITableViewCell {
     private lazy var postHeader = AuthorInfoHeaderView()
     
     // 좋아요, 댓글, 공유 버튼 나란히 있는 스택 뷰
-    lazy var buttonHorizontalStackView = InteractionStackView()
+    lazy var buttonHorizontalStackView = InteractionButtonStackView()
     
     // 좋아요 수, 댓글 수 등 각종 통계가 보이는 스택 뷰
     private lazy var statHorizontalStackView: UIStackView = {

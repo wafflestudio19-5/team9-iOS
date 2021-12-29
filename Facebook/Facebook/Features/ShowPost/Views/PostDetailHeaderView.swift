@@ -12,7 +12,7 @@ class PostDetailHeaderView: UIView {
     /// 포스팅 상세페이지 상단의 게시글 뷰. 댓글 TableView의 헤더로 들어간다.
     
     private let contentLabel = PostContentLabel()
-    let buttonStackView = InteractionStackView(useBottomBorder: true)
+    let buttonStackView = InteractionButtonStackView(useBottomBorder: true)
     private let authorHeaderView = AuthorInfoHeaderView()
     
     // 좋아요 수 라벨

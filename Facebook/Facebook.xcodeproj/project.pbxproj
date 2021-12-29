@@ -50,7 +50,7 @@
 		B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8619502276103AE00957BBC /* SelectGenderView.swift */; };
 		B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86195042761051900957BBC /* SelectGenderViewController.swift */; };
 		B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8619506276198B400957BBC /* GenderTableViewCell.swift */; };
-		B86195092761AFAE00957BBC /* ContentSizeFitTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86195082761AFAE00957BBC /* ContentSizeFitTableView.swift */; };
+		B86195092761AFAE00957BBC /* ContentSizeFitViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86195082761AFAE00957BBC /* ContentSizeFitViews.swift */; };
 		B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FD274E303600FB67D3 /* AppDelegate.swift */; };
 		B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B897A8FF274E303600FB67D3 /* SceneDelegate.swift */; };
 		B897A907274E303700FB67D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B897A906274E303700FB67D3 /* Assets.xcassets */; };
@@ -67,6 +67,8 @@
 		B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */; };
 		B8A7F8342767507000F659D2 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8332767507000F659D2 /* LabelWithPadding.swift */; };
 		B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */; };
+		BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */; };
+		BE7FD9F9277CCFDA00C3FF8E /* ImageGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9F8277CCFDA00C3FF8E /* ImageGridCell.swift */; };
 		BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */; };
 		BE827A0F2772131000BD3566 /* FacebookGrayscale.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE827A0E2772131000BD3566 /* FacebookGrayscale.swift */; };
 		BE827A11277223A100BD3566 /* CreatePostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE827A10277223A100BD3566 /* CreatePostHeaderView.swift */; };
@@ -85,7 +87,7 @@
 		BEF254E3277AD0EA00FBAACB /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254E2277AD0EA00FBAACB /* ProfileImageView.swift */; };
 		BEF254E5277AD28200FBAACB /* AuthorInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254E4277AD28200FBAACB /* AuthorInfoHeaderView.swift */; };
 		BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254E7277AD3C700FBAACB /* InfoLabel.swift */; };
-		BEF254EC277ADBE800FBAACB /* InteractionStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254EB277ADBE800FBAACB /* InteractionStackView.swift */; };
+		BEF254EC277ADBE800FBAACB /* InteractionButtonStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254EB277ADBE800FBAACB /* InteractionButtonStackView.swift */; };
 		BEF254EE277B062800FBAACB /* PostContentLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254ED277B062800FBAACB /* PostContentLabel.swift */; };
 		BEF254F2277B079D00FBAACB /* CGFloat+LayoutConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254F1277B079D00FBAACB /* CGFloat+LayoutConstants.swift */; };
 		BEF254F4277B0DC500FBAACB /* PostDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254F3277B0DC500FBAACB /* PostDetailHeaderView.swift */; };
@@ -141,7 +143,7 @@
 		B8619502276103AE00957BBC /* SelectGenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectGenderView.swift; sourceTree = "<group>"; };
 		B86195042761051900957BBC /* SelectGenderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectGenderViewController.swift; sourceTree = "<group>"; };
 		B8619506276198B400957BBC /* GenderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderTableViewCell.swift; sourceTree = "<group>"; };
-		B86195082761AFAE00957BBC /* ContentSizeFitTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeFitTableView.swift; sourceTree = "<group>"; };
+		B86195082761AFAE00957BBC /* ContentSizeFitViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSizeFitViews.swift; sourceTree = "<group>"; };
 		B897A8FA274E303600FB67D3 /* Facebook.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Facebook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B897A8FD274E303600FB67D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B897A8FF274E303600FB67D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -160,6 +162,8 @@
 		B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
 		B8A7F8332767507000F659D2 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
 		B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridCollectionView.swift; sourceTree = "<group>"; };
+		BE7FD9F8277CCFDA00C3FF8E /* ImageGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridCell.swift; sourceTree = "<group>"; };
 		BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
 		BE827A0E2772131000BD3566 /* FacebookGrayscale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookGrayscale.swift; sourceTree = "<group>"; };
 		BE827A10277223A100BD3566 /* CreatePostHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostHeaderView.swift; sourceTree = "<group>"; };
@@ -178,7 +182,7 @@
 		BEF254E2277AD0EA00FBAACB /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		BEF254E4277AD28200FBAACB /* AuthorInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorInfoHeaderView.swift; sourceTree = "<group>"; };
 		BEF254E7277AD3C700FBAACB /* InfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoLabel.swift; sourceTree = "<group>"; };
-		BEF254EB277ADBE800FBAACB /* InteractionStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionStackView.swift; sourceTree = "<group>"; };
+		BEF254EB277ADBE800FBAACB /* InteractionButtonStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionButtonStackView.swift; sourceTree = "<group>"; };
 		BEF254ED277B062800FBAACB /* PostContentLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentLabel.swift; sourceTree = "<group>"; };
 		BEF254F1277B079D00FBAACB /* CGFloat+LayoutConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+LayoutConstants.swift"; sourceTree = "<group>"; };
 		BEF254F3277B0DC500FBAACB /* PostDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailHeaderView.swift; sourceTree = "<group>"; };
@@ -218,7 +222,7 @@
 				BE9C7CA327716E450089247F /* Colors */,
 				BE9C7CA227716E280089247F /* TextFields */,
 				BE9C7C8E276C71C50089247F /* PostCell */,
-				B86195082761AFAE00957BBC /* ContentSizeFitTableView.swift */,
+				B86195082761AFAE00957BBC /* ContentSizeFitViews.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -297,9 +301,11 @@
 		BE9C7C8E276C71C50089247F /* PostCell */ = {
 			isa = PBXGroup;
 			children = (
-				BEF254EB277ADBE800FBAACB /* InteractionStackView.swift */,
+				BEF254EB277ADBE800FBAACB /* InteractionButtonStackView.swift */,
 				BEF254E2277AD0EA00FBAACB /* ProfileImageView.swift */,
 				BEF254E4277AD28200FBAACB /* AuthorInfoHeaderView.swift */,
+				BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */,
+				BE7FD9F8277CCFDA00C3FF8E /* ImageGridCell.swift */,
 			);
 			path = PostCell;
 			sourceTree = "<group>";
@@ -757,6 +763,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */,
 				77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */,
 				BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */,
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
@@ -796,7 +803,7 @@
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
 				B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */,
 				B86194FF2760FED800957BBC /* EnterEmailViewController.swift in Sources */,
-				B86195092761AFAE00957BBC /* ContentSizeFitTableView.swift in Sources */,
+				B86195092761AFAE00957BBC /* ContentSizeFitViews.swift in Sources */,
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
 				B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
@@ -809,13 +816,14 @@
 				B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */,
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */,
+				BE7FD9F9277CCFDA00C3FF8E /* ImageGridCell.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
 				B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */,
 				BEF254F4277B0DC500FBAACB /* PostDetailHeaderView.swift in Sources */,
 				BE827A0F2772131000BD3566 /* FacebookGrayscale.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
-				BEF254EC277ADBE800FBAACB /* InteractionStackView.swift in Sources */,
+				BEF254EC277ADBE800FBAACB /* InteractionButtonStackView.swift in Sources */,
 				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
 				BEFFFAB0276B1E08009CBF25 /* PaginationViewModel.swift in Sources */,

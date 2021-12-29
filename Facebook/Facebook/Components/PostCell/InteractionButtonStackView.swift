@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InteractionStackView: UIStackView {
+class InteractionButtonStackView: UIStackView {
     
     /// 좋아요, 댓글, (공유) 버튼이 있는 Horizontal Stack 뷰
     
