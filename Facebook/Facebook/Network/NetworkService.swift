@@ -14,14 +14,15 @@ import UIKit
 
 struct NetworkService {
     private static let configuration = URLSessionConfiguration.af.default
-    private static var session = Session(configuration: configuration)
+    private static var session = Session(configuration: configuration, interceptor: DefaultHeaderAdapter())
     
     static func cancelAllRequests() {
         self.session.cancelAllRequests()
     }
     
     static func registerToken(token: String) {
-        self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [JWTAdapter(token: token)]))
+        print(token)
+        self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [DefaultHeaderAdapter(), JWTAdapter(token: token)]))
     }
     
     /*
@@ -53,7 +54,7 @@ struct NetworkService {
     }
     
     static func post<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
-        return session.rx.responseDecodable(.post, endpoint.url, parameters: endpoint.parameters)
+        return session.rx.responseDecodable(.post, endpoint.url, parameters: endpoint.parameters, encoding: JSONEncoding.default)
     }
 }
 
@@ -68,6 +69,15 @@ struct JWTAdapter: RequestInterceptor {
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var urlRequest = urlRequest
         urlRequest.headers.add(.authorization("JWT \(self.token)"))
+        completion(.success(urlRequest))
+    }
+}
+
+struct DefaultHeaderAdapter: RequestInterceptor {
+    func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
+        var urlRequest = urlRequest
+        urlRequest.headers.add(.contentType("application/json"))
+        urlRequest.headers.add(.accept("application/json"))
         completion(.success(urlRequest))
     }
 }

@@ -48,30 +48,26 @@ class PaginationViewModel<DataModel: Codable> {
     init(endpoint: Endpoint) {
         self.endpoint = endpoint
         NetworkService.post(endpoint: .login(email: "team9@test.com", password: "team9"), as: LoginResponse.self)
-            .subscribe { event in
-                if event.isCompleted {
-                    return
-                }
-                
-                guard let response = event.element?.1 else {
-                    print("로그인 오류")
-                    print(event)
-                    return
-                }
+            .subscribe(onNext: { element in
+                let response = element.1
                 NetworkService.registerToken(token: response.token)
                 self.bind()
                 self.loadMore()
-            }
+            }, onError: { error in
+                print(error)
+            })
             .disposed(by: disposeBag)
     }
     
     func loadMore() {
         if isFetchingData || !hasNext { return }
+        print("load More")
         loadMoreToggle.onNext(())
     }
     
     func refresh() {
         if isFetchingData { return }
+        print("refresh")
         refreshToggle.onNext(())
     }
     
@@ -99,21 +95,10 @@ class PaginationViewModel<DataModel: Codable> {
         let endpoint = endpoint.withCursor(cursor: nextCursor)
         NetworkService
             .get(endpoint: endpoint, as: PaginatedResponse<DataModel>.self)
-            .subscribe { [weak self] event in
+            .subscribe(onNext: { [weak self] element in
                 guard let self = self else { return }
-                
-                if event.isCompleted {
-                    return
-                }
-                
-                guard let paginatedResponse = event.element?.1 else {
-                    print("데이터 로드 중 오류 발생: \(endpoint.url)")
-                    print(event)
-                    return
-                }
-                
+                let paginatedResponse = element.1
                 self.lastResponse = paginatedResponse
-                
                 if isRefreshing {
                     self.dataList.accept(paginatedResponse.results)
                     self.isRefreshing.accept(false)
@@ -122,7 +107,9 @@ class PaginationViewModel<DataModel: Codable> {
                     self.dataList.accept(self.dataList.value + paginatedResponse.results)
                     self.isLoading.accept(false)
                 }
-            }
+            }, onError: { error in
+                print(error)
+            })
             .disposed(by: disposeBag)
     }
 }

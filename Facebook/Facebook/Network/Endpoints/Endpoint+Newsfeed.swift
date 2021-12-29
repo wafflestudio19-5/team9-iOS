@@ -11,4 +11,8 @@ extension Endpoint {
     static func newsfeed(cursor: String? = nil) -> Self {
         return Endpoint(path: "newsfeed/", cursor: cursor)
     }
+    
+    static func newsfeed(content: String) -> Self {
+        return Endpoint(path: "newsfeed/", parameters: ["content": content, "files": []])
+    }
 }
