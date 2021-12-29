@@ -38,6 +38,9 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         viewModel.dataList
             .bind(to: tableView.rx.items(cellIdentifier: "PostCell", cellType: PostCell.self)) { row, post, cell in
                 cell.configureCell(with: post)
+                cell.buttonHorizontalStackView.commentButton.rx.tap.bind { [weak self] _ in
+                    self?.push(viewController: PostDetailViewController(post: post))
+                }.disposed(by: cell.disposeBag)  // cell이 reuse될 때 disposeBag은 새로운 것으로 갈아끼워진다. 따라서 기존 cell의 구독이 취소된다.
             }
             .disposed(by: disposeBag)
         
