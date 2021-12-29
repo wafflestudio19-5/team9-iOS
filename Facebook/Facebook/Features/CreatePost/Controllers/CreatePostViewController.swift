@@ -8,26 +8,29 @@
 import UIKit
 import RxSwift
 import RxGesture
+import PhotosUI
 
-class CreatePostViewController<View: CreatePostView>: UIViewController {
+class CreatePostViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
     override func loadView() {
-        view = View()
+        view = CreatePostView()
     }
     
-    var creatPostView: View {
-        guard let view = view as? View else { return View() }
+    var createPostView: CreatePostView {
+        guard let view = view as? CreatePostView else { fatalError("CreatePostView is not loaded.") }
         return view
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "게시물 만들기"
+        self.createPostView.contentTextView.becomeFirstResponder()
         setNavigationBarStyle()
         setNavigationBarItems()
         bindNavigationBarItems()
+        bindPhotosButton()
     }
     
     func setNavigationBarStyle() {
@@ -46,7 +49,7 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
             target: self,
             action: #selector(popToPrevious)
         )
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: creatPostView.postButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: createPostView.postButton)
     }
     
     @objc private func popToPrevious() {
@@ -55,24 +58,26 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
     
     
     func bindNavigationBarItems() {
-        creatPostView.postButton.rx.tap.bind { _ in
-            NetworkService.post(endpoint: .newsfeed(content: self.creatPostView.contentTextView.text ?? ""), as: Post.self)
-                .subscribe { [weak self] _ in
-                    guard let self = self else { return }
-                    guard let rootTabBarController = self.presentingViewController as? RootTabBarController,
-                          let newsfeedVC = rootTabBarController.newsfeedNavController.viewControllers.first as? NewsfeedTabViewController
-                    else { return }
-                    newsfeedVC.viewModel.refresh()
-                    self.dismiss(animated: true, completion: nil)
-                }
-                .disposed(by: self.disposeBag)
-        }.disposed(by: disposeBag)
+        createPostView.postButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                NetworkService.post(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? ""), as: Post.self)
+                    .subscribe { [weak self] _ in
+                        guard let self = self else { return }
+                        guard let rootTabBarController = self.presentingViewController as? RootTabBarController,
+                              let newsfeedVC = rootTabBarController.newsfeedNavController.viewControllers.first as? NewsfeedTabViewController
+                        else { return }
+                        newsfeedVC.viewModel.refresh()
+                        self.dismiss(animated: true, completion: nil)
+                    }
+                    .disposed(by: self.disposeBag)
+            }.disposed(by: disposeBag)
         
         //contentTextField가 비어있는 가에 대한 Bool형 event방출
-        let hasEnteredContent = creatPostView.contentTextView.rx.text.orEmpty.map { !$0.isEmpty }
+        let hasEnteredContent = createPostView.contentTextView.rx.text.orEmpty.map { !$0.isEmpty }
         
         //contentTextField의 내용 유뮤에 따라 버튼 활성화
-        hasEnteredContent.bind(to: self.creatPostView.postButton.rx.isEnabled).disposed(by: disposeBag)
+        hasEnteredContent.bind(to: self.createPostView.postButton.rx.isEnabled).disposed(by: disposeBag)
         
         //contentTextField의 내용 유뮤에 따라 버튼 색상 변화
         hasEnteredContent
@@ -81,12 +86,70 @@ class CreatePostViewController<View: CreatePostView>: UIViewController {
                 guard let self = self else { return }
                 
                 if result {
-                    self.creatPostView.enablePostButton()
+                    self.createPostView.enablePostButton()
                 } else {
-                    self.creatPostView.disablePostButton()
+                    self.createPostView.disablePostButton()
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: Photo Picker
+    // 아래부터는 사진 첨부 버튼을 눌렀을 때 관련한 로직입니다.
+    
+    private var selection = [String: PHPickerResult]()
+    private var selectedAssetIdentifiers = [String]()
+    
+    private func bindPhotosButton() {
+        createPostView.photosButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.presentPicker()
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func presentPicker() {
+        var configuration = PHPickerConfiguration(photoLibrary: .shared())
+        
+        // Set the filter type according to the user’s selection.
+        configuration.filter = .any(of: [.images, .livePhotos, .videos])
+        // Set the mode to avoid transcoding, if possible, if your app supports arbitrary image/video encodings.
+        configuration.preferredAssetRepresentationMode = .current
+        // Set the selection behavior to respect the user’s selection order.
+        configuration.selection = .ordered
+        // Set the selection limit to enable multiselection.
+        configuration.selectionLimit = 0
+        // Set the preselected asset identifiers with the identifiers that the app tracks.
+        configuration.preselectedAssetIdentifiers = selectedAssetIdentifiers
+        
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+}
+
+extension CreatePostViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        let existingSelection = self.selection
+        var newSelection = [String: PHPickerResult]()
+        for result in results {
+            let identifier = result.assetIdentifier!
+            newSelection[identifier] = existingSelection[identifier] ?? result
+        }
+        
+        // Track the selection in case the user deselects it later.
+        selection = newSelection
+        selectedAssetIdentifiers = results.map(\.assetIdentifier!)
+        
+        dismiss(animated: true)
+//        selectedAssetIdentifierIterator = selectedAssetIdentifiers.makeIterator()
+//
+//        if selection.isEmpty {
+//            displayEmptyImage()
+//        } else {
+//            displayNext()
+//        }
     }
 }
 

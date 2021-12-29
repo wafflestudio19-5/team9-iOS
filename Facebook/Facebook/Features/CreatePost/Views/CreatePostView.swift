@@ -9,25 +9,6 @@ import UIKit
 import RxSwift
 
 class CreatePostView: UIView {
-    lazy var profileImage: UIImageView = {
-        let image = UIImage(systemName: "person.circle.fill")
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = imageView.frame.width / 2
-        imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    
-    lazy var nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        label.text = "writer"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
     lazy var contentTextView: UITextView = {
         let textView = UITextView()
         textView.font = .systemFont(ofSize: 17)
@@ -119,17 +100,9 @@ class CreatePostView: UIView {
     }
     
     private func setLayoutForView() {
-        self.addSubview(profileImage)
-        self.addSubview(nameLabel)
         self.addSubview(contentTextView)
         
         NSLayoutConstraint.activate([
-            profileImage.heightAnchor.constraint(equalToConstant: 50),
-            profileImage.widthAnchor.constraint(equalToConstant: 50),
-            profileImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15),
-            profileImage.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            nameLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 18),
-            nameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15),
             contentTextView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             contentTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             contentTextView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
