@@ -8,7 +8,6 @@
 import RxSwift
 import RxGesture
 import RxCocoa
-import Darwin
 
 class EnterPasswordViewController: BaseSignUpViewController<EnterPasswordView> {
     
@@ -94,15 +93,13 @@ extension EnterPasswordViewController {
     
     private func registerUser() {
         NetworkService.post(endpoint: .createUser(newUser: newUser), as: SignUpResponse.self)
-            .subscribe { event in
+            .subscribe { [weak self] event in
                 if event.isCompleted {
-                    if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-                        sceneDelegate.changeRootViewController(RootTabBarController())
-                    }
+                    self?.changeRootViewController(to: RootTabBarController())
                     return
                 }
                 
-                guard (event.element?.1) != nil else {
+                if event.isStopEvent {
                     print("회원가입 오류")
                     print(event)
                     return
