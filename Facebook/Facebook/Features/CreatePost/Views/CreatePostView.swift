@@ -92,17 +92,9 @@ class CreatePostView: UIView {
         self.addSubview(scrollView)
         scrollView.addSubview(scrollViewStack)
         
-        
+        NSLayoutConstraint.activateFourWayConstraints(subview: scrollView, containerView: self)
+        NSLayoutConstraint.activateFourWayConstraints(subview: scrollViewStack, containerView: scrollView)
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: self.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            
-            scrollViewStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            scrollViewStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            scrollViewStack.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            scrollViewStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             scrollViewStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
     }
