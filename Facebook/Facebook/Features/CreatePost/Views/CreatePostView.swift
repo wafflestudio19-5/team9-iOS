@@ -43,7 +43,6 @@ class CreatePostView: UIView {
         let placeholder = "무슨 생각을 하고 계신가요?"
         contentTextView.text = placeholder
         contentTextView.textColor = .lightGray
-        
         contentTextView.rx.didBeginEditing
             .subscribe { [weak self] _ in
                 guard let self = self else {return}
@@ -77,43 +76,55 @@ class CreatePostView: UIView {
         self.backgroundColor = .white
     }
     
+    /// `view` > `scrollView` > `stackView`
+    /// `stackView`에는 `authorHeader`, `contentTextView`, `imageGridCollectionView`가 포함된다.
+    
     private func setLayoutForView() {
-        self.addSubview(contentTextView)
-        self.addSubview(imageGridCollectionView)
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let scrollViewStack = UIStackView()
+        scrollViewStack.translatesAutoresizingMaskIntoConstraints = false
+        scrollViewStack.axis = .vertical
+        scrollViewStack.addArrangedSubview(contentTextView)
+        scrollViewStack.addArrangedSubview(imageGridCollectionView)
+        
+        self.addSubview(scrollView)
+        scrollView.addSubview(scrollViewStack)
         
         
         NSLayoutConstraint.activate([
-            contentTextView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            contentTextView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            contentTextView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            contentTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-    
-            imageGridCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageGridCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            imageGridCollectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 0)
+            scrollView.topAnchor.constraint(equalTo: self.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            
+            scrollViewStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            scrollViewStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            scrollViewStack.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            scrollViewStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            scrollViewStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
-        
-        
     }
     
     // MARK: UI Components
     
-    lazy var contentTextView: UITextView = {
+    let contentTextView: UITextView = {
         let textView = UITextView()
+        textView.isScrollEnabled = false
         textView.font = .systemFont(ofSize: 17)
         textView.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
-        textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
     
-    lazy var postButton: UIButton = {
+    let postButton: UIButton = {
         let button = UIButton()
         button.setTitle("게시", for: .normal)
         button.setTitleColor(UIColor.lightGray, for: .normal)
         return button
     }()
     
-    lazy var photosButton: UIButton = {
+    let photosButton: UIButton = {
         var config = UIButton.Configuration.tinted()
         config.image = UIImage(systemName: "photo.on.rectangle.angled")
         config.cornerStyle = .capsule

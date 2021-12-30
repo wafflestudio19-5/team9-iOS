@@ -145,13 +145,13 @@ extension CreatePostViewController: PHPickerViewControllerDelegate {
         selectedAssetIdentifiers = results.map(\.assetIdentifier!)
         
         dismiss(animated: true)
-//        selectedAssetIdentifierIterator = selectedAssetIdentifiers.makeIterator()
-//
-//        if selection.isEmpty {
-//            displayEmptyImage()
-//        } else {
-//            displayNext()
-//        }
+        //        selectedAssetIdentifierIterator = selectedAssetIdentifiers.makeIterator()
+        //
+        //        if selection.isEmpty {
+        //            displayEmptyImage()
+        //        } else {
+        //            displayNext()
+        //        }
     }
 }
 
@@ -171,13 +171,17 @@ extension CreatePostViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let item = indexPath.item
         let width = collectionView.bounds.size.width
-        let padding:CGFloat = 5
+        print(width)
+        let padding: CGFloat = 5
         if item < 2 {
-            let itemWidth:CGFloat = (width - padding) / 2.0
+            let itemWidth: CGFloat = (width - padding) / 2.0
+            print(itemWidth)
             return CGSize(width: itemWidth, height: itemWidth)
         } else {
-            let itemWidth:CGFloat = (width - 2 * padding) / 3.0
+            let itemWidth: CGFloat = (width - 2 * padding) / 3.0 - 0.00001
+            print(itemWidth)
             return CGSize(width: itemWidth, height: itemWidth)
         }
     }
 }
+

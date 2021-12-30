@@ -69,6 +69,7 @@
 		B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */; };
 		BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */; };
 		BE7FD9F9277CCFDA00C3FF8E /* ImageGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9F8277CCFDA00C3FF8E /* ImageGridCell.swift */; };
+		BE7FD9FB277CDA5700C3FF8E /* GridVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9FA277CDA5700C3FF8E /* GridVC.swift */; };
 		BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */; };
 		BE827A0F2772131000BD3566 /* FacebookGrayscale.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE827A0E2772131000BD3566 /* FacebookGrayscale.swift */; };
 		BE827A11277223A100BD3566 /* CreatePostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE827A10277223A100BD3566 /* CreatePostHeaderView.swift */; };
@@ -164,6 +165,7 @@
 		B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridCollectionView.swift; sourceTree = "<group>"; };
 		BE7FD9F8277CCFDA00C3FF8E /* ImageGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridCell.swift; sourceTree = "<group>"; };
+		BE7FD9FA277CDA5700C3FF8E /* GridVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridVC.swift; sourceTree = "<group>"; };
 		BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
 		BE827A0E2772131000BD3566 /* FacebookGrayscale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookGrayscale.swift; sourceTree = "<group>"; };
 		BE827A10277223A100BD3566 /* CreatePostHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostHeaderView.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				BEA834AC275123A300D6EC95 /* Network */,
 				B897A8FD274E303600FB67D3 /* AppDelegate.swift */,
 				B897A8FF274E303600FB67D3 /* SceneDelegate.swift */,
+				BE7FD9FA277CDA5700C3FF8E /* GridVC.swift */,
 				B897A906274E303700FB67D3 /* Assets.xcassets */,
 				B897A908274E303700FB67D3 /* LaunchScreen.storyboard */,
 				B897A90B274E303700FB67D3 /* Info.plist */,
@@ -801,6 +804,7 @@
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
+				BE7FD9FB277CDA5700C3FF8E /* GridVC.swift in Sources */,
 				B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */,
 				B86194FF2760FED800957BBC /* EnterEmailViewController.swift in Sources */,
 				B86195092761AFAE00957BBC /* ContentSizeFitViews.swift in Sources */,
