@@ -9,10 +9,11 @@ import UIKit
 
 class AddInformationView: UIView {
 
-    let addInformationTableView = UITableView()
+    let addInformationTableView = UITableView(frame: .zero, style: .grouped)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .systemGray6
         setLayoutForView()
         configureTableView()
     }
@@ -34,8 +35,8 @@ class AddInformationView: UIView {
     }
     
     private func configureTableView() {
-        addInformationTableView.separatorStyle = .none
-        addInformationTableView.register(InformationTableViewCell.self, forCellReuseIdentifier: InformationTableViewCell.reuseIdentifier)
+        addInformationTableView.separatorStyle = .singleLine
+        addInformationTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         addInformationTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)
         addInformationTableView.register(DateSelectTableViewCell.self, forCellReuseIdentifier: DateSelectTableViewCell.reuseIdentifier)
         addInformationTableView.allowsSelection = false

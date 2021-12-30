@@ -30,18 +30,19 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let sections: [MultipleSectionModel] = [
         .DetailInformationSection(title: "직장", items: [
-            .InformationItem(image: UIImage(systemName: "briefcase")!,information: "직장 추가")
+            .SimpleInformationItem(style: .style3,image: UIImage(systemName: "briefcase")!,information: "직장 추가"),
+            .DetailInformationItem(style: .style3, image: UIImage(systemName: "phone.fill")!,information: "직장에서 직장으로 근무했음", time: "2021년 12월 29일~2021년 12월 30일" ,description: "직업 설명입니다", privacyBound: "전체 공개")
         ]),
         .DetailInformationSection(title: "학력", items:[
-            .InformationItem(image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
-            .InformationItem(image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
+            .SimpleInformationItem(style: .style3, image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
+            .SimpleInformationItem(style: .style3, image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
         ]),
         .DetailInformationSection(title: "연락처 정보", items: [
-            .InformationItem(image: UIImage(systemName: "phone.fill")!,information: "010-1234-5678")
+            .DetailInformationItem(style: .style2, image: UIImage(systemName: "phone.fill")!,information: "010-1234-5678", description: "휴대폰", privacyBound: "회원님의 친구")
         ]),
         .DetailInformationSection(title: "기본 정보", items: [
-            .InformationItem(image: UIImage(systemName: "person.fill")!,information: "남성"),
-            .InformationItem(image: UIImage(systemName: "gift.fill")!,information: "0000년 00월 00일")
+            .DetailInformationItem(style: .style1, image: UIImage(systemName: "person.fill")!, information: "남성", description: "성별"),
+            .DetailInformationItem(style: .style2, image: UIImage(systemName: "gift.fill")!,information: "2002년 12월 12일", description: "생일", privacyBound: "회원님의 친구의 친구")
         ])
     ]
     
@@ -66,23 +67,31 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             
             cell.imgView.image = image
             return cell
-        case let .LabelItem(labelText):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.reuseIdentifier, for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
+        case let .SimpleInformationItem(style, image, information):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: .style1)
-            cell.configureCell(labelText: labelText)
-            return cell
-        case let .InformationItem(image,information):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationTableViewCell.reuseIdentifier, for: idxPath) as? InformationTableViewCell else { return UITableViewCell() }
-            
-            cell.initialSetup(cellStyle: .style3)
+            cell.initialSetup(cellStyle: style)
             cell.configureCell(image: image, information: information)
-            return cell
-        case let .ButtonItem(buttonText):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.reuseIdentifier, for: idxPath) as? ButtonTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: .style2)
-            cell.configureCell(buttonText: buttonText)
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                let addInformationViewController = AddInformationViewController()
+                self?.push(viewController: addInformationViewController)
+            }).disposed(by: cell.disposeBag)
+            
+            return cell
+        case let .DetailInformationItem(style, image, information, time, description, privacyBound):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailInformationTableViewCell.reuseIdentifier, for: idxPath) as? DetailInformationTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: style)
+            cell.configureCell(image: image, information: information, time: time, description: description, privacyBound: privacyBound)
+            
+            return cell
+        case let .LabelItem(style, labelText):
+            let cell = UITableViewCell()
+            
+            return cell
+        case let .ButtonItem(style, buttonText):
+            let cell = UITableViewCell()
             
             return cell
         case let .PostItem(post):

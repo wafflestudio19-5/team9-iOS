@@ -9,11 +9,11 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class InformationTableViewCell: UITableViewCell { 
+class SimpleInformationTableViewCell: UITableViewCell { 
 
-    static let reuseIdentifier = "InformationTableViewCell"
+    static let reuseIdentifier = "SimpleInformationTableViewCell"
     
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     enum Style {
         case style1
@@ -30,6 +30,11 @@ class InformationTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+          super.prepareForReuse()
+          disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
     }
     
     override func awakeFromNib() {
@@ -89,7 +94,7 @@ class InformationTableViewCell: UITableViewCell {
     
     private func setLayout() {
         switch self.cellStyle {
-        case .style1:
+        case .style1, .style2:
             addSubview(informationImage)
             informationImage.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
@@ -107,43 +112,7 @@ class InformationTableViewCell: UITableViewCell {
                 informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
             ])
-        case .style2:
-            addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 20),
-                informationImage.widthAnchor.constraint(equalToConstant: 20),
-                informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
-                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
-            ])
-            
-            addSubview(informationLabel)
-            informationLabel.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
-            ])
-        case .style3:
-            addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 30),
-                informationImage.widthAnchor.constraint(equalToConstant: 30),
-                informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
-                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
-            ])
-            
-            addSubview(informationLabel)
-            informationLabel.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
-            ])
-        case .style4:
+        case .style3, .style4:
             addSubview(informationImage)
             informationImage.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([

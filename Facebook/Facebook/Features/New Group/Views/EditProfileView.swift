@@ -37,7 +37,7 @@ class EditProfileView: UIView {
         editProfileTableView.separatorStyle = .none //cell과 cell사이 separator line 제거
         editProfileTableView.register(UINib(nibName: "ImageTableViewCell", bundle: nil), forCellReuseIdentifier: "ImageCell")
         editProfileTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)
-        editProfileTableView.register(InformationTableViewCell.self, forCellReuseIdentifier: InformationTableViewCell.reuseIdentifier)
+        editProfileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         editProfileTableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.reuseIdentifier)
         editProfileTableView.allowsSelection = false
     }

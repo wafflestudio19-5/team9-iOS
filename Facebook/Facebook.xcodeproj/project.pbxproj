@@ -12,11 +12,12 @@
 		771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 771DF59F27707DD900B69351 /* ImageTableViewCell.xib */; };
 		774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */; };
 		774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */; };
-		7740943E2750E7E400AD8DC2 /* InformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* InformationTableViewCell.swift */; };
+		7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */; };
 		7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094482750ECDC00AD8DC2 /* ButtonTableViewCell.swift */; };
 		77547904275CE66A0065711C /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77547903275CE66A0065711C /* PostViewController.swift */; };
 		77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77547905275CE6CC0065711C /* CommentTableViewCell.swift */; };
 		77547908275CE6CC0065711C /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77547906275CE6CC0065711C /* CommentTableViewCell.xib */; };
+		7754B861277D68D200775D81 /* DetailInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B860277D68D200775D81 /* DetailInformationTableViewCell.swift */; };
 		775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */; };
 		775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150E27730BA000C9872F /* DataSourceModel.swift */; };
 		7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77799318274FD8E4007A3898 /* PostTableViewCell.swift */; };
@@ -101,11 +102,12 @@
 		771DF59F27707DD900B69351 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
 		774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileTableViewCell.swift; sourceTree = "<group>"; };
 		774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainProfileTableViewCell.xib; sourceTree = "<group>"; };
-		7740943C2750E7E400AD8DC2 /* InformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationTableViewCell.swift; sourceTree = "<group>"; };
+		7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInformationTableViewCell.swift; sourceTree = "<group>"; };
 		774094482750ECDC00AD8DC2 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		77547903275CE66A0065711C /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		77547905275CE6CC0065711C /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		77547906275CE6CC0065711C /* CommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
+		7754B860277D68D200775D81 /* DetailInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInformationTableViewCell.swift; sourceTree = "<group>"; };
 		775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		775F150E27730BA000C9872F /* DataSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceModel.swift; sourceTree = "<group>"; };
 		77799318274FD8E4007A3898 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -408,7 +410,8 @@
 				774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */,
 				771DF59E27707DD900B69351 /* ImageTableViewCell.swift */,
 				771DF59F27707DD900B69351 /* ImageTableViewCell.xib */,
-				7740943C2750E7E400AD8DC2 /* InformationTableViewCell.swift */,
+				7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */,
+				7754B860277D68D200775D81 /* DetailInformationTableViewCell.swift */,
 				774094482750ECDC00AD8DC2 /* ButtonTableViewCell.swift */,
 				775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */,
 				77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */,
@@ -767,7 +770,7 @@
 				77ABC5DA2774A9B0000431E1 /* AddInformationViewController.swift in Sources */,
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
 				B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */,
-				7740943E2750E7E400AD8DC2 /* InformationTableViewCell.swift in Sources */,
+				7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */,
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
 				77AC749E275E19C200F10BD5 /* PostContentTableViewCell.swift in Sources */,
 				775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */,
@@ -788,6 +791,7 @@
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
 				B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
+				7754B861277D68D200775D81 /* DetailInformationTableViewCell.swift in Sources */,
 				77E12FA22769A97800B8F191 /* CreatePostView.swift in Sources */,
 				BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */,
 				77FE72872775E00600482CE7 /* SelectInformationView.swift in Sources */,

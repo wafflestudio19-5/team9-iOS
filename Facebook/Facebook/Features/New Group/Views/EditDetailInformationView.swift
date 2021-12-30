@@ -47,6 +47,7 @@ class EditDetailInformationView: UIView {
         
         editDetailInformationTableView.separatorStyle = .none
         editDetailInformationTableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.reuseIdentifier)
+        editDetailInformationTableView.register(DetailInformationTableViewCell.self, forCellReuseIdentifier: DetailInformationTableViewCell.reuseIdentifier)
         editDetailInformationTableView.allowsSelection = false
     }
 }

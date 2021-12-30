@@ -29,11 +29,12 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
     
     let sections: [MultipleSectionModel] = [
         .EditProfileSection(title: "직장", items: [
-            .ButtonItem(buttonText: "직장 추가")
+            .ButtonItem(style: .style3, buttonText: "직장 추가"),
+            .DetailInformationItem(style: .style4, image: UIImage(), information: "직장에서 직장으로 근무했음", description: "소개에 표시되지 않으며 전체 공개가 유지됩니다.")
         ]),
         .EditProfileSection(title: "학력", items: [
-            .ButtonItem(buttonText: "고등학교 추가"),
-            .ButtonItem(buttonText: "대학 추가")
+            .ButtonItem(style: .style3, buttonText: "고등학교 추가"),
+            .ButtonItem(style: .style3, buttonText: "대학 추가")
         ])
     ]
     
@@ -55,18 +56,29 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
             let cell = UITableViewCell()
             
             return cell
-        case let .LabelItem(labelText):
+        case let .SimpleInformationItem(style, image, information):
             let cell = UITableViewCell()
             
             return cell
-        case let .InformationItem(image,information):
+        case let .DetailInformationItem(style, image, information, time, description, privacyBound):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailInformationTableViewCell.reuseIdentifier, for: idxPath) as? DetailInformationTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: style)
+            cell.configureCell(image: image, information: information, time: time, description: description, privacyBound: privacyBound)
+            
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                cell.toggleIndicate()
+            }).disposed(by: cell.disposeBag)
+            
+            return cell
+        case let .LabelItem(style, labelText):
             let cell = UITableViewCell()
             
             return cell
-        case let .ButtonItem(buttonText):
+        case let .ButtonItem(style, buttonText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.reuseIdentifier, for: idxPath) as? ButtonTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: .style3)
+            cell.initialSetup(cellStyle: style)
             cell.configureCell(buttonText: buttonText)
             
             cell.button.rx.tap.bind { [weak self] in

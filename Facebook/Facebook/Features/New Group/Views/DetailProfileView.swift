@@ -35,7 +35,8 @@ class DetailProfileView: UIView {
     
     private func configureTableView() {
         detailProfileTableView.separatorStyle = .none  
-        detailProfileTableView.register(InformationTableViewCell.self, forCellReuseIdentifier: InformationTableViewCell.reuseIdentifier)
+        detailProfileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
+        detailProfileTableView.register(DetailInformationTableViewCell.self, forCellReuseIdentifier: DetailInformationTableViewCell.reuseIdentifier)
         detailProfileTableView.allowsSelection = false
     }
 }

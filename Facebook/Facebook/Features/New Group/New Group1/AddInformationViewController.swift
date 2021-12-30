@@ -28,9 +28,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     let disposeBag = DisposeBag()
     
-    let sections: [MultipleSectionModel] = [
+    let defaultSections: [MultipleSectionModel] = [
         .DetailInformationSection(title: "직장", items: [
-            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름")
+            .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase")!, information: "직장 이름")
         ])
     ]
     
@@ -53,17 +53,17 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             let cell = UITableViewCell()
             
             return cell
-        case let .LabelItem(labelText):
+        case let .LabelItem(style, labelText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.reuseIdentifier, for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: .style2)
+            cell.initialSetup(cellStyle: style)
             cell.configureCell(labelText: labelText)
             
             return cell
-        case let .InformationItem(image,information):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: InformationTableViewCell.reuseIdentifier, for: idxPath) as? InformationTableViewCell else { return UITableViewCell() }
+        case let .SimpleInformationItem(style, image,information):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: .style4)
+            cell.initialSetup(cellStyle: style)
             cell.configureCell(image: image, information: information)
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
@@ -75,11 +75,15 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 selectInformationViewController.selectedInformation
                     .observe(on: MainScheduler.instance)
                     .subscribe(onNext: { [weak self] item in
-                        self?.selectInformationAction()
+                        self?.isActiveSection()
                     }).disposed(by: cell.disposeBag)
                 
                 self?.push(viewController: selectInformationViewController)
             }).disposed(by: cell.disposeBag)
+            
+            return cell
+        case let .DetailInformationItem(style, image, information, time, description, privacyBound):
+            let cell = UITableViewCell()
             
             return cell
         case let .ButtonItem(buttonText):
@@ -107,7 +111,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
 
         // Do any additional setup after loading the view.
         self.title = "\(informationType) 추가"
-        sectionsBR.accept(sections)
+        sectionsBR.accept(defaultSections)
         
         bindTableView()
     }
@@ -118,15 +122,33 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
     
-    private func selectInformationAction() {
+    private func isActiveSection() {
         let sections: [MultipleSectionModel] = [
             .DetailInformationSection(title: "직장", items: [
-                .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-                .LabelItem(labelText: "직책(선택 사항)"),
-                .LabelItem(labelText: "위치(선택 사항)"),
-                .LabelItem(labelText: "직업에 대해 설명해주세요(선택 사항)")
+                .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
+                .LabelItem(style: .style2, labelText: "직책(선택 사항)"),
+                .LabelItem(style: .style2, labelText: "위치(선택 사항)"),
+                .LabelItem(style: .style2, labelText: "직업에 대해 설명해주세요(선택 사항)")
             ]),
             .DetailInformationSection(title: "직장", items: [
+                .SelectDateItem(style: .startDateStyle),
+                .SelectDateItem(style: .endDateStyle)
+            ])
+        ]
+        
+        self.sectionsBR.accept(sections)
+    }
+    
+    private func isNotActiveSection() {
+        let sections: [MultipleSectionModel] = [
+            .DetailInformationSection(title: "직장", items: [
+                .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
+                .LabelItem(style: .style2, labelText: "직책(선택 사항)"),
+                .LabelItem(style: .style2, labelText: "위치(선택 사항)"),
+                .LabelItem(style: .style2, labelText: "직업에 대해 설명해주세요(선택 사항)")
+            ]),
+            .DetailInformationSection(title: "직장", items: [
+                .SelectDateItem(style: .startDateStyle)
             ])
         ]
         
@@ -166,42 +188,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         sectionSwitch.rx
             .controlEvent(.valueChanged)
             .withLatestFrom(sectionSwitch.rx.value)
-            .subscribe(onNext : { bool in
+            .subscribe(onNext : { [weak self] bool in
                 if bool {
-                    let sections: [MultipleSectionModel] = [
-                        .DetailInformationSection(title: "직장", items: [
-                            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-                            .LabelItem(labelText: "직책(선택 사항)"),
-                            .LabelItem(labelText: "위치(선택 사항)"),
-                            .LabelItem(labelText: "직업에 대해 설명해주세요(선택 사항)")
-                        ]),
-                        .DetailInformationSection(title: "직장", items: [
-                            //.SelectDateItem(style: .startDateStyle),
-                            //.SelectDateItem(style: .endDateStyle)
-                            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-                            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름")
-                        ])
-                    ]
-
-                    self.sectionsBR.accept(sections)
+                    self?.isNotActiveSection()
                 } else {
-                    let sections: [MultipleSectionModel] = [
-                        .DetailInformationSection(title: "직장", items: [
-                            .InformationItem(image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-                            .LabelItem(labelText: "직책(선택 사항)"),
-                            .LabelItem(labelText: "위치(선택 사항)"),
-                            .LabelItem(labelText: "직업에 대해 설명해주세요(선택 사항)")
-                        ]),
-                        .DetailInformationSection(title: "직장", items: [
-                            //.SelectDateItem(style: .startDateStyle)
-                        ])
-                    ]
-
-                    self.sectionsBR.accept(sections)
-                    print("switch off")
+                    self?.isActiveSection()
                 }
-            })
-            .disposed(by: disposeBag)
+            }).disposed(by: disposeBag)
     
         return headerView
     }
@@ -209,12 +202,12 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     //footer의 separate line
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView()
-        footerView.backgroundColor = .systemGray5
+        footerView.backgroundColor = .systemGray6
         return footerView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 { return 0 } //마지막 section header w제거
+        if section == 0 { return 0 } //마지막 section header 제거
         return 50
     }
     

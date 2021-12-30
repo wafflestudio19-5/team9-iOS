@@ -41,7 +41,7 @@ class SelectInformationView: UIView {
         searchHeaderView.widthAnchor.constraint(equalTo: selectInformationTableView.widthAnchor).isActive = true
         
         selectInformationTableView.separatorStyle = .none
-        selectInformationTableView.register(InformationTableViewCell.self, forCellReuseIdentifier: InformationTableViewCell.reuseIdentifier)
+        selectInformationTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         selectInformationTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)
     }
 
