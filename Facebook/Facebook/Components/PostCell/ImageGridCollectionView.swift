@@ -8,16 +8,11 @@
 import UIKit
 
 class ImageGridCollectionView: ContentSizeFitCollectionView {
-    var numberOfImages: Int = 0 {
-        willSet(newValue) {
-            if newValue == 0 {
-                self.isHidden = true
-            } else {
-                self.isHidden = false
-            }
-        }
-    }
+    var numberOfImages: Int = 0
     let spacing: CGFloat = 5
+    
+    /// https://stackoverflow.com/questions/70523591/swift-facebook-style-image-grid-using-uicollectionviewflowlayout/70523865?noredirect=1#comment124669129_70523865
+    /// 버그 수정을 위한 workaround
     let eps: CGFloat = 0.000001
     
     init() {
@@ -29,8 +24,6 @@ class ImageGridCollectionView: ContentSizeFitCollectionView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.isScrollEnabled = false
         self.delegate = self
-        self.backgroundColor = .blue
-        self.isHidden = true  // hide by default
     }
     
     required init?(coder: NSCoder) {
@@ -68,7 +61,6 @@ extension ImageGridCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let item = indexPath.item
-        
         switch numberOfImages {
         case 1:
             return getItemSize(width: .one, height: .threeFourths)

@@ -56,7 +56,6 @@ class CreatePostViewController: UIViewController {
         navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    
     func bindNavigationBarItems() {
         createPostView.postButton.rx.tap
             .bind { [weak self] _ in
@@ -119,8 +118,8 @@ extension CreatePostViewController {
             }
             .disposed(by: disposeBag)
         
-        pickerViewModel.selectionCount.asDriver()
-            .drive { [weak self] count in
+        pickerViewModel.selectionCount
+            .bind { [weak self] count in
                 guard let self = self else { return }
                 self.createPostView.imageGridCollectionView.numberOfImages = count
             }
