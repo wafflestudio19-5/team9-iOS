@@ -8,7 +8,7 @@
 import UIKit
 
 class ImageGridCollectionView: ContentSizeFitCollectionView {
-    var numberOfImages: Int = 0
+    var numberOfImages: Int = 0  // 이 값을 기준으로 어떤 레이아웃을 만들지 결정한다.
     let spacing: CGFloat = 5
     
     /// https://stackoverflow.com/questions/70523591/swift-facebook-style-image-grid-using-uicollectionviewflowlayout/70523865?noredirect=1#comment124669129_70523865

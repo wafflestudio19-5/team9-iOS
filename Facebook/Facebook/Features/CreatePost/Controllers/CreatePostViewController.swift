@@ -114,7 +114,7 @@ extension CreatePostViewController {
     func bindImageGridView() {
         pickerViewModel.firstFiveResults
             .bind(to: createPostView.imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
-                cell.backgroundColor = .red
+                cell.displayMedia(pickerResult: data)
             }
             .disposed(by: disposeBag)
         
