@@ -102,10 +102,10 @@ class PostCell: UITableViewCell {
     // MARK: Initialize View Components
     
     // 포스트 헤더 (프로필 이미지, 작성자, 날짜, 각종 버튼이 들어가는 곳)
-    private lazy var postHeader = AuthorInfoHeaderView()
+    private let postHeader = AuthorInfoHeaderView()
     
     // 좋아요, 댓글, 공유 버튼 나란히 있는 스택 뷰
-    lazy var buttonHorizontalStackView = InteractionButtonStackView()
+    let buttonHorizontalStackView = InteractionButtonStackView()
     
     // 좋아요 수, 댓글 수 등 각종 통계가 보이는 스택 뷰
     private lazy var statHorizontalStackView: UIStackView = {
@@ -118,7 +118,7 @@ class PostCell: UITableViewCell {
     }()
     
     // 좋아요 수 라벨
-    private lazy var likeCountLabel: UILabel = InfoLabel()
+    private let likeCountLabel: UILabel = InfoLabel()
     
     // 따봉 아이콘 + 좋아요 수
     private lazy var likeCountLabelWithIcon: UIStackView = {
@@ -131,13 +131,13 @@ class PostCell: UITableViewCell {
     }()
     
     // 댓글 수 라벨
-    private lazy var commentCountLabel: UILabel = InfoLabel()
+    private let commentCountLabel: UILabel = InfoLabel()
     
     // 본문 텍스트 라벨
-    private lazy var textContentLabel = PostContentLabel()
+    private let textContentLabel = PostContentLabel()
     
     // 피드와 피드 사이의 회색 리바이더
-    private lazy var divider: UIView = {
+    private let divider: UIView = {
         let divider = UIView()
         divider.backgroundColor = .Grayscales.gray1
         divider.translatesAutoresizingMaskIntoConstraints = false

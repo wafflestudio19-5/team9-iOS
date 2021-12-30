@@ -15,14 +15,14 @@ class InteractionButtonStackView: UIStackView {
     let commentButton = CommentButton()
     
     // 버튼 스택 뷰 위에 보이는 디바이더
-    private lazy var topBorder: UIView = {
+    private let topBorder: UIView = {
         let line = UIView()
         line.backgroundColor = .Grayscales.gray2
         line.translatesAutoresizingMaskIntoConstraints = false
         return line
     }()
     
-    private lazy var bottomBorder: UIView = {
+    private let bottomBorder: UIView = {
         let line = UIView()
         line.backgroundColor = .Grayscales.gray2
         line.translatesAutoresizingMaskIntoConstraints = false

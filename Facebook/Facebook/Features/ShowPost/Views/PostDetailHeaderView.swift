@@ -16,7 +16,7 @@ class PostDetailHeaderView: UIView {
     private let authorHeaderView = AuthorInfoHeaderView()
     
     // 좋아요 수 라벨
-    private lazy var likeCountLabel: UILabel = InfoLabel(color: .black, weight: .semibold)
+    private let likeCountLabel: UILabel = InfoLabel(color: .black, weight: .semibold)
     
     // 따봉 아이콘 + 좋아요 수
     private lazy var likeCountLabelWithIcon: UIStackView = {
@@ -28,7 +28,7 @@ class PostDetailHeaderView: UIView {
         return stack
     }()
     
-    private lazy var divider: UIView = {
+    private let divider: UIView = {
         let divider = UIView()
         divider.translatesAutoresizingMaskIntoConstraints = false
         divider.backgroundColor = .Grayscales.gray2
