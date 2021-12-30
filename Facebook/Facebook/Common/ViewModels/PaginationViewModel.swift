@@ -16,8 +16,6 @@ class PaginationViewModel<DataModel: Codable> {
     private let disposeBag = DisposeBag()
     private var endpoint: Endpoint
     
-//    private var currentPage: Int = 1
-//    private var hasNext: Bool = true
     private var lastResponse: PaginatedResponse<DataModel>?
     private var hasNext: Bool {
         guard let lastResponse = lastResponse else { return true }
@@ -61,13 +59,11 @@ class PaginationViewModel<DataModel: Codable> {
     
     func loadMore() {
         if isFetchingData || !hasNext { return }
-        print("load More")
         loadMoreToggle.onNext(())
     }
     
     func refresh() {
         if isFetchingData { return }
-        print("refresh")
         refreshToggle.onNext(())
     }
     

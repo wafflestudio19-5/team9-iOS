@@ -9,11 +9,10 @@ import UIKit
 import RxSwift
 import RxGesture
 import PhotosUI
+import RxCocoa
 
 class CreatePostViewController: UIViewController {
-    
     let disposeBag = DisposeBag()
-    private let dummyObservables = Observable.just([1,2,3,4,5])
     
     override func loadView() {
         view = CreatePostView()
@@ -38,7 +37,6 @@ class CreatePostViewController: UIViewController {
     func setNavigationBarStyle() {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .lightGray.withAlphaComponent(0.1)
         navigationItem.standardAppearance = appearance
         navigationItem.scrollEdgeAppearance = appearance
         navigationItem.compactAppearance = appearance
@@ -99,89 +97,34 @@ class CreatePostViewController: UIViewController {
     // MARK: Photo Picker
     // 아래부터는 사진 첨부 버튼을 눌렀을 때 관련한 로직입니다.
     
-    private var selection = [String: PHPickerResult]()
-    private var selectedAssetIdentifiers = [String]()
+    private let pickerViewModel = PHPickerViewModel()
     
     private func bindPhotosButton() {
         createPostView.photosButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                self.presentPicker()
+                self.pickerViewModel.presentPickerVC(presentingVC: self)
             }
             .disposed(by: disposeBag)
     }
-    
-    private func presentPicker() {
-        var configuration = PHPickerConfiguration(photoLibrary: .shared())
-        
-        // Set the filter type according to the user’s selection.
-        configuration.filter = .any(of: [.images, .livePhotos, .videos])
-        // Set the mode to avoid transcoding, if possible, if your app supports arbitrary image/video encodings.
-        configuration.preferredAssetRepresentationMode = .current
-        // Set the selection behavior to respect the user’s selection order.
-        configuration.selection = .ordered
-        // Set the selection limit to enable multiselection.
-        configuration.selectionLimit = 80
-        // Set the preselected asset identifiers with the identifiers that the app tracks.
-        configuration.preselectedAssetIdentifiers = selectedAssetIdentifiers
-        
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        present(picker, animated: true)
-    }
 }
-
-extension CreatePostViewController: PHPickerViewControllerDelegate {
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        let existingSelection = self.selection
-        var newSelection = [String: PHPickerResult]()
-        for result in results {
-            let identifier = result.assetIdentifier!
-            newSelection[identifier] = existingSelection[identifier] ?? result
-        }
-        
-        // Track the selection in case the user deselects it later.
-        selection = newSelection
-        selectedAssetIdentifiers = results.map(\.assetIdentifier!)
-        
-        dismiss(animated: true)
-        //        selectedAssetIdentifierIterator = selectedAssetIdentifiers.makeIterator()
-        //
-        //        if selection.isEmpty {
-        //            displayEmptyImage()
-        //        } else {
-        //            displayNext()
-        //        }
-    }
-}
-
 
 // MARK: Image Grid
 
-extension CreatePostViewController: UICollectionViewDelegateFlowLayout {
+extension CreatePostViewController {
     func bindImageGridView() {
-        dummyObservables
+        pickerViewModel.firstFiveResults
             .bind(to: createPostView.imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
                 cell.backgroundColor = .red
             }
             .disposed(by: disposeBag)
-        createPostView.imageGridCollectionView.delegate = self
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let item = indexPath.item
-        let width = collectionView.bounds.size.width
-        print(width)
-        let padding: CGFloat = 5
-        if item < 2 {
-            let itemWidth: CGFloat = (width - padding) / 2.0
-            print(itemWidth)
-            return CGSize(width: itemWidth, height: itemWidth)
-        } else {
-            let itemWidth: CGFloat = (width - 2 * padding) / 3.0 - 0.00001
-            print(itemWidth)
-            return CGSize(width: itemWidth, height: itemWidth)
-        }
+        
+        pickerViewModel.selectionCount.asDriver()
+            .drive { [weak self] count in
+                guard let self = self else { return }
+                self.createPostView.imageGridCollectionView.numberOfImages = count
+            }
+            .disposed(by: disposeBag)
     }
 }
 

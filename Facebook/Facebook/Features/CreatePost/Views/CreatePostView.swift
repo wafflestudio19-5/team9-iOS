@@ -113,7 +113,7 @@ class CreatePostView: UIView {
         let textView = UITextView()
         textView.isScrollEnabled = false
         textView.font = .systemFont(ofSize: 17)
-        textView.textContainerInset = .init(top: 10, left: 10, bottom: 10, right: 10)
+        textView.textContainerInset = .init(top: 10, left: 10, bottom: 15, right: 10)
         return textView
     }()
     
