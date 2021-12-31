@@ -6,10 +6,14 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ButtonTableViewCell: UITableViewCell {
 
     static let reuseIdentifier = "ButtonTableViewCell"
+    
+    var disposeBag = DisposeBag()
     
     enum Style {
         case style1
@@ -25,6 +29,11 @@ class ButtonTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+          super.prepareForReuse()
+          disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
     }
     
     override func awakeFromNib() {

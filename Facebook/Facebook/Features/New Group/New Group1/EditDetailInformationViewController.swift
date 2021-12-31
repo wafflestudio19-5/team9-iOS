@@ -75,6 +75,10 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
             let cell = UITableViewCell()
             
             return cell
+        case let .TextFieldItem(style):
+            let cell = UITableViewCell()
+            
+            return cell
         case let .ButtonItem(style, buttonText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.reuseIdentifier, for: idxPath) as? ButtonTableViewCell else { return UITableViewCell() }
             
@@ -85,7 +89,7 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
                 let addInformationViewController = AddInformationViewController()
                 addInformationViewController.informationType = buttonText.components(separatedBy: " ")[0]
                 self?.push(viewController: addInformationViewController)
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: cell.disposeBag)
             
             return cell
         case let .PostItem(post):

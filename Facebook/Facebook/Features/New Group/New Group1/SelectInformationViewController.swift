@@ -60,6 +60,10 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
             let cell = UITableViewCell()
             
             return cell
+        case let .TextFieldItem(style):
+            let cell = UITableViewCell()
+            
+            return cell
         case let .ButtonItem(buttonText):
             let cell = UITableViewCell()
             

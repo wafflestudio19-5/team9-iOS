@@ -37,8 +37,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
     
+    //TableView 바인딩을 위한 dataSource객체
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
+    //enum SectionItem의 유형에 따라 다른 cell type을 연결
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
         case let .MainProfileItem(profileImage, coverImage, name):
@@ -87,6 +89,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             
             return cell
         case let .LabelItem(style, labelText):
+            let cell = UITableViewCell()
+            
+            return cell
+        case let .TextFieldItem(style):
             let cell = UITableViewCell()
             
             return cell
@@ -170,6 +176,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         .disposed(by: disposeBag)
     }
     
+    //각 section의 footerView 설정
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
     
         let footerView = UIView()

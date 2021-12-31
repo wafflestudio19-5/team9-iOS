@@ -90,6 +90,10 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             let cell = UITableViewCell()
             
             return cell
+        case let .TextFieldItem(style):
+            let cell = UITableViewCell()
+            
+            return cell
         case let .ButtonItem(style, buttonText):
             let cell = UITableViewCell()
             

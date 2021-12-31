@@ -18,6 +18,9 @@
 		77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77547905275CE6CC0065711C /* CommentTableViewCell.swift */; };
 		77547908275CE6CC0065711C /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77547906275CE6CC0065711C /* CommentTableViewCell.xib */; };
 		7754B861277D68D200775D81 /* DetailInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B860277D68D200775D81 /* DetailInformationTableViewCell.swift */; };
+		7754B863277DAE2F00775D81 /* AddSelfIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B862277DAE2F00775D81 /* AddSelfIntroView.swift */; };
+		7754B865277DAE5300775D81 /* AddSelfIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */; };
+		7754B867277DB05800775D81 /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B866277DB05800775D81 /* TextViewTableViewCell.swift */; };
 		775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */; };
 		775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150E27730BA000C9872F /* DataSourceModel.swift */; };
 		7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77799318274FD8E4007A3898 /* PostTableViewCell.swift */; };
@@ -108,6 +111,9 @@
 		77547905275CE6CC0065711C /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		77547906275CE6CC0065711C /* CommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
 		7754B860277D68D200775D81 /* DetailInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInformationTableViewCell.swift; sourceTree = "<group>"; };
+		7754B862277DAE2F00775D81 /* AddSelfIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSelfIntroView.swift; sourceTree = "<group>"; };
+		7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSelfIntroViewController.swift; sourceTree = "<group>"; };
+		7754B866277DB05800775D81 /* TextViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewTableViewCell.swift; sourceTree = "<group>"; };
 		775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		775F150E27730BA000C9872F /* DataSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceModel.swift; sourceTree = "<group>"; };
 		77799318274FD8E4007A3898 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -402,6 +408,7 @@
 				77B635412768B2C100C41EB3 /* DetailProfileView.swift */,
 				77B635452768B2F900C41EB3 /* EditProfileView.swift */,
 				77ABC5D32774A906000431E1 /* EditDetailInformationView.swift */,
+				7754B862277DAE2F00775D81 /* AddSelfIntroView.swift */,
 				77ABC5DB2774B696000431E1 /* Header&FooterView.swift */,
 				77ABC5D72774A998000431E1 /* AddInformationView.swift */,
 				77FE72862775E00600482CE7 /* SelectInformationView.swift */,
@@ -414,6 +421,7 @@
 				7754B860277D68D200775D81 /* DetailInformationTableViewCell.swift */,
 				774094482750ECDC00AD8DC2 /* ButtonTableViewCell.swift */,
 				775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */,
+				7754B866277DB05800775D81 /* TextViewTableViewCell.swift */,
 				77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */,
 			);
 			path = Views;
@@ -426,6 +434,7 @@
 				77B635432768B2E200C41EB3 /* DetailProfileViewController.swift */,
 				77B635472768B30A00C41EB3 /* EditProfileViewController.swift */,
 				77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */,
+				7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */,
 				77ABC5D92774A9B0000431E1 /* AddInformationViewController.swift */,
 				77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */,
 			);
@@ -756,6 +765,7 @@
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
+				7754B867277DB05800775D81 /* TextViewTableViewCell.swift in Sources */,
 				77B635422768B2C100C41EB3 /* DetailProfileView.swift in Sources */,
 				BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */,
 				BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */,
@@ -790,6 +800,7 @@
 				B86195092761AFAE00957BBC /* ContentSizeFitTableView.swift in Sources */,
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
 				B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */,
+				7754B863277DAE2F00775D81 /* AddSelfIntroView.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
 				7754B861277D68D200775D81 /* DetailInformationTableViewCell.swift in Sources */,
 				77E12FA22769A97800B8F191 /* CreatePostView.swift in Sources */,
@@ -823,6 +834,7 @@
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
 				B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */,
 				77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */,
+				7754B865277DAE5300775D81 /* AddSelfIntroViewController.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
 				775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */,

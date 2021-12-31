@@ -26,6 +26,7 @@ enum SectionItem {
     case DetailInformationItem(style: DetailInformationTableViewCell.Style, image: UIImage, information: String, time: String = "", description: String = "", privacyBound: String = "")
     case ButtonItem(style: ButtonTableViewCell.Style, buttonText: String)
     case LabelItem(style: LabelTableViewCell.Style, labelText: String)
+    case TextFieldItem(text: String)
     case PostItem(post: Post)
     case SelectDateItem(style: DateSelectTableViewCell.Style)
 }

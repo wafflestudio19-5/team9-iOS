@@ -28,12 +28,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     let disposeBag = DisposeBag()
     
+    lazy var isActive: Bool = true
+    
     let defaultSections: [MultipleSectionModel] = [
         .DetailInformationSection(title: "직장", items: [
             .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase")!, information: "직장 이름")
         ])
     ]
-    
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay<[MultipleSectionModel]>(value: [])
     
@@ -86,6 +87,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             let cell = UITableViewCell()
             
             return cell
+        case let .TextFieldItem(text):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: TextViewTableViewCell.reuseIdentifier, for: idxPath) as? TextViewTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup()
+            cell.configureCell()
+            
+            return cell
         case let .ButtonItem(buttonText):
             let cell = UITableViewCell()
             
@@ -128,11 +136,10 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
                 .LabelItem(style: .style2, labelText: "직책(선택 사항)"),
                 .LabelItem(style: .style2, labelText: "위치(선택 사항)"),
-                .LabelItem(style: .style2, labelText: "직업에 대해 설명해주세요(선택 사항)")
+                .TextFieldItem(text: "text")
             ]),
             .DetailInformationSection(title: "직장", items: [
-                .SelectDateItem(style: .startDateStyle),
-                .SelectDateItem(style: .endDateStyle)
+                .SelectDateItem(style: .startDateStyle)
             ])
         ]
         
@@ -145,10 +152,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
                 .LabelItem(style: .style2, labelText: "직책(선택 사항)"),
                 .LabelItem(style: .style2, labelText: "위치(선택 사항)"),
-                .LabelItem(style: .style2, labelText: "직업에 대해 설명해주세요(선택 사항)")
+                .TextFieldItem(text: "text")
             ]),
             .DetailInformationSection(title: "직장", items: [
-                .SelectDateItem(style: .startDateStyle)
+                .SelectDateItem(style: .startDateStyle),
+                .SelectDateItem(style: .endDateStyle)
             ])
         ]
         
@@ -169,8 +177,10 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         sectionLabel.textColor = .black
         sectionLabel.font = UIFont.systemFont(ofSize: 18)
         
-        let sectionSwitch = UISwitch()
-        sectionSwitch.onTintColor = .systemBlue
+        let sectionSwitch = UIButton()
+        //sectionSwitch.onTintColor = .systemBlue
+        sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+        sectionSwitch.tintColor = .systemBlue
         
         headerView.addSubview(sectionLabel)
         headerView.addSubview(sectionSwitch)
@@ -182,19 +192,23 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             sectionLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
             sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
             sectionSwitch.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            sectionSwitch.heightAnchor.constraint(equalToConstant: 30),
+            sectionSwitch.widthAnchor.constraint(equalToConstant: 30),
             sectionSwitch.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
         ])
         
-        sectionSwitch.rx
-            .controlEvent(.valueChanged)
-            .withLatestFrom(sectionSwitch.rx.value)
-            .subscribe(onNext : { [weak self] bool in
-                if bool {
-                    self?.isNotActiveSection()
-                } else {
-                    self?.isActiveSection()
-                }
-            }).disposed(by: disposeBag)
+        sectionSwitch.rx.tap.bind { [weak self]  in
+            guard let self = self else { return }
+            if self.isActive {
+                sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
+                self.isNotActiveSection()
+                self.isActive = false
+            } else {
+                sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+                self.isActiveSection()
+                self.isActive = true
+            }
+        }.disposed(by: disposeBag)
     
         return headerView
     }

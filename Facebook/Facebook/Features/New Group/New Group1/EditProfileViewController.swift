@@ -86,6 +86,18 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             
             cell.initialSetup(cellStyle: style)
             cell.configureCell(labelText: labelText)
+            
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                let addSelfIntroViewController = AddSelfIntroViewController()
+                let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+                navigationController.modalPresentationStyle = .fullScreen
+                self?.present(navigationController, animated: true, completion: nil)
+            }).disposed(by: cell.disposeBag)
+            
+            return cell
+        case let .TextFieldItem(style):
+            let cell = UITableViewCell()
+            
             return cell
         case let .ButtonItem(style, buttonText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.reuseIdentifier, for: idxPath) as? ButtonTableViewCell else { return UITableViewCell() }
@@ -96,7 +108,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.button.rx.tap.bind { [weak self] in
                 let detailProfileViewController = DetailProfileViewController()
                 self?.push(viewController: detailProfileViewController)
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: cell.disposeBag)
             
             return cell
         case let .PostItem(post):
@@ -160,7 +172,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         switch section {
         case 0:
             sectionButton.rx.tap.bind {
-                print("tap section 1 button!")
+                
             }.disposed(by: disposeBag)
         case 1:
             sectionButton.rx.tap.bind {
@@ -168,7 +180,10 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             }.disposed(by: disposeBag)
         case 2:
             sectionButton.rx.tap.bind {
-                print("tap section 3 button!")
+                let addSelfIntroViewController = AddSelfIntroViewController()
+                let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+                navigationController.modalPresentationStyle = .fullScreen
+                self.present(navigationController, animated: true, completion: nil)
             }.disposed(by: disposeBag)
         case 3:
             sectionButton.rx.tap.bind {
