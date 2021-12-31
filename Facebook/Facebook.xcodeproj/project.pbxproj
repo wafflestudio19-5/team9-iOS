@@ -47,6 +47,7 @@
 		B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67DF2775AC03002CCC04 /* NewUser.swift */; };
 		B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */; };
 		B85D67E4277C964F002CCC04 /* SignUpResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E3277C964F002CCC04 /* SignUpResponse.swift */; };
+		B85D67E6277ECA76002CCC04 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E5277ECA74002CCC04 /* CurrentUser.swift */; };
 		B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194ED275D28D000957BBC /* EnterUsernameView.swift */; };
 		B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194EF275D290600957BBC /* EnterUsernameViewController.swift */; };
 		B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */; };
@@ -133,6 +134,7 @@
 		B85D67DF2775AC03002CCC04 /* NewUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
 		B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+NewUser.swift"; sourceTree = "<group>"; };
 		B85D67E3277C964F002CCC04 /* SignUpResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpResponse.swift; sourceTree = "<group>"; };
+		B85D67E5277ECA74002CCC04 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		B86194ED275D28D000957BBC /* EnterUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameView.swift; sourceTree = "<group>"; };
 		B86194EF275D290600957BBC /* EnterUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameViewController.swift; sourceTree = "<group>"; };
 		B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterBirthdateView.swift; sourceTree = "<group>"; };
@@ -588,6 +590,7 @@
 				BEFFFAA6276B126D009CBF25 /* Post.swift */,
 				BE9C7C9E276EC6EC0089247F /* User.swift */,
 				B85D67DF2775AC03002CCC04 /* NewUser.swift */,
+				B85D67E5277ECA74002CCC04 /* CurrentUser.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -805,6 +808,7 @@
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
 				B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
+				B85D67E6277ECA76002CCC04 /* CurrentUser.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

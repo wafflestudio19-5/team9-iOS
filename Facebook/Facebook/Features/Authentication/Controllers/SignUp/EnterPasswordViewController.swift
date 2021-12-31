@@ -95,12 +95,20 @@ extension EnterPasswordViewController {
         NetworkService.post(endpoint: .createUser(newUser: newUser), as: SignUpResponse.self)
             .subscribe { [weak self] event in
                 if event.isCompleted {
+                    // user 등록(이메일)
+                    if let email = event.element?.1.user {
+                        CurrentUser.shared.email = email
+                    }
+                    // 토큰 등록
+//                    if let token = event.element?.1.token {
+//                        NetworkService.registerToken(token: token)
+//                    }
+                    
                     self?.changeRootViewController(to: RootTabBarController())
                     return
                 }
                 
                 if event.isStopEvent {
-                    print("회원가입 오류")
                     print(event)
                     return
                 }
