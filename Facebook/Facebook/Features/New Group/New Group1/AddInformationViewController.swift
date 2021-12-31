@@ -42,18 +42,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .MainProfileItem(profileImage, coverImage, name):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .ProfileImageItem(image):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .CoverImageItem(image):
-            let cell = UITableViewCell()
-            
-            return cell
         case let .LabelItem(style, labelText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.reuseIdentifier, for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
             
@@ -94,19 +82,15 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             cell.configureCell()
             
             return cell
-        case let .ButtonItem(buttonText):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .PostItem(post):
-            let cell = UITableViewCell()
-            
-            return cell
         case let .SelectDateItem(style):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DateSelectTableViewCell.reuseIdentifier, for: idxPath) as? DateSelectTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: style)
             cell.configureCell()
+            
+            return cell
+        default:
+            let cell = UITableViewCell()
             
             return cell
         }
@@ -130,6 +114,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
     
+    //현재 재직 중 상태일 때 TableView의 데이터
     private func isActiveSection() {
         let sections: [MultipleSectionModel] = [
             .DetailInformationSection(title: "직장", items: [
@@ -146,6 +131,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         self.sectionsBR.accept(sections)
     }
     
+    //현재 재직 중이 아닐 때 TableView의 데이터 
     private func isNotActiveSection() {
         let sections: [MultipleSectionModel] = [
             .DetailInformationSection(title: "직장", items: [

@@ -25,24 +25,35 @@ class HeaderView: UIView {
     private func setLayoutForView() {
         self.backgroundColor = .white
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.heightAnchor.constraint(equalToConstant: 75).isActive = true
+        self.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-        self.addSubview(titleLabel)
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+//        self.addSubview(titleLabel)
+//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            titleLabel.heightAnchor.constraint(equalToConstant: 20),
+//            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+//            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+//        ])
+//
+//        self.addSubview(subTitleLabel)
+//        subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            subTitleLabel.heightAnchor.constraint(equalToConstant: 20),
+//            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
+//            subTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
+//        ])
+        
+        self.addSubview(labelStackView)
+        labelStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            titleLabel.heightAnchor.constraint(equalToConstant: 20),
-            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
-            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+            labelStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+            labelStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            labelStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
+            labelStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
         ])
         
-        self.addSubview(subTitleLabel)
-        subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            subTitleLabel.heightAnchor.constraint(equalToConstant: 20),
-            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            subTitleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
-            subTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
-        ])
+        labelStackView.addArrangedSubview(titleLabel)
+        labelStackView.addArrangedSubview(subTitleLabel)
         
         self.addSubview(divider)
         NSLayoutConstraint.activate([
@@ -53,11 +64,18 @@ class HeaderView: UIView {
         ])
     }
     
+    private lazy var labelStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        
+        return stackView
+    }()
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = titleText
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
@@ -67,15 +85,14 @@ class HeaderView: UIView {
         label.text = subTitleText
         label.textColor = .systemGray4
         label.font = UIFont.systemFont(ofSize: 18)
-        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
     private lazy var divider: UIView = {
         let divider = UIView()
-        divider.translatesAutoresizingMaskIntoConstraints = false
         divider.backgroundColor = .lightGray
+        
         return divider
     }()
 }
@@ -114,7 +131,6 @@ class FooterView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 5
-        button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
     }()

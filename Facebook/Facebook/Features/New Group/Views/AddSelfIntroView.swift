@@ -16,6 +16,8 @@ class AddSelfIntroView: UIView {
     let headerView = UIView()
     let nameLabel = UILabel()
     let privacyBountLabel = UILabel()
+    let inputTextView = UITextView()
+    let numberOfTextLabel = UILabel()
     
     let divider: UIView = {
         let view = UIView()
@@ -23,8 +25,11 @@ class AddSelfIntroView: UIView {
         return view
     }()
     
-    let inputTextView = UITextView()
-    let numberOfTextLabel = UILabel()
+    let shortDivider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray6
+        return view
+    }()
     
     let saveButton: UIButton = {
             let button = UIButton()
@@ -60,6 +65,8 @@ class AddSelfIntroView: UIView {
             """
         inputTextView.textColor = .gray
         inputTextView.font = UIFont.systemFont(ofSize: 15)
+        
+        numberOfTextLabel.text = "0/101"
     }
     
     private func setLayoutForView() {
@@ -99,16 +106,25 @@ class AddSelfIntroView: UIView {
         self.addSubview(inputTextView)
         inputTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            inputTextView.heightAnchor.constraint(equalToConstant: 40),
-            inputTextView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 10),
+            inputTextView.heightAnchor.constraint(equalToConstant: 60),
+            inputTextView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 5),
             inputTextView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 15),
-            inputTextView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
+            inputTextView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15)
+        ])
+        
+        self.addSubview(shortDivider)
+        shortDivider.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            shortDivider.heightAnchor.constraint(equalToConstant: 1),
+            shortDivider.topAnchor.constraint(equalTo: inputTextView.bottomAnchor, constant: 5),
+            shortDivider.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            shortDivider.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -15)
         ])
         
         self.addSubview(numberOfTextLabel)
         numberOfTextLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            numberOfTextLabel.topAnchor.constraint(equalTo: inputTextView.bottomAnchor, constant: 10),
+            numberOfTextLabel.topAnchor.constraint(equalTo: shortDivider.bottomAnchor, constant: 10),
             numberOfTextLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
         ])
     }

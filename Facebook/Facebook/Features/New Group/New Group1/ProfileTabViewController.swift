@@ -64,14 +64,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             }.disposed(by: self.disposeBag)
             
             return cell
-        case let .ProfileImageItem(image):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .CoverImageItem(image):
-            let cell = UITableViewCell()
-            
-            return cell
         case let .SimpleInformationItem(style, image,information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
@@ -82,18 +74,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 let detailProfileViewController = DetailProfileViewController()
                 self?.push(viewController: detailProfileViewController)
             }).disposed(by: self.disposeBag)
-            
-            return cell
-        case let .DetailInformationItem(style, image, information, time, description, privacyBound):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .LabelItem(style, labelText):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .TextFieldItem(style):
-            let cell = UITableViewCell()
             
             return cell
         case let .ButtonItem(style, buttonText):
@@ -113,10 +93,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
 
             cell.configureCell(with: post)
             return cell
-        case let .SelectDateItem(style):
+        default:
             let cell = UITableViewCell()
             
-            return cell
+            return cell 
         }
     }
 

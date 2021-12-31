@@ -203,6 +203,7 @@ class DateSelectTableViewCell: UITableViewCell {
         }
     }
     
+    //현재 날짜를 기준으로 PickerView의 데이터를 설정
     private func setDataForPicker() {
         let now = Date()
         let calender = Calendar.current
@@ -247,6 +248,7 @@ class DateSelectTableViewCell: UITableViewCell {
             self.yearTextField.becomeFirstResponder()
         })
         
+        //연도 선택 시 동작
         doneButtonList[0].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             let selectedRow = self.yearPickerView.selectedRow(inComponent: 0)
@@ -260,6 +262,7 @@ class DateSelectTableViewCell: UITableViewCell {
             self.showMonthTextField()
         }.disposed(by: disposeBag)
         
+        //연도 삭제 시 동작
         deleteButtonList[0].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.yearTextField.text = ""
@@ -273,11 +276,14 @@ class DateSelectTableViewCell: UITableViewCell {
             self.hideMonthTextField()
         }.disposed(by: disposeBag)
         
+        //연도 취소 시 동작
         cancelButtonList[0].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.yearTextField.endEditing(true)
         }.disposed(by: disposeBag)
         
+        
+        //월 선택 시 동작
         doneButtonList[1].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             let selectedRow = self.monthPickerView.selectedRow(inComponent: 0)
@@ -289,6 +295,7 @@ class DateSelectTableViewCell: UITableViewCell {
             self.showDayTextField()
         }.disposed(by: disposeBag)
         
+        //월 삭제 시 동작
         deleteButtonList[1].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.monthTextField.text = ""
@@ -299,11 +306,13 @@ class DateSelectTableViewCell: UITableViewCell {
             self.hideDayTextField()
         }.disposed(by: disposeBag)
         
+        //월 취소 시 동작
         cancelButtonList[1].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.monthTextField.endEditing(true)
         }.disposed(by: disposeBag)
         
+        //일 선택 시 동작
         doneButtonList[2].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             let selectedRow = self.dayPickerView.selectedRow(inComponent: 0)
@@ -313,6 +322,8 @@ class DateSelectTableViewCell: UITableViewCell {
             self.dayTextField.endEditing(true)
         }.disposed(by: disposeBag)
         
+        
+        //일 삭제 시 동작
         deleteButtonList[2].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.dayTextField.text = ""
@@ -322,11 +333,13 @@ class DateSelectTableViewCell: UITableViewCell {
             
         }.disposed(by: disposeBag)
         
+        //일 취소 시 동작
         cancelButtonList[2].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.dayTextField.endEditing(true)
         }.disposed(by: disposeBag)
         
+        //월 입력 값에 따라 일 입력 법위 조정
         monthTextField.rx.text.orEmpty.subscribe(onNext: { [weak self] selectedMonth in
             guard let self = self else { return }
             switch selectedMonth {
@@ -342,6 +355,7 @@ class DateSelectTableViewCell: UITableViewCell {
         }).disposed(by: disposeBag)
     }
     
+    //컴포넌트의 숨김 설정 
     private func showAddDateLabel() {
         if addDateLabel.isHidden {
             addDateLabel.isHidden = false

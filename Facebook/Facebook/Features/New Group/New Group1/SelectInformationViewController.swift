@@ -33,22 +33,6 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
     
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .MainProfileItem(profileImage, coverImage, name):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .ProfileImageItem(image):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .CoverImageItem(image):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .LabelItem(labelText):
-            let cell = UITableViewCell()
-            
-            return cell
         case let .SimpleInformationItem(style, image,information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
@@ -56,23 +40,7 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
             cell.configureCell(image: image, information: information)
             
             return cell
-        case let.DetailInformationItem(style, image, information, time, description, privacyBound):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .TextFieldItem(style):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .ButtonItem(buttonText):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .PostItem(post):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .SelectDateItem(title):
+        default:
             let cell = UITableViewCell()
             
             return cell

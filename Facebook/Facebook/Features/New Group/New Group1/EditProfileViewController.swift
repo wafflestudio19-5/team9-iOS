@@ -51,10 +51,6 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .MainProfileItem(profileImage, coverImage, name):
-            let cell = UITableViewCell()
-            
-            return cell
         case let .ProfileImageItem(image):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
             
@@ -77,10 +73,6 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             }).disposed(by: self.disposeBag)
             
             return cell
-        case let .DetailInformationItem(style, image, information, time, description, privacyBound):
-            let cell = UITableViewCell()
-            
-            return cell
         case let .LabelItem(style, labelText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.reuseIdentifier, for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
             
@@ -95,10 +87,6 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             }).disposed(by: cell.disposeBag)
             
             return cell
-        case let .TextFieldItem(style):
-            let cell = UITableViewCell()
-            
-            return cell
         case let .ButtonItem(style, buttonText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.reuseIdentifier, for: idxPath) as? ButtonTableViewCell else { return UITableViewCell() }
             
@@ -111,13 +99,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             }.disposed(by: cell.disposeBag)
             
             return cell
-        case let .PostItem(post):
+        default:
             let cell = UITableViewCell()
-            
-             return cell
-        case let .SelectDateItem(style):
-            let cell = UITableViewCell()
-            
             return cell
         }
     }

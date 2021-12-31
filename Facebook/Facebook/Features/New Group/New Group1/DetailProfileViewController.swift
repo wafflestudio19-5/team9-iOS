@@ -46,8 +46,10 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         ])
     ]
     
+    //TableView 바인딩을 위한 dataSource객체
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
+    //enum SectionItem의 유형에 따라 다른 cell type을 연결
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
         case let .MainProfileItem(profileImage, coverImage, name):
@@ -86,27 +88,14 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             cell.configureCell(image: image, information: information, time: time, description: description, privacyBound: privacyBound)
             
             return cell
-        case let .LabelItem(style, labelText):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .TextFieldItem(style):
-            let cell = UITableViewCell()
-            
-            return cell
-        case let .ButtonItem(style, buttonText):
-            let cell = UITableViewCell()
-            
-            return cell
         case let .PostItem(post):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
             
             cell.configureCell(with: post)
             return cell
-        case let .SelectDateItem(title):
+        default:
             let cell = UITableViewCell()
-            
-            return cell
+            return cell 
         }
     }
     
@@ -156,6 +145,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 sectionButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
             ])
             
+            //section header의 버튼 클릭 시 동작
             switch section {
             case 2:
                 sectionButton.rx.tap.bind {

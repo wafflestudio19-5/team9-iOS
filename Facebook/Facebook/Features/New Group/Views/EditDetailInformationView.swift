@@ -9,12 +9,12 @@ import UIKit
 
 class EditDetailInformationView: UIView {
 
-    let editDetailInformationTableView = UITableView()
-    let headerView = HeaderView()
+    let editDetailInformationTableView = UITableView(frame: .zero, style: .grouped)
+    let headerView = HeaderView(frame: CGRect(x: 0, y: 0, width: 0, height: 50))
     let footerView = FooterView()
     
     override init(frame: CGRect) {
-        super.init(frame: frame)
+        super.init(frame: .zero)
         setLayoutforView()
         configureTableView()
     }
@@ -29,6 +29,7 @@ class EditDetailInformationView: UIView {
         
         editDetailInformationTableView.translatesAutoresizingMaskIntoConstraints = false
         footerView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -30),
             footerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
@@ -42,7 +43,6 @@ class EditDetailInformationView: UIView {
     
     private func configureTableView() {
         //editDetailInformationTableView.tableHeaderView = headerView
-        
         //headerView.widthAnchor.constraint(equalTo: editDetailInformationTableView.widthAnchor).isActive = true
         
         editDetailInformationTableView.separatorStyle = .none

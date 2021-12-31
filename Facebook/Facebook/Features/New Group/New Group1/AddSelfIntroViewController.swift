@@ -47,6 +47,13 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
             
             }.disposed(by: disposeBag)
         
+        //textView의 입력한 text길이 표시 및 제한
+        addSelfIntroView.inputTextView.rx.text.orEmpty.subscribe(onNext: { [weak self] text in
+            self?.addSelfIntroView.numberOfTextLabel.text = "\(text.count)/101"
+            
+            self?.addSelfIntroView.inputTextView.text = String(text.prefix(101))
+        }).disposed(by: disposeBag)
+        
         let hasEnteredSelfIntro = addSelfIntroView.inputTextView.rx.text
             .orEmpty
             .map{ !$0.isEmpty }
@@ -57,11 +64,11 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] result in
                 guard let self = self else { return }
-                            
+
                 if result {
-                    self.addSelfIntroView.saveButton.tintColor = .black
+                    self.addSelfIntroView.saveButton.titleLabel?.textColor = .black
                 } else {
-                    self.addSelfIntroView.saveButton.tintColor = .gray
+                    self.addSelfIntroView.saveButton.titleLabel?.textColor = .gray
                 }
             }).disposed(by: disposeBag)
         
