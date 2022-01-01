@@ -30,12 +30,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let sections: [MultipleSectionModel] = [
         .DetailInformationSection(title: "직장", items: [
-            .SimpleInformationItem(style: .style3, image: UIImage(systemName: "briefcase")!,information: "직장 추가"),
+            .SimpleInformationItem(style: .style3, informationType: .company ,image: UIImage(systemName: "briefcase")!,information: "직장 추가"),
             .DetailInformationItem(style: .style3, image: UIImage(systemName: "phone.fill")!,information: "직장에서 직장으로 근무했음", time: "2021년 12월 29일~2021년 12월 30일" ,description: "직업 설명입니다", privacyBound: "전체 공개")
         ]),
         .DetailInformationSection(title: "학력", items:[
-            .SimpleInformationItem(style: .style3, image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
-            .SimpleInformationItem(style: .style3, image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
+            .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
+            .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
         ]),
         .DetailInformationSection(title: "연락처 정보", items: [
             .DetailInformationItem(style: .style2, image: UIImage(systemName: "phone.fill")!,information: "010-1234-5678", description: "휴대폰", privacyBound: "회원님의 친구")
@@ -69,14 +69,17 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             
             cell.imgView.image = image
             return cell
-        case let .SimpleInformationItem(style, image, information):
+        case let .SimpleInformationItem(style, informationType, image, information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
-            cell.configureCell(image: image, information: information)
+            
             cell.initialSetup(cellStyle: style)
+            cell.configureCell(image: image, information: information)
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let addInformationViewController = AddInformationViewController()
+                guard let informationType = informationType else { return }
+                
+                let addInformationViewController = AddInformationViewController(informationType: informationType)
                 self?.push(viewController: addInformationViewController)
             }).disposed(by: cell.disposeBag)
             

@@ -22,8 +22,22 @@ enum SectionItem {
     case MainProfileItem(profileImage: UIImage, coverImage: UIImage, name: String)
     case ProfileImageItem(image: UIImage)
     case CoverImageItem(image: UIImage)
-    case SimpleInformationItem(style: SimpleInformationTableViewCell.Style, image: UIImage, information: String)
-    case DetailInformationItem(style: DetailInformationTableViewCell.Style, image: UIImage, information: String, time: String = "", description: String = "", privacyBound: String = "")
+    case SimpleInformationItem(style: SimpleInformationTableViewCell.Style,
+                               informationType: AddInformationViewController<AddInformationView>.InformationType? = nil,
+                               image: UIImage,
+                               information: String)
+    case DetailInformationItem(style: DetailInformationTableViewCell.Style,
+                               image: UIImage,
+                               information: String,
+                               time: String = "",
+                               description: String = "",
+                               privacyBound: String = "")
+    case AddInformationWithImageItem(style: SelectInformationViewController<SelectInformationView>.InformationType,
+                                     image: UIImage,
+                                     information: String)
+    case AddInfomrationLabelItem(style: SelectInformationViewController<SelectInformationView>.InformationType,
+                                 information: String)
+    case AddInformationButtonItem(style: AddInformationViewController<AddInformationView>.InformationType, buttonText: String)
     case ButtonItem(style: ButtonTableViewCell.Style, buttonText: String)
     case LabelItem(style: LabelTableViewCell.Style, labelText: String)
     case TextFieldItem(text: String)

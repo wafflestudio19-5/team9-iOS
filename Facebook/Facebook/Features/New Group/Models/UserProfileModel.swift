@@ -12,7 +12,7 @@ struct Profile {
 }
 
 struct Company {
-    let id: Int?
+    var id: Int?
     var name: String?
     var role: String?
     var location: String?
@@ -23,7 +23,7 @@ struct Company {
 }
 
 struct University {
-    let id: Int?
+    var id: Int?
     var name: String?
     var major: String?
     var joinDate: String?

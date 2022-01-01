@@ -28,14 +28,17 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     let disposeBag = DisposeBag()
     
+    enum InformationType {
+        case company
+        case university
+    }
     
-    lazy var isActive: Bool = true
+    var informationType: InformationType
     
-    let defaultSections: [MultipleSectionModel] = [
-        .DetailInformationSection(title: "직장", items: [
-            .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase")!, information: "직장 이름")
-        ])
-    ]
+    var informationData: Any
+    var isActive: Bool
+    
+    var defaultSections: [MultipleSectionModel] = []
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay<[MultipleSectionModel]>(value: [])
     
@@ -43,23 +46,55 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .LabelItem(style, labelText):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.reuseIdentifier, for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
-            
-            cell.initialSetup(cellStyle: style)
-            cell.configureCell(labelText: labelText)
-            
-            return cell
-        case let .SimpleInformationItem(style, image,information):
+        case let .AddInformationWithImageItem(style, image, information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: style)
+            cell.initialSetup(cellStyle: .style4)
             cell.configureCell(image: image, information: information)
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 
-                let selectInformationViewController = SelectInformationViewController()
-                selectInformationViewController.inforomationType = information.components(separatedBy: " ")[0]
+                var selectInformationViewController: SelectInformationViewController<SelectInformationView>
+                switch style {
+                case .company:
+                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style)
+                case .university:
+                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style)
+                default:
+                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style)
+                }
+                
+                //SelectInformationViewContoller로 부터 데이터를 받음
+                selectInformationViewController.selectedInformation
+                    .observe(on: MainScheduler.instance)
+                    .subscribe(onNext: { [weak self] item in
+                        self?.isActiveSection()
+                        print(item)
+                    }).disposed(by: cell.disposeBag)
+                
+                self?.push(viewController: selectInformationViewController)
+            }).disposed(by: cell.disposeBag)
+            
+            return cell
+        case let .AddInfomrationLabelItem(style, information):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.reuseIdentifier, for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: .style2)
+            cell.configureCell(labelText: information)
+            
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                
+                var selectInformationViewController: SelectInformationViewController<SelectInformationView>
+                switch style {
+                case .role:
+                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style)
+                case .location:
+                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style)
+                case .major:
+                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style)
+                default:
+                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style)
+                }
                 
                 //SelectInformationViewContoller로 부터 데이터를 받음
                 selectInformationViewController.selectedInformation
@@ -71,9 +106,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 self?.push(viewController: selectInformationViewController)
             }).disposed(by: cell.disposeBag)
             
-            return cell
-        case let .DetailInformationItem(style, image, information, time, description, privacyBound):
-            let cell = UITableViewCell()
             
             return cell
         case let .TextFieldItem(text):
@@ -97,16 +129,59 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         }
     }
     
-    var informationType: String = ""
+    init(informationType: InformationType) {
+        self.informationType = informationType
+        switch self.informationType {
+        case .company:
+            informationData = Company()
+        case .university:
+            informationData = University()
+        }
+        self.isActive = true
+        super.init(nibName: nil, bundle: nil)
+
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        self.title = "\(informationType) 추가"
-        sectionsBR.accept(defaultSections)
-        
+        initialSetup()
         bindTableView()
+    }
+    
+    private func initialSetup() {
+        switch self.informationType {
+        case .company:
+            self.title = "직장 추가"
+            
+            
+            
+            defaultSections = [
+                .DetailInformationSection(title: "직장", items: [
+                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: "직장 이름")
+                ])
+            ]
+            
+        case .university:
+            self.title = "학력 추가"
+            
+            defaultSections = [
+                .DetailInformationSection(title: "학력", items: [
+                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: "학교 이름"),
+                    .AddInfomrationLabelItem(style: .major, information: "전공(선택 사항)")
+                ]),
+                .DetailInformationSection(title: "학력", items: [
+                    .SelectDateItem(style: .startDateStyle),
+                ])
+            ]
+        }
+        
+        sectionsBR.accept(defaultSections)
     }
 
     private func bindTableView() {
@@ -117,35 +192,66 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     //현재 재직 중 상태일 때 TableView의 데이터
     private func isActiveSection() {
-        let sections: [MultipleSectionModel] = [
-            .DetailInformationSection(title: "직장", items: [
-                .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-                .LabelItem(style: .style2, labelText: "직책(선택 사항)"),
-                .LabelItem(style: .style2, labelText: "위치(선택 사항)"),
-                .TextFieldItem(text: "text")
-            ]),
-            .DetailInformationSection(title: "직장", items: [
-                .SelectDateItem(style: .startDateStyle)
-            ])
-        ]
+        var sections: [MultipleSectionModel]
+        
+        switch self.informationType{
+        case .company:
+            sections = [
+                .DetailInformationSection(title: "직장", items: [
+                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
+                    .AddInfomrationLabelItem(style: .role, information: "직책(선택 사항)"),
+                    .AddInfomrationLabelItem(style: .location, information: "위치(선택 사항)"),
+                    .TextFieldItem(text: "text")
+                ]),
+                .DetailInformationSection(title: "직장", items: [
+                    .SelectDateItem(style: .startDateStyle)
+                ])
+            ]
+        case .university:
+            sections = [
+                .DetailInformationSection(title: "학력", items: [
+                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: "학교 이름"),
+                    .AddInfomrationLabelItem(style: .major, information: "전공(선택 사항)")
+                ]),
+                .DetailInformationSection(title: "학력", items: [
+                    .SelectDateItem(style: .startDateStyle),
+                ])
+            ]
+        }
         
         self.sectionsBR.accept(sections)
     }
     
     //현재 재직 중이 아닐 때 TableView의 데이터 
     private func isNotActiveSection() {
-        let sections: [MultipleSectionModel] = [
-            .DetailInformationSection(title: "직장", items: [
-                .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-                .LabelItem(style: .style2, labelText: "직책(선택 사항)"),
-                .LabelItem(style: .style2, labelText: "위치(선택 사항)"),
-                .TextFieldItem(text: "text")
-            ]),
-            .DetailInformationSection(title: "직장", items: [
-                .SelectDateItem(style: .startDateStyle),
-                .SelectDateItem(style: .endDateStyle)
-            ])
-        ]
+        var sections: [MultipleSectionModel]
+        
+        switch self.informationType{
+        case .company:
+            sections = [
+                .DetailInformationSection(title: "직장", items: [
+                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
+                    .AddInfomrationLabelItem(style: .role, information: "직책(선택 사항)"),
+                    .AddInfomrationLabelItem(style: .location, information: "위치(선택 사항)"),
+                    .TextFieldItem(text: "text")
+                ]),
+                .DetailInformationSection(title: "직장", items: [
+                    .SelectDateItem(style: .startDateStyle),
+                    .SelectDateItem(style: .endDateStyle)
+                ])
+            ]
+        case .university:
+            sections = [
+                .DetailInformationSection(title: "학력", items: [
+                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: "학교 이름"),
+                    .AddInfomrationLabelItem(style: .major, information: "전공(선택 사항)")
+                ]),
+                .DetailInformationSection(title: "학력", items: [
+                    .SelectDateItem(style: .startDateStyle),
+                    .SelectDateItem(style: .endDateStyle)
+                ])
+            ]
+        }
         
         self.sectionsBR.accept(sections)
     }

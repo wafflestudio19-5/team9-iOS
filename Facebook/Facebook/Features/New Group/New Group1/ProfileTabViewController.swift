@@ -64,7 +64,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             }.disposed(by: self.disposeBag)
             
             return cell
-        case let .SimpleInformationItem(style, image,information):
+        case let .SimpleInformationItem(style, informationType,image, information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: style)

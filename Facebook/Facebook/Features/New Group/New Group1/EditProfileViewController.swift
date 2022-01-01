@@ -61,7 +61,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             
             cell.imgView.image = image
             return cell
-        case let .SimpleInformationItem(style, image, information):
+        case let .SimpleInformationItem(style, informationType, image, information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: style)

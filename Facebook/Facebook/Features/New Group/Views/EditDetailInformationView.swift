@@ -80,8 +80,8 @@ class EditDetailInformationView: UIView {
     }
     
     private func configureTableView() {
-        editDetailInformationTableView.tableHeaderView = headerView
-        headerView.widthAnchor.constraint(equalTo: editDetailInformationTableView.widthAnchor).isActive = true
+//        editDetailInformationTableView.tableHeaderView = headerView
+//        headerView.widthAnchor.constraint(equalTo: editDetailInformationTableView.widthAnchor).isActive = true
         
         editDetailInformationTableView.separatorStyle = .none
         editDetailInformationTableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.reuseIdentifier)

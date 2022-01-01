@@ -29,12 +29,11 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
     
     let sections: [MultipleSectionModel] = [
         .EditProfileSection(title: "직장", items: [
-            .ButtonItem(style: .style3, buttonText: "직장 추가"),
+            .AddInformationButtonItem(style: .company, buttonText: "직장 추가"),
             .DetailInformationItem(style: .style4, image: UIImage(), information: "직장에서 직장으로 근무했음", description: "소개에 표시되지 않으며 전체 공개가 유지됩니다.")
         ]),
         .EditProfileSection(title: "학력", items: [
-            .ButtonItem(style: .style3, buttonText: "고등학교 추가"),
-            .ButtonItem(style: .style3, buttonText: "대학 추가")
+            .AddInformationButtonItem(style: .university, buttonText: "대학 추가"),
         ])
     ]
     
@@ -55,15 +54,14 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
             }).disposed(by: cell.disposeBag)
             
             return cell
-        case let .ButtonItem(style, buttonText):
+        case let .AddInformationButtonItem(style, buttonText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: ButtonTableViewCell.reuseIdentifier, for: idxPath) as? ButtonTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: style)
+            cell.initialSetup(cellStyle: .style3)
             cell.configureCell(buttonText: buttonText)
             
             cell.button.rx.tap.bind { [weak self] in
-                let addInformationViewController = AddInformationViewController()
-                addInformationViewController.informationType = buttonText.components(separatedBy: " ")[0]
+                let addInformationViewController = AddInformationViewController(informationType: style)
                 self?.push(viewController: addInformationViewController)
             }.disposed(by: cell.disposeBag)
             
