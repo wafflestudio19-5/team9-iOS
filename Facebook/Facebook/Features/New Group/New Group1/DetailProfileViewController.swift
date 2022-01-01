@@ -30,7 +30,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let sections: [MultipleSectionModel] = [
         .DetailInformationSection(title: "직장", items: [
-            .SimpleInformationItem(style: .style3,image: UIImage(systemName: "briefcase")!,information: "직장 추가"),
+            .SimpleInformationItem(style: .style3, image: UIImage(systemName: "briefcase")!,information: "직장 추가"),
             .DetailInformationItem(style: .style3, image: UIImage(systemName: "phone.fill")!,information: "직장에서 직장으로 근무했음", time: "2021년 12월 29일~2021년 12월 30일" ,description: "직업 설명입니다", privacyBound: "전체 공개")
         ]),
         .DetailInformationSection(title: "학력", items:[
@@ -72,8 +72,8 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         case let .SimpleInformationItem(style, image, information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: style)
             cell.configureCell(image: image, information: information)
+            cell.initialSetup(cellStyle: style)
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let addInformationViewController = AddInformationViewController()

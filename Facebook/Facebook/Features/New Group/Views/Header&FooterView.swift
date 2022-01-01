@@ -27,53 +27,34 @@ class HeaderView: UIView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
-//        self.addSubview(titleLabel)
-//        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            titleLabel.heightAnchor.constraint(equalToConstant: 20),
-//            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
-//            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-//        ])
-//
-//        self.addSubview(subTitleLabel)
-//        subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            subTitleLabel.heightAnchor.constraint(equalToConstant: 20),
-//            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-//            subTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
-//        ])
-        
-        self.addSubview(labelStackView)
-        labelStackView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            labelStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            labelStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            labelStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
-            labelStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+            titleLabel.heightAnchor.constraint(equalToConstant: 20),
+            titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+            titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
         ])
-        
-        labelStackView.addArrangedSubview(titleLabel)
-        labelStackView.addArrangedSubview(subTitleLabel)
+
+        self.addSubview(subTitleLabel)
+        subTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            subTitleLabel.heightAnchor.constraint(equalToConstant: 20),
+            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
+            subTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
+        ])
         
         self.addSubview(divider)
         NSLayoutConstraint.activate([
-            divider.heightAnchor.constraint(equalToConstant: 0.5),
+            divider.heightAnchor.constraint(equalToConstant: 1),
             divider.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             divider.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
             divider.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15),
         ])
     }
     
-    private lazy var labelStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.alignment = .leading
-        
-        return stackView
-    }()
-    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
+        label.backgroundColor = .white
         label.text = titleText
         label.font = UIFont.boldSystemFont(ofSize: 20)
         

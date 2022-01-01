@@ -55,8 +55,9 @@ class SimpleInformationTableViewCell: UITableViewCell {
     
     func initialSetup(cellStyle: Style) {
         self.cellStyle = cellStyle
-        setStyle()
+        
         setLayout()
+        setStyle()
     }
     
     private func setStyle(){
@@ -71,7 +72,7 @@ class SimpleInformationTableViewCell: UITableViewCell {
             informationLabel.font = UIFont.systemFont(ofSize: 18)
         case .style3:
             informationImage.contentMode = .scaleAspectFit
-            informationImage.layer.cornerRadius = informationImage.frame.width / 2
+            informationImage.layer.cornerRadius = 17.5
             informationImage.clipsToBounds = true
             informationImage.backgroundColor = .systemGray4
             informationImage.tintColor = .gray
@@ -80,10 +81,10 @@ class SimpleInformationTableViewCell: UITableViewCell {
             informationLabel.textColor = .systemBlue
         case .style4:
             informationImage.contentMode = .scaleAspectFit
-            informationImage.layer.cornerRadius = informationImage.frame.width / 2
+            informationImage.layer.cornerRadius = 17.5
             informationImage.clipsToBounds = true
-            informationImage.layer.borderColor = CGColor(gray: 0.5, alpha: 1)
-            informationImage.layer.borderWidth - 1
+            informationImage.layer.borderColor = CGColor(gray: 1, alpha: 1)
+            informationImage.layer.borderWidth = 1
             informationImage.backgroundColor = .systemGray6
             informationImage.tintColor = .gray
             
@@ -101,8 +102,8 @@ class SimpleInformationTableViewCell: UITableViewCell {
                 informationImage.heightAnchor.constraint(equalToConstant: 20),
                 informationImage.widthAnchor.constraint(equalToConstant: 20),
                 informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
-                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
+                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
                 informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
             ])
             
@@ -116,19 +117,19 @@ class SimpleInformationTableViewCell: UITableViewCell {
             addSubview(informationImage)
             informationImage.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 30),
-                informationImage.widthAnchor.constraint(equalToConstant: 30),
+                informationImage.heightAnchor.constraint(equalToConstant: 35),
+                informationImage.widthAnchor.constraint(equalToConstant: 35),
                 informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
-                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
+                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20)
             ])
             
             addSubview(informationLabel)
             informationLabel.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
+                informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 20)
             ])
         }
     }

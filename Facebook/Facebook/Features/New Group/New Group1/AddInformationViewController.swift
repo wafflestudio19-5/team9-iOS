@@ -28,6 +28,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     let disposeBag = DisposeBag()
     
+    
     lazy var isActive: Bool = true
     
     let defaultSections: [MultipleSectionModel] = [
