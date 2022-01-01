@@ -9,7 +9,6 @@ import RxSwift
 import RxGesture
 
 class BaseTabViewController<View: UIView>: UIViewController {
-
     private let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), style: .plain, target: nil, action: nil)
     
     private let editButton = UIBarButtonItem(image: UIImage(systemName: "pencil", withConfiguration: UIImage.SymbolConfiguration(weight: .black)), style: .plain, target: nil, action: nil)

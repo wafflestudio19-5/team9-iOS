@@ -37,7 +37,7 @@ class PaginationViewModel<DataModel: Codable> {
     /// `refreshComplete`은 새로고침 인디케이터의 작동을 멈추기 위해 사용됩니다.
     let isLoading = BehaviorRelay<Bool>(value: false)
     let isRefreshing = BehaviorRelay<Bool>(value: false)
-    let refreshComplete = BehaviorRelay<Bool>(value: false)
+    let refreshComplete = PublishRelay<Bool>()
     
     private var isFetchingData: Bool {
         return isLoading.value || isRefreshing.value
@@ -97,6 +97,7 @@ class PaginationViewModel<DataModel: Codable> {
                 self.lastResponse = paginatedResponse
                 if isRefreshing {
                     self.dataList.accept(paginatedResponse.results)
+                    print("dataResponse")
                     self.isRefreshing.accept(false)
                     self.refreshComplete.accept(true)
                 } else {

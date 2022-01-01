@@ -11,7 +11,7 @@ class NewsfeedTabView: UIView {
     
     let newsfeedTableView = UITableView()
     let refreshControl = UIRefreshControl()
-    let createPostHeaderView = CreatePostHeaderView()
+    let mainTableHeaderView = MainHeaderView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,8 +35,8 @@ class NewsfeedTabView: UIView {
     }
     
     private func configureTableView() {
-        newsfeedTableView.tableHeaderView = createPostHeaderView
-        createPostHeaderView.widthAnchor.constraint(equalTo: newsfeedTableView.widthAnchor).isActive = true
+        newsfeedTableView.tableHeaderView = mainTableHeaderView
+        mainTableHeaderView.widthAnchor.constraint(equalTo: newsfeedTableView.widthAnchor).isActive = true
         
         newsfeedTableView.register(PostCell.self, forCellReuseIdentifier: PostCell.reuseIdentifier)
         newsfeedTableView.allowsSelection = false

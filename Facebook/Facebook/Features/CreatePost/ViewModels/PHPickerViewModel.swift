@@ -84,7 +84,6 @@ extension PHPickerViewModel {
     func loadMediaAsDataArray(to pointSize: CGSize? = nil, scale: CGFloat = UIScreen.main.scale, completion: (([Data]) -> Void)? = nil) {
         let group = DispatchGroup()
         var selectedDataArray: [Data] = []
-        
         for identifier in self.selectedAssetIdentifiers {
             group.enter()  // 루프 시작
             let result = selection[identifier]!
@@ -99,6 +98,7 @@ extension PHPickerViewModel {
                     }
                     return max(pointSize.width, pointSize.height) * scale
                 }
+                
                 let downsampleOptions = [
                     kCGImageSourceCreateThumbnailFromImageAlways: true,
                     kCGImageSourceCreateThumbnailWithTransform: true,

@@ -13,6 +13,7 @@ import RxCocoa
 
 class CreatePostViewController: UIViewController {
     let disposeBag = DisposeBag()
+    private let pickerViewModel = PHPickerViewModel()
     
     override func loadView() {
         view = CreatePostView()
@@ -59,7 +60,8 @@ class CreatePostViewController: UIViewController {
     
     func bindNavigationBarButtonStyle() {
         // contentTextField가 비어있는 가에 대한 Bool형 event방출
-        let hasEnteredContent = createPostView.contentTextView.rx.text.orEmpty.map { (string: String?) -> Bool in
+        let hasEnteredContent = createPostView.contentTextView.rx.text.orEmpty.map { [weak self] (string: String?) -> Bool in
+            guard let self = self else { return false }
             guard let string = string else {
                 return false
             }
@@ -74,26 +76,58 @@ class CreatePostViewController: UIViewController {
     }
     
     func bindPostButton() {
+        var callbackDisposeBag = DisposeBag()
         createPostView.postButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                self.pickerViewModel.loadMediaAsDataArray { data in
-                    NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "", files: data, subcontents: ["하이","하이","하이","하이","하이"]))
-                        .subscribe { [weak self] progress in
-                            print(progress)
-                            progress.element?.responseJSON(completionHandler: {data in
-                                print(data)
+                
+                // get the VC that presented this VC
+                guard let rootTabBarController = self.presentingViewController as? RootTabBarController,
+                      let newsfeedVC = rootTabBarController.newsfeedNavController.viewControllers.first as? NewsfeedTabViewController
+                else { return }
+                
+                // dismiss current VC first
+                self.dismiss(animated: true, completion: nil)
+
+                // show progress bar with initial value (1%)
+                let tempProgress = Progress()
+                tempProgress.totalUnitCount = 100
+                tempProgress.completedUnitCount = 1
+                DispatchQueue.main.async {
+                    newsfeedVC.headerViews.uploadProgressHeaderView.isHidden = false
+                    newsfeedVC.headerViews.uploadProgressHeaderView.displayProgress(progress: tempProgress)
+                }
+                
+                // load selected images as an array of data
+                self.pickerViewModel.loadMediaAsDataArray { array in
+                    NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "", files: array, subcontents: [String](repeating: "1", count: self.pickerViewModel.selectionCount.value)))
+                        .debug()
+                        .subscribe { event in
+                            let request = event.element
+                            let progress = request?.uploadProgress
+                            DispatchQueue.main.async {
+                                newsfeedVC.headerViews.uploadProgressHeaderView.displayProgress(progress: progress)
+                            }
+                            request?.responseJSON(completionHandler: {data in
+                                newsfeedVC.viewModel.refresh()
+                                newsfeedVC.viewModel.refreshComplete
+                                    .observe(on: MainScheduler.instance)
+                                    .bind { refreshComplete in
+                                        DispatchQueue.main.async {
+                                            newsfeedVC.headerViews.uploadProgressHeaderView.isHidden = true
+                                        }
+                                        callbackDisposeBag = DisposeBag()  // cancel all subscriptions inside button tap closure
+                                    }
+                                    .disposed(by: callbackDisposeBag)
                             })
                         }
+                        .disposed(by: callbackDisposeBag)
                 }
             }.disposed(by: disposeBag)
     }
     
     
     // MARK: Photo Picker
-    // 아래부터는 사진 첨부 버튼을 눌렀을 때 관련한 로직입니다.
-    
-    private let pickerViewModel = PHPickerViewModel()
     
     private func bindPhotosButton() {
         createPostView.photosButton.rx.tap
@@ -105,7 +139,7 @@ class CreatePostViewController: UIViewController {
     }
 }
 
-// MARK: Image Grid
+// MARK: Image Grid Binding with PickerViewModel
 
 extension CreatePostViewController {
     func bindImageGridView() {

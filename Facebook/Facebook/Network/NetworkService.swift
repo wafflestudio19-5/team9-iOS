@@ -62,7 +62,7 @@ struct NetworkService {
      */
     
     static func upload(endpoint: Endpoint) -> Observable<UploadRequest> {
-        return session.rx.upload(multipartFormData: endpoint.multipartFormDataBuilder!, to: endpoint.url, method: .post, headers: [.init(name: "content-type", value: "multipart/form-data")])
+        return session.rx.upload(multipartFormData: endpoint.multipartFormDataBuilder!, to: endpoint.url, method: .post, headers: [.contentType("multipart/form-data")])
     }
 }
 

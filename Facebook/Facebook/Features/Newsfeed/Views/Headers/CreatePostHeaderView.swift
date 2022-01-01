@@ -14,7 +14,7 @@ class CreatePostHeaderView: UIView {
     private let disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
-        super.init(frame: .zero)
+        super.init(frame: frame)
         setLayout()
     }
 
