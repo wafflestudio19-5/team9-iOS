@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 class CreatePostView: UIView {
-    
+    let placeholder = "무슨 생각을 하고 계신가요?"
     
     lazy var keyboardInputAccessory: UIView = {
         let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 50))
@@ -40,13 +40,12 @@ class CreatePostView: UIView {
     }
     
     func bindPlaceholder() {
-        let placeholder = "무슨 생각을 하고 계신가요?"
         contentTextView.text = placeholder
         contentTextView.textColor = .lightGray
         contentTextView.rx.didBeginEditing
             .subscribe { [weak self] _ in
                 guard let self = self else {return}
-                if self.contentTextView.text == placeholder {
+                if self.contentTextView.text == self.placeholder {
                     self.contentTextView.text = nil
                     self.contentTextView.textColor = .black
                 }
@@ -57,19 +56,11 @@ class CreatePostView: UIView {
             .subscribe { [weak self] _ in
                 guard let self = self else {return}
                 if self.contentTextView.text == nil || self.contentTextView.text == "" {
-                    self.contentTextView.text = placeholder
+                    self.contentTextView.text = self.placeholder
                     self.contentTextView.textColor = .lightGray
                 }
             }
             .disposed(by: disposeBag)
-    }
-    
-    func enablePostButton() {
-        postButton.titleLabel?.textColor = .systemBlue
-    }
-    
-    func disablePostButton () {
-        postButton.titleLabel?.textColor = .lightGray
     }
     
     private func setStyleForView() {
@@ -112,7 +103,9 @@ class CreatePostView: UIView {
     let postButton: UIButton = {
         let button = UIButton()
         button.setTitle("게시", for: .normal)
-        button.setTitleColor(UIColor.lightGray, for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.setTitleColor(.lightGray, for: .disabled)
+        button.isEnabled = false
         return button
     }()
     

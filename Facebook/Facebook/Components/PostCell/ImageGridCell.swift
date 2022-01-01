@@ -150,7 +150,7 @@ extension ImageGridCell {
     }
     
     private func displayImage(_ image: UIImage?) {
-        imageView.image = image
+        imageView.image = UIImage(data: (image?.jpegData(compressionQuality: 0.2))!, scale: 0.2)
         imageView.isHidden = image == nil
         livePhotoView.livePhoto = nil
         livePhotoView.isHidden = true

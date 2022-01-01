@@ -29,7 +29,8 @@ class CreatePostViewController: UIViewController {
         self.createPostView.contentTextView.becomeFirstResponder()
         setNavigationBarStyle()
         setNavigationBarItems()
-        bindNavigationBarItems()
+        bindNavigationBarButtonStyle()
+        bindPostButton()
         bindPhotosButton()
         bindImageGridView()
     }
@@ -56,42 +57,38 @@ class CreatePostViewController: UIViewController {
         navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    func bindNavigationBarItems() {
-        createPostView.postButton.rx.tap
-            .bind { [weak self] _ in
-                guard let self = self else { return }
-                NetworkService.post(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? ""), as: Post.self)
-                    .subscribe { [weak self] _ in
-                        guard let self = self else { return }
-                        guard let rootTabBarController = self.presentingViewController as? RootTabBarController,
-                              let newsfeedVC = rootTabBarController.newsfeedNavController.viewControllers.first as? NewsfeedTabViewController
-                        else { return }
-                        newsfeedVC.viewModel.refresh()
-                        self.dismiss(animated: true, completion: nil)
-                    }
-                    .disposed(by: self.disposeBag)
-            }.disposed(by: disposeBag)
-        
-        //contentTextField가 비어있는 가에 대한 Bool형 event방출
-        let hasEnteredContent = createPostView.contentTextView.rx.text.orEmpty.map { !$0.isEmpty }
+    func bindNavigationBarButtonStyle() {
+        // contentTextField가 비어있는 가에 대한 Bool형 event방출
+        let hasEnteredContent = createPostView.contentTextView.rx.text.orEmpty.map { (string: String?) -> Bool in
+            guard let string = string else {
+                return false
+            }
+            if string == self.createPostView.placeholder {
+                return false
+            }
+            return !string.isEmpty
+        }
         
         //contentTextField의 내용 유뮤에 따라 버튼 활성화
         hasEnteredContent.bind(to: self.createPostView.postButton.rx.isEnabled).disposed(by: disposeBag)
-        
-        //contentTextField의 내용 유뮤에 따라 버튼 색상 변화
-        hasEnteredContent
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] result in
-                guard let self = self else { return }
-                
-                if result {
-                    self.createPostView.enablePostButton()
-                } else {
-                    self.createPostView.disablePostButton()
-                }
-            })
-            .disposed(by: disposeBag)
     }
+    
+    func bindPostButton() {
+        createPostView.postButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.pickerViewModel.loadMediaAsDataArray { data in
+                    NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "", files: data, subcontents: ["하이","하이","하이","하이","하이"]))
+                        .subscribe { [weak self] progress in
+                            print(progress)
+                            progress.element?.responseJSON(completionHandler: {data in
+                                print(data)
+                            })
+                        }
+                }
+            }.disposed(by: disposeBag)
+    }
+    
     
     // MARK: Photo Picker
     // 아래부터는 사진 첨부 버튼을 눌렀을 때 관련한 로직입니다.
