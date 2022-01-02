@@ -11,8 +11,6 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
 
     let disposeBag = DisposeBag()
     
-    var newUser = NewUser()
-    
     var customView: View {
         guard let view = view as? View else { return View() }
         return view
@@ -26,19 +24,9 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
         self.navigationItem.title = "Facebook 가입하기"
         self.navigationItem.backButtonTitle = ""
     }
-    
-    convenience init(newUser: NewUser) {
-        print("convenience init called")
-        self.init()
-        self.overwriteUser(newUser: newUser)
-    }
-    
-    func overwriteUser(newUser: NewUser) {
-        self.newUser = newUser
-    }
-    
+
     func registerUser() {
-        NetworkService.post(endpoint: .createUser(newUser: newUser), as: SignUpResponse.self)
+        NetworkService.post(endpoint: .createUser(newUser: NewUser.shared), as: SignUpResponse.self)
             .subscribe { [weak self] event in
                 
                 // 회원가입 성공
@@ -52,6 +40,7 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
                         NetworkService.registerToken(token: token)
                     }
                     
+                    NewUser.shared.reset()
                     self?.changeRootViewController(to: RootTabBarController())
                     return
                 }

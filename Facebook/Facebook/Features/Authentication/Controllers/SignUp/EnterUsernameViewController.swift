@@ -70,10 +70,10 @@ class EnterUsernameViewController: BaseSignUpViewController<EnterUsernameView> {
                 if !isFirstNameEmpty && !isLastNameEmpty {
                     self.customView.setAlertLabelText(as: Validation.valid.message())
 
-                    self.newUser.first_name = self.firstName.value
-                    self.newUser.last_name = self.lastName.value
+                    NewUser.shared.first_name = self.firstName.value
+                    NewUser.shared.last_name = self.lastName.value
                     
-                    self.push(viewController: EnterBirthdateViewController(newUser: self.newUser))
+                    self.push(viewController: EnterBirthdateViewController())
                 } else {
                     self.customView.setAlertLabelText(as: isFirstNameEmpty && isLastNameEmpty ? Validation.emptyBoth.message()
                                                            : (isFirstNameEmpty ? Validation.emptyFirstName.message() : Validation.emptyLastName.message()))

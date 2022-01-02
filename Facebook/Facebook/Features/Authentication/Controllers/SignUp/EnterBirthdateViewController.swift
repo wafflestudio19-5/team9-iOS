@@ -86,8 +86,8 @@ class EnterBirthdateViewController: BaseSignUpViewController<EnterBirthdateView>
                 self.customView.setAlertLabelText(as: isValidBirthdate.message())
                 
                 if isValidBirthdate == .valid {
-                    self.newUser.birth = self.hyphenDateFormatter.string(from: self.birthDate.value)
-                    self.push(viewController: EnterEmailViewController(newUser: self.newUser))
+                    NewUser.shared.birth = self.hyphenDateFormatter.string(from: self.birthDate.value)
+                    self.push(viewController: EnterEmailViewController())
                 }
             }.disposed(by: disposeBag)
         

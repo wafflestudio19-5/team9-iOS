@@ -94,8 +94,8 @@ class SelectGenderViewController: BaseSignUpViewController<SelectGenderView>, UI
                 self.changeLabelTextColorForCells(as: isValidGender.labelColor())
                 
                 if isValidGender == .valid {
-                    self.newUser.gender = self.genderFormatter(gender: self.gender.value)
-                    self.push(viewController: EnterPasswordViewController(newUser: self.newUser))
+                    NewUser.shared.gender = self.genderFormatter(gender: self.gender.value)
+                    self.push(viewController: EnterPasswordViewController())
                 }
         }.disposed(by: disposeBag)
     }

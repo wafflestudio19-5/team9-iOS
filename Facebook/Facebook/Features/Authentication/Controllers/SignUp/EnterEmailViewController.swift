@@ -72,8 +72,8 @@ class EnterEmailViewController: BaseSignUpViewController<EnterEmailView> {
                 self.customView.setAlertLabelText(as: isValidEmail.message())
                 
                 if isValidEmail == .valid {
-                    self.newUser.email = self.emailAddress.value
-                    self.push(viewController: SelectGenderViewController(newUser: self.newUser))
+                    NewUser.shared.email = self.emailAddress.value
+                    self.push(viewController: SelectGenderViewController())
                 }
         }.disposed(by: disposeBag)
     }

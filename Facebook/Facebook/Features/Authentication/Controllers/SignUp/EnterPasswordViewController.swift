@@ -69,7 +69,7 @@ class EnterPasswordViewController: BaseSignUpViewController<EnterPasswordView> {
                 self.customView.setAlertLabelText(as: isValidPassword.message())
                 
                 if isValidPassword == .valid {
-                    self.newUser.password = self.password.value
+                    NewUser.shared.password = self.password.value
                     self.registerUser()
                 }
         }.disposed(by: disposeBag)
