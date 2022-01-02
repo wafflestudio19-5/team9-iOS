@@ -7,26 +7,37 @@
 
 import Foundation
 
-struct Profile {
-    
+struct UserProfile: Codable  {
+    let id: Int?
+    let first_name: String
+    let last_name: String
+    let username: String?
+    let email: String?
+    let birth: String
+    let gender: String
+    let self_intro: String?
+    let profile_image: String?
+    let cover_image: String?
+    let company: [Company]?
+    let university: [University]?
 }
 
-struct Company {
+struct Company: Codable  {
     var id: Int?
     var name: String?
     var role: String?
     var location: String?
-    var joinDate: String?
-    var leaveDate: String?
-    var isActive: Bool?
+    var join_date: String?
+    var leave_date: String?
+    var is_active: Bool?
     var detail: String?
 }
 
-struct University {
+struct University: Codable  {
     var id: Int?
     var name: String?
     var major: String?
-    var joinDate: String?
-    var graduateDate: String?
-    var isActive: Bool?
+    var join_date: String?
+    var graduate_date: String?
+    var is_active: Bool?
 }

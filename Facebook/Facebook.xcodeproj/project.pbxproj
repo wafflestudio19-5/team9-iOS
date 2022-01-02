@@ -22,6 +22,11 @@
 		7754B865277DAE5300775D81 /* AddSelfIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */; };
 		7754B867277DB05800775D81 /* TextViewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B866277DB05800775D81 /* TextViewTableViewCell.swift */; };
 		7754B86A277F357F00775D81 /* UserProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B869277F357F00775D81 /* UserProfileModel.swift */; };
+		7754B86D2781A0B900775D81 /* Endpoint+Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B86C2781A0B900775D81 /* Endpoint+Profile.swift */; };
+		7754B86F2781D63900775D81 /* EditUserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B86E2781D63900775D81 /* EditUserProfileView.swift */; };
+		7754B8712781D66400775D81 /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8702781D66400775D81 /* EditUserProfileViewController.swift */; };
+		7754B8732781D7BC00775D81 /* BirthSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8722781D7BC00775D81 /* BirthSelectTableViewCell.swift */; };
+		7754B8752781DD9A00775D81 /* GenderSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8742781DD9A00775D81 /* GenderSelectTableViewCell.swift */; };
 		775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */; };
 		775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150E27730BA000C9872F /* DataSourceModel.swift */; };
 		7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77799318274FD8E4007A3898 /* PostTableViewCell.swift */; };
@@ -116,6 +121,11 @@
 		7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSelfIntroViewController.swift; sourceTree = "<group>"; };
 		7754B866277DB05800775D81 /* TextViewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewTableViewCell.swift; sourceTree = "<group>"; };
 		7754B869277F357F00775D81 /* UserProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileModel.swift; sourceTree = "<group>"; };
+		7754B86C2781A0B900775D81 /* Endpoint+Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Profile.swift"; sourceTree = "<group>"; };
+		7754B86E2781D63900775D81 /* EditUserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileView.swift; sourceTree = "<group>"; };
+		7754B8702781D66400775D81 /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileViewController.swift; sourceTree = "<group>"; };
+		7754B8722781D7BC00775D81 /* BirthSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthSelectTableViewCell.swift; sourceTree = "<group>"; };
+		7754B8742781DD9A00775D81 /* GenderSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenderSelectTableViewCell.swift; sourceTree = "<group>"; };
 		775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		775F150E27730BA000C9872F /* DataSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceModel.swift; sourceTree = "<group>"; };
 		77799318274FD8E4007A3898 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -419,6 +429,7 @@
 				77B635412768B2C100C41EB3 /* DetailProfileView.swift */,
 				77B635452768B2F900C41EB3 /* EditProfileView.swift */,
 				77ABC5D32774A906000431E1 /* EditDetailInformationView.swift */,
+				7754B86E2781D63900775D81 /* EditUserProfileView.swift */,
 				77ABC5DB2774B696000431E1 /* Header&FooterView.swift */,
 				7754B862277DAE2F00775D81 /* AddSelfIntroView.swift */,
 				77ABC5D72774A998000431E1 /* AddInformationView.swift */,
@@ -434,6 +445,8 @@
 				775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */,
 				7754B866277DB05800775D81 /* TextViewTableViewCell.swift */,
 				77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */,
+				7754B8722781D7BC00775D81 /* BirthSelectTableViewCell.swift */,
+				7754B8742781DD9A00775D81 /* GenderSelectTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -448,6 +461,7 @@
 				7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */,
 				77ABC5D92774A9B0000431E1 /* AddInformationViewController.swift */,
 				77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */,
+				7754B8702781D66400775D81 /* EditUserProfileViewController.swift */,
 			);
 			name = Controllers;
 			path = "New Group1";
@@ -634,6 +648,7 @@
 				BEA834AD275123FD00D6EC95 /* Endpoint.swift */,
 				BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */,
 				BE9C7C91276CDF230089247F /* Endpoint+User.swift */,
+				7754B86C2781A0B900775D81 /* Endpoint+Profile.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -768,6 +783,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */,
+				7754B8732781D7BC00775D81 /* BirthSelectTableViewCell.swift in Sources */,
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
 				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
@@ -788,6 +804,7 @@
 				B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */,
 				B846BDA72754F35800513B77 /* LoginView.swift in Sources */,
 				777993212750CD41007A3898 /* CreatePostTableViewCell.swift in Sources */,
+				7754B8712781D66400775D81 /* EditUserProfileViewController.swift in Sources */,
 				77ABC5DA2774A9B0000431E1 /* AddInformationViewController.swift in Sources */,
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
 				B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */,
@@ -799,8 +816,10 @@
 				77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */,
+				7754B8752781DD9A00775D81 /* GenderSelectTableViewCell.swift in Sources */,
 				77547904275CE66A0065711C /* PostViewController.swift in Sources */,
 				B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */,
+				7754B86D2781A0B900775D81 /* Endpoint+Profile.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
@@ -827,6 +846,7 @@
 				B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
 				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
+				7754B86F2781D63900775D81 /* EditUserProfileView.swift in Sources */,
 				77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */,
 				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
 				77ABC5DC2774B696000431E1 /* Header&FooterView.swift in Sources */,

@@ -106,7 +106,20 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         super.setNavigationBarItems(withEditButton: true)
         
         sectionsBR.accept(sections)
+        loadUserProfile()
         bindTableView()
+    }
+    
+    func loadUserProfile() {
+        NetworkService
+            .get(endpoint: .profile(id: 0))
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                print(data)
+                
+            }, onError: { error in
+                print(error)
+            }).disposed(by: disposeBag)
     }
     
     func bindTableView() {
