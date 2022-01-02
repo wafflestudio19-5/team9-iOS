@@ -17,5 +17,17 @@ struct Post: Codable, Identifiable {
     let file: String?
     
     let mainpost: Int?
-    let subposts: [Post]
+    let subposts: [SubPost]
+}
+
+// To be deprecated
+struct SubPost: Codable, Identifiable {
+    let id: Int
+    let content: String
+    let likes: Int
+    let posted_at: String?
+    let comment_count: Int
+    let file: String?
+    
+    let mainpost: Int?
 }

@@ -29,12 +29,12 @@ struct Endpoint {
             components.queryItems?.append(URLQueryItem(name: "cursor", value: cursor))
         }
         
-//        // for production
-//        components.host = "ec2-3-34-188-255.ap-northeast-2.compute.amazonaws.com"
+        // for production
+        components.host = "ec2-3-34-188-255.ap-northeast-2.compute.amazonaws.com"
         
         // for development
-        components.host = "127.0.0.1"
-        components.port = 8000
+//        components.host = "127.0.0.1"
+//        components.port = 8000
         
         guard let url = components.url else {
             preconditionFailure(

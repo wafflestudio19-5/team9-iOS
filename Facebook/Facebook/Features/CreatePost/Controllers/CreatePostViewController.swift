@@ -108,6 +108,7 @@ class CreatePostViewController: UIViewController {
                                 newsfeedVC.headerViews.uploadProgressHeaderView.displayProgress(progress: progress)
                             }
                             request?.responseJSON(completionHandler: {data in
+                                print(data)
                                 newsfeedVC.viewModel.refresh()
                                 newsfeedVC.viewModel.refreshComplete
                                     .observe(on: MainScheduler.instance)

@@ -97,7 +97,6 @@ class PaginationViewModel<DataModel: Codable> {
                 self.lastResponse = paginatedResponse
                 if isRefreshing {
                     self.dataList.accept(paginatedResponse.results)
-                    print("dataResponse")
                     self.isRefreshing.accept(false)
                     self.refreshComplete.accept(true)
                 } else {

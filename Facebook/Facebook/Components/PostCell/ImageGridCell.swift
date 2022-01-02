@@ -37,6 +37,8 @@ class ImageGridCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayout()
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
     }
     
     required init?(coder: NSCoder) {
@@ -61,17 +63,19 @@ extension ImageGridCell {
             return
         }
 
-        let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
+        let processor = DownsamplingImageProcessor(size: CGSize(width: 400, height: 200))
         KF.url(url)
 //          .placeholder(placeholderImage)
           .setProcessor(processor)
-//          .loadDiskFileSynchronously()
+          .loadDiskFileSynchronously()
           .cacheMemoryOnly()
           .fade(duration: 0.1)
 //          .lowDataModeSource(.network(lowResolutionURL))
-          .onProgress { receivedSize, totalSize in  }
+          .onProgress { receivedSize, totalSize in
+//              print(receivedSize, totalSize)
+          }
           .onSuccess { result in  }
-          .onFailure { error in }
+          .onFailure { error in print("로딩 실패", error)}
           .set(to: imageView)
     }
 }
