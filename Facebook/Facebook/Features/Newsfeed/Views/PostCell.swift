@@ -16,14 +16,13 @@ class PostCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setLayout()
-        initialSetup()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         self.disposeBag = DisposeBag()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("Do not use storyboard. Load programmatically.")
     }
@@ -41,18 +40,22 @@ class PostCell: UITableViewCell {
     
     // MARK: Setup
     
-    private func initialSetup() {
-        let commentLabel = commentCountLabel
-        commentLabel.text = "43개"
-        let likeLabel = likeCountLabel
-        likeLabel.text = "4,234개"
-    }
-    
     func configureCell(with post: Post) {
-        commentCountLabel.text = "댓글 \(Int.random(in: 10...100).withCommas(unit: "개"))"
+        commentCountLabel.text = "댓글 \(post.comment_count.withCommas(unit: "개"))"
         likeCountLabel.text = post.likes.withCommas(unit: "개")
         textContentLabel.text = post.content
         postHeader.configure(with: post)
+        
+        let subpostUrls: [URL?] = post.subposts.map {
+            guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
+            return url
+        }
+        self.imageGridCollectionView.numberOfImages = post.subposts.count
+        Observable.just(subpostUrls)
+            .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
+                cell.displayMedia(from: data)
+            }
+            .disposed(by: disposeBag)
     }
     
     // MARK: AutoLayout Constraints
@@ -73,11 +76,21 @@ class PostCell: UITableViewCell {
             textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
         ])
         
+        
+        // imageGridCollectionView는 stack 안으로 넣어야 width가 제대로 잡힌다.
+        // (이유를 아시는 분은 알려주시면 감사하겠습니다..)
+        contentView.addSubview(gridContainerStack)
+        NSLayoutConstraint.activate([
+            gridContainerStack.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: .standardTopMargin),
+            gridContainerStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            gridContainerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        ])
+        
         contentView.addSubview(statHorizontalStackView)
         NSLayoutConstraint.activate([
+            statHorizontalStackView.topAnchor.constraint(equalTo: gridContainerStack.bottomAnchor, constant: .standardTopMargin),
             statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
             statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin - 5),
-            statHorizontalStackView.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: .standardTopMargin)
         ])
         
         contentView.addSubview(buttonHorizontalStackView)
@@ -100,6 +113,16 @@ class PostCell: UITableViewCell {
     }
     
     // MARK: Initialize View Components
+    
+    // 이미지 그리드 뷰
+    private let imageGridCollectionView = ImageGridCollectionView()
+    
+    private lazy var gridContainerStack: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.addArrangedSubview(imageGridCollectionView)
+        return stack
+    }()
     
     // 포스트 헤더 (프로필 이미지, 작성자, 날짜, 각종 버튼이 들어가는 곳)
     private let postHeader = AuthorInfoHeaderView()

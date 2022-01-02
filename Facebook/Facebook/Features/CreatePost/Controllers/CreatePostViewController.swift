@@ -144,7 +144,7 @@ extension CreatePostViewController {
     func bindImageGridView() {
         pickerViewModel.firstFiveResults
             .bind(to: createPostView.imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
-                cell.displayMedia(pickerResult: data)
+                cell.displayMedia(from: data)
             }
             .disposed(by: disposeBag)
         

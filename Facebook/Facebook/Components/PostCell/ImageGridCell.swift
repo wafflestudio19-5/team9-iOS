@@ -7,6 +7,7 @@
 
 import UIKit
 import PhotosUI
+import Kingfisher
 
 class ImageGridCell: UICollectionViewCell {
     static let reuseIdentifier = "ImageGridCell"
@@ -53,9 +54,31 @@ class ImageGridCell: UICollectionViewCell {
     }
 }
 
-
+// MARK: From URL
 extension ImageGridCell {
-    func displayMedia(pickerResult: PHPickerResult) {
+    func displayMedia(from url: URL?) {
+        guard let url = url else {
+            return
+        }
+
+        let processor = DownsamplingImageProcessor(size: imageView.bounds.size)
+        KF.url(url)
+//          .placeholder(placeholderImage)
+          .setProcessor(processor)
+//          .loadDiskFileSynchronously()
+          .cacheMemoryOnly()
+          .fade(duration: 0.1)
+//          .lowDataModeSource(.network(lowResolutionURL))
+          .onProgress { receivedSize, totalSize in  }
+          .onSuccess { result in  }
+          .onFailure { error in }
+          .set(to: imageView)
+    }
+}
+
+// MARK: From PHPicker
+extension ImageGridCell {
+    func displayMedia(from pickerResult: PHPickerResult) {
         let progress: Progress?
         let itemProvider = pickerResult.itemProvider
         if itemProvider.canLoadObject(ofClass: PHLivePhoto.self) {

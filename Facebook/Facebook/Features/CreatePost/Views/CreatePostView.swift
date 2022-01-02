@@ -10,20 +10,7 @@ import RxSwift
 
 class CreatePostView: UIView {
     let placeholder = "무슨 생각을 하고 계신가요?"
-    
-    lazy var keyboardInputAccessory: UIView = {
-        let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 50))
-        inputAccessory.addSubview(photosButton)
-        NSLayoutConstraint.activate([
-            photosButton.bottomAnchor.constraint(equalTo: inputAccessory.bottomAnchor, constant: .standardBottomMargin),
-            photosButton.leadingAnchor.constraint(equalTo: inputAccessory.leadingAnchor, constant: .standardLeadingMargin),
-            photosButton.widthAnchor.constraint(equalToConstant: 50)
-        ])
-        return inputAccessory
-    }()
-    
     let imageGridCollectionView = ImageGridCollectionView()
-    
     private let disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
@@ -91,6 +78,17 @@ class CreatePostView: UIView {
     }
     
     // MARK: UI Components
+    
+    lazy var keyboardInputAccessory: UIView = {
+        let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 50))
+        inputAccessory.addSubview(photosButton)
+        NSLayoutConstraint.activate([
+            photosButton.bottomAnchor.constraint(equalTo: inputAccessory.bottomAnchor, constant: .standardBottomMargin),
+            photosButton.leadingAnchor.constraint(equalTo: inputAccessory.leadingAnchor, constant: .standardLeadingMargin),
+            photosButton.widthAnchor.constraint(equalToConstant: 50)
+        ])
+        return inputAccessory
+    }()
     
     let contentTextView: UITextView = {
         let textView = UITextView()

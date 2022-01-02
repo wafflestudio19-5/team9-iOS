@@ -46,7 +46,7 @@ class AuthorInfoHeaderView: UIView {
     }
     
     func configure(with post: Post) {
-        authorNameLabel.text = post.author.username
+        authorNameLabel.text = post.author?.username
         postDateLabel.text = post.posted_at
     }
     
