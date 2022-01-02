@@ -35,7 +35,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     var informationType: InformationType
     
-    var informationData: Any
+    lazy var companyInformation = Company()
+    lazy var universityInformation = University()
+    
     var isActive: Bool
     
     var defaultSections: [MultipleSectionModel] = []
@@ -67,9 +69,17 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 //SelectInformationViewContoller로 부터 데이터를 받음
                 selectInformationViewController.selectedInformation
                     .observe(on: MainScheduler.instance)
-                    .subscribe(onNext: { [weak self] item in
-                        self?.isActiveSection()
-                        print(item)
+                    .subscribe(onNext: { [weak self] information in
+                        guard let self = self else { return }
+                        
+                        switch self.informationType {
+                        case .company:
+                            self.companyInformation.name = information
+                        case .university:
+                            self.universityInformation.name = information
+                        }
+                        
+                        self.isActiveSection()
                     }).disposed(by: cell.disposeBag)
                 
                 self?.push(viewController: selectInformationViewController)
@@ -99,8 +109,21 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 //SelectInformationViewContoller로 부터 데이터를 받음
                 selectInformationViewController.selectedInformation
                     .observe(on: MainScheduler.instance)
-                    .subscribe(onNext: { [weak self] item in
-                        self?.isActiveSection()
+                    .subscribe(onNext: { [weak self] information in
+                        guard let self = self else { return }
+                        
+                        switch style {
+                        case .role:
+                            self.companyInformation.role = information
+                        case .location:
+                            self.companyInformation.location = information
+                        case .major:
+                            self.universityInformation.major = information
+                        default:
+                            break
+                        }
+                        
+                        self.isActiveSection()
                     }).disposed(by: cell.disposeBag)
                 
                 self?.push(viewController: selectInformationViewController)
@@ -131,12 +154,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     init(informationType: InformationType) {
         self.informationType = informationType
-        switch self.informationType {
-        case .company:
-            informationData = Company()
-        case .university:
-            informationData = University()
-        }
         self.isActive = true
         super.init(nibName: nil, bundle: nil)
 
@@ -148,7 +165,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         initialSetup()
         bindTableView()
@@ -158,15 +174,12 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         switch self.informationType {
         case .company:
             self.title = "직장 추가"
-            
-            
-            
             defaultSections = [
                 .DetailInformationSection(title: "직장", items: [
-                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: "직장 이름")
+                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: "직장 추가")
                 ])
             ]
-            
+        
         case .university:
             self.title = "학력 추가"
             
@@ -190,7 +203,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
     
-    //현재 재직 중 상태일 때 TableView의 데이터
+    //현재 재직(재학) 중 상태일 때 TableView의 데이터
     private func isActiveSection() {
         var sections: [MultipleSectionModel]
         
@@ -198,9 +211,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         case .company:
             sections = [
                 .DetailInformationSection(title: "직장", items: [
-                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-                    .AddInfomrationLabelItem(style: .role, information: "직책(선택 사항)"),
-                    .AddInfomrationLabelItem(style: .location, information: "위치(선택 사항)"),
+                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: companyInformation.name!),
+                    .AddInfomrationLabelItem(style: .role,
+                                             information: (companyInformation.role != nil) ? companyInformation.role! : "직책(선택 사항"),
+                    .AddInfomrationLabelItem(style: .location,
+                                             information: (companyInformation.location != nil) ? companyInformation.location! : "위치(선택 사항"),
                     .TextFieldItem(text: "text")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
@@ -210,8 +225,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         case .university:
             sections = [
                 .DetailInformationSection(title: "학력", items: [
-                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: "학교 이름"),
-                    .AddInfomrationLabelItem(style: .major, information: "전공(선택 사항)")
+                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: universityInformation.name!),
+                    .AddInfomrationLabelItem(style: .major,
+                                             information:  (universityInformation.major != nil) ? universityInformation.major! : "전공(선택 사항")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
                     .SelectDateItem(style: .startDateStyle),
@@ -230,9 +246,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         case .company:
             sections = [
                 .DetailInformationSection(title: "직장", items: [
-                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: "직장 이름"),
-                    .AddInfomrationLabelItem(style: .role, information: "직책(선택 사항)"),
-                    .AddInfomrationLabelItem(style: .location, information: "위치(선택 사항)"),
+                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: companyInformation.name!),
+                    .AddInfomrationLabelItem(style: .role,
+                                             information: (companyInformation.role != nil) ? companyInformation.role! : "직책(선택 사항"),
+                    .AddInfomrationLabelItem(style: .location,
+                                             information: (companyInformation.location != nil) ? companyInformation.location! : "위치(선택 사항"),
                     .TextFieldItem(text: "text")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
@@ -243,8 +261,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         case .university:
             sections = [
                 .DetailInformationSection(title: "학력", items: [
-                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: "학교 이름"),
-                    .AddInfomrationLabelItem(style: .major, information: "전공(선택 사항)")
+                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: universityInformation.name!),
+                    .AddInfomrationLabelItem(style: .major,
+                                             information:  (universityInformation.major != nil) ? universityInformation.major! : "전공(선택 사항")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
                     .SelectDateItem(style: .startDateStyle),

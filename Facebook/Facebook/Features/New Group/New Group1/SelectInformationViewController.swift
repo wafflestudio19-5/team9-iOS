@@ -48,7 +48,8 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
     
     let searchResultBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay<[MultipleSectionModel]>(value: [])
     
-    let selectedInformation: PublishSubject<SectionItem> = PublishSubject<SectionItem>()
+    //이전 뷰 컨트롤러(AddInformationViewController)로 데이터를 전달하기 위한 PublishSubject 객체
+    let selectedInformation: PublishSubject<String> = PublishSubject<String>()
     
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
@@ -128,7 +129,13 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
                     
                     switch self.cellType {
                     case .withImage:
-                        let addCellData: SectionItem = .SimpleInformationItem(style: .style4, image: UIImage(), information: "\"\(text)\" 추가")
+                        var addCellData: SectionItem
+                        if self.informationType == .company {
+                            addCellData = .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase.fill")!, information: "\"\(text)\" 추가")
+                        } else {
+                            addCellData = .SimpleInformationItem(style: .style4, image: UIImage(systemName: "graduationcap.fill")!, information: "\"\(text)\" 추가")
+                        }
+                        
                         let searchData: [MultipleSectionModel] = [.DetailInformationSection(title: "검색 결과", items: [addCellData])]
                         self.searchResultBR.accept(searchData)
                     case .withoutImage:
@@ -142,9 +149,11 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
         
         searchResultBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
+        //TableView 셀 선택 시 동작
         tableView.rx.modelSelected(SectionItem.self).subscribe(onNext: { [weak self] item in
-            self?.selectedInformation.onNext(item)
-            self?.navigationController?.popViewController(animated: true)
+            guard let self = self else { return }
+            self.selectedInformation.onNext(self.information)
+            self.navigationController?.popViewController(animated: true)
         })
     }
 }
