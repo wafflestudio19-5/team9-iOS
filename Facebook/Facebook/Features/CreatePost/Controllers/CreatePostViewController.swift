@@ -107,7 +107,7 @@ class CreatePostViewController: UIViewController {
                             DispatchQueue.main.async {
                                 newsfeedVC.headerViews.uploadProgressHeaderView.displayProgress(progress: progress)
                             }
-                            request?.responseJSON(completionHandler: {data in
+                            request?.responseString(completionHandler: {data in
                                 print(data)
                                 newsfeedVC.viewModel.refresh()
                                 newsfeedVC.viewModel.refreshComplete

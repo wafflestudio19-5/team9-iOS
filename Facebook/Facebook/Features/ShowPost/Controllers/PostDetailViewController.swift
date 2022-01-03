@@ -50,9 +50,14 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        postView.postContentHeaderView.configure(with: post)
         bindTableView()
         setLeftBarButtonItems()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // 업데이트된 frame을 얻기 위해 viewDidLayoutSubviews에서 호출해야 한다.
+        postView.postContentHeaderView.configure(with: post)
     }
     
     func setLeftBarButtonItems() {

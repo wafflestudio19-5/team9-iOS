@@ -13,7 +13,7 @@ struct Post: Codable, Identifiable {
     let content: String
     let likes: Int
     let posted_at: String?
-    let comment_count: Int
+    let comments: Int
     let file: String?
     
     let mainpost: Int?
@@ -26,7 +26,7 @@ struct SubPost: Codable, Identifiable {
     let content: String
     let likes: Int
     let posted_at: String?
-    let comment_count: Int
+    let comments: Int
     let file: String?
     
     let mainpost: Int?

@@ -22,11 +22,8 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
     let viewModel = PaginationViewModel<Post>(endpoint: .newsfeed())
     
-    var cellHeights: [IndexPath : CGFloat] = [:]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.delegate = self
         bind()
     }
     
@@ -110,20 +107,5 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         .disposed(by: disposeBag)
         
         
-    }
-}
-
-// Cell Height를 캐싱한다.
-extension NewsfeedTabViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return cellHeights[indexPath] ?? UITableView.automaticDimension
-    }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cellHeights[indexPath] = cell.frame.size.height
-    }
-
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return cellHeights[indexPath] ?? UITableView.automaticDimension
     }
 }

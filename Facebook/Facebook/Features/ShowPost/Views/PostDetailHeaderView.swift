@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class PostDetailHeaderView: UIView {
     
@@ -14,6 +15,10 @@ class PostDetailHeaderView: UIView {
     private let contentLabel = PostContentLabel()
     let buttonStackView = InteractionButtonStackView(useBottomBorder: true)
     private let authorHeaderView = AuthorInfoHeaderView()
+    private let disposeBag = DisposeBag()
+    
+    // 이미지 그리드 뷰
+    private let imageGridCollectionView = ImageGridCollectionView()
     
     // 좋아요 수 라벨
     private let likeCountLabel: UILabel = InfoLabel(color: .black, weight: .semibold)
@@ -39,6 +44,18 @@ class PostDetailHeaderView: UIView {
         contentLabel.text = post.content
         likeCountLabel.text = post.likes.withCommas(unit: "개")
         authorHeaderView.configure(with: post)
+        
+        // TODO: duplicated lines
+        let subpostUrls: [URL?] = post.subposts.map {
+            guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
+            return url
+        }
+        self.imageGridCollectionView.numberOfImages = post.subposts.count
+        Observable.just(subpostUrls)
+            .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
+                cell.displayMedia(from: data)
+            }
+            .disposed(by: disposeBag)
     }
     
     override init(frame: CGRect) {
@@ -60,11 +77,18 @@ class PostDetailHeaderView: UIView {
             trailing,
         ])
         
+        self.addSubview(imageGridCollectionView)
+        NSLayoutConstraint.activate([
+            imageGridCollectionView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: .standardTopMargin),
+            imageGridCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            imageGridCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+        ])
+        
         self.addSubview(buttonStackView)
         trailing = buttonStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin)
         trailing.priority = .defaultHigh
         NSLayoutConstraint.activate([
-            buttonStackView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: .standardTopMargin),
+            buttonStackView.topAnchor.constraint(equalTo: imageGridCollectionView.bottomAnchor, constant: .standardTopMargin),
             buttonStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
             trailing,
             buttonStackView.heightAnchor.constraint(equalToConstant: .buttonGroupHeight),
@@ -88,5 +112,5 @@ class PostDetailHeaderView: UIView {
     }
     
     
-
+    
 }

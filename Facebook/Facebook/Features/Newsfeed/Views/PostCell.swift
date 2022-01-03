@@ -41,7 +41,7 @@ class PostCell: UITableViewCell {
     // MARK: Setup
     
     func configureCell(with post: Post) {
-        commentCountLabel.text = "댓글 \(post.comment_count.withCommas(unit: "개"))"
+        commentCountLabel.text = "댓글 \(post.comments.withCommas(unit: "개"))"
         likeCountLabel.text = post.likes.withCommas(unit: "개")
         textContentLabel.text = post.content
         postHeader.configure(with: post)
@@ -56,6 +56,7 @@ class PostCell: UITableViewCell {
                 cell.displayMedia(from: data)
             }
             .disposed(by: disposeBag)
+        self.layoutIfNeeded()
     }
     
     // MARK: AutoLayout Constraints
@@ -76,27 +77,26 @@ class PostCell: UITableViewCell {
             textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
         ])
         
-        
-        // imageGridCollectionView는 stack 안으로 넣어야 width가 제대로 잡힌다.
-        // (이유를 아시는 분은 알려주시면 감사하겠습니다..)
-        contentView.addSubview(gridContainerStack)
+        contentView.addSubview(imageGridCollectionView)
         NSLayoutConstraint.activate([
-            gridContainerStack.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: .standardTopMargin),
-            gridContainerStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            gridContainerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageGridCollectionView.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: .standardTopMargin),
+            imageGridCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageGridCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
         
         contentView.addSubview(statHorizontalStackView)
         NSLayoutConstraint.activate([
-            statHorizontalStackView.topAnchor.constraint(equalTo: gridContainerStack.bottomAnchor, constant: .standardTopMargin),
+            statHorizontalStackView.topAnchor.constraint(equalTo: imageGridCollectionView.bottomAnchor, constant: .standardTopMargin),
             statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
             statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin - 5),
         ])
         
         contentView.addSubview(buttonHorizontalStackView)
         contentView.addSubview(divider)
+        let top = buttonHorizontalStackView.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: .standardTopMargin)
+        top.priority = .defaultHigh
         NSLayoutConstraint.activate([
-            buttonHorizontalStackView.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: .standardTopMargin),
+            top,
             buttonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
             buttonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
             buttonHorizontalStackView.heightAnchor.constraint(equalToConstant: .buttonGroupHeight)
@@ -116,13 +116,6 @@ class PostCell: UITableViewCell {
     
     // 이미지 그리드 뷰
     private let imageGridCollectionView = ImageGridCollectionView()
-    
-    private lazy var gridContainerStack: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.addArrangedSubview(imageGridCollectionView)
-        return stack
-    }()
     
     // 포스트 헤더 (프로필 이미지, 작성자, 날짜, 각종 버튼이 들어가는 곳)
     private let postHeader = AuthorInfoHeaderView()

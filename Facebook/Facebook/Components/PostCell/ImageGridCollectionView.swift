@@ -53,7 +53,7 @@ extension ImageGridCollectionView: UICollectionViewDelegateFlowLayout {
     }
     
     private func getItemSize(width: FractionalLength, height: FractionalLength) -> CGSize {
-        let screenWidth = self.bounds.size.width
+        let screenWidth = UIScreen.main.bounds.width
         let itemWidth: CGFloat = (screenWidth - spacing * (1 / width.fractionalValue - 1)) * width.fractionalValue
         let itemHeight: CGFloat = screenWidth * height.fractionalValue
         return CGSize(width: itemWidth, height: itemHeight)
