@@ -38,7 +38,7 @@ class LoginViewController<View: LoginView>: UIViewController {
             print("login button tapped")
             
             // 로그인에 실패한 경우 보이는 알림창 sample
-            self.alert(title: "잘못된 사용자 이름", message: "입력하신 사용자 이름에 해당하는 계정을 찾을 수 없습니다. 사용자 이름을 확인하고 다시 시도하세요.", action: "확인")
+            self.alert(title: "잘못된 이메일", message: "입력한 이메일이 계정에 포함된 이메일이 아닌 것 같습니다. 이메일 주소를 확인하고 다시 시도해주세요.", action: "확인")
             
             // login validation
         }.disposed(by: disposeBag)
