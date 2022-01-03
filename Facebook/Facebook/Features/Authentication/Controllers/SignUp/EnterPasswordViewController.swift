@@ -8,7 +8,6 @@
 import RxSwift
 import RxGesture
 import RxCocoa
-import Darwin
 
 class EnterPasswordViewController: BaseSignUpViewController<EnterPasswordView> {
     
@@ -70,10 +69,8 @@ class EnterPasswordViewController: BaseSignUpViewController<EnterPasswordView> {
                 self.customView.setAlertLabelText(as: isValidPassword.message())
                 
                 if isValidPassword == .valid {
-                    // TODO: User 등록
-                    let rootTabBarController = RootTabBarController()
-                    guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
-                    sceneDelegate.changeRootViewController(rootTabBarController)
+                    NewUser.shared.password = self.password.value
+                    self.registerUser()
                 }
         }.disposed(by: disposeBag)
     }
