@@ -11,7 +11,7 @@ class EnterBirthdateView: BaseSignUpView {
 
     let birthDatePicker = UIDatePicker()
     
-    private let birthDatePickerToolbar = UIToolbar()
+    private let birthDatePickerToolbar = UIToolbar(frame: CGRect(x: 0.0, y: 0.0, width: 100.0, height: 100.0))
     private let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     let selectButton = UIBarButtonItem(title: "선택", style: .plain, target: nil, action: nil)
     
