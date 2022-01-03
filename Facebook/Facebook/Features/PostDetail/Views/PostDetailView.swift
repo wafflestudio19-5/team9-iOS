@@ -34,7 +34,6 @@ class PostDetailView: UIView {
     private func configureTableView() {
         self.addSubview(commentTableView)
         commentTableView.tableHeaderView = postContentHeaderView
-        commentTableView.register(UINib(nibName: "PostContentTableViewCell", bundle: nil), forCellReuseIdentifier: "PostContentCell")
         commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
         commentTableView.allowsSelection = false
         commentTableView.translatesAutoresizingMaskIntoConstraints = false

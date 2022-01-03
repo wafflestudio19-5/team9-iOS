@@ -28,6 +28,38 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return button
     }()
     
+    lazy var textView: UITextView = {
+        let view = UITextView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .yellow
+        return view
+    }()
+    
+    lazy var keyboardAccessory: UIView = {
+        let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 100))
+        inputAccessory.addSubview(textView)
+        NSLayoutConstraint.activate([
+            textView.centerXAnchor.constraint(equalTo: inputAccessory.centerXAnchor),
+            textView.centerYAnchor.constraint(equalTo: inputAccessory.centerYAnchor),
+            textView.widthAnchor.constraint(equalToConstant: 200),
+            textView.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        inputAccessory.backgroundColor = .gray
+        return inputAccessory
+    }()
+    
+    override var inputAccessoryView: UIView {
+        return self.keyboardAccessory
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    override var canResignFirstResponder: Bool {
+        return true
+    }
+    
     init(post: Post) {
         self.post = post
         super.init(nibName: nil, bundle: nil)
@@ -52,6 +84,11 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         bindTableView()
         setLeftBarButtonItems()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        textView.becomeFirstResponder()
     }
     
     override func viewDidLayoutSubviews() {
