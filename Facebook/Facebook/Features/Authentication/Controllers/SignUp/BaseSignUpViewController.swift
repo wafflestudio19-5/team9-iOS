@@ -32,8 +32,9 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
                 if event.isCompleted {
                     // currentUser 등록(이메일, 이름)
                     if let email = event.element?.1.user, let username = event.element?.1.username {
-                        CurrentUser.shared.email = email
-                        CurrentUser.shared.username = username
+                        // 현재 브랜치에서는 User 모델의 변경사항이 반영되지 않아 아래 코드를 실행할 수 없습니다
+                        //CurrentUser.shared.profile.email = email
+                        //CurrentUser.shared.profile.username = username
                     }
                     // 토큰 등록
                     if let token = event.element?.1.token {

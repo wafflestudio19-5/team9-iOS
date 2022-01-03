@@ -13,7 +13,7 @@ class CurrentUser {
     
     private init() { }
     
-    var profile: User
+    var profile: User?
     
     
 }
