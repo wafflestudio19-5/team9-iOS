@@ -6,15 +6,35 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class BirthSelectTableViewCell: UITableViewCell {
 
+    static let reuseIdentifier = "BirthSelectTableViewCell"
+    
+    var disposeBag = DisposeBag()
+    
     enum Style {
         case birthDay
         case birthYear
     }
     
     var cellStyle: Style = .birthDay
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+          super.prepareForReuse()
+          disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -29,6 +49,7 @@ class BirthSelectTableViewCell: UITableViewCell {
     
     func initialSetup(cellStyle: Style) {
         self.cellStyle = cellStyle
+        setLayout()
     }
     
     func configureCell() {
@@ -42,7 +63,6 @@ class BirthSelectTableViewCell: UITableViewCell {
     
     private func setLayout() {
         self.contentView.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             label.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
             label.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10)
@@ -50,7 +70,11 @@ class BirthSelectTableViewCell: UITableViewCell {
         
         switch self.cellStyle {
         case .birthDay:
-            break
+            self.contentView.addSubview(monthSelectButton)
+            NSLayoutConstraint.activate([
+                monthSelectButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                monthSelectButton.leadingAnchor.constraint(equalTo: self.label.trailingAnchor, constant: 10)
+            ])
         case .birthYear:
             break
         }
@@ -59,9 +83,17 @@ class BirthSelectTableViewCell: UITableViewCell {
     let label: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
-    lazy var daySelectButton = UIButton
+    lazy var monthSelectButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("월 선택", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
 }

@@ -64,7 +64,8 @@ class EditDetailInformationView: UIView {
             editDetailInformationTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
         ])
         
-        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.frame = CGRect(x: 0, y: 0, width: editDetailInformationTableView.frame.width, height: 70)
+        
         headerView.addSubview(titleLabel)
         headerView.addSubview(subTitleLabel)
         NSLayoutConstraint.activate([
@@ -80,8 +81,7 @@ class EditDetailInformationView: UIView {
     }
     
     private func configureTableView() {
-//        editDetailInformationTableView.tableHeaderView = headerView
-//        headerView.widthAnchor.constraint(equalTo: editDetailInformationTableView.widthAnchor).isActive = true
+        editDetailInformationTableView.tableHeaderView = headerView
         
         editDetailInformationTableView.separatorStyle = .none
         editDetailInformationTableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.reuseIdentifier)

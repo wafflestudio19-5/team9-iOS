@@ -6,10 +6,29 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class GenderSelectTableViewCell: UITableViewCell {
-
+    
+    static let reuseIdentifier = "GenderSelectTableViewCell"
+    
+    var disposeBag = DisposeBag()
+    
     var isSelect: Bool = true
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+          super.prepareForReuse()
+          disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,11 +41,16 @@ class GenderSelectTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func configureCell(genderText: String) {
+        genderLabel.text = genderText
+        setLayout()
+    }
+    
     private func setLayout() {
         self.addSubview(genderLabel)
         genderLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            genderLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            genderLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             genderLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
             genderLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
             genderLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10)
@@ -40,6 +64,11 @@ class GenderSelectTableViewCell: UITableViewCell {
             isSelectImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             isSelectImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
         ])
+    }
+    
+    private func bindImage() {
+        //선택 여부에 따라 image 활성/비활성
+        
     }
 
     let genderLabel: UILabel = {

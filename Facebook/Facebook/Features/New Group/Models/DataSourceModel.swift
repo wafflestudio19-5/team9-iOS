@@ -41,8 +41,13 @@ enum SectionItem {
     case ButtonItem(style: ButtonTableViewCell.Style, buttonText: String)
     case LabelItem(style: LabelTableViewCell.Style, labelText: String)
     case TextFieldItem(text: String)
+    case CompanyItem(company: Company)
+    case UniversityItem(university: University)
     case PostItem(post: Post)
     case SelectDateItem(style: DateSelectTableViewCell.Style)
+    case BirthSelectItem(style: BirthSelectTableViewCell.Style)
+    case EditUsernameItem(username: String)
+    case GenderSelectItem(genderText: String)
 }
 
 extension MultipleSectionModel: SectionModelType {

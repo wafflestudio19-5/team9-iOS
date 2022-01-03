@@ -9,7 +9,8 @@ import Foundation
 
 extension Endpoint {
     static func profile(id: Int) -> Self {
-        return Endpoint(path: "\(id)/profile/")
+        return Endpoint(path: "user/\(id)/profile/")
     }
+    
     
 }

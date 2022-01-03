@@ -154,7 +154,7 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
             guard let self = self else { return }
             self.selectedInformation.onNext(self.information)
             self.navigationController?.popViewController(animated: true)
-        })
+        }).disposed(by: disposeBag)
     }
 }
 

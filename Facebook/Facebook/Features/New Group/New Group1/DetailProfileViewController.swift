@@ -28,24 +28,6 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let disposeBag = DisposeBag()
     
-    let sections: [MultipleSectionModel] = [
-        .DetailInformationSection(title: "직장", items: [
-            .SimpleInformationItem(style: .style3, informationType: .company ,image: UIImage(systemName: "briefcase")!,information: "직장 추가"),
-            .DetailInformationItem(style: .style3, image: UIImage(systemName: "phone.fill")!,information: "직장에서 직장으로 근무했음", time: "2021년 12월 29일~2021년 12월 30일" ,description: "직업 설명입니다", privacyBound: "전체 공개")
-        ]),
-        .DetailInformationSection(title: "학력", items:[
-            .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
-            .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
-        ]),
-        .DetailInformationSection(title: "연락처 정보", items: [
-            .DetailInformationItem(style: .style2, image: UIImage(systemName: "phone.fill")!,information: "010-1234-5678", description: "휴대폰", privacyBound: "회원님의 친구")
-        ]),
-        .DetailInformationSection(title: "기본 정보", items: [
-            .DetailInformationItem(style: .style1, image: UIImage(systemName: "person.fill")!, information: "남성", description: "성별"),
-            .DetailInformationItem(style: .style2, image: UIImage(systemName: "gift.fill")!,information: "2002년 12월 12일", description: "생일", privacyBound: "회원님의 친구의 친구")
-        ])
-    ]
-    
     //TableView 바인딩을 위한 dataSource객체
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
@@ -102,19 +84,51 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         }
     }
     
+    let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
+    
+    var userProfile: UserProfile?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.title = "정보"
+        loadData()
         bindTableView()
     }
     
+    func loadData() {
+        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self).subscribe { event in
+            self.userProfile = event.1
+        }.disposed(by: disposeBag)
+    }
+    
+    func createSection() {
+        let sections: [MultipleSectionModel] = [
+            .DetailInformationSection(title: "직장", items: [
+                .SimpleInformationItem(style: .style3, informationType: .company ,image: UIImage(systemName: "briefcase")!,information: "직장 추가"),
+                .DetailInformationItem(style: .style3, image: UIImage(systemName: "phone.fill")!,information: "직장에서 직장으로 근무했음", time: "2021년 12월 29일~2021년 12월 30일" ,description: "직업 설명입니다", privacyBound: "전체 공개")
+            ]),
+            .DetailInformationSection(title: "학력", items:[
+                .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
+                .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
+            ]),
+            .DetailInformationSection(title: "연락처 정보", items: [
+                .DetailInformationItem(style: .style2, image: UIImage(systemName: "phone.fill")!,information: "010-1234-5678", description: "휴대폰", privacyBound: "회원님의 친구")
+            ]),
+            .DetailInformationSection(title: "기본 정보", items: [
+                .DetailInformationItem(style: .style1, image: UIImage(systemName: "person.fill")!, information: "남성", description: "성별"),
+                .DetailInformationItem(style: .style2, image: UIImage(systemName: "gift.fill")!,information: "2002년 12월 12일", description: "생일", privacyBound: "회원님의 친구의 친구")
+            ])
+        ]
+    }
+    
     func bindTableView() {
-        Observable.just(sections).bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
+    
     
     //UITableView의 custom header적용
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -155,9 +169,10 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                     print("tap section 3 button!")
                 }
             case 3:
-                sectionButton.rx.tap.bind {
-                    print("tap section 4 button!")
-                }
+                sectionButton.rx.tap.bind { [weak self] in
+                    let editUserProfileViewController = EditUserProfileViewController()
+                    self?.push(viewController: editUserProfileViewController)
+                }.disposed(by: disposeBag)
             default: break
             }
         }

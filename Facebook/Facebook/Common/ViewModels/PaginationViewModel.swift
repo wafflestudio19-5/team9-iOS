@@ -47,7 +47,7 @@ class PaginationViewModel<DataModel: Codable> {
     
     init(endpoint: Endpoint) {
         self.endpoint = endpoint
-        NetworkService.post(endpoint: .login(email: "team9@test.com", password: "team9"), as: LoginResponse.self)
+        NetworkService.post(endpoint: .login(email: "profile@test.com", password: "password"), as: LoginResponse.self)
             .subscribe { event in
                 if event.isCompleted {
                     return
@@ -113,6 +113,8 @@ class PaginationViewModel<DataModel: Codable> {
                 }
                 
                 self.lastResponse = paginatedResponse
+                
+                
                 
                 if isRefreshing {
                     self.dataList.accept(paginatedResponse.results)

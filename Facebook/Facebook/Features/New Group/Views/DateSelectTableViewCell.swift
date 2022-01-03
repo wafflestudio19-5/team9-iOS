@@ -122,22 +122,8 @@ class DateSelectTableViewCell: UITableViewCell {
         
         switch self.cellStyle {
         case .startDateStyle:
-            yearTextField.leftViewMode = .never
-            yearTextField.rightViewMode = .always
-            monthTextField.leftViewMode = .never
-            monthTextField.rightViewMode = .always
-            dayTextField.leftViewMode = .never
-            dayTextField.rightViewMode = .always
-            
             addDateLabel.text = "시작 날짜"
         case .endDateStyle:
-            yearTextField.leftViewMode = .always
-            yearTextField.rightViewMode = .never
-            monthTextField.leftViewMode = .always
-            monthTextField.rightViewMode = .never
-            dayTextField.leftViewMode = .always
-            dayTextField.rightViewMode = .never
-            
             addDateLabel.text = "종료 날짜"
         }
     }
@@ -166,6 +152,7 @@ class DateSelectTableViewCell: UITableViewCell {
             
         NSLayoutConstraint.activate([
             yearTextField.heightAnchor.constraint(equalToConstant: 25),
+            yearTextField.widthAnchor.constraint(equalToConstant: 60),
             yearTextField.topAnchor.constraint(equalTo: dateKindLabel.bottomAnchor, constant: 10),
             yearTextField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
             yearTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
@@ -176,6 +163,7 @@ class DateSelectTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             monthTextField.heightAnchor.constraint(equalToConstant: 25),
+            monthTextField.widthAnchor.constraint(equalToConstant: 60),
             monthTextField.leadingAnchor.constraint(equalTo: yearTextField.trailingAnchor, constant: 10),
             monthTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
         ])
@@ -185,6 +173,7 @@ class DateSelectTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             dayTextField.heightAnchor.constraint(equalToConstant: 25),
+            dayTextField.widthAnchor.constraint(equalToConstant: 60),
             dayTextField.leadingAnchor.constraint(equalTo: monthTextField.trailingAnchor, constant: 10),
             dayTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
         ])
@@ -253,8 +242,6 @@ class DateSelectTableViewCell: UITableViewCell {
             guard let self = self else { return }
             let selectedRow = self.yearPickerView.selectedRow(inComponent: 0)
             self.yearTextField.text = String(self.yearDataBR.value[selectedRow])
-            self.yearTextField.rightViewMode = .always
-            self.yearTextField.leftViewMode = .never
             self.yearTextField.endEditing(true)
             
             self.hideAddDateLabel()
@@ -266,8 +253,6 @@ class DateSelectTableViewCell: UITableViewCell {
         deleteButtonList[0].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.yearTextField.text = ""
-            self.yearTextField.rightViewMode = .never
-            self.yearTextField.leftViewMode = .always
             self.yearTextField.endEditing(true)
             
             self.showAddDateLabel()
@@ -288,8 +273,6 @@ class DateSelectTableViewCell: UITableViewCell {
             guard let self = self else { return }
             let selectedRow = self.monthPickerView.selectedRow(inComponent: 0)
             self.monthTextField.text = self.monthDataBR.value[selectedRow]
-            self.monthTextField.rightViewMode = .always
-            self.monthTextField.leftViewMode = .never
             self.monthTextField.endEditing(true)
             
             self.showDayTextField()
@@ -299,8 +282,6 @@ class DateSelectTableViewCell: UITableViewCell {
         deleteButtonList[1].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.monthTextField.text = ""
-            self.monthTextField.rightViewMode = .never
-            self.monthTextField.leftViewMode = .always
             self.monthTextField.endEditing(true)
             
             self.hideDayTextField()
@@ -317,8 +298,6 @@ class DateSelectTableViewCell: UITableViewCell {
             guard let self = self else { return }
             let selectedRow = self.dayPickerView.selectedRow(inComponent: 0)
             self.dayTextField.text = String(self.dayDataBR.value[selectedRow])
-            self.dayTextField.rightViewMode = .always
-            self.dayTextField.leftViewMode = .never
             self.dayTextField.endEditing(true)
         }.disposed(by: disposeBag)
         
@@ -327,8 +306,6 @@ class DateSelectTableViewCell: UITableViewCell {
         deleteButtonList[2].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.dayTextField.text = ""
-            self.dayTextField.rightViewMode = .never
-            self.dayTextField.leftViewMode = .always
             self.dayTextField.endEditing(true)
             
         }.disposed(by: disposeBag)
@@ -431,8 +408,8 @@ class DateSelectTableViewCell: UITableViewCell {
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)
         ])
         
-        textField.addLeftimage(image: UIImage(systemName: "plus")!)
-        textField.addRightImage(image: UIImage(systemName: "chevron.down")!)
+        //textField.addLeftimage(image: UIImage(systemName: "plus")!)
+        //textField.addRightImage(image: UIImage(systemName: "chevron.down")!)
 
         textField.font = UIFont.systemFont(ofSize: 14)
         
@@ -448,8 +425,8 @@ class DateSelectTableViewCell: UITableViewCell {
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)
         ])
         
-        textField.addLeftimage(image: UIImage(systemName: "plus")!)
-        textField.addRightImage(image: UIImage(systemName: "chevron.down")!)
+        //textField.addLeftimage(image: UIImage(systemName: "plus")!)
+        //textField.addRightImage(image: UIImage(systemName: "chevron.down")!)
         
         textField.font = UIFont.systemFont(ofSize: 14)
         
@@ -465,8 +442,8 @@ class DateSelectTableViewCell: UITableViewCell {
             NSAttributedString.Key.font : UIFont.systemFont(ofSize: 14)
         ])
         
-        textField.addLeftimage(image: UIImage(systemName: "plus")!)
-        textField.addRightImage(image: UIImage(systemName: "chevron.down")!)
+        //textField.addLeftimage(image: UIImage(systemName: "plus")!)
+        //textField.addRightImage(image: UIImage(systemName: "chevron.down")!)
         
         textField.font = UIFont.systemFont(ofSize: 14)
         
@@ -475,21 +452,29 @@ class DateSelectTableViewCell: UITableViewCell {
 }
 
 extension UITextField {
-    func addLeftimage(image:UIImage) {
-        let leftImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        leftImage.image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: -5))
-        leftImage.contentMode = .center
+    func addLeftimage(image: UIImage) {
+        let padding = 10
+        let size = 15
+
+        let outerView = UIView(frame: CGRect(x: 0, y: 0, width: size+padding, height: size) )
+        let iconView  = UIImageView(frame: CGRect(x: padding, y: 0, width: size, height: size))
+        iconView.image = image
+        outerView.addSubview(iconView)
         
-        self.leftView = leftImage
-        self.leftViewMode = .always
+        leftView = outerView
+        leftViewMode = .always
     }
     
     func addRightImage(image: UIImage) {
-        let rightImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        rightImage.image = image.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -5, bottom: 0, right: -5))
-        rightImage.contentMode = .center
+        let padding = 10
+        let size = 15
+
+        let outerView = UIView(frame: CGRect(x: 0, y: 0, width: size+padding, height: size) )
+        let iconView  = UIImageView(frame: CGRect(x: padding, y: 0, width: size, height: size))
+        iconView.image = image
+        outerView.addSubview(iconView)
         
-        self.rightView = rightImage
-        self.rightViewMode = .always
+        rightView = outerView
+        rightViewMode = .always
     }
 }

@@ -29,13 +29,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
         ]),
         .PostSection(title: "내가 쓴 글", items: [
-            
         ])
     ]
-
-    let postData = PaginationViewModel<Post>(endpoint: .newsfeed())
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
+    
+    var userProfile: UserProfile?
+    var postDataViewModel: PaginationViewModel<Post>?
     
     //TableView 바인딩을 위한 dataSource객체
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
@@ -88,6 +88,30 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             }.disposed(by: self.disposeBag)
             
             return cell
+        case let .CompanyItem(company):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: .style1)
+            cell.configureCell(image: UIImage(systemName: "briefcase.fill")!, information: company.name!)
+            
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                let detailProfileViewController = DetailProfileViewController()
+                self?.push(viewController: detailProfileViewController)
+            }).disposed(by: self.disposeBag)
+            
+            return cell
+        case let .UniversityItem(university):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: .style1)
+            cell.configureCell(image: UIImage(systemName: "graduationcap.fill")!, information: university.name!)
+            
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                let detailProfileViewController = DetailProfileViewController()
+                self?.push(viewController: detailProfileViewController)
+            }).disposed(by: self.disposeBag)
+            
+            return cell
         case let .PostItem(post):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
 
@@ -99,42 +123,38 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             return cell 
         }
     }
-
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         super.setNavigationBarItems(withEditButton: true)
         
-        sectionsBR.accept(sections)
-        loadUserProfile()
-        bindTableView()
+        loadData()
+        bind()
     }
     
-    func loadUserProfile() {
-        NetworkService
-            .get(endpoint: .profile(id: 0))
-            .subscribe(onNext: { [weak self] data in
-                guard let self = self else { return }
-                print(data)
-                
-            }, onError: { error in
-                print(error)
-            }).disposed(by: disposeBag)
+    //유저 프로필 관련 데이터 불러오기
+    func loadData() {
+        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self).subscribe { event in
+            self.userProfile = event.1
+        }.disposed(by: disposeBag)
+        
+        postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(id: 41))
     }
     
-    func bindTableView() {
+    func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
-        tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        guard let postDataViewModel = postDataViewModel else { return }
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
-        postData.isLoading
+        postDataViewModel.isLoading
             .asDriver()
             .drive(onNext: { [weak self] isLoading in
                 if isLoading {
                     self?.tabView.showBottomSpinner()
                 } else {
                     self?.tabView.hideBottomSpinner()
+                    self?.createSection()
                 }
             })
             .disposed(by: disposeBag)
@@ -142,12 +162,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         /// 새로고침 제스쳐가 인식될 때마다 `refresh` 함수를 실행합니다.
         tabView.refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
-                self?.postData.refresh()
+                postDataViewModel.refresh()
+                self?.createSection()
             })
             .disposed(by: disposeBag)
         
         /// 새로고침이 완료될 때마다 `refreshControl`의 애니메이션을 중단시킵니다.
-        postData.refreshComplete
+        postDataViewModel.refreshComplete
             .asDriver()
             .drive(onNext : { [weak self] refreshComplete in
                 if refreshComplete {
@@ -163,11 +184,55 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             let contentHeight = self.tableView.contentSize.height
             
             if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
-                self.postData.loadMore()
+                postDataViewModel.loadMore()
             }
         }
         .disposed(by: disposeBag)
+        
+        tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
+    
+    //불러온 데이터에 따라 sectionModel 생성
+    func createSection() {
+        guard let userProfile = userProfile else { return }
+        
+        let mainProfileSection: [MultipleSectionModel] = [
+            .ProfileImageSection(title: "메인 프로필", items: [
+                .MainProfileItem(
+                    profileImage: UIImage(systemName: "person.fill")!,
+                    coverImage: UIImage(),
+                    name: (userProfile.username != nil) ? userProfile.username! : "username")
+            ])
+        ]
+
+        let companySectionItems = userProfile.company?.map({ company in
+            SectionItem.CompanyItem(company: company)
+        })
+        
+        let universitySectionItems = userProfile.university?.map({ university in
+            SectionItem.UniversityItem(university: university)
+        })
+        
+        let otherItems = [
+            SectionItem.SimpleInformationItem(style: .style1, image: UIImage(systemName: "ellipsis")!, information: "내 정보 보기"),
+            SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
+        ]
+        
+        let detailInformationSection: [MultipleSectionModel] = [
+            .DetailInformationSection(title: "상세 정보",
+                                      items: (companySectionItems!+universitySectionItems!+otherItems))
+        ]
+        
+        let postSectionItems = postDataViewModel?.dataList.value.map({ post in
+            SectionItem.PostItem(post: post)
+        })
+        let postSection: [MultipleSectionModel] = [
+            .PostSection(title: "내가 쓴 글",items: postSectionItems!)
+        ]
+        
+        sectionsBR.accept(mainProfileSection + detailInformationSection + postSection)
+    }
+    
     
     //각 section의 footerView 설정
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
