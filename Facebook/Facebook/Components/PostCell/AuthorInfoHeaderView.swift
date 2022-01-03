@@ -46,7 +46,7 @@ class AuthorInfoHeaderView: UIView {
     }
     
     func configure(with post: Post) {
-        authorNameLabel.text = post.author.username
+        authorNameLabel.text = post.author?.username
         postDateLabel.text = post.posted_at
     }
     
@@ -55,13 +55,13 @@ class AuthorInfoHeaderView: UIView {
     }
     
     // Profile Image가 표시되는 뷰 (현재는 아이콘으로 구현)
-    private lazy var profileImageView = ProfileImageView()
+    private let profileImageView = ProfileImageView()
     
     // 작성자 이름 라벨
-    private lazy var authorNameLabel: UILabel = InfoLabel(color: .black, size: 16, weight: .medium)
+    private let authorNameLabel: UILabel = InfoLabel(color: .black, size: 16, weight: .medium)
     
     // 작성 시간 라벨
-    private lazy var postDateLabel: UILabel = InfoLabel()
+    private let postDateLabel: UILabel = InfoLabel()
 }
 
 

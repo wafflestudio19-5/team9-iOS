@@ -7,11 +7,27 @@
 
 import Foundation
 
-struct Post: Codable {
-    let id: Int?
-    let author: User
+struct Post: Codable, Identifiable {
+    let id: Int
+    let author: User?
     let content: String
     let likes: Int
     let posted_at: String?
-//    let images: [String]?
+    let comments: Int
+    let file: String?
+    
+    let mainpost: Int?
+    let subposts: [SubPost]
+}
+
+// To be deprecated
+struct SubPost: Codable, Identifiable {
+    let id: Int
+    let content: String
+    let likes: Int
+    let posted_at: String?
+    let comments: Int
+    let file: String?
+    
+    let mainpost: Int?
 }

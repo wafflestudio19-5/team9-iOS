@@ -14,7 +14,7 @@ import UIKit
 
 struct NetworkService {
     private static let configuration = URLSessionConfiguration.af.default
-    private static var session = Session(configuration: configuration, interceptor: DefaultHeaderAdapter())
+    private static var session = Session(configuration: configuration)
     
     static func cancelAllRequests() {
         self.session.cancelAllRequests()
@@ -22,7 +22,7 @@ struct NetworkService {
     
     static func registerToken(token: String) {
         print(token)
-        self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [DefaultHeaderAdapter(), JWTAdapter(token: token)]))
+        self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [JWTAdapter(token: token)]))
     }
     
     /*
@@ -56,6 +56,18 @@ struct NetworkService {
     static func post<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
         return session.rx.responseDecodable(.post, endpoint.url, parameters: endpoint.parameters, encoding: JSONEncoding.default)
     }
+    
+    /*
+     MARK: Upload files
+     */
+    
+    static func upload(endpoint: Endpoint) -> Observable<UploadRequest> {
+        return session.rx.upload(multipartFormData: endpoint.multipartFormDataBuilder!, to: endpoint.url, method: .post, headers: [.contentType("multipart/form-data")])
+    }
+}
+
+extension NetworkService {
+//    static func post
 }
 
 
@@ -73,11 +85,11 @@ struct JWTAdapter: RequestInterceptor {
     }
 }
 
-struct DefaultHeaderAdapter: RequestInterceptor {
-    func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        var urlRequest = urlRequest
-        urlRequest.headers.add(.contentType("application/json"))
-        urlRequest.headers.add(.accept("application/json"))
-        completion(.success(urlRequest))
-    }
-}
+// 필요 없을 것 같아서 일단 주석처리
+//struct DefaultHeaderAdapter: RequestInterceptor {
+//    func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
+//        var urlRequest = urlRequest
+////        urlRequest.headers.add(.contentType("application/json"))
+//        completion(.success(urlRequest))
+//    }
+//}

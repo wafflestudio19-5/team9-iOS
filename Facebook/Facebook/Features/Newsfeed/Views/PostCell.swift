@@ -16,43 +16,52 @@ class PostCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setLayout()
-        initialSetup()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         self.disposeBag = DisposeBag()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("Do not use storyboard. Load programmatically.")
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    // MARK: Like Button
+
+    /// 서버에 요청을 보내기 전에 UI를 업데이트한다.
+    func like(post: Post) {
+        let wasSelected = buttonHorizontalStackView.likeButton.isSelected
+        buttonHorizontalStackView.likeButton.toggleSelected()
+        let newLikeCount = wasSelected ? max(0, post.likes - 1) : post.likes + 1
+        likeCountLabel.text = newLikeCount.withCommas(unit: "개")
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+    /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
+    func setLikes(count: Int) {
+        likeCountLabel.text = count.withCommas(unit: "개")
     }
     
     // MARK: Setup
     
-    private func initialSetup() {
-        let commentLabel = commentCountLabel
-        commentLabel.text = "43개"
-        let likeLabel = likeCountLabel
-        likeLabel.text = "4,234개"
-    }
-    
     func configureCell(with post: Post) {
-        commentCountLabel.text = "댓글 \(Int.random(in: 10...100).withCommas(unit: "개"))"
+        commentCountLabel.text = "댓글 \(post.comments.withCommas(unit: "개"))"
         likeCountLabel.text = post.likes.withCommas(unit: "개")
         textContentLabel.text = post.content
         postHeader.configure(with: post)
+        
+        // CollectionView Layout
+        let subpostUrls: [URL?] = post.subposts.map {
+            guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
+            return url
+        }
+        self.imageGridCollectionView.numberOfImages = post.subposts.count
+        Observable.just(subpostUrls)
+            .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
+                cell.displayMedia(from: data)
+            }
+            .disposed(by: disposeBag)
+        self.layoutIfNeeded()
     }
     
     // MARK: AutoLayout Constraints
@@ -73,17 +82,26 @@ class PostCell: UITableViewCell {
             textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
         ])
         
+        contentView.addSubview(imageGridCollectionView)
+        NSLayoutConstraint.activate([
+            imageGridCollectionView.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: .standardTopMargin),
+            imageGridCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageGridCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+        ])
+        
         contentView.addSubview(statHorizontalStackView)
         NSLayoutConstraint.activate([
+            statHorizontalStackView.topAnchor.constraint(equalTo: imageGridCollectionView.bottomAnchor, constant: .standardTopMargin),
             statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
             statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin - 5),
-            statHorizontalStackView.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: .standardTopMargin)
         ])
         
         contentView.addSubview(buttonHorizontalStackView)
         contentView.addSubview(divider)
+        let top = buttonHorizontalStackView.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: .standardTopMargin)
+        top.priority = .defaultHigh
         NSLayoutConstraint.activate([
-            buttonHorizontalStackView.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: .standardTopMargin),
+            top,
             buttonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
             buttonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
             buttonHorizontalStackView.heightAnchor.constraint(equalToConstant: .buttonGroupHeight)
@@ -101,11 +119,14 @@ class PostCell: UITableViewCell {
     
     // MARK: Initialize View Components
     
+    // 이미지 그리드 뷰
+    private let imageGridCollectionView = ImageGridCollectionView()
+    
     // 포스트 헤더 (프로필 이미지, 작성자, 날짜, 각종 버튼이 들어가는 곳)
-    private lazy var postHeader = AuthorInfoHeaderView()
+    private let postHeader = AuthorInfoHeaderView()
     
     // 좋아요, 댓글, 공유 버튼 나란히 있는 스택 뷰
-    lazy var buttonHorizontalStackView = InteractionStackView()
+    let buttonHorizontalStackView = InteractionButtonStackView()
     
     // 좋아요 수, 댓글 수 등 각종 통계가 보이는 스택 뷰
     private lazy var statHorizontalStackView: UIStackView = {
@@ -118,7 +139,7 @@ class PostCell: UITableViewCell {
     }()
     
     // 좋아요 수 라벨
-    private lazy var likeCountLabel: UILabel = InfoLabel()
+    private let likeCountLabel: UILabel = InfoLabel()
     
     // 따봉 아이콘 + 좋아요 수
     private lazy var likeCountLabelWithIcon: UIStackView = {
@@ -131,13 +152,13 @@ class PostCell: UITableViewCell {
     }()
     
     // 댓글 수 라벨
-    private lazy var commentCountLabel: UILabel = InfoLabel()
+    private let commentCountLabel: UILabel = InfoLabel()
     
     // 본문 텍스트 라벨
-    private lazy var textContentLabel = PostContentLabel()
+    private let textContentLabel = PostContentLabel()
     
     // 피드와 피드 사이의 회색 리바이더
-    private lazy var divider: UIView = {
+    private let divider: UIView = {
         let divider = UIView()
         divider.backgroundColor = .Grayscales.gray1
         divider.translatesAutoresizingMaskIntoConstraints = false

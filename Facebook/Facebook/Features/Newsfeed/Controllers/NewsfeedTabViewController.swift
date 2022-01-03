@@ -16,6 +16,10 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         tabView.newsfeedTableView
     }
     
+    var headerViews: MainHeaderView {
+        tabView.mainTableHeaderView
+    }
+    
     let viewModel = PaginationViewModel<Post>(endpoint: .newsfeed())
     
     override func viewDidLoad() {
@@ -23,10 +27,27 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         bind()
     }
     
+    /// `tableHeaderView`의 높이를 다이나믹하게 조절한다.
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if let headerView = tableView.tableHeaderView {
+            let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+            var headerFrame = headerView.frame
+
+            // Comparison necessary to avoid infinite loop
+            if height != headerFrame.size.height {
+                headerFrame.size.height = height
+                headerView.frame = headerFrame
+                tableView.tableHeaderView = headerView
+            }
+        }
+    }
+    
     func bind() {
         
         /// `무슨 생각을 하고 계신가요?` 버튼을 클릭하면 포스트 작성 화면으로 넘어가도록 바인딩
-        tabView.createPostHeaderView.createPostButton.rx.tap.bind {
+        tabView.mainTableHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
+            guard let self = self else { return }
             let createPostViewController = CreatePostViewController()
             let navigationController = UINavigationController(rootViewController: createPostViewController)
             navigationController.modalPresentationStyle = .fullScreen
@@ -38,9 +59,20 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         viewModel.dataList
             .bind(to: tableView.rx.items(cellIdentifier: "PostCell", cellType: PostCell.self)) { row, post, cell in
                 cell.configureCell(with: post)
+                
+                // buttons
+                cell.buttonHorizontalStackView.likeButton.rx.tap.bind { [weak self] _ in
+                    cell.like(post: post)
+                    NetworkService.put(endpoint: .newsfeedLike(postId: post.id))
+                        .bind { response in
+                            print(response)
+//                            cell.setLikes(count: response.1.likes)
+                        }.disposed(by: cell.disposeBag)
+                }.disposed(by: cell.disposeBag)
+                
                 cell.buttonHorizontalStackView.commentButton.rx.tap.bind { [weak self] _ in
                     self?.push(viewController: PostDetailViewController(post: post))
-                }.disposed(by: cell.disposeBag)  // cell이 reuse될 때 disposeBag은 새로운 것으로 갈아끼워진다. 따라서 기존 cell의 구독이 취소된다.
+                }.disposed(by: cell.disposeBag)  // cell이 reuse될 때 disposeBag은 새로운 것으로 갈아끼워진다(prepareForReuse에 의해). 따라서 기존 cell의 구독이 취소된다.
             }
             .disposed(by: disposeBag)
         
@@ -65,7 +97,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         
         /// 새로고침이 완료될 때마다 `refreshControl`의 애니메이션을 중단시킵니다.
         viewModel.refreshComplete
-            .asDriver()
+            .asDriver(onErrorJustReturn: false)
             .drive(onNext : { [weak self] refreshComplete in
                 if refreshComplete {
                     self?.tabView.refreshControl.endRefreshing()
@@ -88,4 +120,3 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         
     }
 }
-

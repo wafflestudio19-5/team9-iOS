@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class PostDetailViewController: UIViewController {
+class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var post: Post
     let disposeBag = DisposeBag()
     
@@ -27,6 +27,38 @@ class PostDetailViewController: UIViewController {
         }.disposed(by: disposeBag)
         return button
     }()
+    
+    lazy var textView: UITextView = {
+        let view = UITextView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .yellow
+        return view
+    }()
+    
+    lazy var keyboardAccessory: UIView = {
+        let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 100))
+        inputAccessory.addSubview(textView)
+        NSLayoutConstraint.activate([
+            textView.centerXAnchor.constraint(equalTo: inputAccessory.centerXAnchor),
+            textView.centerYAnchor.constraint(equalTo: inputAccessory.centerYAnchor),
+            textView.widthAnchor.constraint(equalToConstant: 200),
+            textView.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        inputAccessory.backgroundColor = .gray
+        return inputAccessory
+    }()
+    
+    override var inputAccessoryView: UIView {
+        return self.keyboardAccessory
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    override var canResignFirstResponder: Bool {
+        return true
+    }
     
     init(post: Post) {
         self.post = post
@@ -48,9 +80,21 @@ class PostDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        postView.postContentHeaderView.configure(with: post)
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         bindTableView()
         setLeftBarButtonItems()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        textView.becomeFirstResponder()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        // 업데이트된 frame을 얻기 위해 viewDidLayoutSubviews에서 호출해야 한다.
+        postView.postContentHeaderView.configure(with: post)
     }
     
     func setLeftBarButtonItems() {

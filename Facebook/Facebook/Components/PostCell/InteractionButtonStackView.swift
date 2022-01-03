@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InteractionStackView: UIStackView {
+class InteractionButtonStackView: UIStackView {
     
     /// 좋아요, 댓글, (공유) 버튼이 있는 Horizontal Stack 뷰
     
@@ -15,14 +15,14 @@ class InteractionStackView: UIStackView {
     let commentButton = CommentButton()
     
     // 버튼 스택 뷰 위에 보이는 디바이더
-    private lazy var topBorder: UIView = {
+    private let topBorder: UIView = {
         let line = UIView()
         line.backgroundColor = .Grayscales.gray2
         line.translatesAutoresizingMaskIntoConstraints = false
         return line
     }()
     
-    private lazy var bottomBorder: UIView = {
+    private let bottomBorder: UIView = {
         let line = UIView()
         line.backgroundColor = .Grayscales.gray2
         line.translatesAutoresizingMaskIntoConstraints = false
