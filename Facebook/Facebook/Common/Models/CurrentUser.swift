@@ -13,10 +13,7 @@ class CurrentUser {
     
     private init() { }
     
-    var id: Int?
-    var email: String?
-    var username: String?
-    var profile_image: String?
+    var profile: User
     
     
 }
