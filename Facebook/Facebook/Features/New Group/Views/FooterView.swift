@@ -24,7 +24,6 @@ class HeaderView: UIView {
     
     private func setLayoutForView() {
         self.backgroundColor = .white
-        self.translatesAutoresizingMaskIntoConstraints = false
         self.heightAnchor.constraint(equalToConstant: 70).isActive = true
         
         self.addSubview(titleLabel)
