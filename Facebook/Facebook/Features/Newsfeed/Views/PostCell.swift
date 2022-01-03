@@ -27,15 +27,19 @@ class PostCell: UITableViewCell {
         fatalError("Do not use storyboard. Load programmatically.")
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    // MARK: Like Button
+
+    /// 서버에 요청을 보내기 전에 UI를 업데이트한다.
+    func like(post: Post) {
+        let wasSelected = buttonHorizontalStackView.likeButton.isSelected
+        buttonHorizontalStackView.likeButton.toggleSelected()
+        let newLikeCount = wasSelected ? max(0, post.likes - 1) : post.likes + 1
+        likeCountLabel.text = newLikeCount.withCommas(unit: "개")
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
+    /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
+    func setLikes(count: Int) {
+        likeCountLabel.text = count.withCommas(unit: "개")
     }
     
     // MARK: Setup
@@ -46,6 +50,7 @@ class PostCell: UITableViewCell {
         textContentLabel.text = post.content
         postHeader.configure(with: post)
         
+        // CollectionView Layout
         let subpostUrls: [URL?] = post.subposts.map {
             guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
             return url

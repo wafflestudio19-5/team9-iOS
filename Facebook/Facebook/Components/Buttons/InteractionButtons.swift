@@ -31,13 +31,14 @@ class InteractionButton: UIButton {
         setButtonStyle()
     }
     
-    func setButtonStyle() {
+    private func setButtonStyle() {
         var container = AttributeContainer()
         container.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
         
         var configuration = UIButton.Configuration.plain()
         configuration.baseForegroundColor = .darkGray
-        configuration.image = UIImage(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))?.withTintColor(.darkGray, renderingMode: .alwaysOriginal)
+        configuration.baseBackgroundColor = .clear
+        configuration.image = UIImage(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))
         configuration.imagePadding = 5
         configuration.attributedTitle = AttributedString(textLabel, attributes: container)
         
@@ -48,6 +49,42 @@ class InteractionButton: UIButton {
 class LikeButton: InteractionButton {
     override var textLabel: String { "좋아요" }
     override var symbolName: String { "hand.thumbsup" }
+    var filledSymbolName: String {
+        return "\(symbolName).fill"
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        setLikeButtonStyle()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setLikeButtonStyle()
+    }
+    
+    private func setLikeButtonStyle() {
+        configurationUpdateHandler = { button in
+            switch button.state {
+            case [.selected, .highlighted]:
+                button.configuration?.baseForegroundColor = FacebookColor.blue.color()
+            case .selected:
+                button.configuration?.image = UIImage(systemName: self.filledSymbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))
+                button.configuration?.baseForegroundColor = FacebookColor.blue.color()
+            case .highlighted:
+                button.configuration?.baseForegroundColor = .darkGray
+            case .normal:
+                button.configuration?.image = UIImage(systemName: self.symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))
+                button.configuration?.baseForegroundColor = .darkGray
+            default:
+                button.configuration?.baseForegroundColor = .yellow
+            }
+        }
+    }
+    
+    func toggleSelected() {
+        self.isSelected = !isSelected
+    }
 }
 
 class CommentButton: InteractionButton {

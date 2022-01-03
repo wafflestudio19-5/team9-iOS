@@ -65,16 +65,10 @@ extension ImageGridCell {
 
         let processor = DownsamplingImageProcessor(size: CGSize(width: 400, height: 200))
         KF.url(url)
-//          .placeholder(placeholderImage)
           .setProcessor(processor)
           .loadDiskFileSynchronously()
           .cacheMemoryOnly()
           .fade(duration: 0.1)
-//          .lowDataModeSource(.network(lowResolutionURL))
-          .onProgress { receivedSize, totalSize in
-//              print(receivedSize, totalSize)
-          }
-          .onSuccess { result in  }
           .onFailure { error in print("로딩 실패", error)}
           .set(to: imageView)
     }

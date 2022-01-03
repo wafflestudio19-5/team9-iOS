@@ -81,6 +81,7 @@
 		BE827A11277223A100BD3566 /* CreatePostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE827A10277223A100BD3566 /* CreatePostHeaderView.swift */; };
 		BE827A1427722ABD00BD3566 /* CreatePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE827A1227722ABD00BD3566 /* CreatePostTableViewCell.swift */; };
 		BE827A1727722B9400BD3566 /* CreatePostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE827A1627722B9400BD3566 /* CreatePostTableViewCell.xib */; };
+		BE86BAD52783047500948CAA /* PostLikeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BAD42783047500948CAA /* PostLikeResponse.swift */; };
 		BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */; };
 		BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C91276CDF230089247F /* Endpoint+User.swift */; };
 		BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C95276DB3C30089247F /* PostCell.swift */; };
@@ -183,6 +184,7 @@
 		BE827A10277223A100BD3566 /* CreatePostHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostHeaderView.swift; sourceTree = "<group>"; };
 		BE827A1227722ABD00BD3566 /* CreatePostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostTableViewCell.swift; sourceTree = "<group>"; };
 		BE827A1627722B9400BD3566 /* CreatePostTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreatePostTableViewCell.xib; sourceTree = "<group>"; };
+		BE86BAD42783047500948CAA /* PostLikeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeResponse.swift; sourceTree = "<group>"; };
 		BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionButtons.swift; sourceTree = "<group>"; };
 		BE9C7C91276CDF230089247F /* Endpoint+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+User.swift"; sourceTree = "<group>"; };
 		BE9C7C95276DB3C30089247F /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 			children = (
 				BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */,
 				BE9C7C99276E3F480089247F /* LoginResponse.swift */,
+				BE86BAD42783047500948CAA /* PostLikeResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
@@ -877,6 +880,7 @@
 				B86194F4275DC49100957BBC /* EnterBirthdateViewController.swift in Sources */,
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
 				77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */,
+				BE86BAD52783047500948CAA /* PostLikeResponse.swift in Sources */,
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
 				B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */,
 				B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */,
