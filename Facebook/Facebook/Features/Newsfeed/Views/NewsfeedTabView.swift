@@ -9,7 +9,7 @@ import UIKit
 
 class NewsfeedTabView: UIView {
     
-    let newsfeedTableView = UITableView()
+    let newsfeedTableView = ResponsiveTableView()
     let refreshControl = UIRefreshControl()
     let mainTableHeaderView = MainHeaderView()
     
@@ -41,7 +41,6 @@ class NewsfeedTabView: UIView {
         newsfeedTableView.register(PostCell.self, forCellReuseIdentifier: PostCell.reuseIdentifier)
         newsfeedTableView.allowsSelection = false
         newsfeedTableView.refreshControl = refreshControl
-        newsfeedTableView.delaysContentTouches = false
     }
     
     // MARK: Bottom Spinner
