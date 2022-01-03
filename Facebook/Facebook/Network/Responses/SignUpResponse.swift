@@ -9,5 +9,6 @@ import Foundation
 
 struct SignUpResponse: Codable {
     let user: String
+    let username: String
     let token: String
 }

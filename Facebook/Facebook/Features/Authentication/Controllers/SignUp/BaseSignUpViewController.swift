@@ -20,7 +20,6 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad called")
         self.navigationItem.title = "Facebook 가입하기"
         self.navigationItem.backButtonTitle = ""
     }
@@ -31,9 +30,10 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
                 
                 // 회원가입 성공
                 if event.isCompleted {
-                    // currentUser 등록(이메일)
-                    if let email = event.element?.1.user {
+                    // currentUser 등록(이메일, 이름)
+                    if let email = event.element?.1.user, let username = event.element?.1.username {
                         CurrentUser.shared.email = email
+                        CurrentUser.shared.username = username
                     }
                     // 토큰 등록
                     if let token = event.element?.1.token {
