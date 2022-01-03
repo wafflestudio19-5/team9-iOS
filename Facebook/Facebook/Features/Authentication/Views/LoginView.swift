@@ -14,7 +14,7 @@ class LoginView: UIView {
     let backButton = RectangularSlimButton(title: "돌아가기", titleColor: FacebookColor.blue.color(), backgroundColor: .white)
     let createAccountButton = RectangularSlimButton(title: "새 계정 만들기", titleColor: FacebookColor.blue.color(), backgroundColor: FacebookColor.mildBlue.color())
     
-    let idTextField = FacebookTextField(placeholderText: "이메일 주소")
+    let emailTextField = FacebookTextField(placeholderText: "이메일 주소")
     let passwordTextField = FacebookTextField(placeholderText: "비밀번호")
     
     var bottomConstraint: NSLayoutConstraint?
@@ -34,6 +34,10 @@ class LoginView: UIView {
     }
     
     private func setStyleForView() {
+        emailTextField.autocapitalizationType = .none
+        passwordTextField.autocapitalizationType = .none
+        passwordTextField.isSecureTextEntry = true
+        
         orLabel.text = "또는"
         orLabel.font = .systemFont(ofSize: 12.0, weight: .regular)
         orLabel.textColor = .darkGray
@@ -43,7 +47,7 @@ class LoginView: UIView {
         self.addSubview(loginButton)
         self.addSubview(forgotPasswordButton)
         self.addSubview(backButton)
-        self.addSubview(idTextField)
+        self.addSubview(emailTextField)
         self.addSubview(passwordTextField)
         self.addSubview(createAccountButton)
         self.addSubview(orLabel)
@@ -51,7 +55,7 @@ class LoginView: UIView {
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.translatesAutoresizingMaskIntoConstraints = false
-        idTextField.translatesAutoresizingMaskIntoConstraints = false
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         createAccountButton.translatesAutoresizingMaskIntoConstraints = false
         orLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -67,11 +71,11 @@ class LoginView: UIView {
         }
         
         NSLayoutConstraint.activate([
-            idTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50.0),
-            idTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            idTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
+            emailTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50.0),
+            emailTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            emailTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             
-            passwordTextField.topAnchor.constraint(equalTo: idTextField.bottomAnchor, constant: 4.0),
+            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 4.0),
             passwordTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             passwordTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             

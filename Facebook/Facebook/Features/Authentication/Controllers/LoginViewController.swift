@@ -23,7 +23,7 @@ class LoginViewController<View: LoginView>: UIViewController {
         return view
     }
     
-    private let id = BehaviorRelay<String>(value: "")
+    private let email = BehaviorRelay<String>(value: "")
     private let password = BehaviorRelay<String>(value: "")
     
     override func viewDidLoad() {
@@ -56,8 +56,8 @@ class LoginViewController<View: LoginView>: UIViewController {
             self.push(viewController: EnterUsernameViewController())
         }.disposed(by: disposeBag)
 
-        loginView.idTextField.rx.text.orEmpty
-            .bind(to: id)
+        loginView.emailTextField.rx.text.orEmpty
+            .bind(to: email)
             .disposed(by: disposeBag)
         
         loginView.passwordTextField.rx.text.orEmpty
@@ -65,7 +65,7 @@ class LoginViewController<View: LoginView>: UIViewController {
             .disposed(by: disposeBag)
         
         // 두 개의 textfield가 모두 비어있지 않은가?에 대한 event 방출
-        let hasEnteredBoth = Observable.combineLatest(id, password, resultSelector: { (!$0.isEmpty && !$1.isEmpty) })
+        let hasEnteredBoth = Observable.combineLatest(email, password, resultSelector: { (!$0.isEmpty && !$1.isEmpty) })
         
         // 두 개의 textfield가 비어있지 않을 경우에 loginButton 활성화
         hasEnteredBoth
@@ -102,8 +102,8 @@ class LoginViewController<View: LoginView>: UIViewController {
             }
         }).bind { [weak self] _ in
             guard let self = self else { return }
-            if self.loginView.idTextField.isEditing {
-                self.loginView.idTextField.endEditing(true)
+            if self.loginView.emailTextField.isEditing {
+                self.loginView.emailTextField.endEditing(true)
             } else if self.loginView.passwordTextField.isEditing {
                 self.loginView.passwordTextField.endEditing(true)
             }
