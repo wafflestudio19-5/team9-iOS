@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class PostDetailViewController: UIViewController {
+class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var post: Post
     let disposeBag = DisposeBag()
     
@@ -48,6 +48,8 @@ class PostDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         postView.postContentHeaderView.configure(with: post)
         bindTableView()
         setLeftBarButtonItems()
