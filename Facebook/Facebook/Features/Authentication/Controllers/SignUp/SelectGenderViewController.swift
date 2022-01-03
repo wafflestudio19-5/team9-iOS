@@ -94,6 +94,7 @@ class SelectGenderViewController: BaseSignUpViewController<SelectGenderView>, UI
                 self.changeLabelTextColorForCells(as: isValidGender.labelColor())
                 
                 if isValidGender == .valid {
+                    NewUser.shared.gender = self.genderFormatter(gender: self.gender.value)
                     self.push(viewController: EnterPasswordViewController())
                 }
         }.disposed(by: disposeBag)
@@ -101,6 +102,12 @@ class SelectGenderViewController: BaseSignUpViewController<SelectGenderView>, UI
 }
 
 extension SelectGenderViewController {
+    private func genderFormatter(gender: String) -> String {
+        if gender == "여성" { return "Female"}
+        else if gender == "남성" { return "Male" }
+        else { return "" }
+    }
+    
     private func changeLabelTextColorForCells(as color: UIColor) {
         guard let cells = self.customView.genderTableView.visibleCells as? [GenderTableViewCell] else { return }
         cells.forEach { $0.setLabelTextColor(as: color) }

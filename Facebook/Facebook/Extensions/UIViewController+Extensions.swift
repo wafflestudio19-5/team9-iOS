@@ -19,4 +19,10 @@ extension UIViewController {
         let destination = viewController
         self.navigationController?.pushViewController(destination, animated: true)
     }
+    
+    func changeRootViewController(to viewController: UIViewController) {
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+            sceneDelegate.changeRootViewController(viewController)
+        }
+    }
 }

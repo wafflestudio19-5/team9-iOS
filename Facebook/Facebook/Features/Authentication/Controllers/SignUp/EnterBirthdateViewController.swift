@@ -29,7 +29,8 @@ class EnterBirthdateViewController: BaseSignUpViewController<EnterBirthdateView>
         }
     }
     
-    private let dateFormatter = DateFormatter()
+    private let koreanDateFormatter = DateFormatter()   // yyyy년 MM월 dd일
+    private let hyphenDateFormatter = DateFormatter()   // yyyy-MM-dd
     
     private let birthDate = BehaviorRelay<Date>(value: Date())
     
@@ -37,7 +38,6 @@ class EnterBirthdateViewController: BaseSignUpViewController<EnterBirthdateView>
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureDateFormatter()
         bindView()
     }
@@ -53,11 +53,11 @@ class EnterBirthdateViewController: BaseSignUpViewController<EnterBirthdateView>
             self.customView.birthDateTextField.endEditing(true)
         }.disposed(by: disposeBag)
         
-        // 생년월일을 yyyy년MM월DD일 형태로 변경 후 textField 적용
+        // 생년월일을 textField에 적용
         birthDate
             .asDriver()
             .skip(1)
-            .map { self.dateFormatter.string(from: $0) }
+            .map { self.koreanDateFormatter.string(from: $0) }
             .drive(customView.birthDateTextField.rx.text)
             .disposed(by: disposeBag)
         
@@ -86,8 +86,8 @@ class EnterBirthdateViewController: BaseSignUpViewController<EnterBirthdateView>
                 self.customView.setAlertLabelText(as: isValidBirthdate.message())
                 
                 if isValidBirthdate == .valid {
+                    NewUser.shared.birth = self.hyphenDateFormatter.string(from: self.birthDate.value)
                     self.push(viewController: EnterEmailViewController())
-                    // TODO: birthDate 전달
                 }
             }.disposed(by: disposeBag)
         
@@ -106,8 +106,10 @@ class EnterBirthdateViewController: BaseSignUpViewController<EnterBirthdateView>
 
 extension EnterBirthdateViewController {
     private func configureDateFormatter() {
-        dateFormatter.dateStyle = .long
-        dateFormatter.locale = Locale(identifier: "ko-KR")
+        koreanDateFormatter.dateStyle = .long
+        koreanDateFormatter.locale = Locale(identifier: "ko-KR")
+        
+        hyphenDateFormatter.dateFormat = "yyyy-MM-dd"
     }
     
     private func calculateAge(from birthDate: Date) -> Int {
