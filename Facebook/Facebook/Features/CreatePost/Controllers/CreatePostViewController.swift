@@ -10,6 +10,7 @@ import RxSwift
 import RxGesture
 import PhotosUI
 import RxCocoa
+import RxKeyboard
 
 class CreatePostViewController: UIViewController {
     let disposeBag = DisposeBag()
@@ -34,6 +35,7 @@ class CreatePostViewController: UIViewController {
         bindPostButton()
         bindPhotosButton()
         bindImageGridView()
+        bindKeyboardHeight()
     }
     
     func setNavigationBarStyle() {
@@ -58,9 +60,17 @@ class CreatePostViewController: UIViewController {
         navigationController?.dismiss(animated: true, completion: nil)
     }
     
+    private func bindKeyboardHeight() {
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self = self else { return }
+                self.createPostView.scrollViewBottomConstraint?.constant = -1 * (keyboardVisibleHeight)
+            })
+            .disposed(by: disposeBag)
+    }
+    
     func bindNavigationBarButtonStyle() {
-        
-        //contentTextField의 내용 유뮤에 따라 버튼 활성화
+        // contentTextField의 내용 유무에 따라 버튼 활성화
         createPostView.contentTextView.isEmptyObservable
             .map { !$0 }
             .bind(to:self.createPostView.postButton.rx.isEnabled)

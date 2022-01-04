@@ -45,6 +45,7 @@ class PostCell: UITableViewCell {
     // MARK: Setup
     
     func configureCell(with post: Post) {
+        textContentLabel.backgroundColor = .red
         commentCountLabel.text = "댓글 \(post.comments.withCommas(unit: "개"))"
         likeCountLabel.text = post.likes.withCommas(unit: "개")
         textContentLabel.text = post.content
@@ -57,6 +58,7 @@ class PostCell: UITableViewCell {
         }
         self.imageGridCollectionView.numberOfImages = post.subposts.count
         Observable.just(subpostUrls)
+            .observe(on: MainScheduler.instance)
             .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
                 cell.displayMedia(from: data)
             }

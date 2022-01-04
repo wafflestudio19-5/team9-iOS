@@ -62,6 +62,8 @@ extension ImageGridCell {
         guard let url = url else {
             return
         }
+        
+        
 
         let processor = DownsamplingImageProcessor(size: CGSize(width: 400, height: 200))
         KF.url(url)
@@ -79,6 +81,7 @@ extension ImageGridCell {
     func displayMedia(from pickerResult: PHPickerResult) {
         let progress: Progress?
         let itemProvider = pickerResult.itemProvider
+        
         if itemProvider.canLoadObject(ofClass: PHLivePhoto.self) {
             progress = itemProvider.loadObject(ofClass: PHLivePhoto.self) { [weak self] livePhoto, error in
                 DispatchQueue.main.async {

@@ -30,7 +30,7 @@ struct Endpoint {
         }
         
         // for production
-//        components.host = "ec2-3-34-188-255.ap-northeast-2.compute.amazonaws.com"
+//        components.host = "13.125.113.114"
         
         // for development
         components.host = "127.0.0.1"

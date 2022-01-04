@@ -13,12 +13,13 @@ class CreatePostView: UIView {
     let placeholder = "무슨 생각을 하고 계신가요?"
     let imageGridCollectionView = ImageGridCollectionView()
     private let disposeBag = DisposeBag()
+    var scrollViewBottomConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setStyleForView()
         setLayoutForView()
-        contentTextView.inputAccessoryView = keyboardInputAccessory
+        contentTextView.inputAccessoryView = keyboardAccessory
     }
     
     required init?(coder: NSCoder) {
@@ -40,21 +41,19 @@ class CreatePostView: UIView {
         let scrollViewStack = UIStackView()
         scrollViewStack.translatesAutoresizingMaskIntoConstraints = false
         scrollViewStack.axis = .vertical
-//        scrollViewStack.layoutMargins = .init(top: 20, left: 0, bottom: 0, right: 20)
-//        scrollViewStack.isLayoutMarginsRelativeArrangement = true
         scrollViewStack.addArrangedSubview(contentTextView)
         scrollViewStack.addArrangedSubview(imageGridCollectionView)
         
         self.addSubview(scrollView)
         scrollView.addSubview(scrollViewStack)
         
-        let scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        scrollViewBottomConstraint.priority = .defaultHigh
+        scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        scrollViewBottomConstraint?.priority = .defaultHigh
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: self.topAnchor),
-            scrollViewBottomConstraint,
+            scrollViewBottomConstraint!,
         ])
         NSLayoutConstraint.activateFourWayConstraints(subview: scrollViewStack, containerView: scrollView)
         NSLayoutConstraint.activate([
@@ -62,35 +61,42 @@ class CreatePostView: UIView {
         ])
         
         // Keyboard의 높이에 따라 스크롤뷰 bottomConstraint 조정
-        RxKeyboard.instance.visibleHeight
-            .drive(onNext: { [weak self] keyboardVisibleHeight in
-                guard let self = self else { return }
-                let bottomConstraint = scrollViewBottomConstraint
-
-                if keyboardVisibleHeight == 0 {
-                    bottomConstraint.constant = -16.0
-                } else {
-                    let height = keyboardVisibleHeight - self.safeAreaInsets.bottom
-                    bottomConstraint.constant = -height - 16.0
-                }
-                self.layoutIfNeeded()
-            }).disposed(by: disposeBag)
+//        RxKeyboard.instance.visibleHeight
+//            .drive(onNext: { [weak self] keyboardVisibleHeight in
+//                guard let self = self else { return }
+//                let bottomConstraint = scrollViewBottomConstraint
+//
+//                if keyboardVisibleHeight == 0 {
+//                    bottomConstraint.constant = -16.0
+//                } else {
+//                    let height = keyboardVisibleHeight - self.safeAreaInsets.bottom
+//                    bottomConstraint.constant = -height - 16.0
+//                }
+//                self.layoutIfNeeded()
+//            }).disposed(by: disposeBag)
     }
     
     // MARK: UI Components
     
-    lazy var keyboardInputAccessory: UIView = {
-        let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 50))
-        inputAccessory.autoresizingMask = .flexibleHeight
-        inputAccessory.addSubview(photosButton)
+    lazy var keyboardAccessory: UIView = {
+        let divider = Divider()
+        let customInputView = CustomInputAccessoryView()
+        customInputView.addSubview(photosButton)
+        customInputView.addSubview(divider)
         NSLayoutConstraint.activate([
-//            photosButton.bottomAnchor.constraint(equalTo: inputAccessory.bottomAnchor, constant: .standardBottomMargin),
-            photosButton.topAnchor.constraint(equalTo: inputAccessory.topAnchor, constant: 10),
-            photosButton.leadingAnchor.constraint(equalTo: inputAccessory.leadingAnchor, constant: .standardLeadingMargin),
+            photosButton.topAnchor.constraint(equalTo: customInputView.topAnchor, constant: 8),
+            photosButton.bottomAnchor.constraint(equalTo: customInputView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            photosButton.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor, constant: .standardLeadingMargin),
             photosButton.widthAnchor.constraint(equalToConstant: 50),
-            photosButton.heightAnchor.constraint(equalToConstant: 35)
+            photosButton.heightAnchor.constraint(equalToConstant: 35),
+            
+            divider.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: customInputView.trailingAnchor),
+            divider.topAnchor.constraint(equalTo: customInputView.topAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1)
+            
         ])
-        return inputAccessory
+        return customInputView
     }()
     
     lazy var contentTextView: PlaceholderTextView = {

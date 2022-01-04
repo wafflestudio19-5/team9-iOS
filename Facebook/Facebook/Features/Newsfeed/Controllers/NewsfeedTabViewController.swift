@@ -46,6 +46,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         
         /// `viewModel.dataList`와 `tableView`의 dataSource를 바인딩합니다.
         viewModel.dataList
+            .observe(on: MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: "PostCell", cellType: PostCell.self)) { row, post, cell in
                 cell.configureCell(with: post)
                 

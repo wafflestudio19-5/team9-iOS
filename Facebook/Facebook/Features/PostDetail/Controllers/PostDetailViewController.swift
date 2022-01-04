@@ -194,11 +194,11 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
             textView.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: 0),
             textView.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor, constant: .standardLeadingMargin),
             textView.topAnchor.constraint(equalTo: customInputView.topAnchor, constant: 8),
-            textView.bottomAnchor.constraint(equalTo: customInputView.layoutMarginsGuide.bottomAnchor, constant: -8),
+            textView.bottomAnchor.constraint(equalTo: customInputView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             
             sendButton.leadingAnchor.constraint(equalTo: textView.trailingAnchor, constant: 0),
             sendButton.trailingAnchor.constraint(equalTo: customInputView.trailingAnchor, constant: -8),
-            sendButton.bottomAnchor.constraint(equalTo: customInputView.layoutMarginsGuide.bottomAnchor, constant: -8),
+            sendButton.bottomAnchor.constraint(equalTo: customInputView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
             
             divider.heightAnchor.constraint(equalToConstant: 1),
             divider.topAnchor.constraint(equalTo: customInputView.topAnchor),
