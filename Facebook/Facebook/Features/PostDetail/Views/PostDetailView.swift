@@ -39,6 +39,7 @@ class PostDetailView: UIView {
         commentTableView.allowsSelection = false
         commentTableView.translatesAutoresizingMaskIntoConstraints = false
         commentTableView.delaysContentTouches = false
+        commentTableView.keyboardDismissMode = .interactive
         tableViewBottomConstraint = commentTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         NSLayoutConstraint.activate([
             commentTableView.topAnchor.constraint(equalTo: self.topAnchor),

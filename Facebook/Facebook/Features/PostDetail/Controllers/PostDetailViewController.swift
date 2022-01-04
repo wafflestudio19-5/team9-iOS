@@ -81,9 +81,9 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         view.addSubview(hiddenTextView)
         hiddenTextView.isHidden = true
         hiddenTextView.inputAccessoryView = keyboardAccessory
-        if self.asFirstResponder {
-            hiddenTextView.becomeFirstResponder()
-        }
+//        if self.asFirstResponder {
+//            hiddenTextView.becomeFirstResponder()
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,6 +105,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLayoutSubviews()
         if !didConfigurePostDetailView {
             postView.postContentHeaderView.configure(with: post)
+            textView.layer.cornerRadius = textView.frame.height / 2
             didConfigurePostDetailView = true
         }
         postView.commentTableView.adjustHeaderHeight()
@@ -147,25 +148,26 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     lazy var textView: FlexibleTextView = {
         let textView = FlexibleTextView()
-        textView.placeholder = "I'm gonna grow in height."
+        textView.placeholder = "댓글을 입력하세요..."
         textView.font = .systemFont(ofSize: 15)
-        textView.layer.cornerRadius = 5
+        textView.backgroundColor = .systemGroupedBackground
+        textView.maxHeight = 80
+        textView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }()
     
     var sendButton: UIButton = {
-        let sendButton = UIButton(type: .system)
-        sendButton.isEnabled = true
-        sendButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        sendButton.setTitle("Send", for: .normal)
-        sendButton.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "paperplane.fill")
+        config.baseForegroundColor = FacebookColor.blue.color()
         
-        sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
-        sendButton.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
-        //        sendButton.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
-        return sendButton
+        let button = UIButton()
+        button.configuration = config
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
+        button.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
+        return button
     }()
     
     var addMediaButtom: UIButton = {
@@ -183,8 +185,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return addMediaButtom
     }()
     
-    
-    
     let photosButton: UIButton = {
         var config = UIButton.Configuration.tinted()
         config.image = UIImage(systemName: "photo.on.rectangle.angled")
@@ -196,63 +196,40 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return button
     }()
     
+    let divider: UIView = {
+       let divider = UIView()
+        divider.backgroundColor = .Grayscales.gray2
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        return divider
+    }()
+    
     lazy var keyboardAccessory: CustomInputAccessoryView = {
         let customInputView = CustomInputAccessoryView()
         
         customInputView.addSubview(textView)
         customInputView.addSubview(sendButton)
-        customInputView.addSubview(addMediaButtom)
+//        customInputView.addSubview(addMediaButtom)
+        customInputView.addSubview(divider)
         
-        addMediaButtom.leadingAnchor.constraint(
-            equalTo: customInputView.leadingAnchor,
-            constant: 8
-        ).isActive = true
-        
-        addMediaButtom.trailingAnchor.constraint(
-            equalTo: textView.leadingAnchor,
-            constant: -8
-        ).isActive = true
-        
-        /*  addMediaButtom.topAnchor.constraint(
-         equalTo: customInputView.topAnchor,
-         constant: 8
-         ).isActive = true
-         */
-        addMediaButtom.bottomAnchor.constraint(
-            equalTo: customInputView.layoutMarginsGuide.bottomAnchor,
-            constant: -8
-        ).isActive = true
-        
-        textView.trailingAnchor.constraint(
-            equalTo: sendButton.leadingAnchor,
-            constant: 0
-        ).isActive = true
-        
-        textView.topAnchor.constraint(
-            equalTo: customInputView.topAnchor,
-            constant: 8
-        ).isActive = true
-        
-        textView.bottomAnchor.constraint(
-            equalTo: customInputView.layoutMarginsGuide.bottomAnchor,
-            constant: -8
-        ).isActive = true
-        
-        sendButton.leadingAnchor.constraint(
-            equalTo: textView.trailingAnchor,
-            constant: 0
-        ).isActive = true
-        
-        sendButton.trailingAnchor.constraint(
-            equalTo: customInputView.trailingAnchor,
-            constant: -8
-        ).isActive = true
-        
-        sendButton.bottomAnchor.constraint(
-            equalTo: customInputView.layoutMarginsGuide.bottomAnchor,
-            constant: -8
-        ).isActive = true
-        
+        NSLayoutConstraint.activate([
+//            addMediaButtom.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor, constant: 8),
+//            addMediaButtom.trailingAnchor.constraint(equalTo: textView.leadingAnchor, constant: -8),
+//            addMediaButtom.bottomAnchor.constraint(equalTo: customInputView.layoutMarginsGuide.bottomAnchor, constant: -8),
+                
+            textView.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: 0),
+            textView.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor, constant: .standardLeadingMargin),
+            textView.topAnchor.constraint(equalTo: customInputView.topAnchor, constant: 8),
+            textView.bottomAnchor.constraint(equalTo: customInputView.layoutMarginsGuide.bottomAnchor, constant: -8),
+            
+            sendButton.leadingAnchor.constraint(equalTo: textView.trailingAnchor, constant: 0),
+            sendButton.trailingAnchor.constraint(equalTo: customInputView.trailingAnchor, constant: -8),
+            sendButton.bottomAnchor.constraint(equalTo: customInputView.layoutMarginsGuide.bottomAnchor, constant: -8),
+            
+            divider.heightAnchor.constraint(equalToConstant: 1),
+            divider.topAnchor.constraint(equalTo: customInputView.topAnchor),
+            divider.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: customInputView.trailingAnchor),
+        ])
         return customInputView
     }()
 }

@@ -102,49 +102,6 @@ class PostDetailHeaderView: UIStackView {
             divider.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             divider.heightAnchor.constraint(equalToConstant: 1)
         ])
-        return
-        
-        self.addSubview(contentLabel)
-        var trailing = contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin)
-//        trailing.priority = .defaultHigh
-        NSLayoutConstraint.activate([
-            contentLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: .standardTopMargin + 5),
-            contentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
-            trailing,
-        ])
-        
-        self.addSubview(imageGridCollectionView)
-        NSLayoutConstraint.activate([
-            imageGridCollectionView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: .standardTopMargin),
-            imageGridCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageGridCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-        ])
-        
-        self.addSubview(buttonStackView)
-        trailing = buttonStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin)
-        trailing.priority = .defaultHigh
-        NSLayoutConstraint.activate([
-            buttonStackView.topAnchor.constraint(equalTo: imageGridCollectionView.bottomAnchor, constant: .standardTopMargin),
-            buttonStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
-            trailing,
-            buttonStackView.heightAnchor.constraint(equalToConstant: .buttonGroupHeight),
-        ])
-        
-        self.addSubview(likeCountLabelWithIcon)
-        NSLayoutConstraint.activate([
-            likeCountLabelWithIcon.topAnchor.constraint(equalTo: buttonStackView.bottomAnchor, constant: .standardTopMargin),
-            likeCountLabelWithIcon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
-            likeCountLabelWithIcon.widthAnchor.constraint(equalToConstant: 200)
-        ])
-        
-        self.addSubview(divider)
-        NSLayoutConstraint.activate([
-            divider.topAnchor.constraint(equalTo: likeCountLabelWithIcon.bottomAnchor, constant: .standardTopMargin),
-            divider.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 1)
-        ])
-        
     }
     
     

@@ -65,6 +65,8 @@ class CreatePostView: UIView {
         let scrollViewStack = UIStackView()
         scrollViewStack.translatesAutoresizingMaskIntoConstraints = false
         scrollViewStack.axis = .vertical
+//        scrollViewStack.layoutMargins = .init(top: 20, left: 0, bottom: 0, right: 20)
+//        scrollViewStack.isLayoutMarginsRelativeArrangement = true
         scrollViewStack.addArrangedSubview(contentTextView)
         scrollViewStack.addArrangedSubview(imageGridCollectionView)
         
@@ -116,11 +118,14 @@ class CreatePostView: UIView {
         return inputAccessory
     }()
     
-    let contentTextView: UITextView = {
-        let textView = UITextView()
+    lazy var contentTextView: UITextView = {
+        let textView = PlaceholderTextView()
         textView.isScrollEnabled = false
+        textView.placeholder = self.placeholder
         textView.font = .systemFont(ofSize: 17)
-        textView.textContainerInset = .init(top: 10, left: 10, bottom: 15, right: 10)
+        textView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
+        textView.backgroundColor = .systemGroupedBackground
+//        textView.textContainerInset = .init(top: 10, left: 10, bottom: 15, right: 10)
         return textView
     }()
     
@@ -143,15 +148,4 @@ class CreatePostView: UIView {
         button.configuration = config
         return button
     }()
-}
-
-
-class CustomView: UIView {
-    
-    // this is needed so that the inputAccesoryView is properly sized from the auto layout constraints
-    // actual value is not important
-    
-    override var intrinsicContentSize: CGSize {
-        return CGSize.zero
-    }
 }

@@ -101,6 +101,7 @@
 		BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834AD275123FD00D6EC95 /* Endpoint.swift */; };
 		BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B427513B7700D6EC95 /* NetworkService.swift */; };
 		BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEBDA766276C296F0004FFD7 /* GradientIcon.swift */; };
+		BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEDA608227845F2F0002A231 /* PlaceholderTextView.swift */; };
 		BEF254E3277AD0EA00FBAACB /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254E2277AD0EA00FBAACB /* ProfileImageView.swift */; };
 		BEF254E5277AD28200FBAACB /* AuthorInfoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254E4277AD28200FBAACB /* AuthorInfoHeaderView.swift */; };
 		BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF254E7277AD3C700FBAACB /* InfoLabel.swift */; };
@@ -213,6 +214,7 @@
 		BEA834AD275123FD00D6EC95 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BEA834B427513B7700D6EC95 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		BEBDA766276C296F0004FFD7 /* GradientIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientIcon.swift; sourceTree = "<group>"; };
+		BEDA608227845F2F0002A231 /* PlaceholderTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderTextView.swift; sourceTree = "<group>"; };
 		BEF254E2277AD0EA00FBAACB /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		BEF254E4277AD28200FBAACB /* AuthorInfoHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorInfoHeaderView.swift; sourceTree = "<group>"; };
 		BEF254E7277AD3C700FBAACB /* InfoLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoLabel.swift; sourceTree = "<group>"; };
@@ -383,8 +385,9 @@
 		BE9C7CA227716E280089247F /* TextFields */ = {
 			isa = PBXGroup;
 			children = (
-				B846BDAF2755119500513B77 /* FacebookTextField.swift */,
 				BE86BADD2783F45A00948CAA /* FlexibleTextView.swift */,
+				BEDA608227845F2F0002A231 /* PlaceholderTextView.swift */,
+				B846BDAF2755119500513B77 /* FacebookTextField.swift */,
 				BE86BADF2784012F00948CAA /* CustomInputAccessoryView.swift */,
 			);
 			path = TextFields;
@@ -840,6 +843,7 @@
 				BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */,
 				B85D67E4277C964F002CCC04 /* SignUpResponse.swift in Sources */,
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
+				BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */,
 				B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */,
 				774094442750EBF600AD8DC2 /* ShowProfileTableViewCell.swift in Sources */,
 				77547907275CE6CC0065711C /* CommentTableViewCellXib.swift in Sources */,
