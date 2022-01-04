@@ -18,36 +18,11 @@ class CreatePostView: UIView {
         super.init(frame: frame)
         setStyleForView()
         setLayoutForView()
-        bindPlaceholder()
         contentTextView.inputAccessoryView = keyboardInputAccessory
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func bindPlaceholder() {
-        contentTextView.text = placeholder
-        contentTextView.textColor = .lightGray
-        contentTextView.rx.didBeginEditing
-            .subscribe { [weak self] _ in
-                guard let self = self else {return}
-                if self.contentTextView.text == self.placeholder {
-                    self.contentTextView.text = nil
-                    self.contentTextView.textColor = .black
-                }
-            }
-            .disposed(by: disposeBag)
-
-        contentTextView.rx.didEndEditing
-            .subscribe { [weak self] _ in
-                guard let self = self else {return}
-                if self.contentTextView.text == nil || self.contentTextView.text == "" {
-                    self.contentTextView.text = self.placeholder
-                    self.contentTextView.textColor = .lightGray
-                }
-            }
-            .disposed(by: disposeBag)
     }
     
     private func setStyleForView() {
@@ -118,7 +93,7 @@ class CreatePostView: UIView {
         return inputAccessory
     }()
     
-    lazy var contentTextView: UITextView = {
+    lazy var contentTextView: PlaceholderTextView = {
         let textView = PlaceholderTextView()
         textView.isScrollEnabled = false
         textView.placeholder = self.placeholder

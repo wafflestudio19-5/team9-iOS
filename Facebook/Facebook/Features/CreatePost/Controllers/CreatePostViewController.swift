@@ -59,20 +59,12 @@ class CreatePostViewController: UIViewController {
     }
     
     func bindNavigationBarButtonStyle() {
-        // contentTextField가 비어있는 가에 대한 Bool형 event방출
-        let hasEnteredContent = createPostView.contentTextView.rx.text.orEmpty.map { [weak self] (string: String?) -> Bool in
-            guard let self = self else { return false }
-            guard let string = string else {
-                return false
-            }
-            if string == self.createPostView.placeholder {
-                return false
-            }
-            return !string.isEmpty
-        }
         
         //contentTextField의 내용 유뮤에 따라 버튼 활성화
-        hasEnteredContent.bind(to: self.createPostView.postButton.rx.isEnabled).disposed(by: disposeBag)
+        createPostView.contentTextView.isEmptyObservable
+            .map { !$0 }
+            .bind(to:self.createPostView.postButton.rx.isEnabled)
+            .disposed(by: disposeBag)
     }
     
     func bindPostButton() {

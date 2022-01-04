@@ -170,21 +170,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return button
     }()
     
-    var addMediaButtom: UIButton = {
-        let addMediaButtom = UIButton(type: .custom)
-        addMediaButtom.setImage(UIImage(systemName: "photo.on.rectangle.angled"), for: .normal)
-        addMediaButtom.isEnabled = true
-        //addMediaButtom.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        // addMediaButtom.setTitle("Media", for: .normal)
-        addMediaButtom.translatesAutoresizingMaskIntoConstraints = false
-        addMediaButtom.contentEdgeInsets = UIEdgeInsets(top: 9, left: 0, bottom: 5, right: 0)
-        
-        addMediaButtom.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
-        addMediaButtom.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
-        //        addMediaButtom.addTarget(self, action: #selector(handleSend), for: .touchUpInside)
-        return addMediaButtom
-    }()
-    
     let photosButton: UIButton = {
         var config = UIButton.Configuration.tinted()
         config.image = UIImage(systemName: "photo.on.rectangle.angled")
@@ -196,26 +181,16 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return button
     }()
     
-    let divider: UIView = {
-       let divider = UIView()
-        divider.backgroundColor = .Grayscales.gray2
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        return divider
-    }()
+    let divider = Divider()
     
     lazy var keyboardAccessory: CustomInputAccessoryView = {
         let customInputView = CustomInputAccessoryView()
         
         customInputView.addSubview(textView)
         customInputView.addSubview(sendButton)
-//        customInputView.addSubview(addMediaButtom)
         customInputView.addSubview(divider)
         
         NSLayoutConstraint.activate([
-//            addMediaButtom.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor, constant: 8),
-//            addMediaButtom.trailingAnchor.constraint(equalTo: textView.leadingAnchor, constant: -8),
-//            addMediaButtom.bottomAnchor.constraint(equalTo: customInputView.layoutMarginsGuide.bottomAnchor, constant: -8),
-                
             textView.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: 0),
             textView.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor, constant: .standardLeadingMargin),
             textView.topAnchor.constraint(equalTo: customInputView.topAnchor, constant: 8),

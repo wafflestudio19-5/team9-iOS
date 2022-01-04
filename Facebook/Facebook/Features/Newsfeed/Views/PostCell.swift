@@ -158,12 +158,7 @@ class PostCell: UITableViewCell {
     private let textContentLabel = PostContentLabel()
     
     // 피드와 피드 사이의 회색 리바이더
-    private let divider: UIView = {
-        let divider = UIView()
-        divider.backgroundColor = .Grayscales.gray1
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        return divider
-    }()
+    private let divider = Divider(color: .Grayscales.gray1)
 }
 
 /*

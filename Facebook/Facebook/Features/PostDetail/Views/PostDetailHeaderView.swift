@@ -45,12 +45,7 @@ class PostDetailHeaderView: UIStackView {
         return stack
     }()
     
-    private let divider: UIView = {
-        let divider = UIView()
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = .Grayscales.gray2
-        return divider
-    }()
+    private let divider = Divider()
     
     func configure(with post: Post) {
         contentLabel.text = post.content
