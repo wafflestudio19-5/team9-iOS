@@ -25,32 +25,18 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
     }
 
     func registerUser() {
-        NetworkService.post(endpoint: .createUser(newUser: NewUser.shared), as: SignUpResponse.self)
-            .subscribe { [weak self] event in
+        AuthManager.signup(user: NewUser.shared)
+            .subscribe { [weak self] result in
+                guard let success = result.element else { return }
                 
-                // 회원가입 성공
-                if event.isCompleted {
-                    // currentUser 등록(이메일, 이름)
-                    if let email = event.element?.1.user, let username = event.element?.1.username {
-                        // 현재 브랜치에서는 User 모델의 변경사항이 반영되지 않아 아래 코드를 실행할 수 없습니다
-                        //CurrentUser.shared.profile.email = email
-                        //CurrentUser.shared.profile.username = username
-                    }
-                    // 토큰 등록
-                    if let token = event.element?.1.token {
-                        NetworkService.registerToken(token: token)
-                    }
-                    
-                    NewUser.shared.reset()
+                switch success {
+                case true:
+                    // 카카오 로그인 페이지로 이동
                     self?.changeRootViewController(to: RootTabBarController())
-                    return
+                case false:
+                    // 임의로 만들었습니다
+                    self?.alert(title: "회원가입 실패", message: "이미 등록되어 있거나 가입할 수 없는 계정입니다. 입력하신 정보를 다시 확인해주시기 바랍니다.", action: "확인")
                 }
-                // 회원가입 실패
-                if event.isStopEvent {
-                    print(event)
-                    return
-                }
-            }
-            .disposed(by: disposeBag)
+            }.disposed(by: disposeBag)
     }
 }
