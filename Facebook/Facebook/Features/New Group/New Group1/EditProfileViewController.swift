@@ -34,12 +34,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .ProfileImageItem(image):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
-            
-            cell.imgView.image = image
-            return cell
-        case let .CoverImageItem(image):
+        case let .ImageItem(image):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
             
             cell.imgView.image = image
@@ -63,10 +58,32 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.configureCell(labelText: labelText)
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let addSelfIntroViewController = AddSelfIntroViewController()
-                let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
-                navigationController.modalPresentationStyle = .fullScreen
-                self?.present(navigationController, animated: true, completion: nil)
+                guard let self = self else { return }
+                
+                if self.userProfile?.self_intro == nil {
+                    let addSelfIntroViewController = AddSelfIntroViewController()
+                    let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+                    navigationController.modalPresentationStyle = .fullScreen
+                    self.present(navigationController, animated: true, completion: nil)
+                } else {
+                    let alertMenu = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+                    
+                    let editSelfIntroAction = UIAlertAction(title: "소개 수정", style: .default, handler: nil)
+                    editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+                    editSelfIntroAction.setValue(UIImage(systemName: "pencil.circle")!, forKey: "image")
+                    
+                    let deleteSelfIntroAction = UIAlertAction(title: "소개 삭제", style: .default, handler: nil)
+                    deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+                    deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
+                    
+                    let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+                    
+                    alertMenu.addAction(editSelfIntroAction)
+                    alertMenu.addAction(deleteSelfIntroAction)
+                    alertMenu.addAction(cancelAction)
+                    
+                    self.present(alertMenu, animated: true, completion: nil)
+                }
             }).disposed(by: cell.disposeBag)
             
             return cell
@@ -132,10 +149,10 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         
         let sections: [MultipleSectionModel] = [
             .ProfileImageSection(title: "프로필 사진", items: [
-                .ProfileImageItem(image: UIImage(systemName: "person.circle.fill")!)
+                .ImageItem(image: UIImage(systemName: "person.circle.fill")!)
             ]),
             .CoverImageSection(title: "커버 사진", items: [
-                .CoverImageItem(image: UIImage(systemName: "photo")!)
+                .ImageItem(image: UIImage(systemName: "photo")!)
             ]),
             .SelfIntroSection(title: "소개", items: [
                 .LabelItem(style: .style1, labelText: userProfile.self_intro ?? "회원님에 대해 설명해주세요...")

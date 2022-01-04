@@ -152,7 +152,7 @@ class DateSelectTableViewCell: UITableViewCell {
             
         NSLayoutConstraint.activate([
             yearTextField.heightAnchor.constraint(equalToConstant: 25),
-            yearTextField.widthAnchor.constraint(equalToConstant: 60),
+            //yearTextField.widthAnchor.constraint(equalToConstant: 60),
             yearTextField.topAnchor.constraint(equalTo: dateKindLabel.bottomAnchor, constant: 10),
             yearTextField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
             yearTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
@@ -163,7 +163,7 @@ class DateSelectTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             monthTextField.heightAnchor.constraint(equalToConstant: 25),
-            monthTextField.widthAnchor.constraint(equalToConstant: 60),
+            //monthTextField.widthAnchor.constraint(equalToConstant: 60),
             monthTextField.leadingAnchor.constraint(equalTo: yearTextField.trailingAnchor, constant: 10),
             monthTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
         ])
@@ -173,7 +173,7 @@ class DateSelectTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate([
             dayTextField.heightAnchor.constraint(equalToConstant: 25),
-            dayTextField.widthAnchor.constraint(equalToConstant: 60),
+            //dayTextField.widthAnchor.constraint(equalToConstant: 60),
             dayTextField.leadingAnchor.constraint(equalTo: monthTextField.trailingAnchor, constant: 10),
             dayTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
         ])

@@ -27,19 +27,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     }
     
     let disposeBag = DisposeBag()
-    
-    enum InformationType {
-        case company
-        case university
-    }
-    
-    var informationType: InformationType
-    
-    lazy var companyInformation = Company()
-    lazy var universityInformation = University()
-    
-    var isActive: Bool
-    
+
     var defaultSections: [MultipleSectionModel] = []
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay<[MultipleSectionModel]>(value: [])
@@ -152,7 +140,20 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         }
     }
     
-    init(informationType: InformationType) {
+    enum InformationType {
+        case company
+        case university
+    }
+    
+    var informationType: InformationType
+    
+    lazy var companyInformation = Company()
+    lazy var universityInformation = University()
+    
+    var isActive: Bool
+    
+    
+    init(informationType: InformationType, id: Int? = nil) {
         self.informationType = informationType
         self.isActive = true
         super.init(nibName: nil, bundle: nil)
@@ -196,6 +197,14 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         
         sectionsBR.accept(defaultSections)
     }
+    
+    func loadData() {
+        
+    }
+    
+    func createSection() {
+        
+    }
 
     private func bindTableView() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -213,9 +222,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 .DetailInformationSection(title: "직장", items: [
                     .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: companyInformation.name!),
                     .AddInfomrationLabelItem(style: .role,
-                                             information: (companyInformation.role != nil) ? companyInformation.role! : "직책(선택 사항"),
+                                             information: companyInformation.role ?? "직책(선택 사항)"),
                     .AddInfomrationLabelItem(style: .location,
-                                             information: (companyInformation.location != nil) ? companyInformation.location! : "위치(선택 사항"),
+                                             information: companyInformation.location ?? "위치(선택 사항)"),
                     .TextFieldItem(text: "text")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
@@ -227,7 +236,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 .DetailInformationSection(title: "학력", items: [
                     .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: universityInformation.name!),
                     .AddInfomrationLabelItem(style: .major,
-                                             information:  (universityInformation.major != nil) ? universityInformation.major! : "전공(선택 사항")
+                                             information: universityInformation.major ?? "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
                     .SelectDateItem(style: .startDateStyle),
@@ -248,9 +257,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 .DetailInformationSection(title: "직장", items: [
                     .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: companyInformation.name!),
                     .AddInfomrationLabelItem(style: .role,
-                                             information: (companyInformation.role != nil) ? companyInformation.role! : "직책(선택 사항"),
+                                             information: companyInformation.role ?? "직책(선택 사항)"),
                     .AddInfomrationLabelItem(style: .location,
-                                             information: (companyInformation.location != nil) ? companyInformation.location! : "위치(선택 사항"),
+                                             information: companyInformation.location ?? "위치(선택 사항)"),
                     .TextFieldItem(text: "text")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
@@ -263,7 +272,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 .DetailInformationSection(title: "학력", items: [
                     .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: universityInformation.name!),
                     .AddInfomrationLabelItem(style: .major,
-                                             information:  (universityInformation.major != nil) ? universityInformation.major! : "전공(선택 사항")
+                                             information: universityInformation.major ?? "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
                     .SelectDateItem(style: .startDateStyle),

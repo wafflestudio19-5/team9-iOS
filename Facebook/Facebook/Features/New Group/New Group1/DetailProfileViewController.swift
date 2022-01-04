@@ -35,23 +35,6 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     //enum SectionItem의 유형에 따라 다른 cell type을 연결
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .MainProfileItem(profileImage, coverImage, name):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
-            
-            cell.profileImage.image = profileImage
-            cell.coverImage.image = coverImage
-            cell.nameLabel.text = name
-            return cell
-        case let .ProfileImageItem(image):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
-            
-            cell.imgView.image = image
-            return cell
-        case let .CoverImageItem(image):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
-            
-            cell.imgView.image = image
-            return cell
         case let .SimpleInformationItem(style, informationType, image, information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             

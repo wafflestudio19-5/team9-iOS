@@ -13,6 +13,7 @@ class PhotoPopUpView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
+        self.backgroundColor = .systemBlue
         setLayoutForView()
         configureTableView()
     }
@@ -22,15 +23,20 @@ class PhotoPopUpView: UIView {
     }
 
     private func setLayoutForView() {
+        
         self.addSubview(photoPopUpTableView)
         photoPopUpTableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            
+            photoPopUpTableView.heightAnchor.constraint(equalToConstant: 300),
+            photoPopUpTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            photoPopUpTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
+            photoPopUpTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
     
     private func configureTableView() {
-        
+        photoPopUpTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
+        photoPopUpTableView.isScrollEnabled = false
     }
     
 }

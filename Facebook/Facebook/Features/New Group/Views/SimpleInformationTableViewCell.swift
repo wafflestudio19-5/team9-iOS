@@ -24,6 +24,8 @@ class SimpleInformationTableViewCell: UITableViewCell {
     
     var cellStyle: Style = .style1
     
+    lazy var informationIsSelected: Bool = false
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
