@@ -64,17 +64,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView> {
 
 extension ProfileTabViewController: MainProfileTableViewCellDelegate,EditProfileTableViewCellDelegate {
     func goEditProfileView() {
-        let editProfileViewController = EditProfileViewController()
-        
-        self.navigationController?.pushViewController(editProfileViewController, animated: true)
+        self.push(viewController: EditProfileViewController())
     }
 }
 
 extension ProfileTabViewController: ShowProfileTableViewCellDelegate {
     func goDetailProfileView() {
-        let detailProfileViewController = DetailProfileViewController()
-        
-        self.navigationController?.pushViewController(detailProfileViewController, animated: true)
+        self.push(viewController: DetailProfileViewController())
     }
 }
 
@@ -82,8 +78,7 @@ extension ProfileTabViewController: CreatePostTableViewCellDelegate {
     func goCreatePostView() {
         let createPostViewController = CreatePostViewController()
         createPostViewController.view.backgroundColor = .white
-        
-        self.navigationController?.pushViewController(createPostViewController, animated: true)
+        self.push(viewController: createPostViewController)
     }
 }
 
