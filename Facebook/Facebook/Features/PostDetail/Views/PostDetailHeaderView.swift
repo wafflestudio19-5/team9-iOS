@@ -53,8 +53,7 @@ class PostDetailHeaderView: UIStackView {
     }()
     
     func configure(with post: Post) {
-        contentLabel.numberOfLines = 80
-        contentLabel.text = String(repeating: post.content, count: 5000)
+        contentLabel.text = post.content
         likeCountLabel.text = post.likes.withCommas(unit: "개")
         authorHeaderView.configure(with: post)
         
@@ -63,16 +62,17 @@ class PostDetailHeaderView: UIStackView {
             guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
             return url
         }
-        self.imageGridCollectionView.numberOfImages = post.subposts.count
-//        Observable.just(subpostUrls)
-//            .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
-//                cell.displayMedia(from: data)
-//            }
-//            .disposed(by: disposeBag)
+        imageGridCollectionView.numberOfImages = post.subposts.count
+        imageGridCollectionView.dataSource = nil
+        Observable.just(subpostUrls)
+            .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
+                cell.displayMedia(from: data)
+            }
+            .disposed(by: disposeBag)
     }
     
     func setLayout() {
-        self.layoutMargins = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
+        self.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
         self.isLayoutMarginsRelativeArrangement = true
         self.axis = .vertical
         self.spacing = .standardTopMargin
@@ -88,6 +88,9 @@ class PostDetailHeaderView: UIStackView {
 //            contentLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: .standardTopMargin + 5),
             contentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
             contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
+            
+            imageGridCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            imageGridCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             buttonStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
             buttonStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),

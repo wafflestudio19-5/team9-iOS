@@ -14,6 +14,8 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var post: Post
     var asFirstResponder: Bool
     let disposeBag = DisposeBag()
+    var hiddenTextView = UITextView()
+    var didConfigurePostDetailView: Bool = false
     
     lazy var authorHeaderView: AuthorInfoHeaderView = {
         let view = AuthorInfoHeaderView(imageWidth: 40)
@@ -50,37 +52,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return view
     }
     
-    var hiddenTextView = UITextView()
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        bindTableView()
-        setLeftBarButtonItems()
-        
-        // firstResponder 관련 문제 workaround
-        //        view.addSubview(hiddenTextView)
-        //        hiddenTextView.isHidden = true
-        //        hiddenTextView.inputAccessoryView = keyboardAccessory
-        //        if self.asFirstResponder {
-        //            hiddenTextView.becomeFirstResponder()
-        //        }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        bindKeyboardHeight()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        // 업데이트된 frame을 얻기 위해 viewDidLayoutSubviews에서 호출해야 한다.
-        postView.postContentHeaderView.configure(with: post)
-        postView.commentTableView.adjustHeaderHeight()
-    }
-    
     func setLeftBarButtonItems() {
         let stackview = UIStackView.init(arrangedSubviews: [leftChevronButton, authorHeaderView])
         stackview.distribution = .equalSpacing
@@ -97,6 +68,48 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         // TODO: Binding for comment table view (use `PaginationViewModel`)
     }
     
+    // MARK: View LifeCycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        bindTableView()
+        setLeftBarButtonItems()
+        
+        // firstResponder 관련 문제 workaround
+        view.addSubview(hiddenTextView)
+        hiddenTextView.isHidden = true
+        hiddenTextView.inputAccessoryView = keyboardAccessory
+        if self.asFirstResponder {
+            hiddenTextView.becomeFirstResponder()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        bindKeyboardHeight()
+        if self.asFirstResponder && !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.asFirstResponder && !textView.isFirstResponder {
+            textView.becomeFirstResponder()
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if !didConfigurePostDetailView {
+            postView.postContentHeaderView.configure(with: post)
+            didConfigurePostDetailView = true
+        }
+        postView.commentTableView.adjustHeaderHeight()
+    }
+    
     // MARK: Keyboard Accessory Logics
     
     override var inputAccessoryView: UIView {
@@ -105,13 +118,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override var canBecomeFirstResponder: Bool {
         return true
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        //        if self.asFirstResponder {
-        //            textView.becomeFirstResponder()
-        //        }
     }
     
     // 올라갈떄 애니메이션 있고, 내려갈땐 없어야함
