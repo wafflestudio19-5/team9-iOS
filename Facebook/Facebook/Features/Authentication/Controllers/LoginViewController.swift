@@ -48,8 +48,7 @@ class LoginViewController<View: LoginView>: UIViewController {
         }.disposed(by: disposeBag)
         
         loginView.createAccountButton.rx.tap.bind { [weak self] _ in
-            guard let self = self else { return }
-            self.push(viewController: EnterUsernameViewController())
+            self?.push(viewController: EnterUsernameViewController())
         }.disposed(by: disposeBag)
 
         loginView.emailTextField.rx.text.orEmpty
