@@ -34,21 +34,17 @@ class LoginViewController<View: LoginView>: UIViewController {
     }
     
     private func bindView() {
-        loginView.loginButton.rx.tap.bind {
-            print("login button tapped")
-            
-            // 로그인에 실패한 경우 보이는 알림창 sample
-            self.alert(title: "잘못된 이메일", message: "입력한 이메일이 계정에 포함된 이메일이 아닌 것 같습니다. 이메일 주소를 확인하고 다시 시도해주세요.", action: "확인")
-            
-            // login validation
+        loginView.loginButton.rx.tap.bind { [weak self] _ in
+            self?.login()
         }.disposed(by: disposeBag)
         
         loginView.forgotPasswordButton.rx.tap.bind {
             // navigate to findPasswordView
+            // 사용X
         }.disposed(by: disposeBag)
         
         loginView.backButton.rx.tap.bind {
-            
+            // 사용X
         }.disposed(by: disposeBag)
         
         loginView.createAccountButton.rx.tap.bind { [weak self] _ in
@@ -108,5 +104,36 @@ class LoginViewController<View: LoginView>: UIViewController {
                 self.loginView.passwordTextField.endEditing(true)
             }
         }.disposed(by: disposeBag)
+    }
+}
+
+extension LoginViewController {
+    private func login() {
+        NetworkService.post(endpoint: .login(email: self.email.value, password: self.password.value), as: LoginResponse.self)
+            .subscribe { [weak self] event in
+                
+                // 로그인 성공
+                if event.isCompleted {
+                    // currentUser 등록
+                    if let user = event.element?.1.user {
+                        CurrentUser.shared.profile = user
+                    }
+                    
+                    // 토큰 등록
+                    if let token = event.element?.1.token {
+                        NetworkService.registerToken(token: token)
+                    }
+                    
+                    NewUser.shared.reset()
+                    self?.changeRootViewController(to: RootTabBarController())
+                    return
+                }
+                // 로그인 실패
+                if event.isStopEvent {
+                    self?.alert(title: "잘못된 이메일", message: "입력한 이메일이 계정에 포함된 이메일이 아닌 것 같습니다. 이메일 주소를 확인하고 다시 시도해주세요.", action: "확인")
+                    return
+                }
+            }
+            .disposed(by: disposeBag)
     }
 }
