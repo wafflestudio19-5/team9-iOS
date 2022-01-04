@@ -11,6 +11,7 @@ import RxCocoa
 
 class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var post: Post
+    var asFirstResponder: Bool
     let disposeBag = DisposeBag()
     
     lazy var authorHeaderView: AuthorInfoHeaderView = {
@@ -48,20 +49,9 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return inputAccessory
     }()
     
-    override var inputAccessoryView: UIView {
-        return self.keyboardAccessory
-    }
-    
-    override var canBecomeFirstResponder: Bool {
-        return true
-    }
-    
-    override var canResignFirstResponder: Bool {
-        return true
-    }
-    
-    init(post: Post) {
+    init(post: Post, asFirstResponder: Bool = false) {
         self.post = post
+        self.asFirstResponder = asFirstResponder
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -78,17 +68,27 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return view
     }
     
+    var hiddenTextView = UITextView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         bindTableView()
         setLeftBarButtonItems()
+        view.addSubview(hiddenTextView)
+        hiddenTextView.isHidden = true
+        hiddenTextView.inputAccessoryView = keyboardAccessory
+        if self.asFirstResponder {
+            hiddenTextView.becomeFirstResponder()
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        textView.becomeFirstResponder()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if self.asFirstResponder {
+            textView.becomeFirstResponder()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -107,7 +107,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         let leftBarButtons = UIBarButtonItem(customView: stackview)
         navigationItem.leftBarButtonItem = leftBarButtons
     }
-    
     
     
     func bindTableView(){
