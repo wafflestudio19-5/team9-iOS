@@ -42,6 +42,8 @@ class NewsfeedTabView: UIView {
         newsfeedTableView.allowsSelection = false
         newsfeedTableView.refreshControl = refreshControl
         newsfeedTableView.delaysContentTouches = false
+//        newsfeedTableView.estimatedRowHeight = 500
+//        newsfeedTableView.rowHeight = UITableView.automaticDimension
     }
     
     // MARK: Bottom Spinner

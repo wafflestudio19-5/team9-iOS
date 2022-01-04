@@ -32,6 +32,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         tableView.adjustHeaderHeight()
     }
     
+    
     func bind() {
         
         /// `무슨 생각을 하고 계신가요?` 버튼을 클릭하면 포스트 작성 화면으로 넘어가도록 바인딩

@@ -64,7 +64,10 @@ class CreatePostViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                self.createPostView.scrollViewBottomConstraint?.constant = -1 * (keyboardVisibleHeight)
+                UIView.animate(withDuration: 0) {
+                    self.createPostView.scrollViewBottomConstraint?.constant = -1 * (keyboardVisibleHeight)
+                    self.view.layoutIfNeeded()
+                }
             })
             .disposed(by: disposeBag)
     }

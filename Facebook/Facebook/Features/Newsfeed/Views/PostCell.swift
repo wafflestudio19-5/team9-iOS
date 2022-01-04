@@ -15,6 +15,7 @@ class PostCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.frame.size.width = UIScreen.main.bounds.width  // important for initial layout
         setLayout()
     }
     
@@ -45,7 +46,6 @@ class PostCell: UITableViewCell {
     // MARK: Setup
     
     func configureCell(with post: Post) {
-        textContentLabel.backgroundColor = .red
         commentCountLabel.text = "댓글 \(post.comments.withCommas(unit: "개"))"
         likeCountLabel.text = post.likes.withCommas(unit: "개")
         textContentLabel.text = post.content

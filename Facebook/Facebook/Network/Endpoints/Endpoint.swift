@@ -30,11 +30,11 @@ struct Endpoint {
         }
         
         // for production
-//        components.host = "13.125.113.114"
+        components.host = "13.125.113.114"
         
         // for development
-        components.host = "127.0.0.1"
-        components.port = 8000
+//        components.host = "127.0.0.1"
+//        components.port = 8000
         
         guard let url = components.url else {
             preconditionFailure(
