@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxKeyboard
 
 class CreatePostView: UIView {
     let placeholder = "무슨 생각을 하고 계신가요?"
@@ -37,7 +38,7 @@ class CreatePostView: UIView {
                 }
             }
             .disposed(by: disposeBag)
-        
+
         contentTextView.rx.didEndEditing
             .subscribe { [weak self] _ in
                 guard let self = self else {return}
@@ -59,6 +60,7 @@ class CreatePostView: UIView {
     private func setLayoutForView() {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.keyboardDismissMode = .interactive
         
         let scrollViewStack = UIStackView()
         scrollViewStack.translatesAutoresizingMaskIntoConstraints = false
@@ -69,22 +71,47 @@ class CreatePostView: UIView {
         self.addSubview(scrollView)
         scrollView.addSubview(scrollViewStack)
         
-        NSLayoutConstraint.activateFourWayConstraints(subview: scrollView, containerView: self)
+        let scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        scrollViewBottomConstraint.priority = .defaultHigh
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: self.topAnchor),
+            scrollViewBottomConstraint,
+        ])
         NSLayoutConstraint.activateFourWayConstraints(subview: scrollViewStack, containerView: scrollView)
         NSLayoutConstraint.activate([
             scrollViewStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
+        
+        // Keyboard의 높이에 따라 스크롤뷰 bottomConstraint 조정
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self = self else { return }
+                let bottomConstraint = scrollViewBottomConstraint
+
+                if keyboardVisibleHeight == 0 {
+                    bottomConstraint.constant = -16.0
+                } else {
+                    let height = keyboardVisibleHeight - self.safeAreaInsets.bottom
+                    bottomConstraint.constant = -height - 16.0
+                }
+                self.layoutIfNeeded()
+            }).disposed(by: disposeBag)
     }
     
     // MARK: UI Components
     
     lazy var keyboardInputAccessory: UIView = {
         let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 50))
+        inputAccessory.autoresizingMask = .flexibleHeight
         inputAccessory.addSubview(photosButton)
         NSLayoutConstraint.activate([
-            photosButton.bottomAnchor.constraint(equalTo: inputAccessory.bottomAnchor, constant: .standardBottomMargin),
+//            photosButton.bottomAnchor.constraint(equalTo: inputAccessory.bottomAnchor, constant: .standardBottomMargin),
+            photosButton.topAnchor.constraint(equalTo: inputAccessory.topAnchor, constant: 10),
             photosButton.leadingAnchor.constraint(equalTo: inputAccessory.leadingAnchor, constant: .standardLeadingMargin),
-            photosButton.widthAnchor.constraint(equalToConstant: 50)
+            photosButton.widthAnchor.constraint(equalToConstant: 50),
+            photosButton.heightAnchor.constraint(equalToConstant: 35)
         ])
         return inputAccessory
     }()
@@ -116,4 +143,15 @@ class CreatePostView: UIView {
         button.configuration = config
         return button
     }()
+}
+
+
+class CustomView: UIView {
+    
+    // this is needed so that the inputAccesoryView is properly sized from the auto layout constraints
+    // actual value is not important
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize.zero
+    }
 }

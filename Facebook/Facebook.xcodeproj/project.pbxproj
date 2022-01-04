@@ -88,6 +88,9 @@
 		BE86BAD52783047500948CAA /* PostLikeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BAD42783047500948CAA /* PostLikeResponse.swift */; };
 		BE86BAD727830F7600948CAA /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BAD627830F7600948CAA /* CommentTableViewCell.swift */; };
 		BE86BAD927830FC100948CAA /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BAD827830FC100948CAA /* Comment.swift */; };
+		BE86BADE2783F45B00948CAA /* FlexibleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BADD2783F45A00948CAA /* FlexibleTextView.swift */; };
+		BE86BAE02784012F00948CAA /* CustomInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BADF2784012F00948CAA /* CustomInputAccessoryView.swift */; };
+		BE86BAE42784183600948CAA /* UITableView+DynamicHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BAE32784183600948CAA /* UITableView+DynamicHeader.swift */; };
 		BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */; };
 		BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C91276CDF230089247F /* Endpoint+User.swift */; };
 		BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C95276DB3C30089247F /* PostCell.swift */; };
@@ -197,6 +200,9 @@
 		BE86BAD42783047500948CAA /* PostLikeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostLikeResponse.swift; sourceTree = "<group>"; };
 		BE86BAD627830F7600948CAA /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		BE86BAD827830FC100948CAA /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		BE86BADD2783F45A00948CAA /* FlexibleTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexibleTextView.swift; sourceTree = "<group>"; };
+		BE86BADF2784012F00948CAA /* CustomInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputAccessoryView.swift; sourceTree = "<group>"; };
+		BE86BAE32784183600948CAA /* UITableView+DynamicHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+DynamicHeader.swift"; sourceTree = "<group>"; };
 		BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionButtons.swift; sourceTree = "<group>"; };
 		BE9C7C91276CDF230089247F /* Endpoint+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+User.swift"; sourceTree = "<group>"; };
 		BE9C7C95276DB3C30089247F /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
@@ -366,6 +372,7 @@
 				B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */,
 				BE9C7CA0276ECA1F0089247F /* Int+Formatter.swift */,
 				BEF254F1277B079D00FBAACB /* CGFloat+LayoutConstants.swift */,
+				BE86BAE32784183600948CAA /* UITableView+DynamicHeader.swift */,
 				BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */,
 				BE7D1DFA277E089F00E080E3 /* Rx+Upload.swift */,
 				BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */,
@@ -377,6 +384,8 @@
 			isa = PBXGroup;
 			children = (
 				B846BDAF2755119500513B77 /* FacebookTextField.swift */,
+				BE86BADD2783F45A00948CAA /* FlexibleTextView.swift */,
+				BE86BADF2784012F00948CAA /* CustomInputAccessoryView.swift */,
 			);
 			path = TextFields;
 			sourceTree = "<group>";
@@ -851,6 +860,7 @@
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
 				B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */,
 				7740943E2750E7E400AD8DC2 /* DetailProfileTableViewCell.swift in Sources */,
+				BE86BAE02784012F00948CAA /* CustomInputAccessoryView.swift in Sources */,
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
 				77AC749B275CEDAD00F10BD5 /* PostDetailView.swift in Sources */,
 				77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */,
@@ -871,6 +881,8 @@
 				B86194FF2760FED800957BBC /* EnterEmailViewController.swift in Sources */,
 				B86195092761AFAE00957BBC /* ContentSizeFitViews.swift in Sources */,
 				BE64AF33277FE99D00C25967 /* ItemProvider+LoadFile.swift in Sources */,
+				BE86BADE2783F45B00948CAA /* FlexibleTextView.swift in Sources */,
+				BE86BAE42784183600948CAA /* UITableView+DynamicHeader.swift in Sources */,
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
 				BE64AF3A27827FAE00C25967 /* ResponsiveTableView.swift in Sources */,
 				B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */,

@@ -8,7 +8,7 @@
 import UIKit
 import RxSwift
 
-class PostDetailHeaderView: UIView {
+class PostDetailHeaderView: UIStackView {
     
     /// 포스팅 상세페이지 상단의 게시글 뷰. 댓글 TableView의 헤더로 들어간다.
     
@@ -16,6 +16,18 @@ class PostDetailHeaderView: UIView {
     let buttonStackView = InteractionButtonStackView(useBottomBorder: true)
     private let authorHeaderView = AuthorInfoHeaderView()
     private let disposeBag = DisposeBag()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel.numberOfLines = 40
+        contentLabel.text = String(repeating: "테스트ㅡ트트트틑", count: 500)
+        setLayout()
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // 이미지 그리드 뷰
     private let imageGridCollectionView = ImageGridCollectionView()
@@ -41,7 +53,8 @@ class PostDetailHeaderView: UIView {
     }()
     
     func configure(with post: Post) {
-        contentLabel.text = post.content
+        contentLabel.numberOfLines = 80
+        contentLabel.text = String(repeating: post.content, count: 5000)
         likeCountLabel.text = post.likes.withCommas(unit: "개")
         authorHeaderView.configure(with: post)
         
@@ -51,26 +64,46 @@ class PostDetailHeaderView: UIView {
             return url
         }
         self.imageGridCollectionView.numberOfImages = post.subposts.count
-        Observable.just(subpostUrls)
-            .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
-                cell.displayMedia(from: data)
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setLayout()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+//        Observable.just(subpostUrls)
+//            .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
+//                cell.displayMedia(from: data)
+//            }
+//            .disposed(by: disposeBag)
     }
     
     func setLayout() {
+        self.layoutMargins = UIEdgeInsets(top: 15, left: 0, bottom: 15, right: 0)
+        self.isLayoutMarginsRelativeArrangement = true
+        self.axis = .vertical
+        self.spacing = .standardTopMargin
+        self.alignment = .center
+        
+        self.addArrangedSubview(contentLabel)
+        self.addArrangedSubview(imageGridCollectionView)
+        self.addArrangedSubview(buttonStackView)
+        self.addArrangedSubview(likeCountLabelWithIcon)
+        self.addArrangedSubview(divider)
+        
+        NSLayoutConstraint.activate([
+//            contentLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: .standardTopMargin + 5),
+            contentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
+            contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
+            
+            buttonStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
+            buttonStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
+            
+            likeCountLabelWithIcon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
+            likeCountLabelWithIcon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
+            
+            divider.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1)
+        ])
+        return
+        
         self.addSubview(contentLabel)
         var trailing = contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin)
-        trailing.priority = .defaultHigh
+//        trailing.priority = .defaultHigh
         NSLayoutConstraint.activate([
             contentLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: .standardTopMargin + 5),
             contentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),

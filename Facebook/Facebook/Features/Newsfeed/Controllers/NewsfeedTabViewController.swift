@@ -27,20 +27,9 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         bind()
     }
     
-    /// `tableHeaderView`의 높이를 다이나믹하게 조절한다.
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if let headerView = tableView.tableHeaderView {
-            let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-            var headerFrame = headerView.frame
-            
-            // Comparison necessary to avoid infinite loop
-            if height != headerFrame.size.height {
-                headerFrame.size.height = height
-                headerView.frame = headerFrame
-                tableView.tableHeaderView = headerView
-            }
-        }
+        tableView.adjustHeaderHeight()
     }
     
     func bind() {

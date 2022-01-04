@@ -10,8 +10,9 @@ import KakaoSDKCommon
 
 class PostDetailView: UIView {
     
-    let commentTableView = UITableView()
+    let commentTableView = ResponsiveTableView()
     let postContentHeaderView = PostDetailHeaderView()
+    var tableViewBottomConstraint: NSLayoutConstraint?
     
     var likeButton: LikeButton {
         postContentHeaderView.buttonStackView.likeButton
@@ -37,12 +38,16 @@ class PostDetailView: UIView {
         commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
         commentTableView.allowsSelection = false
         commentTableView.translatesAutoresizingMaskIntoConstraints = false
+        commentTableView.delaysContentTouches = false
+        tableViewBottomConstraint = commentTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         NSLayoutConstraint.activate([
-            commentTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            commentTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            commentTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            commentTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-    
+            commentTableView.topAnchor.constraint(equalTo: self.topAnchor),
+            tableViewBottomConstraint!,
+//            commentTableView.heightAnchor.constraint(equalToConstant: 40),
+            commentTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            commentTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
+            postContentHeaderView.widthAnchor.constraint(equalTo: commentTableView.widthAnchor)
         ])
     }
 }
