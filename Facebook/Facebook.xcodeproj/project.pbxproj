@@ -32,8 +32,6 @@
 		7754B87B2782A0CC00775D81 /* EditUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B87A2782A0CC00775D81 /* EditUsernameViewController.swift */; };
 		7754B8822782C25800775D81 /* PhotoPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8812782C25800775D81 /* PhotoPopUpView.swift */; };
 		7754B8842782C27D00775D81 /* PhotoPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */; };
-		7754B8862782C40C00775D81 /* DatePopOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8852782C40C00775D81 /* DatePopOverView.swift */; };
-		7754B8882782C42000775D81 /* DatePopOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8872782C42000775D81 /* DatePopOverViewController.swift */; };
 		775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */; };
 		775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150E27730BA000C9872F /* DataSourceModel.swift */; };
 		7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77799318274FD8E4007A3898 /* PostTableViewCell.swift */; };
@@ -138,8 +136,6 @@
 		7754B87A2782A0CC00775D81 /* EditUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameViewController.swift; sourceTree = "<group>"; };
 		7754B8812782C25800775D81 /* PhotoPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPopUpView.swift; sourceTree = "<group>"; };
 		7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPopUpViewController.swift; sourceTree = "<group>"; };
-		7754B8852782C40C00775D81 /* DatePopOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePopOverView.swift; sourceTree = "<group>"; };
-		7754B8872782C42000775D81 /* DatePopOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePopOverViewController.swift; sourceTree = "<group>"; };
 		775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		775F150E27730BA000C9872F /* DataSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceModel.swift; sourceTree = "<group>"; };
 		77799318274FD8E4007A3898 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
@@ -450,7 +446,6 @@
 				77ABC5D72774A998000431E1 /* AddInformationView.swift */,
 				77FE72862775E00600482CE7 /* SelectInformationView.swift */,
 				7754B8812782C25800775D81 /* PhotoPopUpView.swift */,
-				7754B8852782C40C00775D81 /* DatePopOverView.swift */,
 				7754B87627829C4700775D81 /* EditUsernameTableViewCell.swift */,
 				77FE728A2776021600482CE7 /* SearchHeaderView.swift */,
 				774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */,
@@ -482,7 +477,6 @@
 				7754B8702781D66400775D81 /* EditUserProfileViewController.swift */,
 				7754B87A2782A0CC00775D81 /* EditUsernameViewController.swift */,
 				7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */,
-				7754B8872782C42000775D81 /* DatePopOverViewController.swift */,
 			);
 			name = Controllers;
 			path = "New Group1";
@@ -826,7 +820,6 @@
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */,
 				B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */,
-				7754B8882782C42000775D81 /* DatePopOverViewController.swift in Sources */,
 				B846BDA72754F35800513B77 /* LoginView.swift in Sources */,
 				777993212750CD41007A3898 /* CreatePostTableViewCell.swift in Sources */,
 				7754B8712781D66400775D81 /* EditUserProfileViewController.swift in Sources */,
@@ -868,7 +861,6 @@
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
-				7754B8862782C40C00775D81 /* DatePopOverView.swift in Sources */,
 				77ABC5D42774A906000431E1 /* EditDetailInformationView.swift in Sources */,
 				B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,

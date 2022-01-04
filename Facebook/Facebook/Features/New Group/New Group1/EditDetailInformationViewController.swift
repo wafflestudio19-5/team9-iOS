@@ -27,27 +27,36 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
     
     let disposeBag = DisposeBag()
     
-    let sections: [MultipleSectionModel] = [
-        .EditProfileSection(title: "직장", items: [
-            .AddInformationButtonItem(style: .company, buttonText: "직장 추가"),
-            .DetailInformationItem(style: .style4, image: UIImage(), information: "직장에서 직장으로 근무했음", description: "소개에 표시되지 않으며 전체 공개가 유지됩니다.")
-        ]),
-        .EditProfileSection(title: "학력", items: [
-            .AddInformationButtonItem(style: .university, buttonText: "대학 추가"),
-        ])
-    ]
-    
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay<[MultipleSectionModel]>(value: [])
     
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .DetailInformationItem(style, image, information, time, description, privacyBound):
+        case let .CompanyItem(company):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailInformationTableViewCell.reuseIdentifier, for: idxPath) as? DetailInformationTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: style)
-            cell.configureCell(image: image, information: information, time: time, description: description, privacyBound: privacyBound)
+            cell.initialSetup(cellStyle: .style4)
+            cell.configureCell(image: UIImage(),
+                               information: company.name ?? "",
+                               time: "",
+                               description: "",
+                               privacyBound: "")
+            
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                cell.toggleIndicate()
+            }).disposed(by: cell.disposeBag)
+            
+            return cell
+        case let .UniversityItem(university):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailInformationTableViewCell.reuseIdentifier, for: idxPath) as? DetailInformationTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: .style4)
+            cell.configureCell(image: UIImage(),
+                               information: university.name ?? "",
+                               time: "",
+                               description: "",
+                               privacyBound: "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 cell.toggleIndicate()
@@ -73,12 +82,63 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
         }
     }
     
+    var userProfile: UserProfile?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.title = "상세 정보 수정"
-        sectionsBR.accept(sections)
+        loadData()
         bindTableView()
+    }
+    
+    func loadData() {
+        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
+            
+                if event.isCompleted {
+                    return
+                }
+            
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+            
+                self.userProfile = response
+                
+                self.createSection()
+                
+        }.disposed(by: disposeBag)
+    }
+    
+    func createSection() {
+        guard let userProfile = userProfile else { return }
+        
+        let companyItems = userProfile.company?.map({ company in
+            SectionItem.CompanyItem(company: company)
+        }) ?? []
+        
+        let addCompanyButtonItem: [SectionItem] = [
+            .AddInformationButtonItem(style: .company, buttonText: "직장 추가")
+        ]
+    
+        let universityItems = userProfile.university?.map({ university in
+            SectionItem.UniversityItem(university: university)
+        }) ?? []
+        
+        let addUniversityButtonItem: [SectionItem] = [
+            .AddInformationButtonItem(style: .university, buttonText: "대학 추가"),
+        ]
+        
+        let sections: [MultipleSectionModel] = [
+            .EditProfileSection(title: "직장", items: companyItems + addCompanyButtonItem),
+            .EditProfileSection(title: "학력", items: universityItems + addUniversityButtonItem)
+        ]
+        
+        sectionsBR.accept(sections)
     }
 
     func bindTableView() {
@@ -113,7 +173,7 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
     //footer의 separate line
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
-        if section == sections.count - 1 { return UIView() } //마지막 section separator line 젝
+        if section == 1 { return UIView() } 
         
         let footerView = UIView()
         footerView.backgroundColor = .white

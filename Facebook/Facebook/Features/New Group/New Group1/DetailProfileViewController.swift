@@ -28,6 +28,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let disposeBag = DisposeBag()
     
+    
     //TableView 바인딩을 위한 dataSource객체
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
@@ -73,6 +74,46 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             cell.configureCell(image: image, information: information, time: time, description: description, privacyBound: privacyBound)
             
             return cell
+        case let .CompanyItem(company):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailInformationTableViewCell.reuseIdentifier, for: idxPath) as?
+                DetailInformationTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: .style3)
+            if company.is_active! {
+                cell.configureCell(image: UIImage(systemName: "briefcase.fill")!,
+                                   information: company.name!,
+                                   time: company.join_date! + " - 현재",
+                                   description: (company.detail != nil) ? company.detail! : "",
+                                   privacyBound: "전체 공개")
+            } else {
+                cell.configureCell(image: UIImage(systemName: "briefcase.fill")!,
+                                   information: company.name!,
+                                   time: company.join_date! + " ~ " + company.leave_date!,
+                                   description: (company.detail != nil) ? company.detail! : "",
+                                   privacyBound: "전체 공개")
+            }
+            
+            return cell
+        case let .UniversityItem(university):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailInformationTableViewCell.reuseIdentifier, for: idxPath) as?
+                DetailInformationTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: .style3)
+            if university.is_active! {
+                cell.configureCell(image: UIImage(systemName: "graduationcap.fill")!,
+                                   information: university.name!,
+                                   time: university.join_date! + " - 현재",
+                                   description: "",
+                                   privacyBound: "전체 공개")
+            } else {
+                cell.configureCell(image: UIImage(systemName: "graduationcap.fill")!,
+                                   information: university.name!,
+                                   time: university.join_date! + "~" + university.graduate_date!,
+                                   description: "",
+                                   privacyBound: "전체 공개")
+            }
+            
+            return cell
         case let .PostItem(post):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
             
@@ -98,29 +139,61 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
     
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self).subscribe { event in
-            self.userProfile = event.1
+        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
+                
+                if event.isCompleted {
+                    return
+                }
+                
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                self.userProfile = response
+                self.createSection()
         }.disposed(by: disposeBag)
     }
     
     func createSection() {
+        guard let userProfile = userProfile else { return }
+
+        let companyItems = userProfile.company?.map({ company in
+            SectionItem.CompanyItem(company: company)
+        }) ?? []
+        
+        let universityItems = userProfile.university?.map({ university in
+            SectionItem.UniversityItem(university: university)
+        }) ?? []
+        
         let sections: [MultipleSectionModel] = [
             .DetailInformationSection(title: "직장", items: [
-                .SimpleInformationItem(style: .style3, informationType: .company ,image: UIImage(systemName: "briefcase")!,information: "직장 추가"),
-                .DetailInformationItem(style: .style3, image: UIImage(systemName: "phone.fill")!,information: "직장에서 직장으로 근무했음", time: "2021년 12월 29일~2021년 12월 30일" ,description: "직업 설명입니다", privacyBound: "전체 공개")
-            ]),
+                .SimpleInformationItem(style: .style3, informationType: .company ,image: UIImage(systemName: "briefcase")!,information: "직장 추가")
+            ] + companyItems ),
             .DetailInformationSection(title: "학력", items:[
                 .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
                 .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
-            ]),
-            .DetailInformationSection(title: "연락처 정보", items: [
-                .DetailInformationItem(style: .style2, image: UIImage(systemName: "phone.fill")!,information: "010-1234-5678", description: "휴대폰", privacyBound: "회원님의 친구")
-            ]),
+            ] + universityItems ),
             .DetailInformationSection(title: "기본 정보", items: [
-                .DetailInformationItem(style: .style1, image: UIImage(systemName: "person.fill")!, information: "남성", description: "성별"),
-                .DetailInformationItem(style: .style2, image: UIImage(systemName: "gift.fill")!,information: "2002년 12월 12일", description: "생일", privacyBound: "회원님의 친구의 친구")
+                .DetailInformationItem(style: .style1,
+                                       image: UIImage(systemName: "person.fill")!,
+                                       information: (userProfile.gender == "M") ? "남성" : "여성",
+                                       description: "성별"),
+                .DetailInformationItem(style: .style2,
+                                       image: UIImage(systemName: "gift.fill")!,
+                                       information:
+                                        String(userProfile.birth.split(separator: "-")[0]) + "년 " +
+                                        String(userProfile.birth.split(separator: "-")[1]) + "월 " +
+                                        String(userProfile.birth.split(separator: "-")[2]) + "일 ",
+                                       description: "생일",
+                                       privacyBound: "회원님의 친구의 친구")
             ])
         ]
+        
+        sectionsBR.accept(sections)
     }
     
     func bindTableView() {
@@ -165,10 +238,6 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             //section header의 버튼 클릭 시 동작
             switch section {
             case 2:
-                sectionButton.rx.tap.bind {
-                    print("tap section 3 button!")
-                }
-            case 3:
                 sectionButton.rx.tap.bind { [weak self] in
                     let editUserProfileViewController = EditUserProfileViewController()
                     self?.push(viewController: editUserProfileViewController)
@@ -182,8 +251,6 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     //footer의 separate line
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        if section == sections.count - 1 { return UIView() } //마지막 section separator line 젝
         
         let footerView = UIView()
         footerView.backgroundColor = .white
@@ -207,3 +274,4 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         return 5
     }
 }
+

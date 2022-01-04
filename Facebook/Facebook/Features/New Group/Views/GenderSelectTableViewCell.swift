@@ -13,9 +13,16 @@ class GenderSelectTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "GenderSelectTableViewCell"
     
+    enum Style {
+        case male
+        case female
+    }
+    
+    var cellStyle: Style = .male
+    
     var disposeBag = DisposeBag()
     
-    var isSelect: Bool = true
+    var selectedGender = ""
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -41,9 +48,15 @@ class GenderSelectTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func initialSetup(cellStyle: Style, selectedGender: String) {
+        self.cellStyle = cellStyle
+        self.selectedGender = selectedGender
+        setLayout()
+        bindImage()
+    }
+    
     func configureCell(genderText: String) {
         genderLabel.text = genderText
-        setLayout()
     }
     
     private func setLayout() {
@@ -68,7 +81,28 @@ class GenderSelectTableViewCell: UITableViewCell {
     
     private func bindImage() {
         //선택 여부에 따라 image 활성/비활성
-        
+        Observable.just(selectedGender).subscribe(onNext: { [weak self] selectedGender in
+            guard let self = self else { return }
+            
+            switch selectedGender {
+            case "M":
+                switch self.cellStyle {
+                case .male:
+                    self.isSelectImage.image = UIImage(systemName: "checkmark")
+                case .female:
+                    self.isSelectImage.image = UIImage()
+                }
+            case "F":
+                switch self.cellStyle {
+                case .male:
+                    self.isSelectImage.image = UIImage()
+                case .female:
+                    self.isSelectImage.image = UIImage(systemName: "checkmark")
+                }
+            default:
+                break
+            }
+        }).disposed(by: disposeBag)
     }
 
     let genderLabel: UILabel = {
@@ -78,5 +112,10 @@ class GenderSelectTableViewCell: UITableViewCell {
         return label
     }()
     
-    let isSelectImage = UIImageView()
+    let isSelectImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.tintColor = .systemBlue
+        
+        return imageView
+    }()
 }

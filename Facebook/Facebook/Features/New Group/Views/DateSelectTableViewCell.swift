@@ -38,9 +38,9 @@ class DateSelectTableViewCell: UITableViewCell {
     let monthDataBR: BehaviorRelay<[String]> = BehaviorRelay<[String]>(value: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"])
     var dayDataBR: BehaviorRelay<[Int]> = BehaviorRelay<[Int]>(value: [])
     
-    private let year = BehaviorRelay<String>(value: "")
-    private let month = BehaviorRelay<String>(value: "")
-    private let day = BehaviorRelay<String>(value: "")
+    let year = BehaviorRelay<String>(value: "")
+    let month = BehaviorRelay<String>(value: "")
+    let day = BehaviorRelay<String>(value: "")
     
     enum Style {
         case startDateStyle
@@ -466,8 +466,8 @@ extension UITextField {
     }
     
     func addRightImage(image: UIImage) {
-        let padding = 10
-        let size = 15
+        let padding = 5
+        let size = 10
 
         let outerView = UIView(frame: CGRect(x: 0, y: 0, width: size+padding, height: size) )
         let iconView  = UIImageView(frame: CGRect(x: padding, y: 0, width: size, height: size))

@@ -22,7 +22,11 @@ class PhotoPopUpView: UIView {
     }
 
     private func setLayoutForView() {
-        
+        self.addSubview(photoPopUpTableView)
+        photoPopUpTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            
+        ])
     }
     
     private func configureTableView() {

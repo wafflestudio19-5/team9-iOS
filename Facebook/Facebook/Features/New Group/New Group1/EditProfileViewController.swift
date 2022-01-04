@@ -28,24 +28,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     
     let disposeBag = DisposeBag()
     
-    let sections: [MultipleSectionModel] = [
-        .ProfileImageSection(title: "프로필 사진", items: [
-            .ProfileImageItem(image: UIImage(systemName: "person.circle.fill")!)
-        ]),
-        .CoverImageSection(title: "커버 사진", items: [
-            .CoverImageItem(image: UIImage(systemName: "photo")!)
-        ]),
-        .SelfIntroSection(title: "소개", items: [
-            .LabelItem(style: .style1, labelText: "회원님에 대해 설명해주세요...")
-        ]),
-        .DetailInformationSection(title: "상세 정보", items: [
-            .SimpleInformationItem(style: .style2, image: UIImage(systemName: "briefcase")!, information: "직장"),
-            .SimpleInformationItem(style: .style2, image: UIImage(systemName: "graduationcap")!, information: "학력"),
-        ]),
-        .EditProfileSection(title: "정보 수정", items: [
-            .ButtonItem(style: .style2, buttonText: "정보 수정")
-        ])
-    ]
+    let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay<[MultipleSectionModel]>(value: [])
     
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
@@ -105,16 +88,72 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         }
     }
     
+    var userProfile: UserProfile?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
         self.title = "프로필 편집"
+        loadData()
         bindTableView()
     }
     
+    func loadData() {
+        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
+                
+                if event.isCompleted {
+                    return
+                }
+                
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                self.userProfile = response
+                self.createSection()
+        }.disposed(by: disposeBag)
+    }
+    
+    func createSection() {
+        guard let userProfile = userProfile else { return }
+        
+        let companyItems = userProfile.company?.map({ company in
+            SectionItem.CompanyItem(company: company)
+        }) ?? []
+        
+        let universityItems = userProfile.university?.map({ university in
+            SectionItem.UniversityItem(university: university)
+        }) ?? []
+        
+        let sections: [MultipleSectionModel] = [
+            .ProfileImageSection(title: "프로필 사진", items: [
+                .ProfileImageItem(image: UIImage(systemName: "person.circle.fill")!)
+            ]),
+            .CoverImageSection(title: "커버 사진", items: [
+                .CoverImageItem(image: UIImage(systemName: "photo")!)
+            ]),
+            .SelfIntroSection(title: "소개", items: [
+                .LabelItem(style: .style1, labelText: userProfile.self_intro ?? "회원님에 대해 설명해주세요...")
+            ]),
+            .DetailInformationSection(title: "상세 정보", items: [
+                .SimpleInformationItem(style: .style2, image: UIImage(systemName: "briefcase")!, information: "직장"),
+                .SimpleInformationItem(style: .style2, image: UIImage(systemName: "graduationcap")!, information: "학력"),
+            ] + companyItems + universityItems),
+            .EditProfileSection(title: "정보 수정", items: [
+                .ButtonItem(style: .style2, buttonText: "정보 수정")
+            ])
+        ]
+        
+        sectionsBR.accept(sections)
+    }
+    
     func bindTableView() {
-        Observable.just(sections).bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
@@ -122,7 +161,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     //UITableView의 custom header적용
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
-        if section == sections.count - 1 { return UIView() } //마지막 section header 제거
+        if section == 4 { return UIView() } //마지막 section header 제거
         
         let frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 42)
         let headerView = UIView(frame: frame)
@@ -182,7 +221,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     //footer의 separate line
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
-        if section == sections.count - 1 { return UIView() } //마지막 section separator line 젝
+        if section == 4 { return UIView() } //마지막 section separator line 젝
         
         let footerView = UIView()
         footerView.backgroundColor = .white
@@ -199,7 +238,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == sections.count - 1 { return 0 } //마지막 section header w제거
+        if section == 4 { return 0 } //마지막 section header w제거
         return 40
     }
     

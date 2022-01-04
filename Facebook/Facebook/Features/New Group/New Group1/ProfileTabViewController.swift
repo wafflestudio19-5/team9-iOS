@@ -17,20 +17,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     var tableView: UITableView {
         tabView.profileTableView
     }
-
-    let sections: [MultipleSectionModel] = [
-        .ProfileImageSection(title: "메인 프로필", items: [
-            .MainProfileItem(profileImage: UIImage(systemName: "person.fill")!, coverImage: UIImage(), name: "name")
-        ]),
-        .DetailInformationSection(title: "상세 정보", items: [
-            .SimpleInformationItem(style: .style1, image: UIImage(systemName: "briefcase.fill")!, information: "경력"),
-            .SimpleInformationItem(style: .style1, image: UIImage(systemName: "graduationcap.fill")!, information: "학력"),
-            .SimpleInformationItem(style: .style1, image: UIImage(systemName: "ellipsis")!, information: "내 정보 보기"),
-            .ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
-        ]),
-        .PostSection(title: "내가 쓴 글", items: [
-        ])
-    ]
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
     
@@ -134,8 +120,21 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     //유저 프로필 관련 데이터 불러오기
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self).subscribe { event in
-            self.userProfile = event.1
+        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
+            
+                if event.isCompleted {
+                    return
+                }
+            
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+            
+                self.userProfile = response
         }.disposed(by: disposeBag)
         
         postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(id: 41))
@@ -205,32 +204,33 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             ])
         ]
 
-        let companySectionItems = userProfile.company?.map({ company in
+        let companyItems = userProfile.company?.map({ company in
             SectionItem.CompanyItem(company: company)
-        })
+        }) ?? []
         
-        let universitySectionItems = userProfile.university?.map({ university in
+        let universityItems = userProfile.university?.map({ university in
             SectionItem.UniversityItem(university: university)
-        })
+        }) ?? []
         
         let otherItems = [
             SectionItem.SimpleInformationItem(style: .style1, image: UIImage(systemName: "ellipsis")!, information: "내 정보 보기"),
             SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
         ]
         
-        let detailInformationSection: [MultipleSectionModel] = [
+        let detailSection: [MultipleSectionModel] = [
             .DetailInformationSection(title: "상세 정보",
-                                      items: (companySectionItems!+universitySectionItems!+otherItems))
+                                      items: (companyItems+universityItems+otherItems))
         ]
         
-        let postSectionItems = postDataViewModel?.dataList.value.map({ post in
+        let postItems = postDataViewModel?.dataList.value.map({ post in
             SectionItem.PostItem(post: post)
-        })
+        }) ?? []
+        
         let postSection: [MultipleSectionModel] = [
-            .PostSection(title: "내가 쓴 글",items: postSectionItems!)
+            .PostSection(title: "내가 쓴 글",items: postItems)
         ]
         
-        sectionsBR.accept(mainProfileSection + detailInformationSection + postSection)
+        sectionsBR.accept(mainProfileSection + detailSection + postSection)
     }
     
     
