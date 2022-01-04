@@ -341,8 +341,8 @@
 			children = (
 				BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */,
 				BE9C7C99276E3F480089247F /* LoginResponse.swift */,
-				BE86BAD42783047500948CAA /* PostLikeResponse.swift */,
 				B85D67E3277C964F002CCC04 /* SignUpResponse.swift */,
+				BE86BAD42783047500948CAA /* PostLikeResponse.swift */,
 			);
 			path = Responses;
 			sourceTree = "<group>";
