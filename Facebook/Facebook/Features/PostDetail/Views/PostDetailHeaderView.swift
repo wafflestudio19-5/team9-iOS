@@ -29,6 +29,34 @@ class PostDetailHeaderView: UIStackView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    var likeButton: LikeButton {
+        return buttonStackView.likeButton
+    }
+    
+    // Internal state that manages likes
+    var likes: Int = 0 {
+        didSet {
+            likeCountLabel.text = likes.withCommas(unit: "개")
+        }
+    }
+    var is_liked: Bool = false {
+        didSet {
+            likeButton.isSelected = is_liked
+        }
+    }
+
+    /// 서버에 요청을 보내기 전에 UI를 업데이트한다.
+    func like() {
+        likes = is_liked ? max(0, likes - 1) : likes + 1
+        is_liked = !is_liked
+    }
+    
+    /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
+    func like(syncWith response: PostLikeResponse) {
+        likes = response.likes
+        is_liked = response.is_liked
+    }
+    
     // 이미지 그리드 뷰
     private let imageGridCollectionView = ImageGridCollectionView()
     
@@ -46,9 +74,11 @@ class PostDetailHeaderView: UIStackView {
     }()
     
     func configure(with post: Post) {
+        likes = post.likes
+        is_liked = post.is_liked
         contentLabel.text = post.content
-        likeCountLabel.text = post.likes.withCommas(unit: "개")
         authorHeaderView.configure(with: post)
+        
         
         // TODO: duplicated lines
         let subpostUrls: [URL?] = post.subposts.map {

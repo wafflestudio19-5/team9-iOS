@@ -79,6 +79,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         bindTableView()
+        bindLikes()
         setLeftBarButtonItems()
         
         // firstResponder 관련 문제 workaround
@@ -205,6 +206,24 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         ])
         return customInputView
     }()
+}
+
+// MARK: Handle Likes
+
+extension PostDetailViewController {
+    private func bindLikes() {
+        postView.likeButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.postView.postContentHeaderView.like()
+                NetworkService.put(endpoint: .newsfeedLike(postId: self.post.id), as: PostLikeResponse.self)
+                    .bind { response in
+                        self.postView.postContentHeaderView.like(syncWith: response.1)
+                    }
+                    .disposed(by: self.disposeBag)
+            }
+            .disposed(by: disposeBag)
+    }
 }
 
 // MARK: Handle Comments
