@@ -22,12 +22,15 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
     
     let disposeBag = DisposeBag()
     
+    var userProfile: UserProfile?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.addSelfIntroView.inputTextView.becomeFirstResponder()
         setNavigationBarItems()
+        loadData()
         bindView()
     }
     
@@ -41,10 +44,44 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
            navigationController?.dismiss(animated: true, completion: nil)
     }
     
+    func loadData() {
+        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
+                
+                if event.isCompleted {
+                    return
+                }
+                
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                self.userProfile = response
+                self.setTextView()
+        }.disposed(by: disposeBag)
+    }
+    
+    func setTextView() {
+        guard let userProfile = userProfile else { return }
+        
+        addSelfIntroView.inputTextView.text = (userProfile.self_intro != nil && userProfile.self_intro != "") ? userProfile.self_intro : ""
+    }
+    
     func bindView() {
         addSelfIntroView.saveButton.rx.tap
             .bind{ [weak self] _ in
-            
+                guard let self = self else { return }
+                self.userProfile?.self_intro = self.addSelfIntroView.inputTextView.text
+                guard let userProfile = self.userProfile else { return }
+                
+                NetworkService
+                    .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
+                    .subscribe { [weak self] _ in
+                        self?.dismiss(animated: true, completion: nil)
+                    }.disposed(by: self.disposeBag)
             }.disposed(by: disposeBag)
         
         //textView의 입력한 text길이 표시 및 제한

@@ -60,31 +60,39 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                if self.userProfile?.self_intro == nil {
+                if (self.userProfile?.self_intro == nil || self.userProfile?.self_intro == "") {
                     let addSelfIntroViewController = AddSelfIntroViewController()
                     let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
                     navigationController.modalPresentationStyle = .fullScreen
                     self.present(navigationController, animated: true, completion: nil)
                 } else {
-                    let alertMenu = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
-                    
-                    let editSelfIntroAction = UIAlertAction(title: "소개 수정", style: .default, handler: nil)
-                    editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
-                    editSelfIntroAction.setValue(UIImage(systemName: "pencil.circle")!, forKey: "image")
-                    
-                    let deleteSelfIntroAction = UIAlertAction(title: "소개 삭제", style: .default, handler: nil)
-                    deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
-                    deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
-                    
-                    let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
-                    
-                    alertMenu.addAction(editSelfIntroAction)
-                    alertMenu.addAction(deleteSelfIntroAction)
-                    alertMenu.addAction(cancelAction)
-                    
-                    self.present(alertMenu, animated: true, completion: nil)
+                    self.showAlertMenu()
                 }
             }).disposed(by: cell.disposeBag)
+            
+            return cell
+        case let .CompanyItem(company):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: .style1)
+            cell.configureCell(image: UIImage(systemName: "briefcase")!, information: company.name!)
+            
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                let detailProfileViewController = DetailProfileViewController()
+                self?.push(viewController: detailProfileViewController)
+            }).disposed(by: self.disposeBag)
+            
+            return cell
+        case let .UniversityItem(university):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
+            
+            cell.initialSetup(cellStyle: .style1)
+            cell.configureCell(image: UIImage(systemName: "graduationcap")!, information: university.name!)
+            
+            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                let detailProfileViewController = DetailProfileViewController()
+                self?.push(viewController: detailProfileViewController)
+            }).disposed(by: self.disposeBag)
             
             return cell
         case let .ButtonItem(style, buttonText):
@@ -114,6 +122,13 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         self.title = "프로필 편집"
         loadData()
         bindTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
+        if userProfile != nil {
+            loadData()
+        }
     }
     
     func loadData() {
@@ -158,10 +173,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                 .LabelItem(style: .style1,
                            labelText: (userProfile.self_intro != nil && userProfile.self_intro != "") ? userProfile.self_intro! : "회원님에 대해 설명해주세요...")
             ]),
-            .DetailInformationSection(title: "상세 정보", items: [
-                .SimpleInformationItem(style: .style2, image: UIImage(systemName: "briefcase")!, information: "직장"),
-                .SimpleInformationItem(style: .style2, image: UIImage(systemName: "graduationcap")!, information: "학력"),
-            ] + companyItems + universityItems),
+            .DetailInformationSection(title: "상세 정보", items: companyItems + universityItems),
             .EditProfileSection(title: "정보 수정", items: [
                 .ButtonItem(style: .style2, buttonText: "정보 수정")
             ])
@@ -220,10 +232,14 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             }.disposed(by: disposeBag)
         case 2:
             sectionButton.rx.tap.bind {
-                let addSelfIntroViewController = AddSelfIntroViewController()
-                let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
-                navigationController.modalPresentationStyle = .fullScreen
-                self.present(navigationController, animated: true, completion: nil)
+                if (self.userProfile?.self_intro == nil || self.userProfile?.self_intro == "") {
+                    let addSelfIntroViewController = AddSelfIntroViewController()
+                    let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+                    navigationController.modalPresentationStyle = .fullScreen
+                    self.present(navigationController, animated: true, completion: nil)
+                } else {
+                    self.showAlertMenu()
+                }
             }.disposed(by: disposeBag)
         case 3:
             sectionButton.rx.tap.bind {
@@ -266,3 +282,44 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     }
 }
 
+extension EditProfileViewController {
+    //자기 소개가 이미 있을 때 자기 소개 관련 메뉴(alertsheet형식) present
+    func showAlertMenu() {
+        let alertMenu = UIAlertController(title: "자기 소개", message: "", preferredStyle: .actionSheet)
+        
+        let editSelfIntroAction = UIAlertAction(title: "소개 수정", style: .default, handler: { action in
+            let addSelfIntroViewController = AddSelfIntroViewController()
+            let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            self.present(navigationController, animated: true, completion: nil)
+        })
+        editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        editSelfIntroAction.setValue(UIImage(systemName: "pencil.circle")!, forKey: "image")
+        
+        let deleteSelfIntroAction = UIAlertAction(title: "소개 삭제", style: .default, handler: { action in
+            self.deleteSelfIntro()
+        })
+        deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        
+        alertMenu.addAction(editSelfIntroAction)
+        alertMenu.addAction(deleteSelfIntroAction)
+        alertMenu.addAction(cancelAction)
+        
+        self.present(alertMenu, animated: true, completion: nil)
+    }
+    
+    func deleteSelfIntro() {
+        userProfile?.self_intro = ""
+        guard let userProfile = userProfile else { return }
+        
+        NetworkService
+            .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
+            .subscribe { [weak self] _ in
+                self?.loadData()
+            }.disposed(by: disposeBag)
+
+    }
+}

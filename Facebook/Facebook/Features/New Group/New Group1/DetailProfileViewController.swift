@@ -120,6 +120,13 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         bind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
+        if userProfile != nil {
+            loadData()
+        }
+    }
+    
     func loadData() {
         NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
             .subscribe { [weak self] event in
