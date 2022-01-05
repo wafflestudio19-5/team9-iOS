@@ -132,7 +132,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
                 guard let self = self else { return }
                 self.view.setNeedsLayout()
                 UIView.animate(withDuration: 0) {
-                    let keyboardHeight = keyboardVisibleHeight - (self.initialInputAccessoryHeight ?? 0)
+                    let keyboardHeight = keyboardVisibleHeight - (self.initialInputAccessoryHeight ?? 0) + CGFloat.standardTopMargin
                     self.commentTableView.contentInset.bottom = keyboardHeight
                     self.commentTableView.scrollIndicatorInsets.bottom = self.commentTableView.contentInset.bottom
                     self.view.layoutIfNeeded()
@@ -241,6 +241,31 @@ extension PostDetailViewController {
                 cell.configure(with: comment)
             }
             .disposed(by: disposeBag)
+        
+        /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
+        commentViewModel.isLoading
+            .asDriver()
+            .drive(onNext: { [weak self] isLoading in
+                if isLoading {
+                    self?.commentTableView.showBottomSpinner()
+                } else {
+                    self?.commentTableView.hideBottomSpinner()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        /// 테이블 맨 아래까지 스크롤할 때마다 `loadMore` 함수를 실행합니다.
+        commentTableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let offSetY = self.commentTableView.contentOffset.y
+                let contentHeight = self.commentTableView.contentSize.height
+                if offSetY > (contentHeight - self.commentTableView.frame.size.height - 100) {
+                    self.commentViewModel.loadMore()
+                }
+            }
+            .disposed(by: disposeBag)
+        
     }
     
 }

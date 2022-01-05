@@ -43,7 +43,6 @@ class PostDetailView: UIView {
         NSLayoutConstraint.activate([
             commentTableView.topAnchor.constraint(equalTo: self.topAnchor),
             commentTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-//            commentTableView.heightAnchor.constraint(equalToConstant: 40),
             commentTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             commentTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             

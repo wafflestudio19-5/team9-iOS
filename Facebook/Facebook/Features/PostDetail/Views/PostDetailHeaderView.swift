@@ -45,8 +45,6 @@ class PostDetailHeaderView: UIStackView {
         return stack
     }()
     
-    private let divider = Divider()
-    
     func configure(with post: Post) {
         contentLabel.text = post.content
         likeCountLabel.text = post.likes.withCommas(unit: "개")
@@ -77,10 +75,8 @@ class PostDetailHeaderView: UIStackView {
         self.addArrangedSubview(imageGridCollectionView)
         self.addArrangedSubview(buttonStackView)
         self.addArrangedSubview(likeCountLabelWithIcon)
-        self.addArrangedSubview(divider)
         
         NSLayoutConstraint.activate([
-//            contentLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: .standardTopMargin + 5),
             contentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
             contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
             
@@ -91,11 +87,7 @@ class PostDetailHeaderView: UIStackView {
             buttonStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
             
             likeCountLabelWithIcon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
-            likeCountLabelWithIcon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
-            
-            divider.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 1)
+            likeCountLabelWithIcon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin)
         ])
     }
     

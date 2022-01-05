@@ -77,9 +77,9 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             .asDriver()
             .drive(onNext: { [weak self] isLoading in
                 if isLoading {
-                    self?.tabView.showBottomSpinner()
+                    self?.tableView.showBottomSpinner()
                 } else {
-                    self?.tabView.hideBottomSpinner()
+                    self?.tableView.hideBottomSpinner()
                 }
             })
             .disposed(by: disposeBag)

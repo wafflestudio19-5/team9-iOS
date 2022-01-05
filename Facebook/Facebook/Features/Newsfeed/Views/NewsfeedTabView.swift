@@ -44,30 +44,4 @@ class NewsfeedTabView: UIView {
         newsfeedTableView.delaysContentTouches = false
         newsfeedTableView.separatorStyle = .none
     }
-    
-    // MARK: Bottom Spinner
-    
-    private lazy var bottomSpinner: UIView = {
-        let view = UIView(frame: CGRect(
-            x: 0,
-            y: 0,
-            width: self.frame.size.width,
-            height: 100)
-        )
-        let spinner = UIActivityIndicatorView()
-        view.addSubview(spinner)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        spinner.startAnimating()
-        return view
-    }()
-    
-    func showBottomSpinner() {
-        self.newsfeedTableView.tableFooterView = self.bottomSpinner
-    }
-    
-    func hideBottomSpinner() {
-        self.newsfeedTableView.tableFooterView = UIView(frame: .zero)
-    }
 }
