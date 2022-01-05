@@ -10,6 +10,7 @@ import SwiftUI
 import RxSwift
 
 class PostCell: UITableViewCell {
+    /// cell이 reuse될 때 `disposeBag`은 새로운 것으로 갈아끼워진다. 따라서 기존 cell의 구독이 취소된다.
     var disposeBag = DisposeBag()
     static let reuseIdentifier = "PostCell"
     
@@ -32,15 +33,11 @@ class PostCell: UITableViewCell {
         return buttonHorizontalStackView.likeButton
     }
     
-    // Internal state that manages likes
-    var likes: Int = 0 {
+    var post: Post = Post.getDummyPost() {
         didSet {
-            likeCountLabel.text = likes.withCommas(unit: "개")
-        }
-    }
-    var is_liked: Bool = false {
-        didSet {
-            likeButton.isSelected = is_liked
+            likeCountLabel.text = post.likes.withCommas(unit: "개")
+            likeButton.isSelected = post.is_liked
+            layoutIfNeeded()
         }
     }
     
@@ -48,31 +45,34 @@ class PostCell: UITableViewCell {
 
     /// 서버에 요청을 보내기 전에 UI를 업데이트한다.
     func like() {
-        likes = is_liked ? max(0, likes - 1) : likes + 1
-        is_liked = !is_liked
+        var copied = post
+        copied.likes = post.is_liked ? max(0, post.likes - 1) : post.likes + 1
+        copied.is_liked = !post.is_liked
+        post = copied  // 중복 업데이트 방지
     }
     
     /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
     func like(syncWith response: PostLikeResponse) {
-        likes = response.likes
-        is_liked = response.is_liked
+        var copied = post
+        copied.likes = response.likes
+        copied.is_liked = response.is_liked
+        post = copied  // 중복 업데이트 방지
     }
     
     // MARK: Setup
     
-    func configureCell(with post: Post) {
-        likes = post.likes
-        is_liked = post.is_liked
+    func configureCell(with newPost: Post) {
+        post = newPost
         commentCountLabel.text = "댓글 \(post.comments.withCommas(unit: "개"))"
         textContentLabel.text = post.content
         postHeader.configure(with: post)
         
         // CollectionView Layout
-        let subpostUrls: [URL?] = post.subposts.map {
+        let subpostUrls: [URL?] = post.subposts!.map {
             guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
             return url
         }
-        self.imageGridCollectionView.numberOfImages = post.subposts.count
+        self.imageGridCollectionView.numberOfImages = post.subposts!.count
         Observable.just(subpostUrls)
             .observe(on: MainScheduler.instance)
             .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in

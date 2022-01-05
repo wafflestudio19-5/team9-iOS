@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class PostDetailHeaderView: UIStackView {
     
@@ -17,11 +18,12 @@ class PostDetailHeaderView: UIStackView {
     private let authorHeaderView = AuthorInfoHeaderView()
     private let disposeBag = DisposeBag()
     
+    /// 현재 뷰에서 포스트를 업데이트(좋아요 등)하면 이 `PublishRelay`를 구독한 뷰에서도 업데이트할 수 있다.
+    let postUpdated = PublishRelay<Post>()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
-        contentLabel.numberOfLines = 40
-        contentLabel.text = String(repeating: "테스트ㅡ트트트틑", count: 500)
         setLayout()
     }
     
@@ -33,28 +35,30 @@ class PostDetailHeaderView: UIStackView {
         return buttonStackView.likeButton
     }
     
-    // Internal state that manages likes
-    var likes: Int = 0 {
+    var post: Post = Post.getDummyPost() {
         didSet {
-            likeCountLabel.text = likes.withCommas(unit: "개")
+            likeCountLabel.text = post.likes.withCommas(unit: "개")
+            likeButton.isSelected = post.is_liked
         }
     }
-    var is_liked: Bool = false {
-        didSet {
-            likeButton.isSelected = is_liked
-        }
-    }
+    
+    // MARK: Like Button
 
     /// 서버에 요청을 보내기 전에 UI를 업데이트한다.
     func like() {
-        likes = is_liked ? max(0, likes - 1) : likes + 1
-        is_liked = !is_liked
+        var copied = post
+        copied.likes = post.is_liked ? max(0, post.likes - 1) : post.likes + 1
+        copied.is_liked = !post.is_liked
+        post = copied
     }
     
     /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
     func like(syncWith response: PostLikeResponse) {
-        likes = response.likes
-        is_liked = response.is_liked
+        var copied = post
+        copied.likes = response.likes
+        copied.is_liked = response.is_liked
+        post = copied
+        postUpdated.accept(post)
     }
     
     // 이미지 그리드 뷰
@@ -73,19 +77,17 @@ class PostDetailHeaderView: UIStackView {
         return stack
     }()
     
-    func configure(with post: Post) {
-        likes = post.likes
-        is_liked = post.is_liked
+    func configure(with newPost: Post) {
+        post = newPost
         contentLabel.text = post.content
         authorHeaderView.configure(with: post)
         
-        
         // TODO: duplicated lines
-        let subpostUrls: [URL?] = post.subposts.map {
+        let subpostUrls: [URL?] = post.subposts!.map {
             guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
             return url
         }
-        imageGridCollectionView.numberOfImages = post.subposts.count
+        imageGridCollectionView.numberOfImages = post.subposts!.count
         imageGridCollectionView.dataSource = nil
         Observable.just(subpostUrls)
             .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in

@@ -32,6 +32,22 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         tableView.adjustHeaderHeight()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    private func pushToDetailVC(cell: PostCell, asFirstResponder: Bool) {
+        let detailVC = PostDetailViewController(post: cell.post, asFirstResponder: asFirstResponder)
+        
+        detailVC.postView.postContentHeaderView.postUpdated
+            .bind { updatedPost in
+                cell.post = updatedPost  // cell will be updated accordingly
+            }
+            .disposed(by: detailVC.disposeBag)
+        
+        self.push(viewController: detailVC)
+    }
+    
     
     func bind() {
         
@@ -52,6 +68,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             .observe(on: MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: PostCell.reuseIdentifier, cellType: PostCell.self)) { row, post, cell in
                 cell.configureCell(with: post)
+                print("LINE 73")
                 
                 // 좋아요 버튼 바인딩
                 cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
@@ -67,8 +84,8 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
                 cell.buttonHorizontalStackView.commentButton.rx.tap
                     .observe(on: MainScheduler.instance)
                     .bind { [weak self] _ in
-                        self?.push(viewController: PostDetailViewController(post: post, asFirstResponder: true))
-                    }.disposed(by: cell.disposeBag)  // cell이 reuse될 때 disposeBag은 새로운 것으로 갈아끼워진다(prepareForReuse에 의해). 따라서 기존 cell의 구독이 취소된다.
+                        self?.pushToDetailVC(cell: cell, asFirstResponder: true)
+                    }.disposed(by: cell.disposeBag)  
             }
             .disposed(by: disposeBag)
         

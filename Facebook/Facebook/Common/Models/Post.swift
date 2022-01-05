@@ -10,25 +10,29 @@ import Foundation
 struct Post: Codable, Identifiable {
     let id: Int
     let author: User?
-    let content: String
-    let likes: Int
-    let is_liked: Bool
+    var content: String
+    var likes: Int
+    var is_liked: Bool
     let posted_at: String?
-    let comments: Int
+    var comments: Int
     let file: String?
     
     let mainpost: Int?
-    let subposts: [SubPost]
+    let subposts: [Post]?
+    
+    static func getDummyPost() -> Self {
+        return Post(id: -1, author: nil, content: "", likes: -1, is_liked: false, posted_at: nil, comments: -1, file: nil, mainpost: nil, subposts: nil)
+    }
 }
 
 // To be deprecated
-struct SubPost: Codable, Identifiable {
-    let id: Int
-    let content: String
-    let likes: Int
-    let posted_at: String?
-    let comments: Int
-    let file: String?
-    
-    let mainpost: Int?
-}
+//struct SubPost: Codable, Identifiable {
+//    let id: Int
+//    let content: String
+//    let likes: Int
+//    let posted_at: String?
+//    let comments: Int
+//    let file: String?
+//
+//    let mainpost: Int?
+//}
