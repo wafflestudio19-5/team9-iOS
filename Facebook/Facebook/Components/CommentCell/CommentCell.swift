@@ -38,7 +38,7 @@ class CommentCell: UITableViewCell {
     
     func configure(with comment: Comment) {
         authorLabel.text = comment.author.username
-        contentLabel.text = comment.content
+        contentLabel.text = String(repeating: comment.content, count: Int.random(in: 1...10))
         createdLabel.text = comment.posted_at
         profileImageSize = comment.profileImageSize
         leftMarginConstraint?.constant = comment.leftMargin
@@ -65,11 +65,11 @@ class CommentCell: UITableViewCell {
         
         let verticalStackForContents = UIStackView()
         verticalStackForContents.axis = .vertical
-        verticalStackForContents.spacing = 2.0
+        verticalStackForContents.spacing = 0
         verticalStackForContents.backgroundColor = FacebookColor.mildGray.color()
-        verticalStackForContents.layer.cornerRadius = 15
+        verticalStackForContents.layer.cornerRadius = 18
         verticalStackForContents.isLayoutMarginsRelativeArrangement = true
-        verticalStackForContents.layoutMargins = UIEdgeInsets(top: 8.0, left: 14.0, bottom: 8.0, right: 14.0)
+        verticalStackForContents.layoutMargins = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         verticalStackForContents.addArrangedSubview(authorLabel)
         verticalStackForContents.addArrangedSubview(contentLabel)
         verticalStackForContents.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +86,7 @@ class CommentCell: UITableViewCell {
             
             verticalStackForContents.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
             verticalStackForContents.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 4),
-            verticalStackForContents.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
+            verticalStackForContents.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
             
             horizontalStackForButtons.topAnchor.constraint(equalTo: verticalStackForContents.bottomAnchor, constant: 4),
             horizontalStackForButtons.leadingAnchor.constraint(equalTo: verticalStackForContents.leadingAnchor, constant: .standardLeadingMargin),
