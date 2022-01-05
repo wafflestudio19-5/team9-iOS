@@ -16,6 +16,11 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     let disposeBag = DisposeBag()
     var hiddenTextView = UITextView()
     var didConfigurePostDetailView: Bool = false
+    var initialInputAccessoryHeight: CGFloat?
+    
+    lazy var commentViewModel: PaginationViewModel<Comment> = {
+        return PaginationViewModel<Comment>(endpoint: .comment(postId: 796))
+    }()
     
     lazy var authorHeaderView: AuthorInfoHeaderView = {
         let view = AuthorInfoHeaderView(imageWidth: 40)
@@ -52,6 +57,10 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return view
     }
     
+    var commentTableView: UITableView {
+        return postView.commentTableView
+    }
+    
     func setLeftBarButtonItems() {
         let stackview = UIStackView.init(arrangedSubviews: [leftChevronButton, authorHeaderView])
         stackview.distribution = .equalSpacing
@@ -61,11 +70,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         
         let leftBarButtons = UIBarButtonItem(customView: stackview)
         navigationItem.leftBarButtonItem = leftBarButtons
-    }
-    
-    
-    func bindTableView(){
-        // TODO: Binding for comment table view (use `PaginationViewModel`)
     }
     
     // MARK: View LifeCycle
@@ -78,9 +82,9 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         setLeftBarButtonItems()
         
         // firstResponder 관련 문제 workaround
-        view.addSubview(hiddenTextView)
-        hiddenTextView.isHidden = true
-        hiddenTextView.inputAccessoryView = keyboardAccessory
+//        view.addSubview(hiddenTextView)
+//        hiddenTextView.isHidden = true
+//        hiddenTextView.inputAccessoryView = keyboardAccessory
 //        if self.asFirstResponder {
 //            hiddenTextView.becomeFirstResponder()
 //        }
@@ -88,14 +92,15 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        bindKeyboardHeight()
-        if self.asFirstResponder && !textView.isFirstResponder {
-            textView.becomeFirstResponder()
-        }
+//        if self.asFirstResponder && !textView.isFirstResponder {
+//            textView.becomeFirstResponder()
+//        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        initialInputAccessoryHeight = self.inputAccessoryView.frame.height
+        bindKeyboardHeight()
         if self.asFirstResponder && !textView.isFirstResponder {
             textView.becomeFirstResponder()
         }
@@ -105,7 +110,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLayoutSubviews()
         if !didConfigurePostDetailView {
             postView.postContentHeaderView.configure(with: post)
-            textView.layer.cornerRadius = textView.frame.height / 2
             didConfigurePostDetailView = true
         }
         postView.commentTableView.adjustHeaderHeight()
@@ -126,19 +130,12 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                guard let before = self.postView.tableViewBottomConstraint?.constant else { return }
-                let after = -1 * (keyboardVisibleHeight)
-                if before == 0 || before < after {
-                    self.postView.tableViewBottomConstraint?.constant = after
-                    return
-                }
-                if before > after {
-                    self.view.setNeedsLayout()
-                    UIView.animate(withDuration: 0) {
-                        self.postView.tableViewBottomConstraint?.constant = after
-                        self.view.layoutIfNeeded()
-                    }
-                    return
+                self.view.setNeedsLayout()
+                UIView.animate(withDuration: 0) {
+                    let keyboardHeight = keyboardVisibleHeight - (self.initialInputAccessoryHeight ?? 0)
+                    self.commentTableView.contentInset.bottom = keyboardHeight
+                    self.commentTableView.scrollIndicatorInsets.bottom = self.commentTableView.contentInset.bottom
+                    self.view.layoutIfNeeded()
                 }
             })
             .disposed(by: disposeBag)
@@ -152,6 +149,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         textView.font = .systemFont(ofSize: 15)
         textView.backgroundColor = .systemGroupedBackground
         textView.maxHeight = 80
+        textView.layer.cornerRadius = 17
         textView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
@@ -209,3 +207,40 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
 }
 
+// MARK: Handle Comments
+
+extension PostDetailViewController {
+    
+    /// Flatten nested comment data via preorder traversal.
+    private func recursivelyFlatten(comments: [Comment]) -> [Comment] {
+        var flatten: [Comment] = []
+        
+        func preorderTraversal(root: Comment) {
+            flatten.append(root)
+            for child in root.children {
+                preorderTraversal(root: child)
+            }
+        }
+        
+        for comment in comments {
+            preorderTraversal(root: comment)
+        }
+        return flatten
+    }
+    
+    
+    func bindTableView(){
+        /// 댓글 데이터 테이블뷰 바인딩
+        commentViewModel.dataList
+            .observe(on: MainScheduler.instance)
+            .map { [weak self] (comments: [Comment]) -> [Comment] in
+                guard let self = self else { return comments }
+                return self.recursivelyFlatten(comments: comments)
+            }
+            .bind(to: commentTableView.rx.items(cellIdentifier: CommentCell.reuseIdentifier, cellType: CommentCell.self)) { row, comment, cell in
+                cell.configure(with: comment)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+}

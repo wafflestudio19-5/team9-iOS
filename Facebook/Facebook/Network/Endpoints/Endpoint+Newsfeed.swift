@@ -37,4 +37,8 @@ extension Endpoint {
     static func newsfeedLike(postId: Int) -> Self {
         return Endpoint(path: "newsfeed/\(postId)/like/")
     }
+    
+    static func comment(postId: Int, cursor: String? = nil) -> Self {
+        return Endpoint(path: "newsfeed/\(postId)/comment/", cursor: cursor)
+    }
 }

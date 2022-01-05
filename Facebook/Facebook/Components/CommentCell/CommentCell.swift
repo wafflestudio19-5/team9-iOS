@@ -15,37 +15,20 @@ class CommentCell: UITableViewCell {
     static let reuseIdentifier = "CommentCell"
     
     private let disposeBag = DisposeBag()
+    private var leftMarginConstraint: NSLayoutConstraint?
+    private var profileHeightConstraint: NSLayoutConstraint?
+    private var profileWidthConstraint: NSLayoutConstraint?
     
-    private let profileImage = UIImageView()
-    private let authorLabel = UILabel()
-    private let contentLabel = UILabel()
-    private let createdLabel = InfoLabel(color: .darkGray, size: 12, weight: .regular)
-    
-    private lazy var likesLabel: UILabel = {
-        let label = InfoLabel(color: .darkGray, size: 12, weight: .medium)
-        label.text = "좋아요"
-        return label
-    }()
-    
-    private lazy var addChildCommentLabel: UILabel = {
-        let label = InfoLabel(color: .darkGray, size: 12, weight: .medium)
-        label.text = "답글 달기"
-        return label
-    }()
+    private var profileImageSize: CGFloat = 40 {
+        didSet {
+            self.profileWidthConstraint?.constant = profileImageSize
+            self.profileHeightConstraint?.constant = profileImageSize
+        }
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: CommentCell.reuseIdentifier)
-        
-        // 서버와의 연결이 이루어진 뒤에는 아래 코드를 지우고, convenience init만 이용하시면 됩니다
-        setStyleForView()
-        setLayoutForView()
-        bind()
-    }
-    
-    convenience init(comment: Comment) {
-        self.init(style: .default, reuseIdentifier: CommentCell.reuseIdentifier)
-        setStyleForView()
-        setLayoutForView()
+        setLayout()
         bind()
     }
     
@@ -53,75 +36,61 @@ class CommentCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setStyleForView() {
-        authorLabel.font = .systemFont(ofSize: 12.0, weight: .semibold)
-        contentLabel.font = .systemFont(ofSize: 14.0, weight: .regular)
-        contentLabel.numberOfLines = 0
-        contentLabel.lineBreakStrategy = .pushOut
-        
-        
-        // 서버와의 연동은 구현하지 않아서 sample text 넣어둡니다
-        authorLabel.text = "김와플"
-        contentLabel.text = "팀 회의는 매주 월요일 오후 9시입니다 팀 회의는 매주 월요일 오후 9시입니다 팀 회의는 매주 월요일 오후 9시입니다 팀 회의는 매주 월요일 오후 9시입니다 팀 회의는 매주 월요일 오후 9시입니다"
-        createdLabel.text = "12시간"
-        
-        
-        profileImage.contentMode = .scaleAspectFill
-        profileImage.tintColor = FacebookColor.gray.color()
-        profileImage.layer.cornerRadius = 18.0
-        profileImage.image = UIImage(systemName: "person.crop.circle.fill")
+    func configure(with comment: Comment) {
+        authorLabel.text = comment.author.username
+        contentLabel.text = comment.content
+        createdLabel.text = comment.posted_at
+        profileImageSize = comment.profileImageSize
+        leftMarginConstraint?.constant = comment.leftMargin
     }
     
-    private func setLayoutForView() {
+    private func setLayout() {
         
         // 코멘트 작성자 이름과 코멘트 내용으로 이루어진 verticalStackForContents 와
         // 작성 시간, 좋아요 버튼, 답글 달기 버튼을 담고 있는 horizontalStackForButtons 으로 구성되어 있습니다.
         
         // verticalStackForContents로 따로 분리한 이유는 이 둘을 묶어 배경에 roundedRectangle이 있고 여기에 padding(inset)이 있는 형식으로 만들기 위함이었습니다. 로컬에서 초안처럼 생각나는대로 짜둔 구조라서 더 나은 구조가 있다면 변경하시면 됩니다.
         
+        contentView.addSubview(profileImage)
+        
         let horizontalStackForButtons = UIStackView()
         horizontalStackForButtons.axis = .horizontal
         horizontalStackForButtons.spacing = 17.0
-        
         horizontalStackForButtons.addArrangedSubview(createdLabel)
         horizontalStackForButtons.addArrangedSubview(likesLabel)
         horizontalStackForButtons.addArrangedSubview(addChildCommentLabel)
+        horizontalStackForButtons.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(horizontalStackForButtons)
         
         
         let verticalStackForContents = UIStackView()
         verticalStackForContents.axis = .vertical
         verticalStackForContents.spacing = 2.0
-        
         verticalStackForContents.backgroundColor = FacebookColor.mildGray.color()
-        verticalStackForContents.layer.cornerRadius = 20.0
+        verticalStackForContents.layer.cornerRadius = 15
         verticalStackForContents.isLayoutMarginsRelativeArrangement = true
         verticalStackForContents.layoutMargins = UIEdgeInsets(top: 8.0, left: 14.0, bottom: 8.0, right: 14.0)
-        
-        
-        
         verticalStackForContents.addArrangedSubview(authorLabel)
         verticalStackForContents.addArrangedSubview(contentLabel)
-        contentView.addSubview(verticalStackForContents)
         verticalStackForContents.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(verticalStackForContents)
         
-        contentView.addSubview(profileImage)
-        contentView.addSubview(horizontalStackForButtons)
-        
-        profileImage.translatesAutoresizingMaskIntoConstraints = false
-        horizontalStackForButtons.translatesAutoresizingMaskIntoConstraints = false
-        
+        leftMarginConstraint = profileImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin - 5)
+        profileHeightConstraint = profileImage.heightAnchor.constraint(equalToConstant: profileImageSize)
+        profileWidthConstraint = profileImage.widthAnchor.constraint(equalToConstant: profileImageSize)
         NSLayoutConstraint.activate([
-            profileImage.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            profileImage.leadingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leadingAnchor),
-            profileImage.widthAnchor.constraint(equalToConstant: 40.0),
-            profileImage.heightAnchor.constraint(equalToConstant: 40.0),
+            profileImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
+            leftMarginConstraint!,
+            profileHeightConstraint!,
+            profileWidthConstraint!,
             
-            verticalStackForContents.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
-            verticalStackForContents.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 2.0),
-            verticalStackForContents.trailingAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.trailingAnchor),
+            verticalStackForContents.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
+            verticalStackForContents.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 4),
+            verticalStackForContents.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
             
-            horizontalStackForButtons.topAnchor.constraint(equalTo: verticalStackForContents.bottomAnchor, constant: 6.0),
-            horizontalStackForButtons.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 16.0),
+            horizontalStackForButtons.topAnchor.constraint(equalTo: verticalStackForContents.bottomAnchor, constant: 4),
+            horizontalStackForButtons.leadingAnchor.constraint(equalTo: verticalStackForContents.leadingAnchor, constant: .standardLeadingMargin),
+            horizontalStackForButtons.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
     
@@ -144,6 +113,30 @@ class CommentCell: UITableViewCell {
                 // add some action for creating child comment
             }.disposed(by: disposeBag)
     }
+    
+    // MARK: UI Components
+    
+    private let profileImage = ProfileImageView()
+    private let authorLabel = InfoLabel(color: .black, size: 14, weight: .medium)
+    private let contentLabel: UILabel = {
+        let label = InfoLabel(color: .black, size: 16, weight: .regular)
+        label.numberOfLines = 0
+        label.lineBreakStrategy = .pushOut
+        return label
+    }()
+    private let createdLabel = InfoLabel(color: .darkGray, size: 12, weight: .regular)
+    
+    private lazy var likesLabel: UILabel = {
+        let label = InfoLabel(color: .darkGray, size: 12, weight: .medium)
+        label.text = "좋아요"
+        return label
+    }()
+    
+    private lazy var addChildCommentLabel: UILabel = {
+        let label = InfoLabel(color: .darkGray, size: 12, weight: .medium)
+        label.text = "답글 달기"
+        return label
+    }()
 }
 
 struct CommentCellRepresentable: UIViewRepresentable {

@@ -36,19 +36,21 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     func bind() {
         
         /// `무슨 생각을 하고 계신가요?` 버튼을 클릭하면 포스트 작성 화면으로 넘어가도록 바인딩
-        tabView.mainTableHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
-            guard let self = self else { return }
-            let createPostViewController = CreatePostViewController()
-            let navigationController = UINavigationController(rootViewController: createPostViewController)
-            navigationController.modalPresentationStyle = .fullScreen
-            self.present(navigationController, animated: true, completion: nil)
-        }
-        .disposed(by: disposeBag)
+        tabView.mainTableHeaderView.createPostButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let createPostViewController = CreatePostViewController()
+                let navigationController = UINavigationController(rootViewController: createPostViewController)
+                navigationController.modalPresentationStyle = .fullScreen
+                self.present(navigationController, animated: true, completion: nil)
+            }
+            .disposed(by: disposeBag)
         
         /// `viewModel.dataList`와 `tableView`의 dataSource를 바인딩합니다.
         viewModel.dataList
             .observe(on: MainScheduler.instance)
-            .bind(to: tableView.rx.items(cellIdentifier: "PostCell", cellType: PostCell.self)) { row, post, cell in
+            .bind(to: tableView.rx.items(cellIdentifier: PostCell.reuseIdentifier, cellType: PostCell.self)) { row, post, cell in
                 cell.configureCell(with: post)
                 
                 // 좋아요 버튼 바인딩
@@ -100,16 +102,16 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             .disposed(by: disposeBag)
         
         /// 테이블 맨 아래까지 스크롤할 때마다 `loadMore` 함수를 실행합니다.
-        tableView.rx.didScroll.subscribe { [weak self] _ in
-            guard let self = self else { return }
-            let offSetY = self.tableView.contentOffset.y
-            let contentHeight = self.tableView.contentSize.height
-            
-            if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
-                self.viewModel.loadMore()
+        tableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let offSetY = self.tableView.contentOffset.y
+                let contentHeight = self.tableView.contentSize.height
+                if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
+                    self.viewModel.loadMore()
+                }
             }
-        }
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
         
         
     }

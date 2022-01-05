@@ -12,7 +12,6 @@ class PostDetailView: UIView {
     
     let commentTableView = ResponsiveTableView()
     let postContentHeaderView = PostDetailHeaderView()
-    var tableViewBottomConstraint: NSLayoutConstraint?
     
     var likeButton: LikeButton {
         postContentHeaderView.buttonStackView.likeButton
@@ -35,15 +34,15 @@ class PostDetailView: UIView {
     private func configureTableView() {
         self.addSubview(commentTableView)
         commentTableView.tableHeaderView = postContentHeaderView
-        commentTableView.register(UINib(nibName: "CommentTableViewCell", bundle: nil), forCellReuseIdentifier: "CommentCell")
+        commentTableView.register(CommentCell.self, forCellReuseIdentifier: CommentCell.reuseIdentifier)
         commentTableView.allowsSelection = false
         commentTableView.translatesAutoresizingMaskIntoConstraints = false
         commentTableView.delaysContentTouches = false
         commentTableView.keyboardDismissMode = .interactive
-        tableViewBottomConstraint = commentTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        commentTableView.separatorStyle = .none
         NSLayoutConstraint.activate([
             commentTableView.topAnchor.constraint(equalTo: self.topAnchor),
-            tableViewBottomConstraint!,
+            commentTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
 //            commentTableView.heightAnchor.constraint(equalToConstant: 40),
             commentTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             commentTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
