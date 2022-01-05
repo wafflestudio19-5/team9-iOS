@@ -38,7 +38,7 @@ class CommentCell: UITableViewCell {
     
     func configure(with comment: Comment) {
         authorLabel.text = comment.author.username
-        contentLabel.text = String(repeating: comment.content, count: Int.random(in: 1...10))
+        contentLabel.text = String(repeating: comment.content, count: comment.id / 5 + 4) + String(comment.id)
         createdLabel.text = comment.posted_at
         profileImageSize = comment.profileImageSize
         leftMarginConstraint?.constant = comment.leftMargin
@@ -68,7 +68,7 @@ class CommentCell: UITableViewCell {
         verticalStackForContents.axis = .vertical
         verticalStackForContents.alignment = .leading
         verticalStackForContents.spacing = 0
-        verticalStackForContents.backgroundColor = FacebookColor.mildGray.color()
+        verticalStackForContents.backgroundColor = .grayscales.bubbleGray
         verticalStackForContents.layer.cornerRadius = 18
         verticalStackForContents.isLayoutMarginsRelativeArrangement = true
         verticalStackForContents.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 12)

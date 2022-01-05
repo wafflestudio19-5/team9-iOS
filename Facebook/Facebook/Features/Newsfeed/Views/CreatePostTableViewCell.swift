@@ -22,7 +22,7 @@ class CreatePostTableViewCell: UITableViewCell {
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var createPostButton: UIButton!
     
-    private let divider = Divider(color: .Grayscales.gray1)
+    private let divider = Divider(color: .grayscales.gray1)
     
     let disposeBag = DisposeBag()
     

@@ -80,7 +80,8 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindTableView()
-        bindLikes()
+        bindLikeButton()
+        bindCommentButton()
         setLeftBarButtonItems()
         
         // firstResponder 관련 문제 workaround
@@ -131,7 +132,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return true
     }
     
-    // 올라갈떄 애니메이션 있고, 내려갈땐 없어야함
     private func bindKeyboardHeight() {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
@@ -153,7 +153,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         let textView = FlexibleTextView()
         textView.placeholder = "댓글을 입력하세요..."
         textView.font = .systemFont(ofSize: 15)
-        textView.backgroundColor = .systemGroupedBackground
+        textView.backgroundColor = .grayscales.bubbleGray
         textView.maxHeight = 80
         textView.layer.cornerRadius = 17
         textView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
@@ -213,10 +213,10 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     }()
 }
 
-// MARK: Handle Likes
+// MARK: Handle Buttons
 
 extension PostDetailViewController {
-    private func bindLikes() {
+    private func bindLikeButton() {
         postView.likeButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
@@ -226,6 +226,15 @@ extension PostDetailViewController {
                         self.postView.postContentHeaderView.like(syncWith: response.1)
                     }
                     .disposed(by: self.disposeBag)
+            }
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindCommentButton() {
+        postView.commentButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.textView.becomeFirstResponder()
             }
             .disposed(by: disposeBag)
     }
