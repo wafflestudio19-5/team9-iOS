@@ -68,7 +68,6 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             .observe(on: MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: PostCell.reuseIdentifier, cellType: PostCell.self)) { row, post, cell in
                 cell.configureCell(with: post)
-                print("LINE 73")
                 
                 // 좋아요 버튼 바인딩
                 cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
