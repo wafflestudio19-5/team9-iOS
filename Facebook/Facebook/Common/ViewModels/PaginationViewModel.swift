@@ -47,22 +47,25 @@ class PaginationViewModel<DataModel: Codable> {
     
     init(endpoint: Endpoint) {
         self.endpoint = endpoint
-        NetworkService.post(endpoint: .login(email: "profile@test.com", password: "password"), as: LoginResponse.self)
-            .subscribe { event in
-                if event.isCompleted {
-                    return
-                }
-                
-                guard let response = event.element?.1 else {
-                    print("로그인 오류")
-                    print(event)
-                    return
-                }
-                NetworkService.registerToken(token: response.token)
-                self.bind()
-                self.loadMore()
-            }
-            .disposed(by: disposeBag)
+//        NetworkService.post(endpoint: .login(email: "profile@test.com", password: "password"), as: LoginResponse.self)
+//            .subscribe { event in
+//                if event.isCompleted {
+//                    return
+//                }
+//
+//                guard let response = event.element?.1 else {
+//                    print("로그인 오류")
+//                    print(event)
+//                    return
+//                }
+//
+//                NetworkService.registerToken(token: response.token)
+//                self.bind()
+//                self.loadMore()
+//            }
+//            .disposed(by: disposeBag)
+        self.bind()
+        self.loadMore()
     }
     
     func loadMore() {
@@ -113,8 +116,6 @@ class PaginationViewModel<DataModel: Codable> {
                 }
                 
                 self.lastResponse = paginatedResponse
-                
-                
                 
                 if isRefreshing {
                     self.dataList.accept(paginatedResponse.results)

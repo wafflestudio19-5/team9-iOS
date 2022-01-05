@@ -19,6 +19,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        testLogin()
         bind()
     }
     
@@ -70,8 +71,6 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             }
         }
         .disposed(by: disposeBag)
-        
-        
     }
 }
 

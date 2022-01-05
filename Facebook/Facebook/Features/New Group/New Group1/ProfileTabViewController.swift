@@ -18,11 +18,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         tabView.profileTableView
     }
     
-    let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
-    
-    var userProfile: UserProfile?
-    var postDataViewModel: PaginationViewModel<Post>?
-    
     //TableView 바인딩을 위한 dataSource객체
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
@@ -132,6 +127,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         }
     }
     
+    let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
+    
+    var userProfile: UserProfile?
+    //var postDataViewModel: PaginationViewModel<Post>?
+    let postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(id: 41))
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         super.setNavigationBarItems(withEditButton: true)
@@ -139,6 +140,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         loadData()
         bind()
     }
+    
     
     //유저 프로필 관련 데이터 불러오기
     func loadData() {
@@ -159,13 +161,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 self.userProfile = response
         }.disposed(by: disposeBag)
         
-        postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(id: 41))
+        //postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(id: 41))
     }
     
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
-        guard let postDataViewModel = postDataViewModel else { return }
+        //guard let postDataViewModel = postDataViewModel else { return }
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
         postDataViewModel.isLoading
@@ -183,7 +185,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         /// 새로고침 제스쳐가 인식될 때마다 `refresh` 함수를 실행합니다.
         tabView.refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
-                postDataViewModel.refresh()
+                self?.postDataViewModel.refresh()
                 self?.createSection()
             })
             .disposed(by: disposeBag)
@@ -205,7 +207,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             let contentHeight = self.tableView.contentSize.height
             
             if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
-                postDataViewModel.loadMore()
+                self.postDataViewModel.loadMore()
             }
         }
         .disposed(by: disposeBag)
@@ -245,7 +247,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                       items: (companyItems+universityItems+otherItems))
         ]
         
-        let postItems = postDataViewModel?.dataList.value.map({ post in
+        let postItems = postDataViewModel.dataList.value.map({ post in
             SectionItem.PostItem(post: post)
         }) ?? []
         
