@@ -263,7 +263,7 @@
 				BE9C7CA327716E450089247F /* Colors */,
 				BE9C7CA227716E280089247F /* TextFields */,
 				BE9C7C8E276C71C50089247F /* PostCell */,
-				B85D67F12784B5A5002CCC04 /* CommentCell.swift */,
+				BEDA608827852ED40002A231 /* CommentCell */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -681,6 +681,14 @@
 				BE64AF3927827FAE00C25967 /* ResponsiveTableView.swift */,
 			);
 			path = Miscellaneous;
+			sourceTree = "<group>";
+		};
+		BEDA608827852ED40002A231 /* CommentCell */ = {
+			isa = PBXGroup;
+			children = (
+				B85D67F12784B5A5002CCC04 /* CommentCell.swift */,
+			);
+			path = CommentCell;
 			sourceTree = "<group>";
 		};
 		BEF254E6277AD3A700FBAACB /* Labels */ = {

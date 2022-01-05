@@ -19,21 +19,17 @@ class CommentCell: UITableViewCell {
     private let profileImage = UIImageView()
     private let authorLabel = UILabel()
     private let contentLabel = UILabel()
-    private let createdLabel = UILabel()
+    private let createdLabel = InfoLabel(color: .darkGray, size: 12, weight: .regular)
     
     private lazy var likesLabel: UILabel = {
-        let label = UILabel()
+        let label = InfoLabel(color: .darkGray, size: 12, weight: .medium)
         label.text = "좋아요"
-        label.textColor = .darkGray
-        label.font = .systemFont(ofSize: 12.0, weight: .medium)
         return label
     }()
     
     private lazy var addChildCommentLabel: UILabel = {
-        let label = UILabel()
+        let label = InfoLabel(color: .darkGray, size: 12, weight: .medium)
         label.text = "답글 달기"
-        label.textColor = .darkGray
-        label.font = .systemFont(ofSize: 12.0, weight: .medium)
         return label
     }()
     
@@ -62,9 +58,6 @@ class CommentCell: UITableViewCell {
         contentLabel.font = .systemFont(ofSize: 14.0, weight: .regular)
         contentLabel.numberOfLines = 0
         contentLabel.lineBreakStrategy = .pushOut
-        createdLabel.font = .systemFont(ofSize: 12.0, weight: .regular)
-        
-        createdLabel.textColor = .darkGray
         
         
         // 서버와의 연동은 구현하지 않아서 sample text 넣어둡니다
