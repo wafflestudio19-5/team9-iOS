@@ -44,6 +44,7 @@
 		B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */; };
 		B85D67E4277C964F002CCC04 /* SignUpResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E3277C964F002CCC04 /* SignUpResponse.swift */; };
 		B85D67E6277ECA76002CCC04 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E5277ECA74002CCC04 /* CurrentUser.swift */; };
+		B85D67F22784B5A5002CCC04 /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67F12784B5A5002CCC04 /* CommentCell.swift */; };
 		B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194ED275D28D000957BBC /* EnterUsernameView.swift */; };
 		B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194EF275D290600957BBC /* EnterUsernameViewController.swift */; };
 		B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */; };
@@ -156,6 +157,7 @@
 		B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+NewUser.swift"; sourceTree = "<group>"; };
 		B85D67E3277C964F002CCC04 /* SignUpResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpResponse.swift; sourceTree = "<group>"; };
 		B85D67E5277ECA74002CCC04 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
+		B85D67F12784B5A5002CCC04 /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		B86194ED275D28D000957BBC /* EnterUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameView.swift; sourceTree = "<group>"; };
 		B86194EF275D290600957BBC /* EnterUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterUsernameViewController.swift; sourceTree = "<group>"; };
 		B86194F1275DC0C200957BBC /* EnterBirthdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterBirthdateView.swift; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 				BE9C7CA327716E450089247F /* Colors */,
 				BE9C7CA227716E280089247F /* TextFields */,
 				BE9C7C8E276C71C50089247F /* PostCell */,
+				B85D67F12784B5A5002CCC04 /* CommentCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -858,6 +861,7 @@
 				B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */,
 				774094442750EBF600AD8DC2 /* ShowProfileTableViewCell.swift in Sources */,
 				77547907275CE6CC0065711C /* CommentTableViewCellXib.swift in Sources */,
+				B85D67F22784B5A5002CCC04 /* CommentCell.swift in Sources */,
 				BE86BAD727830F7600948CAA /* CommentTableViewCell.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				77B635422768B2C100C41EB3 /* DetailProfileView.swift in Sources */,
