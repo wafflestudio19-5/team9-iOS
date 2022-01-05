@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import RxKeyboard
+import MapKit
 
 class AddInformationViewController<View: AddInformationView>: UIViewController, UITableViewDelegate {
 
@@ -27,8 +28,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     }
     
     let disposeBag = DisposeBag()
-
-    var defaultSections: [MultipleSectionModel] = []
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay<[MultipleSectionModel]>(value: [])
     
@@ -41,6 +40,22 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
             cell.initialSetup(cellStyle: .style4)
             cell.configureCell(image: image, information: information)
+            
+            //값의 입력된 정보라면 textColor를 black으로
+            switch style {
+            case .company:
+                if self.companyInformation.name != nil {
+                    cell.informationLabel.textColor = .black
+                    cell.deleteButton.isHidden = false
+                }
+            case .university:
+                if self.universityInformation.name != nil {
+                    cell.informationLabel.textColor = .black
+                    cell.deleteButton.isHidden = false
+                }
+            default:
+                break
+            }
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 
@@ -66,16 +81,26 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         case .university:
                             self.universityInformation.name = information
                         }
-                        
-                        self.isActiveSection()
+                        self.createActiveSection()
                     }).disposed(by: cell.disposeBag)
                 
                 self?.push(viewController: selectInformationViewController)
             }).disposed(by: cell.disposeBag)
             
-            self.nameBS.subscribe(onNext: { [weak self] name in
-                cell.informationLabel.textColor = .black
-            }).disposed(by: self.disposeBag)
+            cell.deleteButton.rx.tap.bind { [weak self] in
+                guard let self = self else { return }
+                switch style {
+                case .company:
+                    self.companyInformation = Company()
+                    self.createDefaultSection()
+                case .university:
+                    self.universityInformation = University()
+                    self.createDefaultSection()
+                default:
+                    break
+                }
+                
+            }.disposed(by: cell.disposeBag)
             
             return cell
         case let .AddInfomrationLabelItem(style, information):
@@ -83,6 +108,24 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
             cell.initialSetup(cellStyle: .style2)
             cell.configureCell(labelText: information)
+            
+            //값의 입력된 정보라면 textColor를 black으로
+            switch style {
+            case .role:
+                if self.companyInformation.role != nil {
+                    cell.label.textColor = .black
+                }
+            case .location:
+                if self.companyInformation.location != nil {
+                    cell.label.textColor = .black
+                }
+            case .major:
+                if self.universityInformation.major != nil {
+                    cell.label.textColor = .black
+                }
+            default:
+                break
+            }
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 
@@ -115,28 +158,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                             break
                         }
                         
-                        self.isActiveSection()
+                        self.createActiveSection()
                     }).disposed(by: cell.disposeBag)
                 
                 self?.push(viewController: selectInformationViewController)
             }).disposed(by: cell.disposeBag)
-            
-            switch style {
-            case .role:
-                self.roleBS.subscribe(onNext: { [weak self] role in
-                    cell.label.textColor = .black
-                }).disposed(by: self.disposeBag)
-            case .location:
-                self.locationBS.subscribe(onNext: { [weak self] location in
-                    cell.label.textColor = .black
-                }).disposed(by: self.disposeBag)
-            case .major:
-                self.majorBS.subscribe(onNext: { [weak self] major in
-                    cell.label.textColor = .black
-                }).disposed(by: self.disposeBag)
-            default:
-                break
-            }
             
             return cell
         case let .TextFieldItem(text):
@@ -146,11 +172,31 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             cell.configureCell()
             
             return cell
-        case let .SelectDateItem(style):
+        case let .SelectDateItem(style, birthInfo):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DateSelectTableViewCell.reuseIdentifier, for: idxPath) as? DateSelectTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: style)
-            cell.configureCell()
+            cell.configureCell(birthInfo: birthInfo)
+            
+            cell.datePS.subscribe(onNext: { [weak self] date in
+                guard let self = self else { return }
+                switch self.informationType {
+                case .company:
+                    switch style {
+                    case .startDateStyle:
+                        self.companyInformation.join_date = date
+                    case .endDateStyle:
+                        self.companyInformation.leave_date = date
+                    }
+                case .university:
+                    switch style {
+                    case .startDateStyle:
+                        self.universityInformation.join_date = date
+                    case .endDateStyle:
+                        self.universityInformation.graduate_date = date
+                    }
+                }
+            }).disposed(by: cell.disposeBag)
             
             return cell
         default:
@@ -166,23 +212,21 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     }
     
     var informationType: InformationType
+    var id: Int = 0
     
     lazy var companyInformation = Company()
     lazy var universityInformation = University()
-
-    lazy var nameBS = PublishSubject<String>()
-    lazy var roleBS = PublishSubject<String>()
-    lazy var locationBS = PublishSubject<String>()
-    lazy var majorBS = PublishSubject<String>()
-    
-    var isActive: Bool
-    
     
     init(informationType: InformationType, id: Int? = nil) {
         self.informationType = informationType
-        self.isActive = true
         super.init(nibName: nil, bundle: nil)
-
+    
+        if let id = id {
+            self.id = id
+            self.loadData(id: id)
+        } else {
+            self.createDefaultSection()
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -192,15 +236,83 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        initialSetup()
-        bindTableView()
+        bind()
     }
     
-    private func initialSetup() {
+    func loadData(id: Int) {
+        switch informationType {
+        case .company:
+            NetworkService.get(endpoint: .company(id: id), as: Company.self)
+                .subscribe { [weak self] event in
+                    guard let self = self else { return }
+                
+                    if event.isCompleted {
+                        return
+                    }
+                
+                    guard let response = event.element?.1 else {
+                        print("데이터 로드 중 오류 발생")
+                        print(event)
+                        return
+                    }
+                
+                    self.companyInformation = response
+                    
+                    if self.companyInformation.is_active! {
+                        self.createActiveSection()
+                    } else {
+                        self.createNotActiveSection()
+                    }
+            }.disposed(by: disposeBag)
+        case .university:
+            NetworkService.get(endpoint: .university(id: id), as: University.self)
+                .subscribe { [weak self] event in
+                    guard let self = self else { return }
+                
+                    if event.isCompleted {
+                        return
+                    }
+                
+                    guard let response = event.element?.1 else {
+                        print("데이터 로드 중 오류 발생")
+                        print(event)
+                        return
+                    }
+                
+                    self.universityInformation = response
+                    
+                    if self.universityInformation.is_active! {
+                        self.createActiveSection()
+                    } else {
+                        self.createNotActiveSection()
+                    }
+            }.disposed(by: disposeBag)
+        }
+    }
+
+    private func bind() {
+        sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        
+        tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        addInformationView.saveButton.rx.tap.bind{ [weak self] in
+            guard let self = self else { return }
+            switch self.informationType {
+            case .company:
+                print(self.companyInformation)
+            case .university:
+                print(self.universityInformation)
+            }
+        }.disposed(by: disposeBag)
+    }
+    
+    private func createDefaultSection() {
+        var sections: [MultipleSectionModel]
+        
         switch self.informationType {
         case .company:
             self.title = "직장 추가"
-            defaultSections = [
+            sections = [
                 .DetailInformationSection(title: "직장", items: [
                     .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: "직장 추가")
                 ])
@@ -209,43 +321,31 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         case .university:
             self.title = "학력 추가"
             
-            defaultSections = [
+            sections = [
                 .DetailInformationSection(title: "학력", items: [
                     .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: "학교 이름"),
                     .AddInfomrationLabelItem(style: .major, information: "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
-                    .SelectDateItem(style: .startDateStyle),
+                    .SelectDateItem(style: .startDateStyle, birthInfo: universityInformation.join_date ?? ""),
                 ])
             ]
         }
         
-        sectionsBR.accept(defaultSections)
-    }
-    
-    func loadData() {
-        
-    }
-    
-    func createSection() {
-        
-    }
-
-    private func bindTableView() {
-        sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
-        
-        tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        sectionsBR.accept(sections)
     }
     
     //현재 재직(재학) 중 상태일 때 TableView의 데이터
-    private func isActiveSection() {
+    private func createActiveSection() {
         var sections: [MultipleSectionModel]
         
         switch self.informationType{
         case .company:
             sections = [
                 .DetailInformationSection(title: "직장", items: [
-                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: companyInformation.name!),
+                    .AddInformationWithImageItem(style: .company,
+                                                 image: UIImage(systemName: "briefcase")!,
+                                                 information: companyInformation.name ?? "직장 추가"),
                     .AddInfomrationLabelItem(style: .role,
                                              information: companyInformation.role ?? "직책(선택 사항)"),
                     .AddInfomrationLabelItem(style: .location,
@@ -253,18 +353,20 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     .TextFieldItem(text: "text")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
-                    .SelectDateItem(style: .startDateStyle)
+                    .SelectDateItem(style: .startDateStyle, birthInfo: companyInformation.join_date ?? "")
                 ])
             ]
         case .university:
             sections = [
                 .DetailInformationSection(title: "학력", items: [
-                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: universityInformation.name!),
+                    .AddInformationWithImageItem(style: .university,
+                                                 image: UIImage(systemName: "graduationcap")!,
+                                                 information: universityInformation.name ?? "학교 이름"),
                     .AddInfomrationLabelItem(style: .major,
                                              information: universityInformation.major ?? "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
-                    .SelectDateItem(style: .startDateStyle),
+                    .SelectDateItem(style: .startDateStyle, birthInfo: universityInformation.join_date ?? ""),
                 ])
             ]
         }
@@ -273,14 +375,16 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     }
     
     //현재 재직 중이 아닐 때 TableView의 데이터 
-    private func isNotActiveSection() {
+    private func createNotActiveSection() {
         var sections: [MultipleSectionModel]
         
         switch self.informationType{
         case .company:
             sections = [
                 .DetailInformationSection(title: "직장", items: [
-                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: companyInformation.name!),
+                    .AddInformationWithImageItem(style: .company,
+                                                 image: UIImage(systemName: "briefcase")!,
+                                                 information: companyInformation.name ?? "직장 추가"),
                     .AddInfomrationLabelItem(style: .role,
                                              information: companyInformation.role ?? "직책(선택 사항)"),
                     .AddInfomrationLabelItem(style: .location,
@@ -288,20 +392,22 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     .TextFieldItem(text: "text")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
-                    .SelectDateItem(style: .startDateStyle),
-                    .SelectDateItem(style: .endDateStyle)
+                    .SelectDateItem(style: .startDateStyle, birthInfo: companyInformation.join_date ?? ""),
+                    .SelectDateItem(style: .endDateStyle, birthInfo: companyInformation.leave_date ?? "")
                 ])
             ]
         case .university:
             sections = [
                 .DetailInformationSection(title: "학력", items: [
-                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: universityInformation.name!),
+                    .AddInformationWithImageItem(style: .university,
+                                                 image: UIImage(systemName: "graduationcap")!,
+                                                 information: universityInformation.name ?? "학교 이름"),
                     .AddInfomrationLabelItem(style: .major,
                                              information: universityInformation.major ?? "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
-                    .SelectDateItem(style: .startDateStyle),
-                    .SelectDateItem(style: .endDateStyle)
+                    .SelectDateItem(style: .startDateStyle, birthInfo: universityInformation.join_date ?? ""),
+                    .SelectDateItem(style: .endDateStyle, birthInfo: universityInformation.graduate_date ?? "")
                 ])
             ]
         }
@@ -345,15 +451,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         
         sectionSwitch.rx.tap.bind { [weak self]  in
             guard let self = self else { return }
-            if self.isActive {
-                sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
-                self.isNotActiveSection()
-                self.isActive = false
-            } else {
-                sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-                self.isActiveSection()
-                self.isActive = true
-            }
         }.disposed(by: disposeBag)
     
         return headerView

@@ -47,6 +47,11 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
                 cell.toggleIndicate()
             }).disposed(by: cell.disposeBag)
             
+            cell.editButton.rx.tap.bind { [weak self] in
+                let addInformationViewController = AddInformationViewController(informationType: .company, id: company.id ?? nil)
+                self?.push(viewController: addInformationViewController)
+            }.disposed(by: cell.disposeBag)
+            
             return cell
         case let .UniversityItem(university):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailInformationTableViewCell.reuseIdentifier, for: idxPath) as? DetailInformationTableViewCell else { return UITableViewCell() }
@@ -61,6 +66,11 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 cell.toggleIndicate()
             }).disposed(by: cell.disposeBag)
+            
+            cell.editButton.rx.tap.bind { [weak self] in
+                let addInformationViewController = AddInformationViewController(informationType: .university, id: university.id ?? nil)
+                self?.push(viewController: addInformationViewController)
+            }.disposed(by: cell.disposeBag)
             
             return cell
         case let .AddInformationButtonItem(style, buttonText):

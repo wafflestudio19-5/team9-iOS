@@ -45,7 +45,6 @@
 		77ABC5D62774A944000431E1 /* EditDetailInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */; };
 		77ABC5D82774A998000431E1 /* AddInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5D72774A998000431E1 /* AddInformationView.swift */; };
 		77ABC5DA2774A9B0000431E1 /* AddInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5D92774A9B0000431E1 /* AddInformationViewController.swift */; };
-		77ABC5DC2774B696000431E1 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5DB2774B696000431E1 /* FooterView.swift */; };
 		77AC749B275CEDAD00F10BD5 /* PostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AC749A275CEDAD00F10BD5 /* PostView.swift */; };
 		77AC749E275E19C200F10BD5 /* PostContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77AC749C275E19C200F10BD5 /* PostContentTableViewCell.swift */; };
 		77AC749F275E19C200F10BD5 /* PostContentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77AC749D275E19C200F10BD5 /* PostContentTableViewCell.xib */; };
@@ -149,7 +148,6 @@
 		77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailInformationViewController.swift; sourceTree = "<group>"; };
 		77ABC5D72774A998000431E1 /* AddInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInformationView.swift; sourceTree = "<group>"; };
 		77ABC5D92774A9B0000431E1 /* AddInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInformationViewController.swift; sourceTree = "<group>"; };
-		77ABC5DB2774B696000431E1 /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		77AC749A275CEDAD00F10BD5 /* PostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostView.swift; sourceTree = "<group>"; };
 		77AC749C275E19C200F10BD5 /* PostContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentTableViewCell.swift; sourceTree = "<group>"; };
 		77AC749D275E19C200F10BD5 /* PostContentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostContentTableViewCell.xib; sourceTree = "<group>"; };
@@ -441,7 +439,6 @@
 				77ABC5D32774A906000431E1 /* EditDetailInformationView.swift */,
 				7754B86E2781D63900775D81 /* EditUserProfileView.swift */,
 				7754B8782782A0B700775D81 /* EditUsernameView.swift */,
-				77ABC5DB2774B696000431E1 /* FooterView.swift */,
 				7754B862277DAE2F00775D81 /* AddSelfIntroView.swift */,
 				77ABC5D72774A998000431E1 /* AddInformationView.swift */,
 				77FE72862775E00600482CE7 /* SelectInformationView.swift */,
@@ -868,7 +865,6 @@
 				7754B86F2781D63900775D81 /* EditUserProfileView.swift in Sources */,
 				77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */,
 				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
-				77ABC5DC2774B696000431E1 /* FooterView.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,
 				7754B86A277F357F00775D81 /* UserProfileModel.swift in Sources */,
 				BEFFFAB0276B1E08009CBF25 /* PaginationViewModel.swift in Sources */,

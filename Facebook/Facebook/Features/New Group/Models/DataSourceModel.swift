@@ -43,7 +43,7 @@ enum SectionItem {
     case CompanyItem(company: Company)
     case UniversityItem(university: University)
     case PostItem(post: Post)
-    case SelectDateItem(style: DateSelectTableViewCell.Style)
+    case SelectDateItem(style: DateSelectTableViewCell.Style, birthInfo: String)
     case BirthSelectItem(style: BirthSelectTableViewCell.Style, birthInfo: String)
     case EditUsernameItem(username: String)
     case GenderSelectItem(style: GenderSelectTableViewCell.Style, selectedGender: String)

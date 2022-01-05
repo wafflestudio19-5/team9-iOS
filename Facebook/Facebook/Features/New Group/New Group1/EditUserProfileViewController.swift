@@ -178,6 +178,7 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
         editUserProfileView.saveButton.rx.tap.bind{ [weak self] _ in
             guard let self = self else { return }
             
+            //생일 입력 정보를 형식에 맞게 변환
             var month = self.selectedMonth.trimmingCharacters(in: ["월"])
             if month.count == 1 {
                 month = "0" + month
@@ -194,6 +195,7 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
             
             guard let userProfile = self.userProfile else { return }
             
+            //프로필 편집 
             NetworkService
                 .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
                 .subscribe { [weak self] _ in

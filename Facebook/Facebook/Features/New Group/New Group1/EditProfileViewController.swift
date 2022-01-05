@@ -82,6 +82,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                 self?.push(viewController: detailProfileViewController)
             }).disposed(by: self.disposeBag)
             
+            
+            
             return cell
         case let .UniversityItem(university):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }

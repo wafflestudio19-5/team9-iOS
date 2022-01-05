@@ -34,13 +34,15 @@ class DateSelectTableViewCell: UITableViewCell {
                             UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil),
                             UIBarButtonItem(title: "취소", style: .plain, target: nil, action: nil)]
     
-    var yearDataBR: BehaviorRelay<[Int]> = BehaviorRelay<[Int]>(value: [])
+    var yearDataBR: BehaviorRelay<[String]> = BehaviorRelay<[String]>(value: [])
     let monthDataBR: BehaviorRelay<[String]> = BehaviorRelay<[String]>(value: ["1월","2월","3월","4월","5월","6월","7월","8월","9월","10월","11월","12월"])
-    var dayDataBR: BehaviorRelay<[Int]> = BehaviorRelay<[Int]>(value: [])
+    var dayDataBR: BehaviorRelay<[String]> = BehaviorRelay<[String]>(value: [])
     
-    let year = BehaviorRelay<String>(value: "")
-    let month = BehaviorRelay<String>(value: "")
-    let day = BehaviorRelay<String>(value: "")
+    lazy var selectedYear = ""
+    lazy var selectedMonth = ""
+    lazy var selectedDay = ""
+    
+    let datePS = PublishSubject<String>()
     
     enum Style {
         case startDateStyle
@@ -84,23 +86,58 @@ class DateSelectTableViewCell: UITableViewCell {
         setDataForPicker()
     }
     
-    func configureCell() {
-        switch self.cellStyle {
-        case .startDateStyle:
-            dateKindLabel.text = "시작 날짜"
+    func configureCell(birthInfo: String) {
+        if birthInfo == "" {
+            switch self.cellStyle {
+            case .startDateStyle:
+                dateKindLabel.text = "시작 날짜"
+                
+                let now = Date()
+                let calender = Calendar.current
+                let currentYear = calender.component(.year, from: now)
+                let currentMonth = calender.component(.month, from: now)
+                let currentDay = calender.component(.day, from: now)
+                
+                yearTextField.text = String(currentYear)
+                monthTextField.text = "\(currentMonth)월"
+                dayTextField.text = String(currentDay)
+                selectedYear = String(currentYear)
+                selectedMonth = "\(currentMonth)월"
+                selectedDay =  String(currentDay)
+                
+                hideAddDateLabel()
+                showYearTextField()
+                showMonthTextField()
+                showDayTextField()
+                
+                dateInformationPass()
+            case .endDateStyle:
+                dateKindLabel.text = "종료 날짜"
+                
+                showAddDateLabel()
+                hideYearTextField()
+                hideMonthTextField()
+                hideDayTextField()
+            }
+        }else {
+            switch self.cellStyle {
+            case .startDateStyle:
+                dateKindLabel.text = "시작 날짜"
+            case .endDateStyle:
+                dateKindLabel.text = "종료 날짜"
+            }
             
-            let now = Date()
-            let calender = Calendar.current
-            let currentYear = calender.component(.year, from: now)
-            let currentMonth = calender.component(.month, from: now)
-            let currentDay = calender.component(.day, from: now)
+            yearTextField.text = String(birthInfo.split(separator: "-")[0])
+            monthTextField.text = birthInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
+            dayTextField.text = String(birthInfo.split(separator: "-")[2])
+            selectedYear = String(birthInfo.split(separator: "-")[0])
+            selectedMonth = birthInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
+            selectedDay = String(birthInfo.split(separator: "-")[2])
             
-            yearTextField.text = String(currentYear)
-            monthTextField.text = "\(currentMonth)월"
-            dayTextField.text = String(currentDay)
-            
-        case .endDateStyle:
-            dateKindLabel.text = "종료 날짜"
+            hideAddDateLabel()
+            showYearTextField()
+            showMonthTextField()
+            showDayTextField()
         }
     }
     
@@ -177,19 +214,6 @@ class DateSelectTableViewCell: UITableViewCell {
             dayTextField.leadingAnchor.constraint(equalTo: monthTextField.trailingAnchor, constant: 10),
             dayTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
         ])
-        
-        switch self.cellStyle {
-        case .startDateStyle:
-            hideAddDateLabel()
-            showYearTextField()
-            showMonthTextField()
-            showDayTextField()
-        case .endDateStyle:
-            showAddDateLabel()
-            hideYearTextField()
-            hideMonthTextField()
-            hideDayTextField()
-        }
     }
     
     //현재 날짜를 기준으로 PickerView의 데이터를 설정
@@ -200,22 +224,22 @@ class DateSelectTableViewCell: UITableViewCell {
         let currentMonth = calender.component(.month, from: now)
         let currentDay = calender.component(.day, from: now)
         
-        yearDataBR.accept(Array(1905...currentYear))
+        let yearArray = Array((currentYear-100)...currentYear).map({ String($0) })
+        yearDataBR.accept(yearArray)
         
         switch currentMonth {
         case 1,3,5,7,8,10,12:
-            dayDataBR.accept(Array(1...31))
+            let dayArray = Array(1...30).map({ String($0) })
+            dayDataBR.accept(dayArray)
         case 4,6,9,11:
-            dayDataBR.accept(Array(1...30))
+            let dayArray = Array(1...30).map({ String($0) })
+            dayDataBR.accept(dayArray)
         case 2:
-            dayDataBR.accept(Array(1...28))
+            let dayArray = Array(1...28).map({ String($0) })
+            dayDataBR.accept(dayArray)
         default:
             dayDataBR.accept([])
         }
-        
-        yearPickerView.selectRow(yearDataBR.value.count - 1, inComponent: 0, animated: false)
-        monthPickerView.selectRow(currentMonth - 1, inComponent: 0, animated: false)
-        dayPickerView.selectRow(currentDay - 1, inComponent: 0, animated: false)
     }
     
     private func bindPickerToolbar() {
@@ -237,12 +261,41 @@ class DateSelectTableViewCell: UITableViewCell {
             self.yearTextField.becomeFirstResponder()
         })
         
+        yearTextField.rx.controlEvent(.editingDidBegin)
+            .asObservable()
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                if let yearIndex = self.yearDataBR.value.firstIndex(of: self.selectedYear) {
+                    self.yearPickerView.selectRow(yearIndex, inComponent: 0, animated: false)
+                }
+            }).disposed(by: disposeBag)
+        
+        monthTextField.rx.controlEvent(.editingDidBegin)
+            .asObservable()
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                if let monthIndex = self.monthDataBR.value.firstIndex(of: self.selectedMonth) {
+                    self.monthPickerView.selectRow(monthIndex, inComponent: 0, animated: false)
+                }
+            }).disposed(by: disposeBag)
+        
+        dayTextField.rx.controlEvent(.editingDidBegin)
+            .asObservable()
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                if let dayIndex = self.dayDataBR.value.firstIndex(of: self.selectedDay) {
+                    self.dayPickerView.selectRow(dayIndex, inComponent: 0, animated: false)
+                }
+            }).disposed(by: disposeBag)
+        
         //연도 선택 시 동작
         doneButtonList[0].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             let selectedRow = self.yearPickerView.selectedRow(inComponent: 0)
             self.yearTextField.text = String(self.yearDataBR.value[selectedRow])
+            self.selectedYear = String(self.yearDataBR.value[selectedRow])
             self.yearTextField.endEditing(true)
+            self.dateInformationPass()
             
             self.hideAddDateLabel()
             self.showYearTextField()
@@ -253,7 +306,9 @@ class DateSelectTableViewCell: UITableViewCell {
         deleteButtonList[0].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.yearTextField.text = ""
+            self.selectedYear = ""
             self.yearTextField.endEditing(true)
+            self.dateInformationPass()
             
             self.showAddDateLabel()
             self.hideYearTextField()
@@ -273,7 +328,9 @@ class DateSelectTableViewCell: UITableViewCell {
             guard let self = self else { return }
             let selectedRow = self.monthPickerView.selectedRow(inComponent: 0)
             self.monthTextField.text = self.monthDataBR.value[selectedRow]
+            self.selectedMonth = self.monthDataBR.value[selectedRow]
             self.monthTextField.endEditing(true)
+            self.dateInformationPass()
             
             self.showDayTextField()
         }.disposed(by: disposeBag)
@@ -282,7 +339,9 @@ class DateSelectTableViewCell: UITableViewCell {
         deleteButtonList[1].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.monthTextField.text = ""
+            self.selectedMonth = ""
             self.monthTextField.endEditing(true)
+            self.dateInformationPass()
             
             self.hideDayTextField()
         }.disposed(by: disposeBag)
@@ -298,7 +357,9 @@ class DateSelectTableViewCell: UITableViewCell {
             guard let self = self else { return }
             let selectedRow = self.dayPickerView.selectedRow(inComponent: 0)
             self.dayTextField.text = String(self.dayDataBR.value[selectedRow])
+            self.selectedDay = String(self.dayDataBR.value[selectedRow])
             self.dayTextField.endEditing(true)
+            self.dateInformationPass()
         }.disposed(by: disposeBag)
         
         
@@ -306,7 +367,9 @@ class DateSelectTableViewCell: UITableViewCell {
         deleteButtonList[2].rx.tap.bind { [weak self] in
             guard let self = self else { return }
             self.dayTextField.text = ""
+            self.selectedDay = ""
             self.dayTextField.endEditing(true)
+            self.dateInformationPass()
             
         }.disposed(by: disposeBag)
         
@@ -319,17 +382,40 @@ class DateSelectTableViewCell: UITableViewCell {
         //월 입력 값에 따라 일 입력 법위 조정
         monthTextField.rx.text.orEmpty.subscribe(onNext: { [weak self] selectedMonth in
             guard let self = self else { return }
-            switch selectedMonth {
+            switch self.selectedMonth {
             case "1월","3월","5월","7월","8월","10월","12월":
-                self.dayDataBR.accept(Array(1...31))
+                let dayArray = Array(1...31).map({ String($0) })
+                self.dayDataBR.accept(dayArray)
             case "4월","6월","9월","11월":
-                self.dayDataBR.accept(Array(1...30))
+                let dayArray = Array(1...30).map({ String($0) })
+                self.dayDataBR.accept(dayArray)
             case "2월":
-                self.dayDataBR.accept(Array(1...28))
+                let dayArray = Array(1...28).map({ String($0) })
+                self.dayDataBR.accept(dayArray)
             default:
                 self.dayDataBR.accept([])
             }
         }).disposed(by: disposeBag)
+    }
+    
+    private func dateInformationPass() {
+        if (selectedYear == "" || selectedMonth == "" || selectedDay == "") {
+            datePS.onNext("")
+        } else {
+            var month = selectedMonth.trimmingCharacters(in: ["월"])
+            if month.count == 1 {
+                month = "0" + month
+            }
+            
+            var day = selectedDay
+            if day.count == 1 {
+                day = "0" + day
+            }
+            
+            let date = selectedYear + "-" + month + "-" + day
+            
+            datePS.onNext(date)
+        }
     }
     
     //컴포넌트의 숨김 설정 

@@ -10,7 +10,6 @@ import UIKit
 class EditDetailInformationView: UIView {
 
     let editDetailInformationTableView = UITableView(frame: .zero, style: .grouped)
-    let footerView = FooterView()
     
     let headerView: UIView = {
         let view = UIView()
@@ -49,15 +48,9 @@ class EditDetailInformationView: UIView {
     
     private func setLayoutforView() {
         self.addSubview(editDetailInformationTableView)
-        self.addSubview(footerView)
         
         editDetailInformationTableView.translatesAutoresizingMaskIntoConstraints = false
-        footerView.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
-            footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -30),
-            footerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
             editDetailInformationTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             editDetailInformationTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
             editDetailInformationTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),

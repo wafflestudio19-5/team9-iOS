@@ -115,7 +115,7 @@ class SimpleInformationTableViewCell: UITableViewCell {
                 informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
             ])
-        case .style3, .style4:
+        case .style3:
             addSubview(informationImage)
             informationImage.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
@@ -133,9 +133,45 @@ class SimpleInformationTableViewCell: UITableViewCell {
                 informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 20)
             ])
+        case .style4:
+            self.contentView.addSubview(informationImage)
+            informationImage.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                informationImage.heightAnchor.constraint(equalToConstant: 35),
+                informationImage.widthAnchor.constraint(equalToConstant: 35),
+                informationImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
+                informationImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
+                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
+            ])
+            
+            self.contentView.addSubview(informationLabel)
+            informationLabel.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                informationLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 20)
+            ])
+            
+            self.contentView.addSubview(deleteButton)
+            deleteButton.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                deleteButton.heightAnchor.constraint(equalToConstant: 20),
+                deleteButton.widthAnchor.constraint(equalToConstant: 20),
+                deleteButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                deleteButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -15)
+            ])
+            deleteButton.isHidden = true
         }
     }
     
     let informationImage = UIImageView()
     let informationLabel = UILabel()
+    
+    lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "xmark.circle.fill"), for: .normal)
+        button.tintColor = .gray
+        
+        return button
+    }()
 }

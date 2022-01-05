@@ -25,7 +25,28 @@ extension Endpoint {
         return Endpoint(path: "user/company/\(id)/")
     }
     
+    static func company(company: Company) -> Self {
+        return Endpoint(path: "user/company/",
+                        parameters: [ : ])
+    }
+    
+    static func company(id: Int, company: Company) -> Self {
+        return Endpoint(path: "user/company/\(id)/",
+                        parameters: [ : ])
+    }
+    
     static func university(id: Int) -> Self {
         return Endpoint(path: "user/university/\(id)")
     }
+    
+    static func university(university: University) -> Self {
+        return Endpoint(path: "user/university/",
+                        parameters: [ : ])
+    }
+    
+    static func university(id: Int, university: University) -> Self {
+        return Endpoint(path: "user/university/\(id)/",
+                        parameters: [ : ])
+    }
+    
 }

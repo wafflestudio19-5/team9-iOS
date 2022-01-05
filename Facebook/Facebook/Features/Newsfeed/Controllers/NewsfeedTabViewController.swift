@@ -19,7 +19,6 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        testLogin()
         bind()
     }
     

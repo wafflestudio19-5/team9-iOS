@@ -63,7 +63,7 @@ class LabelTableViewCell: UITableViewCell {
             label.textColor = .gray
         case .style2:
             label.font = UIFont.systemFont(ofSize: 16)
-            label.textColor = .black
+            label.textColor = .gray
         }
     }
     

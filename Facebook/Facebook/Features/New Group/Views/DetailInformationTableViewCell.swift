@@ -112,7 +112,7 @@ class DetailInformationTableViewCell: UITableViewCell {
             editButton.tintColor = .gray
         case .style4:
             informationImage.tintColor = .systemBlue
-            descriptionLabel.textColor = .gray 
+            descriptionLabel.textColor = .lightGray
             editButton.tintColor = .black
         }
     }
@@ -120,42 +120,42 @@ class DetailInformationTableViewCell: UITableViewCell {
     private func setLayout() {
         switch self.cellStyle {
         case .style1:
-            addSubview(informationImage)
+            self.contentView.addSubview(informationImage)
             informationImage.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 informationImage.heightAnchor.constraint(equalToConstant: 35),
                 informationImage.widthAnchor.constraint(equalToConstant: 35),
-                informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
+                informationImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
+                informationImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
+                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
             ])
             
-            addSubview(labelStackView)
+            self.contentView.addSubview(labelStackView)
             labelStackView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                labelStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                labelStackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
                 labelStackView.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
             ])
             
             labelStackView.addArrangedSubview(informationLabel)
             labelStackView.addArrangedSubview(descriptionLabel)
         case .style2:
-            addSubview(informationImage)
+            self.contentView.addSubview(informationImage)
             informationImage.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 informationImage.heightAnchor.constraint(equalToConstant: 35),
                 informationImage.widthAnchor.constraint(equalToConstant: 35),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
+                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
+                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
             ])
             
-            addSubview(labelStackView)
+            self.contentView.addSubview(labelStackView)
             labelStackView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                labelStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                labelStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-                labelStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+                labelStackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                labelStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
+                labelStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
                 labelStackView.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
             ])
             
@@ -163,21 +163,21 @@ class DetailInformationTableViewCell: UITableViewCell {
             labelStackView.addArrangedSubview(descriptionLabel)
             labelStackView.addArrangedSubview(privacyBoundLabel)
         case .style3:
-            addSubview(informationImage)
+            self.contentView.addSubview(informationImage)
             informationImage.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 informationImage.heightAnchor.constraint(equalToConstant: 35),
                 informationImage.widthAnchor.constraint(equalToConstant: 35),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
+                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
+                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
             ])
             
-            addSubview(labelStackView)
+            self.contentView.addSubview(labelStackView)
             labelStackView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                labelStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                labelStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-                labelStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+                labelStackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                labelStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
+                labelStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
                 labelStackView.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
             ])
             
@@ -187,45 +187,45 @@ class DetailInformationTableViewCell: UITableViewCell {
             labelStackView.addArrangedSubview(descriptionLabel)
 
             
-            addSubview(editButton)
+            self.contentView.addSubview(editButton)
             editButton.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 editButton.heightAnchor.constraint(equalToConstant: 30),
                 editButton.widthAnchor.constraint(equalToConstant: 30),
-                editButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-                editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
+                editButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
+                editButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10)
             ])
         case .style4:
-            addSubview(informationImage)
+            self.contentView.addSubview(informationImage)
             informationImage.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 informationImage.heightAnchor.constraint(equalToConstant: 20),
                 informationImage.widthAnchor.constraint(equalToConstant: 20),
-                informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
-                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
+                informationImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 15),
+                informationImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -15),
+                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
             ])
             
-            addSubview(labelStackView)
+            self.contentView.addSubview(labelStackView)
             labelStackView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 labelStackView.heightAnchor.constraint(equalToConstant: 20),
-                labelStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                labelStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-                labelStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+                labelStackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                labelStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
+                labelStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
                 labelStackView.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
             ])
             
             labelStackView.addArrangedSubview(informationLabel)
             
-            addSubview(editButton)
+            self.contentView.addSubview(editButton)
             editButton.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
-                editButton.heightAnchor.constraint(equalToConstant: 25),
-                editButton.widthAnchor.constraint(equalToConstant: 25),
-                editButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                editButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
+                editButton.heightAnchor.constraint(equalToConstant: 30),
+                editButton.widthAnchor.constraint(equalToConstant: 30),
+                editButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
+                editButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -15)
             ])
         }
     }

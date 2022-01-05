@@ -75,6 +75,11 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                    privacyBound: "전체 공개")
             }
             
+            cell.editButton.rx.tap.bind { [weak self] in
+                let addInformationViewController = AddInformationViewController(informationType: .company, id: company.id ?? nil)
+                self?.push(viewController: addInformationViewController)
+            }.disposed(by: cell.disposeBag)
+            
             return cell
         case let .UniversityItem(university):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DetailInformationTableViewCell.reuseIdentifier, for: idxPath) as?
@@ -94,6 +99,11 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                    description: "",
                                    privacyBound: "전체 공개")
             }
+            
+            cell.editButton.rx.tap.bind { [weak self] in
+                let addInformationViewController = AddInformationViewController(informationType: .university, id: university.id ?? nil)
+                self?.push(viewController: addInformationViewController)
+            }.disposed(by: cell.disposeBag)
             
             return cell
         case let .PostItem(post):
