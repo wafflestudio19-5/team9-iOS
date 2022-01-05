@@ -38,7 +38,7 @@ class CommentCell: UITableViewCell {
     
     func configure(with comment: Comment) {
         authorLabel.text = comment.author.username
-        contentLabel.text = String(repeating: comment.content, count: comment.id / 5 + 4) + String(comment.id)
+        contentLabel.text = String(repeating: comment.content, count: comment.id / 25 + 2) + String(comment.id)
         createdLabel.text = comment.posted_at
         profileImageSize = comment.profileImageSize
         leftMarginConstraint?.constant = comment.leftMargin
@@ -63,40 +63,44 @@ class CommentCell: UITableViewCell {
         horizontalStackForButtons.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(horizontalStackForButtons)
         
-        
-        let verticalStackForContents = UIStackView()
-        verticalStackForContents.axis = .vertical
-        verticalStackForContents.alignment = .leading
-        verticalStackForContents.spacing = 0
-        verticalStackForContents.backgroundColor = .grayscales.bubbleGray
-        verticalStackForContents.layer.cornerRadius = 18
-        verticalStackForContents.isLayoutMarginsRelativeArrangement = true
-        verticalStackForContents.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 12)
-        verticalStackForContents.addArrangedSubview(authorLabel)
-        verticalStackForContents.addArrangedSubview(contentLabel)
-        verticalStackForContents.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(verticalStackForContents)
+        let bubbleView = UIView()
+        bubbleView.addSubview(authorLabel)
+        bubbleView.addSubview(contentLabel)
+        authorLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        bubbleView.backgroundColor = .grayscales.bubbleGray
+        bubbleView.layer.cornerRadius = 18
+        bubbleView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(bubbleView)
         
         leftMarginConstraint = profileImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin - 5)
         profileHeightConstraint = profileImage.heightAnchor.constraint(equalToConstant: profileImageSize)
         profileWidthConstraint = profileImage.widthAnchor.constraint(equalToConstant: profileImageSize)
         authorLabel.translatesAutoresizingMaskIntoConstraints = false
         contentLabel.translatesAutoresizingMaskIntoConstraints = false
+        authorLabel.setContentHuggingPriority(.required, for: .horizontal)
         NSLayoutConstraint.activate([
             profileImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
             leftMarginConstraint!,
             profileHeightConstraint!,
             profileWidthConstraint!,
             
-            verticalStackForContents.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
-            verticalStackForContents.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 4),
-            verticalStackForContents.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
-            contentLabel.leadingAnchor.constraint(equalTo: verticalStackForContents.leadingAnchor, constant: 12),
-            authorLabel.leadingAnchor.constraint(equalTo: contentLabel.leadingAnchor, constant: -6),
+            bubbleView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
+            bubbleView.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 4),
+            bubbleView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
+            
+            contentLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor),
+            contentLabel.trailingAnchor.constraint(equalTo: bubbleView.trailingAnchor, constant: -12),
+            contentLabel.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor, constant: 12),
+            contentLabel.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: -6),
+            
+            authorLabel.topAnchor.constraint(equalTo: bubbleView.topAnchor, constant: 6),
+            authorLabel.trailingAnchor.constraint(lessThanOrEqualTo: bubbleView.trailingAnchor, constant: -6),
+            authorLabel.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor, constant: 6),
             authorLabel.heightAnchor.constraint(equalToConstant: 20),
             
-            horizontalStackForButtons.topAnchor.constraint(equalTo: verticalStackForContents.bottomAnchor, constant: 4),
-            horizontalStackForButtons.leadingAnchor.constraint(equalTo: verticalStackForContents.leadingAnchor, constant: .standardLeadingMargin),
+            horizontalStackForButtons.topAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: 4),
+            horizontalStackForButtons.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor, constant: .standardLeadingMargin),
             horizontalStackForButtons.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             horizontalStackForButtons.heightAnchor.constraint(equalToConstant: 20),
         ])
@@ -130,7 +134,7 @@ class CommentCell: UITableViewCell {
     private let contentLabel: UILabel = {
         let label = InfoLabel(color: .black, size: 16, weight: .regular)
         label.numberOfLines = 0
-        label.lineBreakStrategy = .pushOut
+        label.lineBreakStrategy = .hangulWordPriority
         return label
     }()
     
