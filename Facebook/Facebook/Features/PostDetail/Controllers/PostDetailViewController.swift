@@ -14,29 +14,13 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var post: Post
     var asFirstResponder: Bool
     let disposeBag = DisposeBag()
-    var hiddenTextView = UITextView()
+    var hiddenTextView = UITextView()  // to be deprecated
     var didConfigurePostDetailView: Bool = false
     var initialInputAccessoryHeight: CGFloat?
     
     lazy var commentViewModel: PaginationViewModel<Comment> = {
         return PaginationViewModel<Comment>(endpoint: .comment(postId: 796))
     }()
-    
-    lazy var authorHeaderView: AuthorInfoHeaderView = {
-        let view = AuthorInfoHeaderView(imageWidth: 40)
-        view.configure(with: post)
-        return view
-    }()
-    
-    private lazy var leftChevronButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(weight: .heavy)), for: .normal)
-        button.rx.tap.bind { [weak self] _ in
-            self?.navigationController?.popViewController(animated: true)
-        }.disposed(by: disposeBag)
-        return button
-    }()
-    
     
     init(post: Post, asFirstResponder: Bool = false) {
         self.post = post
@@ -61,12 +45,31 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return postView.commentTableView
     }
     
+    lazy var authorHeaderView: AuthorInfoHeaderView = {
+        let view = AuthorInfoHeaderView(imageWidth: 40)
+        view.configure(with: post)
+        return view
+    }()
+    
+    private lazy var leftChevronButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(weight: .heavy))
+        config.imagePadding = 0
+        config.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 8)
+        
+        let button = UIButton.init(configuration: config)
+        button.rx.tap.bind { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        }.disposed(by: disposeBag)
+        return button
+    }()
+    
     func setLeftBarButtonItems() {
         let stackview = UIStackView.init(arrangedSubviews: [leftChevronButton, authorHeaderView])
         stackview.distribution = .equalSpacing
         stackview.axis = .horizontal
         stackview.alignment = .center
-        stackview.spacing = 10
+        stackview.spacing = 0
         
         let leftBarButtons = UIBarButtonItem(customView: stackview)
         navigationItem.leftBarButtonItem = leftBarButtons
@@ -76,26 +79,28 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.interactivePopGestureRecognizer?.delegate = self
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
         bindTableView()
         bindLikes()
         setLeftBarButtonItems()
         
         // firstResponder 관련 문제 workaround
-//        view.addSubview(hiddenTextView)
-//        hiddenTextView.isHidden = true
-//        hiddenTextView.inputAccessoryView = keyboardAccessory
-//        if self.asFirstResponder {
-//            hiddenTextView.becomeFirstResponder()
-//        }
+        //        view.addSubview(hiddenTextView)
+        //        hiddenTextView.isHidden = true
+        //        hiddenTextView.inputAccessoryView = keyboardAccessory
+        //        if self.asFirstResponder {
+        //            hiddenTextView.becomeFirstResponder()
+        //        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        if self.asFirstResponder && !textView.isFirstResponder {
-//            textView.becomeFirstResponder()
-//        }
+        navigationController?.interactivePopGestureRecognizer!.delegate = self
+        navigationController?.interactivePopGestureRecognizer!.isEnabled = true
+        
+        // tableView의 panGesture보다 swipe back 제스쳐가 우선이다.
+        if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
+            commentTableView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
