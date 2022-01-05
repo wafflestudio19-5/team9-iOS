@@ -12,6 +12,7 @@ struct Post: Codable, Identifiable {
     let author: User?
     let content: String
     let likes: Int
+    let is_liked: Bool
     let posted_at: String?
     let comments: Int
     let file: String?

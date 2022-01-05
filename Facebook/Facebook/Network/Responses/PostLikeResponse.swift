@@ -9,5 +9,5 @@ import Foundation
 
 struct PostLikeResponse: Codable {
     let likes: Int
-    let likeusers: [User]
+    let is_liked: Bool
 }

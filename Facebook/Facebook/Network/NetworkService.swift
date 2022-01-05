@@ -57,6 +57,10 @@ struct NetworkService {
         return session.rx.responseDecodable(.post, endpoint.url, parameters: endpoint.parameters, encoding: JSONEncoding.default)
     }
     
+    static func put<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
+        return session.rx.responseDecodable(.put, endpoint.url, parameters: endpoint.parameters, encoding: JSONEncoding.default)
+    }
+    
     /*
      MARK: Upload files
      */

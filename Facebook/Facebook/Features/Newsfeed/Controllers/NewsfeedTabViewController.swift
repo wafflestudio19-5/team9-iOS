@@ -55,12 +55,12 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
                 
                 // 좋아요 버튼 바인딩
                 cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
-                    cell.like(post: post)
-                    NetworkService.put(endpoint: .newsfeedLike(postId: post.id))
+                    cell.like()
+                    NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: PostLikeResponse.self)
                         .bind { response in
-                            print(response)
-                            //                            cell.setLikes(count: response.1.likes)
-                        }.disposed(by: cell.disposeBag)
+                            cell.like(syncWith: response.1)
+                        }
+                        .disposed(by: cell.disposeBag)
                 }.disposed(by: cell.disposeBag)
                 
                 // 댓글 버튼 클릭시 디테일 화면으로 이동
