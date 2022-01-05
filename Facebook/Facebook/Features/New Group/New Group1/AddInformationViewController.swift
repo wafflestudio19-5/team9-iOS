@@ -73,6 +73,10 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 self?.push(viewController: selectInformationViewController)
             }).disposed(by: cell.disposeBag)
             
+            self.nameBS.subscribe(onNext: { [weak self] name in
+                cell.informationLabel.textColor = .black
+            }).disposed(by: self.disposeBag)
+            
             return cell
         case let .AddInfomrationLabelItem(style, information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LabelTableViewCell.reuseIdentifier, for: idxPath) as? LabelTableViewCell else { return UITableViewCell() }
@@ -117,6 +121,22 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 self?.push(viewController: selectInformationViewController)
             }).disposed(by: cell.disposeBag)
             
+            switch style {
+            case .role:
+                self.roleBS.subscribe(onNext: { [weak self] role in
+                    cell.label.textColor = .black
+                }).disposed(by: self.disposeBag)
+            case .location:
+                self.locationBS.subscribe(onNext: { [weak self] location in
+                    cell.label.textColor = .black
+                }).disposed(by: self.disposeBag)
+            case .major:
+                self.majorBS.subscribe(onNext: { [weak self] major in
+                    cell.label.textColor = .black
+                }).disposed(by: self.disposeBag)
+            default:
+                break
+            }
             
             return cell
         case let .TextFieldItem(text):
@@ -149,6 +169,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     lazy var companyInformation = Company()
     lazy var universityInformation = University()
+
+    lazy var nameBS = PublishSubject<String>()
+    lazy var roleBS = PublishSubject<String>()
+    lazy var locationBS = PublishSubject<String>()
+    lazy var majorBS = PublishSubject<String>()
     
     var isActive: Bool
     

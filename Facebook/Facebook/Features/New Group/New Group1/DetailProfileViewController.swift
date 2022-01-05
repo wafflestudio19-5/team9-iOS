@@ -28,7 +28,6 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let disposeBag = DisposeBag()
     
-    
     //TableView 바인딩을 위한 dataSource객체
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
@@ -118,7 +117,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         // Do any additional setup after loading the view.
         self.title = "정보"
         loadData()
-        bindTableView()
+        bind()
     }
     
     func loadData() {
@@ -176,13 +175,21 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             ])
         ]
         
+        print(sections)
+        
         sectionsBR.accept(sections)
     }
     
-    func bindTableView() {
+    func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        /// 새로고침 제스쳐
+        detailProfileView.refreshControl.rx.controlEvent(.valueChanged)
+            .subscribe(onNext: { [weak self] in
+                self?.loadData()
+            }).disposed(by: disposeBag)
     }
     
     
@@ -249,7 +256,8 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         return footerView
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat { //마지막 section header w제거
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 { return 0 }
         return 40
     }
     

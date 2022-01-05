@@ -12,6 +12,15 @@ extension Endpoint {
         return Endpoint(path: "user/\(id)/profile/")
     }
     
+    static func profile(id: Int, userProfile: UserProfile) -> Self {
+        return Endpoint(path: "user/\(id)/profile/",
+                        parameters: ["first_name": userProfile.first_name,
+                                     "last_name": userProfile.last_name,
+                                     "birth": userProfile.birth,
+                                     "gender": userProfile.gender,
+                                     "self_intro": (userProfile.self_intro != nil && userProfile.self_intro != "" ) ? userProfile.self_intro! : ""])
+    }
+    
     static func company(id: Int) -> Self {
         return Endpoint(path: "user/company/\(id)/")
     }

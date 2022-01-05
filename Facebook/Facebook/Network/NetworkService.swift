@@ -56,6 +56,10 @@ struct NetworkService {
     static func post<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
         return session.rx.responseDecodable(.post, endpoint.url, parameters: endpoint.parameters)
     }
+    
+    static func put<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
+        return session.rx.responseDecodable(.put, endpoint.url, parameters: endpoint.parameters)
+    }
 }
 
 

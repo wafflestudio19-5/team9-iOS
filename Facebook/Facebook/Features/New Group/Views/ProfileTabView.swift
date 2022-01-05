@@ -36,6 +36,7 @@ class ProfileTabView: UIView {
     
     private func configureTableView() {
         profileTableView.tableHeaderView = UIView()  // removes the separator at the top
+        profileTableView.separatorStyle = .none
         profileTableView.register(UINib(nibName: "MainProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "MainProfileCell")
         profileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         profileTableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.reuseIdentifier)

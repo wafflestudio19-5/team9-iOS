@@ -22,7 +22,7 @@ class GenderSelectTableViewCell: UITableViewCell {
     
     var disposeBag = DisposeBag()
     
-    var selectedGender = ""
+    let genderPS = PublishSubject<String>()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -48,9 +48,8 @@ class GenderSelectTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func initialSetup(cellStyle: Style, selectedGender: String) {
+    func initialSetup(cellStyle: Style) {
         self.cellStyle = cellStyle
-        self.selectedGender = selectedGender
         setLayout()
         bindImage()
     }
@@ -81,10 +80,10 @@ class GenderSelectTableViewCell: UITableViewCell {
     
     private func bindImage() {
         //선택 여부에 따라 image 활성/비활성
-        Observable.just(selectedGender).subscribe(onNext: { [weak self] selectedGender in
+        genderPS.subscribe(onNext: { [weak self] gender in
             guard let self = self else { return }
             
-            switch selectedGender {
+            switch gender {
             case "M":
                 switch self.cellStyle {
                 case .male:

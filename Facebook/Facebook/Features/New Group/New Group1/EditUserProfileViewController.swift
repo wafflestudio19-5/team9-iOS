@@ -43,6 +43,9 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
             
             switch style {
             case .birthDay:
+                self.selectedMonth = cell.monthTextField.text ?? ""
+                self.selectedDay = cell.dayTextField.text ?? ""
+                
                 cell.monthTextField.rx.text.orEmpty.subscribe { [weak self] selectedMonth in
                     self?.selectedMonth = selectedMonth
                 }.disposed(by: cell.disposeBag)
@@ -51,6 +54,8 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
                     self?.selectedDay = selectedDay
                 }.disposed(by: cell.disposeBag)
             case .birthYear:
+                self.selectedYear = cell.yearTextField.text ?? ""
+                
                 cell.yearTextField.rx.text.orEmpty.subscribe { [weak self] selectedYear in
                     self?.selectedYear = selectedYear
                 }.disposed(by: cell.disposeBag)
@@ -71,7 +76,7 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
         case let .GenderSelectItem(style, selectedGender):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: GenderSelectTableViewCell.reuseIdentifier, for: idxPath) as? GenderSelectTableViewCell else { return UITableViewCell() }
             
-            cell.initialSetup(cellStyle: style, selectedGender: selectedGender)
+            cell.initialSetup(cellStyle: style)
             switch style {
             case .male:
                 cell.configureCell(genderText: "남성")
@@ -79,18 +84,24 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
                 cell.configureCell(genderText: "여성")
             }
             
+            //성별 선택에 따른 선택 이미지 변경
             cell.rx.tapGesture().when(.recognized).subscribe({ [weak self] _ in
                 switch cell.cellStyle {
                 case .male:
                     self?.selectedGender = "M"
+                    self?.genderBS.onNext("M")
                 case .female:
                     self?.selectedGender = "F"
+                    self?.genderBS.onNext("F")
                 }
             }).disposed(by: cell.disposeBag)
             
-            Observable.just(self.selectedGender).subscribe(onNext: { selectedGender in
-                cell.selectedGender = selectedGender
+            self.genderBS.subscribe(onNext: { gender in
+                cell.genderPS.onNext(gender)
             }).disposed(by: cell.disposeBag)
+            
+            //초기 성별 선택 이미지 설정
+            cell.genderPS.onNext(self.selectedGender)
             
             return cell
         default:
@@ -106,6 +117,7 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
     var selectedMonth = ""
     var selectedDay = ""
     var selectedGender = ""
+    let genderBS = BehaviorSubject<String>(value: "")
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -139,7 +151,7 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
     func createSection() {
         guard let userProfile = userProfile else { return }
         
-        print(userProfile.gender)
+        selectedGender = userProfile.gender
         
         let sections: [MultipleSectionModel] = [
             .DetailInformationSection(title: "생일", items: [
@@ -162,6 +174,40 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        editUserProfileView.saveButton.rx.tap.bind{ [weak self] _ in
+            guard let self = self else { return }
+            
+            var month = self.selectedMonth.trimmingCharacters(in: ["월"])
+            if month.count == 1 {
+                month = "0" + month
+            }
+            
+            var day = self.selectedDay
+            if day.count == 1 {
+                day = "0" + day
+            }
+        
+            let birth = self.selectedYear + "-" + month + "-" + day
+            self.userProfile?.birth = birth
+            self.userProfile?.gender = self.selectedGender
+            
+            guard let userProfile = self.userProfile else { return }
+            
+            NetworkService
+                .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
+                .subscribe { [weak self] _ in
+                    guard let self = self else { return }
+                    let VCcount = self.navigationController?.viewControllers.count
+                    guard let detailProfileVC = self.navigationController?.viewControllers[VCcount! - 2] as? DetailProfileViewController else { return }
+                    detailProfileVC.loadData()
+                    self.navigationController?.popViewController(animated: true)
+                }.disposed(by: self.disposeBag)
+        }.disposed(by: disposeBag)
+        
+        editUserProfileView.cancelButton.rx.tap.bind{
+            self.navigationController?.popViewController(animated: true)
+        }.disposed(by: disposeBag)
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

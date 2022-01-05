@@ -68,12 +68,12 @@ class DetailInformationTableViewCell: UITableViewCell {
             privacyBoundLabel.text = privacyBound
             descriptionLabel.text = description
             
-            editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+            editButton.setImage(UIImage(systemName: "pencil.circle.fill"), for: .normal)
         case .style4:
             informationImage.image = UIImage(systemName: "checkmark.square.fill")
             informationLabel.text = information
             descriptionLabel.text = "소개에 표시되지 않으며 전체 공개가 유지됩니다"
-            editButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+            editButton.setImage(UIImage(systemName: "pencil.circle.fill"), for: .normal)
             isIndicate = true
         }
     }

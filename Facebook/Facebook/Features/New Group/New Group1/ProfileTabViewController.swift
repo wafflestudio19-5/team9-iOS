@@ -47,7 +47,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.editProfileButton.rx.tap.bind { [weak self] in
                 let editProfileViewController = EditProfileViewController()
                 self?.push(viewController: editProfileViewController)
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: cell.disposeBag)
             
             return cell
         case let .SimpleInformationItem(style, informationType,image, information):

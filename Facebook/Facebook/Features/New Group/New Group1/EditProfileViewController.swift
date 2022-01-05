@@ -155,7 +155,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                 .ImageItem(image: UIImage(systemName: "photo")!)
             ]),
             .SelfIntroSection(title: "소개", items: [
-                .LabelItem(style: .style1, labelText: userProfile.self_intro ?? "회원님에 대해 설명해주세요...")
+                .LabelItem(style: .style1,
+                           labelText: (userProfile.self_intro != nil && userProfile.self_intro != "") ? userProfile.self_intro! : "회원님에 대해 설명해주세요...")
             ]),
             .DetailInformationSection(title: "상세 정보", items: [
                 .SimpleInformationItem(style: .style2, image: UIImage(systemName: "briefcase")!, information: "직장"),
@@ -178,7 +179,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     //UITableView의 custom header적용
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     
-        if section == 4 { return UIView() } //마지막 section header 제거
+        if section == (sectionsBR.value.count - 1) { return UIView() } //마지막 section header 제거
         
         let frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 42)
         let headerView = UIView(frame: frame)
@@ -238,7 +239,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     //footer의 separate line
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         
-        if section == 4 { return UIView() } //마지막 section separator line 젝
+        if section == (sectionsBR.value.count - 1)  { return UIView() } //마지막 section separator line 젝
         
         let footerView = UIView()
         footerView.backgroundColor = .white
@@ -255,11 +256,12 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 4 { return 0 } //마지막 section header w제거
+        if section == (sectionsBR.value.count - 1)  { return 0 } //마지막 section header w제거
         return 40
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == (sectionsBR.value.count - 1)  { return 0 }
         return 5
     }
 }

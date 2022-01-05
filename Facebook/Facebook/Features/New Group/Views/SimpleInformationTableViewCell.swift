@@ -124,7 +124,7 @@ class SimpleInformationTableViewCell: UITableViewCell {
                 informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                 informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
                 informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20)
+                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
             ])
             
             addSubview(informationLabel)
