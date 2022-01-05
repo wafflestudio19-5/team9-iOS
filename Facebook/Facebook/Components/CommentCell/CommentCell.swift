@@ -55,21 +55,23 @@ class CommentCell: UITableViewCell {
         
         let horizontalStackForButtons = UIStackView()
         horizontalStackForButtons.axis = .horizontal
-        horizontalStackForButtons.spacing = 17.0
         horizontalStackForButtons.addArrangedSubview(createdLabel)
         horizontalStackForButtons.addArrangedSubview(likesLabel)
         horizontalStackForButtons.addArrangedSubview(addChildCommentLabel)
+        horizontalStackForButtons.setCustomSpacing(8, after: createdLabel)
+        horizontalStackForButtons.setCustomSpacing(2, after: likesLabel)
         horizontalStackForButtons.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(horizontalStackForButtons)
         
         
         let verticalStackForContents = UIStackView()
         verticalStackForContents.axis = .vertical
+        verticalStackForContents.alignment = .leading
         verticalStackForContents.spacing = 0
         verticalStackForContents.backgroundColor = FacebookColor.mildGray.color()
         verticalStackForContents.layer.cornerRadius = 18
         verticalStackForContents.isLayoutMarginsRelativeArrangement = true
-        verticalStackForContents.layoutMargins = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+        verticalStackForContents.layoutMargins = UIEdgeInsets(top: 6, left: 0, bottom: 6, right: 12)
         verticalStackForContents.addArrangedSubview(authorLabel)
         verticalStackForContents.addArrangedSubview(contentLabel)
         verticalStackForContents.translatesAutoresizingMaskIntoConstraints = false
@@ -78,6 +80,8 @@ class CommentCell: UITableViewCell {
         leftMarginConstraint = profileImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin - 5)
         profileHeightConstraint = profileImage.heightAnchor.constraint(equalToConstant: profileImageSize)
         profileWidthConstraint = profileImage.widthAnchor.constraint(equalToConstant: profileImageSize)
+        authorLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             profileImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
             leftMarginConstraint!,
@@ -87,10 +91,14 @@ class CommentCell: UITableViewCell {
             verticalStackForContents.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
             verticalStackForContents.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 4),
             verticalStackForContents.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
+            contentLabel.leadingAnchor.constraint(equalTo: verticalStackForContents.leadingAnchor, constant: 12),
+            authorLabel.leadingAnchor.constraint(equalTo: contentLabel.leadingAnchor, constant: -6),
+            authorLabel.heightAnchor.constraint(equalToConstant: 20),
             
             horizontalStackForButtons.topAnchor.constraint(equalTo: verticalStackForContents.bottomAnchor, constant: 4),
             horizontalStackForButtons.leadingAnchor.constraint(equalTo: verticalStackForContents.leadingAnchor, constant: .standardLeadingMargin),
-            horizontalStackForButtons.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            horizontalStackForButtons.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            horizontalStackForButtons.heightAnchor.constraint(equalToConstant: 20),
         ])
     }
     
@@ -101,13 +109,13 @@ class CommentCell: UITableViewCell {
                 // move to user profile view
             }.disposed(by: disposeBag)
         
-        likesLabel.rx.tapGesture().when(.recognized)
+        likesLabel.rx.tap
             .bind { [weak self] _ in
                 print("likeslabel tapped")
                 // send POST request to server
             }.disposed(by: disposeBag)
         
-        addChildCommentLabel.rx.tapGesture().when(.recognized)
+        addChildCommentLabel.rx.tap
             .bind { [weak self] _ in
                 print("답글 달기 tapped")
                 // add some action for creating child comment
@@ -117,26 +125,20 @@ class CommentCell: UITableViewCell {
     // MARK: UI Components
     
     private let profileImage = ProfileImageView()
-    private let authorLabel = InfoLabel(color: .black, size: 14, weight: .medium)
+    private let authorLabel = InfoButton(color: .black, size: 14, weight: .semibold)
+    
     private let contentLabel: UILabel = {
         let label = InfoLabel(color: .black, size: 16, weight: .regular)
         label.numberOfLines = 0
         label.lineBreakStrategy = .pushOut
         return label
     }()
-    private let createdLabel = InfoLabel(color: .darkGray, size: 12, weight: .regular)
     
-    private lazy var likesLabel: UILabel = {
-        let label = InfoLabel(color: .darkGray, size: 12, weight: .medium)
-        label.text = "좋아요"
-        return label
-    }()
+    private var createdLabel = InfoLabel()
     
-    private lazy var addChildCommentLabel: UILabel = {
-        let label = InfoLabel(color: .darkGray, size: 12, weight: .medium)
-        label.text = "답글 달기"
-        return label
-    }()
+    private var likesLabel = InfoButton(text: "좋아요", weight: .semibold)
+    
+    private var addChildCommentLabel = InfoButton(text: "답글 달기", weight: .semibold)
 }
 
 struct CommentCellRepresentable: UIViewRepresentable {

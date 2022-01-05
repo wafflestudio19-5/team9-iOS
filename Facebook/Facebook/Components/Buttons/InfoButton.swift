@@ -35,10 +35,14 @@ class InfoButton: UIButton {
         
         var configuration = UIButton.Configuration.filled()
         configuration.baseForegroundColor = color
-        configuration.baseBackgroundColor = .clear
-        configuration.contentInsets = .init(top: 10, leading: 6, bottom: 10, trailing: 6)
+        configuration.baseBackgroundColor = .red
+        configuration.contentInsets = .init(top: 3, leading: 6, bottom: 3, trailing: 6)
         self.configuration = configuration
-        self.text = text
+        
+        defer {
+            self.text = text
+        }
+        
         
         configurationUpdateHandler = { button in
             switch button.state {
