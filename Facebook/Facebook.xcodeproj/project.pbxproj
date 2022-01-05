@@ -446,7 +446,6 @@
 				77ABC5D72774A998000431E1 /* AddInformationView.swift */,
 				77FE72862775E00600482CE7 /* SelectInformationView.swift */,
 				7754B8812782C25800775D81 /* PhotoPopUpView.swift */,
-				7754B87627829C4700775D81 /* EditUsernameTableViewCell.swift */,
 				77FE728A2776021600482CE7 /* SearchHeaderView.swift */,
 				774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */,
 				774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */,
@@ -459,6 +458,7 @@
 				7754B866277DB05800775D81 /* TextViewTableViewCell.swift */,
 				77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */,
 				7754B8722781D7BC00775D81 /* BirthSelectTableViewCell.swift */,
+				7754B87627829C4700775D81 /* EditUsernameTableViewCell.swift */,
 				7754B8742781DD9A00775D81 /* GenderSelectTableViewCell.swift */,
 			);
 			path = Views;

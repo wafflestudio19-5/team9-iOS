@@ -37,17 +37,33 @@ class EditUsernameView: UIView {
         return view
     }()
     
+    let alertLabel: LabelWithPadding = {
+        let label = LabelWithPadding(padding: UIEdgeInsets(top: 10.0, left: 7.0, bottom: 10.0, right: 7.0))
+        label.backgroundColor = .systemRed
+        label.backgroundColor = UIColor.systemRed.withAlphaComponent(0.2)
+        label.textColor = .systemRed
+                                     
+        return label
+    }()
+    
+    let verticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return stackView
+    }()
+    
     let descriptionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 16)
-        label.text = ""
+        label.text = "Facebook을 사용하는 사람에게 표시될 이름을 입력하세요."
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
     
-    let lastnameLabel: UILabel = {
+    let lastNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.text = "성"
@@ -56,7 +72,7 @@ class EditUsernameView: UIView {
         return label
     }()
     
-    let firstnameLabel: UILabel = {
+    let firstNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.text = "이름(성은 제외)"
@@ -65,7 +81,7 @@ class EditUsernameView: UIView {
         return label
     }()
     
-    let lastnameTextField: UITextField = {
+    let lastNameTextField: UITextField = {
         let textField = UITextField()
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.gray.cgColor
@@ -74,7 +90,7 @@ class EditUsernameView: UIView {
         return textField
     }()
     
-    let firstnameTextField: UITextField = {
+    let firstNameTextField: UITextField = {
         let textField = UITextField()
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.gray.cgColor
@@ -83,19 +99,12 @@ class EditUsernameView: UIView {
         return textField
     }()
     
-    let alertView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 3
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.lightGray.cgColor
-        view.backgroundColor = .systemGray5
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        return view
-    }()
-    
-    let alertLabel: UILabel = {
-        let label = UILabel()
+    let notificationLabel: LabelWithPadding = {
+        let label = LabelWithPadding(padding: UIEdgeInsets(top: 10.0, left: 10.0, bottom: 10.0, right: 15.0))
+        label.layer.cornerRadius = 3
+        label.layer.borderWidth = 1
+        label.layer.borderColor = UIColor.lightGray.cgColor
+        label.backgroundColor = .systemGray5
         label.numberOfLines = 0
         
         let text = "알림: 일반적인 용법에 어긋나는 대소문자 표기, 구두점, 글자, 무작위 단어 등을 추가하지 마세요."
@@ -158,6 +167,22 @@ class EditUsernameView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setAlertLabelText(as text: String) {
+        if !text.isEmpty { showAlertLabel(as: text) }
+        else { hideAlertLabel() }
+    }
+    
+    func showAlertLabel(as text: String, setOnTop: Bool = false) {
+        if setOnTop { verticalStackView.insertArrangedSubview(alertLabel, at: 0) }
+        else { verticalStackView.addArrangedSubview(alertLabel) }
+        alertLabel.text = text
+    }
+    
+    func hideAlertLabel() {
+        verticalStackView.removeArrangedSubview(alertLabel)
+        alertLabel.removeFromSuperview()
+    }
+    
     private func setLayoutForView() {
         self.addSubview(contentView)
         NSLayoutConstraint.activate([
@@ -180,58 +205,57 @@ class EditUsernameView: UIView {
             divider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
         ])
         
+        contentView.addSubview(verticalStackView)
+        NSLayoutConstraint.activate([
+            verticalStackView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 10),
+            verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
+        ])
+        
         contentView.addSubview(descriptionLabel)
         NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 10),
+            descriptionLabel.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 5),
             descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
         ])
         
-        contentView.addSubview(lastnameLabel)
+        contentView.addSubview(lastNameLabel)
         NSLayoutConstraint.activate([
-            lastnameLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 15),
-            lastnameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
+            lastNameLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 15),
+            lastNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
         ])
         
-        contentView.addSubview(lastnameTextField)
+        contentView.addSubview(lastNameTextField)
         NSLayoutConstraint.activate([
-            lastnameTextField.heightAnchor.constraint(equalToConstant: 30),
-            lastnameTextField.widthAnchor.constraint(equalToConstant: 200),
-            lastnameTextField.topAnchor.constraint(equalTo: lastnameLabel.bottomAnchor),
-            lastnameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
+            lastNameTextField.heightAnchor.constraint(equalToConstant: 30),
+            lastNameTextField.widthAnchor.constraint(equalToConstant: 200),
+            lastNameTextField.topAnchor.constraint(equalTo: lastNameLabel.bottomAnchor),
+            lastNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
         ])
         
-        contentView.addSubview(firstnameLabel)
+        contentView.addSubview(firstNameLabel)
         NSLayoutConstraint.activate([
-            firstnameLabel.topAnchor.constraint(equalTo: lastnameTextField.bottomAnchor),
-            firstnameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
+            firstNameLabel.topAnchor.constraint(equalTo: lastNameTextField.bottomAnchor),
+            firstNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
         ])
         
-        contentView.addSubview(firstnameTextField)
+        contentView.addSubview(firstNameTextField)
         NSLayoutConstraint.activate([
-            firstnameTextField.heightAnchor.constraint(equalToConstant: 30),
-            firstnameTextField.widthAnchor.constraint(equalToConstant: 200),
-            firstnameTextField.topAnchor.constraint(equalTo: firstnameLabel.bottomAnchor),
-            firstnameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
+            firstNameTextField.heightAnchor.constraint(equalToConstant: 30),
+            firstNameTextField.widthAnchor.constraint(equalToConstant: 200),
+            firstNameTextField.topAnchor.constraint(equalTo: firstNameLabel.bottomAnchor),
+            firstNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
         ])
         
-        contentView.addSubview(alertView)
+        contentView.addSubview(notificationLabel)
         NSLayoutConstraint.activate([
-            alertView.topAnchor.constraint(equalTo: firstnameTextField.bottomAnchor, constant: 15),
-            alertView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            alertView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
-        ])
-        
-        alertView.addSubview(alertLabel)
-        NSLayoutConstraint.activate([
-            alertLabel.topAnchor.constraint(equalTo: alertView.topAnchor, constant: 10),
-            alertLabel.bottomAnchor.constraint(equalTo: alertView.bottomAnchor, constant: -10),
-            alertLabel.leadingAnchor.constraint(equalTo: alertView.leadingAnchor, constant: 10),
-            alertLabel.trailingAnchor.constraint(equalTo: alertView.trailingAnchor, constant: -10)
+            notificationLabel.topAnchor.constraint(equalTo: firstNameTextField.bottomAnchor, constant: 15),
+            notificationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            notificationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
         ])
         
         contentView.addSubview(passwordLabel)
         NSLayoutConstraint.activate([
-            passwordLabel.topAnchor.constraint(equalTo: alertView.bottomAnchor, constant: 15),
+            passwordLabel.topAnchor.constraint(equalTo: notificationLabel.bottomAnchor, constant: 15),
             passwordLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
         ])
         

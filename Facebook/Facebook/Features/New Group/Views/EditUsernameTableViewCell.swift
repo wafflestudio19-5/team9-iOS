@@ -86,7 +86,7 @@ class EditUsernameTableViewCell: UITableViewCell {
     
     let addButton: UIButton = {
         let button = UIButton()
-        button.setTitle("이름 추가", for: .normal)
+        button.setTitle("이름 변경", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         
