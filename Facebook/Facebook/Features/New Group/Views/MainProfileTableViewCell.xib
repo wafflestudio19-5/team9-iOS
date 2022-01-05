@@ -33,7 +33,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WRh-ix-hJX">
-                        <rect key="frame" x="26" y="381.5" width="268" height="64"/>
+                        <rect key="frame" x="26" y="408" width="268" height="37.5"/>
                         <color key="backgroundColor" systemColor="systemGray4Color"/>
                         <color key="tintColor" systemColor="labelColor"/>
                         <state key="normal" title="Button"/>
@@ -66,6 +66,12 @@
                             <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="16"/>
                         </buttonConfiguration>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="self introduction" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wKs-qj-ISS">
+                        <rect key="frame" x="36" y="374" width="248" height="21.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="WRh-ix-hJX" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="1Mz-KL-Ih2"/>
@@ -76,13 +82,17 @@
                     <constraint firstItem="nbI-8S-Ij7" firstAttribute="top" secondItem="Cl9-O3-g8k" secondAttribute="bottom" constant="15" id="5sV-92-DiF"/>
                     <constraint firstItem="100-aC-Ysj" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="7RN-JB-hPo"/>
                     <constraint firstItem="Cl9-O3-g8k" firstAttribute="top" secondItem="100-aC-Ysj" secondAttribute="bottom" constant="20" id="JMb-ve-Mku"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="wKs-qj-ISS" secondAttribute="trailing" constant="20" id="Jeo-Qw-rRg"/>
                     <constraint firstItem="WRh-ix-hJX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="N8q-1M-L7O"/>
                     <constraint firstItem="nbI-8S-Ij7" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="OGz-Ba-iqi"/>
+                    <constraint firstItem="WRh-ix-hJX" firstAttribute="top" secondItem="wKs-qj-ISS" secondAttribute="bottom" constant="12.5" id="TYD-4q-cL7"/>
                     <constraint firstItem="Y23-Er-bjX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" symbolic="YES" id="ZQ9-eP-gnZ"/>
                     <constraint firstItem="Y23-Er-bjX" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="aAa-eA-bN3"/>
                     <constraint firstItem="V9Y-Yj-5oy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="40" id="aWJ-4p-mbS"/>
-                    <constraint firstItem="WRh-ix-hJX" firstAttribute="top" secondItem="nbI-8S-Ij7" secondAttribute="bottom" constant="15" id="bDb-ZX-hQR"/>
                     <constraint firstItem="100-aC-Ysj" firstAttribute="top" secondItem="V9Y-Yj-5oy" secondAttribute="bottom" constant="15" id="bXT-Sw-xfq"/>
+                    <constraint firstItem="wKs-qj-ISS" firstAttribute="top" secondItem="nbI-8S-Ij7" secondAttribute="bottom" constant="7.5" id="bnH-Yt-9i1"/>
+                    <constraint firstItem="wKs-qj-ISS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="20" id="eOt-VD-Dee"/>
+                    <constraint firstItem="wKs-qj-ISS" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="gZ2-6m-Y7h"/>
                     <constraint firstItem="Y23-Er-bjX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" symbolic="YES" id="hrP-oE-lmF"/>
                     <constraint firstItem="V9Y-Yj-5oy" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="jVk-qj-9NY"/>
                     <constraint firstItem="nbI-8S-Ij7" firstAttribute="top" secondItem="Y23-Er-bjX" secondAttribute="bottom" constant="115" id="sGQ-yx-Lve"/>
@@ -96,6 +106,7 @@
                 <outlet property="editProfileButton" destination="WRh-ix-hJX" id="TVB-fH-MDZ"/>
                 <outlet property="nameLabel" destination="nbI-8S-Ij7" id="Mbh-Dq-pRA"/>
                 <outlet property="profileImage" destination="Cl9-O3-g8k" id="CuD-M0-Ba3"/>
+                <outlet property="selfIntroLabel" destination="wKs-qj-ISS" id="DZR-sQ-56V"/>
             </connections>
             <point key="canvasLocation" x="131.8840579710145" y="279.91071428571428"/>
         </tableViewCell>

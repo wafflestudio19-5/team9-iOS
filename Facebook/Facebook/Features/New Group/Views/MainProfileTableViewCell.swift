@@ -13,6 +13,7 @@ class MainProfileTableViewCell: UITableViewCell {
     @IBOutlet weak var coverImage: UIImageView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var selfIntroLabel: UILabel!
     @IBOutlet weak var coverLabel: UILabel!
     @IBOutlet weak var editProfileButton: UIButton!
     @IBOutlet weak var coverImageButton: UIButton!

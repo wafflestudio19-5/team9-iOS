@@ -29,25 +29,47 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     //enum SectionItem의 유형에 따라 다른 cell type을 연결
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .MainProfileItem(profileImage, coverImage, name):
+        case let .MainProfileItem(profileImage, coverImage, name, selfIntro):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
             
             cell.profileImage.image = profileImage
             cell.coverImage.image = coverImage
             cell.nameLabel.text = name
+            cell.selfIntroLabel.text = selfIntro
             
-            cell.profileImage.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                print("profile image Tap")
-            }).disposed(by: self.disposeBag)
+            cell.profileImage.rx
+                .tapGesture()
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    print("profile image Tap")
+                }).disposed(by: cell.disposeBag)
             
-            cell.coverImageButton.rx.tap.bind { [weak self] in
-                print("cover image button tap")
-            }.disposed(by: self.disposeBag)
+            cell.coverImageButton.rx
+                .tap
+                .bind { [weak self] in
+                    print("cover image button tap")
+                }.disposed(by: cell.disposeBag)
             
-            cell.editProfileButton.rx.tap.bind { [weak self] in
-                let editProfileViewController = EditProfileViewController()
-                self?.push(viewController: editProfileViewController)
-            }.disposed(by: cell.disposeBag)
+            cell.selfIntroLabel.rx
+                .tapGesture()
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    if selfIntro == "" {
+                        let addSelfIntroViewController = AddSelfIntroViewController()
+                        let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+                        navigationController.modalPresentationStyle = .fullScreen
+                        self?.present(navigationController, animated: true, completion: nil)
+                    } else {
+                        self?.showAlertMenu()
+                    }
+                }).disposed(by: cell.disposeBag)
+            
+            cell.editProfileButton.rx
+                .tap
+                .bind { [weak self] in
+                    let editProfileViewController = EditProfileViewController()
+                    self?.push(viewController: editProfileViewController)
+                }.disposed(by: cell.disposeBag)
             
             return cell
         case let .SimpleInformationItem(style, informationType,image, information):
@@ -200,7 +222,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 .MainProfileItem(
                     profileImage: UIImage(systemName: "person.fill")!,
                     coverImage: UIImage(),
-                    name: (userProfile.username != nil) ? userProfile.username! : "username")
+                    name: (userProfile.username != nil) ? userProfile.username! : "username",
+                    selfIntro: (userProfile.self_intro != nil) ? userProfile.self_intro! : "")
             ])
         ]
 
@@ -259,3 +282,46 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         return 5
     }
 }
+
+extension ProfileTabViewController {
+    //자기 소개가 이미 있을 때 자기 소개 관련 메뉴(alertsheet형식) present
+    func showAlertMenu() {
+        let alertMenu = UIAlertController(title: "자기 소개", message: "", preferredStyle: .actionSheet)
+        
+        let editSelfIntroAction = UIAlertAction(title: "소개 수정", style: .default, handler: { action in
+            let addSelfIntroViewController = AddSelfIntroViewController()
+            let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            self.present(navigationController, animated: true, completion: nil)
+        })
+        editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        editSelfIntroAction.setValue(UIImage(systemName: "pencil.circle")!, forKey: "image")
+        
+        let deleteSelfIntroAction = UIAlertAction(title: "소개 삭제", style: .default, handler: { action in
+            self.deleteSelfIntro()
+        })
+        deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        
+        alertMenu.addAction(editSelfIntroAction)
+        alertMenu.addAction(deleteSelfIntroAction)
+        alertMenu.addAction(cancelAction)
+        
+        self.present(alertMenu, animated: true, completion: nil)
+    }
+    
+    func deleteSelfIntro() {
+        userProfile?.self_intro = ""
+        guard let userProfile = userProfile else { return }
+        
+        NetworkService
+            .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
+            .subscribe { [weak self] _ in
+                self?.loadData()
+            }.disposed(by: disposeBag)
+
+    }
+}
+
