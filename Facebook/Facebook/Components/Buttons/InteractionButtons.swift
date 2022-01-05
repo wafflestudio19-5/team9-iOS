@@ -77,7 +77,7 @@ class LikeButton: InteractionButton {
                 button.configuration?.image = UIImage(systemName: self.symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))
                 button.configuration?.baseForegroundColor = .darkGray
             default:
-                button.configuration?.baseForegroundColor = .yellow
+                button.configuration?.baseForegroundColor = .darkGray
             }
         }
     }

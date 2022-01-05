@@ -74,6 +74,7 @@
 		B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */; };
 		BE1F75B12785895000E51A28 /* BottomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B02785895000E51A28 /* BottomSpinner.swift */; };
 		BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */; };
+		BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B42785D2C600E51A28 /* InfoButton.swift */; };
 		BE64AF33277FE99D00C25967 /* ItemProvider+LoadFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */; };
 		BE64AF3527809F3E00C25967 /* UploadProgressHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */; };
 		BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF372780A34D00C25967 /* MainHeaderView.swift */; };
@@ -191,6 +192,7 @@
 		B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		BE1F75B02785895000E51A28 /* BottomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSpinner.swift; sourceTree = "<group>"; };
 		BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+BottomSpinner.swift"; sourceTree = "<group>"; };
+		BE1F75B42785D2C600E51A28 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
 		BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemProvider+LoadFile.swift"; sourceTree = "<group>"; };
 		BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressHeaderView.swift; sourceTree = "<group>"; };
 		BE64AF372780A34D00C25967 /* MainHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 			isa = PBXGroup;
 			children = (
 				BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */,
+				BE1F75B42785D2C600E51A28 /* InfoButton.swift */,
 				B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */,
 			);
 			path = Buttons;
@@ -956,6 +959,7 @@
 				B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */,
 				B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */,
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
+				BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */,
 				BEF254E3277AD0EA00FBAACB /* ProfileImageView.swift in Sources */,
 				B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */,
 				BEF254F2277B079D00FBAACB /* CGFloat+LayoutConstants.swift in Sources */,

@@ -63,7 +63,7 @@ class PostCell: UITableViewCell {
     
     func configureCell(with newPost: Post) {
         post = newPost
-        commentCountLabel.text = "댓글 \(post.comments.withCommas(unit: "개"))"
+        commentCountButton.text = "댓글 \(post.comments.withCommas(unit: "개"))"
         textContentLabel.text = post.content
         postHeader.configure(with: post)
         
@@ -111,7 +111,8 @@ class PostCell: UITableViewCell {
         NSLayoutConstraint.activate([
             statHorizontalStackView.topAnchor.constraint(equalTo: imageGridCollectionView.bottomAnchor, constant: .standardTopMargin),
             statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
-            statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin - 5),
+            statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
+            statHorizontalStackView.heightAnchor.constraint(equalToConstant: 20)
         ])
         
         contentView.addSubview(buttonHorizontalStackView)
@@ -150,9 +151,11 @@ class PostCell: UITableViewCell {
     private lazy var statHorizontalStackView: UIStackView = {
         let stack = UIStackView()
         stack.distribution = .equalSpacing
+        stack.axis = .horizontal
+        stack.alignment = .center
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.addArrangedSubview(likeCountLabelWithIcon)
-        stack.addArrangedSubview(commentCountLabel)
+        stack.addArrangedSubview(commentCountButton)
         return stack
     }()
     
@@ -170,7 +173,7 @@ class PostCell: UITableViewCell {
     }()
     
     // 댓글 수 라벨
-    private let commentCountLabel: UILabel = InfoLabel()
+    let commentCountButton: InfoButton = InfoButton()
     
     // 본문 텍스트 라벨
     private let textContentLabel = PostContentLabel()

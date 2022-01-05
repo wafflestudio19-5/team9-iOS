@@ -84,7 +84,14 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
                     .observe(on: MainScheduler.instance)
                     .bind { [weak self] _ in
                         self?.pushToDetailVC(cell: cell, asFirstResponder: true)
-                    }.disposed(by: cell.disposeBag)  
+                    }.disposed(by: cell.disposeBag)
+                
+                // 댓글 수 클릭시 디테일 화면으로 이동
+                cell.commentCountButton.rx.tap
+                    .observe(on: MainScheduler.instance)
+                    .bind { [weak self] _ in
+                        self?.pushToDetailVC(cell: cell, asFirstResponder: false)
+                    }.disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
         
