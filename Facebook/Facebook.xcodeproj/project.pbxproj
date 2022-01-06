@@ -456,8 +456,7 @@
 				BE9C7CAC277170840089247F /* Controllers */,
 				BE9C7CAB2771707A0089247F /* Views */,
 			);
-			name = Profile;
-			path = "New Group";
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		BE9C7CAB2771707A0089247F /* Views */ = {
@@ -487,8 +486,7 @@
 				77B635432768B2E200C41EB3 /* DetailProfileViewController.swift */,
 				77B635472768B30A00C41EB3 /* EditProfileViewController.swift */,
 			);
-			name = Controllers;
-			path = "New Group1";
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		BE9C7CAE277171320089247F /* Notification */ = {
