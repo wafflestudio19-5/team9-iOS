@@ -61,17 +61,18 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 DetailInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: .style3)
+            
             if company.is_active! {
                 cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
-                                   information: company.name!,
-                                   time: company.join_date! + " - 현재",
-                                   description: (company.detail != nil) ? company.detail! : "",
+                                   information: company.name ?? "",
+                                   time: company.join_date ?? "" + " - 현재",
+                                   description: company.detail ?? "",
                                    privacyBound: "전체 공개")
             } else {
                 cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
                                    information: company.name!,
-                                   time: company.join_date! + " ~ " + company.leave_date!,
-                                   description: (company.detail != nil) ? company.detail! : "",
+                                   time: (company.join_date ?? "") + " ~ " + (company.leave_date ?? ""),
+                                   description: company.detail ?? "",
                                    privacyBound: "전체 공개")
             }
             

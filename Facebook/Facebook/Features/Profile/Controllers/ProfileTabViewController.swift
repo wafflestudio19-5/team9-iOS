@@ -109,7 +109,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: .style1)
-            cell.configureCell(image: UIImage(systemName: "briefcase.fill")!, information: company.name!)
+            cell.configureCell(image: UIImage(systemName: "briefcase.fill")!, information: company.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
@@ -121,7 +121,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: .style1)
-            cell.configureCell(image: UIImage(systemName: "graduationcap.fill")!, information: university.name!)
+            cell.configureCell(image: UIImage(systemName: "graduationcap.fill")!, information: university.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
@@ -240,8 +240,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 .MainProfileItem(
                     profileImageUrl: userProfile.profile_image ?? "" ,
                     coverImageUrl: userProfile.cover_image ?? "",
-                    name: (userProfile.username != nil) ? userProfile.username! : "username",
-                    selfIntro: (userProfile.self_intro != nil) ? userProfile.self_intro! : "")
+                    name: userProfile.username ?? "username",
+                    selfIntro: userProfile.self_intro ?? "")
             ])
         ]
 

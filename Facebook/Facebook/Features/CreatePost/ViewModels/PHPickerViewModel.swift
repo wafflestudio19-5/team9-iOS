@@ -59,8 +59,9 @@ extension PHPickerViewModel: PHPickerViewControllerDelegate {
         let existingSelection = self.selection
         var newSelection = [String: PHPickerResult]()
         for result in results {
-            let identifier = result.assetIdentifier!
-            newSelection[identifier] = existingSelection[identifier] ?? result
+            if let identifier = result.assetIdentifier {
+                newSelection[identifier] = existingSelection[identifier] ?? result
+            }
         }
         
         // Track the selection in case the user deselects it later.
