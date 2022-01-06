@@ -12,7 +12,7 @@ import UIKit
 extension UITableView {
     /// `tableHeaderView`의 높이를 다이나믹하게 조절한다.
     func showBottomSpinner() {
-        tableFooterView = BottomSpinner(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: 100))
+        tableFooterView = Spinner(frame: CGRect(x: 0, y: 0, width: self.frame.size.width, height: 100))
     }
     
     func hideBottomSpinner() {

@@ -40,7 +40,7 @@ class CommentCell: UITableViewCell {
     func configure(with comment: Comment) {
         self.comment = comment
         authorLabel.text = comment.author.username
-        contentLabel.text = comment.content
+        contentLabel.text = "\(comment.id) | \(comment.content)"
         createdLabel.text = comment.posted_at
         
         profileImage.snp.updateConstraints { make in
@@ -53,6 +53,7 @@ class CommentCell: UITableViewCell {
         contentView.addSubview(profileImage)
         contentView.addSubview(horizontalButtonStack)
         contentView.addSubview(bubbleView)
+        contentView.addSubview(likeCountLabelWithIcon)
         
         profileImage.snp.makeConstraints { make in
             make.top.equalTo(CGFloat.standardTopMargin)
@@ -71,6 +72,12 @@ class CommentCell: UITableViewCell {
             make.leading.equalTo(bubbleView.snp.leading).offset(CGFloat.standardLeadingMargin)
             make.bottom.equalTo(0)
             make.height.equalTo(20)
+        }
+        
+        likeCountLabelWithIcon.snp.makeConstraints { make in
+            make.centerY.equalTo(horizontalButtonStack).offset(-2)
+            make.trailing.equalTo(contentView).offset(CGFloat.standardTrailingMargin)
+//            make.height.equalTo(horizontalButtonStack)
         }
     }
     
@@ -101,7 +108,7 @@ class CommentCell: UITableViewCell {
     private lazy var horizontalButtonStack: UIStackView = {
         let horizontalStackForButtons = UIStackView()
         horizontalStackForButtons.axis = .horizontal
-        horizontalStackForButtons.alignment = .firstBaseline
+        horizontalStackForButtons.alignment = .center
         horizontalStackForButtons.addArrangedSubview(createdLabel)
         horizontalStackForButtons.addArrangedSubview(likeButton)
         horizontalStackForButtons.addArrangedSubview(replyButton)
@@ -133,7 +140,7 @@ class CommentCell: UITableViewCell {
     
     private let profileImage = ProfileImageView()
     private let authorLabel: InfoButton = {
-        let button = InfoButton(color: .label, size: 14, weight: .semibold)
+        let button = InfoButton(color: .label, size: 13, weight: .semibold)
         button.setContentHuggingPriority(.required, for: .horizontal)
         return button
         
@@ -146,11 +153,25 @@ class CommentCell: UITableViewCell {
         return label
     }()
     
-    private var createdLabel = InfoLabel()
+    private var createdLabel = InfoLabel(size: 13)
     
-    var likeButton = InfoButton(text: "좋아요", weight: .semibold)
+    // 좋아요 수 라벨
+    private let likeCountLabel: UILabel = InfoLabel(size: 13, weight: .medium)
     
-    var replyButton = InfoButton(text: "답글 달기", weight: .semibold)
+    // 따봉 아이콘 + 좋아요 수
+    private lazy var likeCountLabelWithIcon: UIStackView = {
+        let stack = UIStackView()
+        stack.spacing = 5
+        stack.alignment = .center
+        likeCountLabel.text = 5.withCommas()
+        stack.addArrangedSubview(likeCountLabel)
+        stack.addArrangedSubview(GradientIcon(width: .gradientIconWidth))
+        return stack
+    }()
+    
+    var likeButton = InfoButton(text: "좋아요", size: 13, weight: .semibold)
+    
+    var replyButton = InfoButton(text: "답글 달기", size: 13, weight: .semibold)
 }
 
 // MARK: SwiftUI Preview

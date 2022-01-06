@@ -26,8 +26,8 @@ class CommentPaginationViewModel: PaginationViewModel<Comment> {
         return flatten
     }
     
-    override func preprocessBeforeAccept(results: [Comment]) -> [Comment] {
-        return recursivelyFlatten(comments: results)
+    override func preprocessBeforeAccept(oldData: [Comment] = [], results: [Comment]) -> [Comment] {
+        return recursivelyFlatten(comments: results) + oldData
     }
     
     /// 업로드된 댓글이 어디에 삽입되어야 하는지 계산하고 해당 위치에 삽입한다.

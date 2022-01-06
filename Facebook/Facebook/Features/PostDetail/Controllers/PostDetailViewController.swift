@@ -73,6 +73,14 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return postView.textView
     }
     
+    var postHeader: PostDetailHeaderView {
+        return postView.postContentHeaderView
+    }
+    
+    var loadPreviousButton: InfoButton {
+        return postHeader.loadPreviousButton
+    }
+    
     lazy var authorHeaderView: AuthorInfoHeaderView = {
         let view = AuthorInfoHeaderView(imageWidth: 40)
         view.configure(with: post)
@@ -138,7 +146,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if !didConfigurePostDetailView {
-            postView.postContentHeaderView.configure(with: post)
+            postHeader.configure(with: post)
             didConfigurePostDetailView = true
         }
         postView.commentTableView.adjustHeaderHeight()
@@ -183,10 +191,10 @@ extension PostDetailViewController {
         postView.likeButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                self.postView.postContentHeaderView.like()
+                self.postHeader.like()
                 NetworkService.put(endpoint: .newsfeedLike(postId: self.post.id), as: LikeResponse.self)
                     .bind { response in
-                        self.postView.postContentHeaderView.like(syncWith: response.1)
+                        self.postHeader.like(syncWith: response.1)
                     }
                     .disposed(by: self.disposeBag)
             }
@@ -241,27 +249,26 @@ extension PostDetailViewController {
             }
             .disposed(by: disposeBag)
         
-        /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
+        /// `isLoading` 값이 바뀔 때마다 상단 스피너를 토글합니다.
         commentViewModel.isLoading
             .asDriver()
             .drive(onNext: { [weak self] isLoading in
                 if isLoading {
-                    self?.commentTableView.showBottomSpinner()
+                    self?.postHeader.showLoadingSpinner()
                 } else {
-                    self?.commentTableView.hideBottomSpinner()
+                    self?.postHeader.hideLoadingSpinner()
                 }
             })
             .disposed(by: disposeBag)
         
-        /// 테이블 맨 아래까지 스크롤할 때마다 `loadMore` 함수를 실행합니다.
-        commentTableView.rx.didScroll
-            .subscribe { [weak self] _ in
+        /// 이전 댓글 보기 버튼은 다음 데이터 유무에 따라 숨겨집니다.
+        commentViewModel.hasNextObservable.map({!$0}).bind(to: postHeader.loadButtonHStack.rx.isHidden).disposed(by: disposeBag)
+
+        /// 이전 댓글 보기 버튼 바인딩
+        postHeader.loadPreviousButton.rx.tap
+            .bind { [weak self] in
                 guard let self = self else { return }
-                let offSetY = self.commentTableView.contentOffset.y
-                let contentHeight = self.commentTableView.contentSize.height
-                if offSetY > (contentHeight - self.commentTableView.frame.size.height - 100) {
-                    self.commentViewModel.loadMore()
-                }
+                self.commentViewModel.loadMore()
             }
             .disposed(by: disposeBag)
         

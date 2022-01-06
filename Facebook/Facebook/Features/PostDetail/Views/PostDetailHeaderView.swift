@@ -8,6 +8,8 @@
 import UIKit
 import RxSwift
 import RxRelay
+import SwiftUI
+import SnapKit
 
 class PostDetailHeaderView: UIStackView {
     
@@ -70,11 +72,21 @@ class PostDetailHeaderView: UIStackView {
     // 따봉 아이콘 + 좋아요 수
     private lazy var likeCountLabelWithIcon: UIStackView = {
         let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
         stack.spacing = 5
         stack.addArrangedSubview(GradientIcon(width: .gradientIconWidth))
         stack.addArrangedSubview(likeCountLabel)
         return stack
+    }()
+    
+    let loadPreviousButton = InfoButton(text: "이전 댓글 보기...", color: .label, weight: .semibold)
+    private lazy var spinner = Spinner(frame: .init(x: 0, y: 0, width: self.frame.width, height: 100))
+    
+    lazy var loadButtonHStack: UIStackView = {
+        let hStack = UIStackView()
+        hStack.axis = .vertical
+        hStack.alignment = .leading
+        hStack.addArrangedSubview(loadPreviousButton)
+        return hStack
     }()
     
     func configure(with newPost: Post) {
@@ -107,23 +119,48 @@ class PostDetailHeaderView: UIStackView {
         self.addArrangedSubview(imageGridCollectionView)
         self.addArrangedSubview(buttonStackView)
         self.addArrangedSubview(likeCountLabelWithIcon)
+        self.addArrangedSubview(loadButtonHStack)
+        self.addArrangedSubview(spinner)
         
-        NSLayoutConstraint.activate([
-            contentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
-            contentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
-            
-            imageGridCollectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageGridCollectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            
-            buttonStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
-            buttonStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin),
-            buttonStackView.heightAnchor.constraint(equalToConstant: .buttonGroupHeight),
-            
-            likeCountLabelWithIcon.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: .standardLeadingMargin),
-            likeCountLabelWithIcon.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: .standardTrailingMargin)
-        ])
+        let stretchHorizontal = { (make: ConstraintMaker) -> Void in
+            make.leading.equalTo(CGFloat.standardLeadingMargin)
+            make.trailing.equalTo(CGFloat.standardTrailingMargin)
+        }
+        
+        contentLabel.snp.makeConstraints { make in
+            stretchHorizontal(make)
+        }
+        
+        imageGridCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(0)
+        }
+        
+        buttonStackView.snp.makeConstraints { make in
+            stretchHorizontal(make)
+            make.height.equalTo(CGFloat.buttonGroupHeight)
+        }
+        
+        likeCountLabelWithIcon.snp.makeConstraints { make in
+            stretchHorizontal(make)
+        }
+        
+        loadButtonHStack.snp.makeConstraints { make in
+            make.leading.equalTo(10)
+            make.trailing.equalTo(-10)
+        }
+        
+        spinner.snp.makeConstraints { make in
+            make.height.equalTo(23)
+        }
     }
     
+    func showLoadingSpinner() {
+        spinner.isHidden = false
+        loadButtonHStack.isHidden = true
+        
+    }
     
-    
+    func hideLoadingSpinner() {
+        spinner.isHidden = true
+    }
 }

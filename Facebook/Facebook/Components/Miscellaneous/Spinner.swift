@@ -7,15 +7,15 @@
 
 import UIKit
 
-class BottomSpinner: UIView {
+class Spinner: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         let spinner = UIActivityIndicatorView()
         self.addSubview(spinner)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        spinner.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        spinner.snp.makeConstraints { make in
+            make.centerY.centerX.equalTo(self)
+        }
         spinner.startAnimating()
     }
     
