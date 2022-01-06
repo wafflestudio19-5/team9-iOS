@@ -101,6 +101,7 @@ class CommentCell: UITableViewCell {
     private lazy var horizontalButtonStack: UIStackView = {
         let horizontalStackForButtons = UIStackView()
         horizontalStackForButtons.axis = .horizontal
+        horizontalStackForButtons.alignment = .firstBaseline
         horizontalStackForButtons.addArrangedSubview(createdLabel)
         horizontalStackForButtons.addArrangedSubview(likeButton)
         horizontalStackForButtons.addArrangedSubview(replyButton)

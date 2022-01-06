@@ -9,6 +9,7 @@ import Alamofire
 import RxSwift
 import RxAlamofire
 import UIKit
+import RxCocoa
 
 class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
@@ -25,6 +26,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
+        bindNavigationBar()
     }
     
     override func viewDidLayoutSubviews() {
@@ -34,6 +36,26 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    private func bindNavigationBar() {
+        tableView.rx.panGesture()
+            .when(.recognized)
+            .bind { [weak self] recognizer in
+                guard let self = self else { return }
+                let transition = recognizer.translation(in: self.tableView).y
+                if transition < -100 {
+                    self.navigationController?.setNavigationBarHidden(true, animated: true)
+                } else if transition > 100 {
+                    self.navigationController?.setNavigationBarHidden(false, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
     }
     
     private func pushToDetailVC(cell: PostCell, asFirstResponder: Bool) {

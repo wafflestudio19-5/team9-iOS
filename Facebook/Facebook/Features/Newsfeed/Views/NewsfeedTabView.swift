@@ -25,13 +25,9 @@ class NewsfeedTabView: UIView {
     
     private func setLayoutForView() {
         self.addSubview(newsfeedTableView)
-        newsfeedTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            newsfeedTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            newsfeedTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            newsfeedTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            newsfeedTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
-        ])
+        newsfeedTableView.snp.makeConstraints { make in
+            make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
     }
     
     private func configureTableView() {
