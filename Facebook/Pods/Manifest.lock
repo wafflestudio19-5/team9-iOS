@@ -51,6 +51,7 @@ PODS:
   - RxRelay (6.2.0):
     - RxSwift (= 6.2.0)
   - RxSwift (6.2.0)
+  - SnapKit (5.0.1)
 
 DEPENDENCIES:
   - Kingfisher
@@ -63,6 +64,7 @@ DEPENDENCIES:
   - RxKakaoSDKUser
   - RxKeyboard
   - RxSwift
+  - SnapKit (~> 5.0.0)
 
 SPEC REPOS:
   trunk:
@@ -82,6 +84,7 @@ SPEC REPOS:
     - RxKeyboard
     - RxRelay
     - RxSwift
+    - SnapKit
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
@@ -100,7 +103,8 @@ SPEC CHECKSUMS:
   RxKeyboard: 4f5863f43b4ff0cbb2a20b94688d6b80c8a43c14
   RxRelay: e72dbfd157807478401ef1982e1c61c945c94b2f
   RxSwift: d356ab7bee873611322f134c5f9ef379fa183d8f
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: 3248c764a8c27889595c30228c7b891b04bb4e54
+PODFILE CHECKSUM: 682b78af94eb1cf8d52c31631789f62daf8f1756
 
 COCOAPODS: 1.11.2
