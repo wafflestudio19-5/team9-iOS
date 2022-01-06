@@ -110,8 +110,7 @@ class PostDetailView: UIView {
     let divider = Divider()
     
     lazy var keyboardAccessory: UIView = {
-        let customInputView = UIView()
-        customInputView.backgroundColor = .white
+        let customInputView = CustomInputAccessoryView()
         customInputView.addSubview(textView)
         customInputView.addSubview(sendButton)
         customInputView.addSubview(divider)

@@ -38,7 +38,7 @@ class ImageGridCell: UICollectionViewCell {
         super.init(frame: frame)
         setLayout()
         contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
+        contentView.layer.borderColor = UIColor.grayscales.imageBorder.cgColor
     }
     
     required init?(coder: NSCoder) {

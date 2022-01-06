@@ -67,7 +67,7 @@ class PlaceholderTextView: UITextView {
         tv.backgroundColor = .clear
         tv.isScrollEnabled = false
         tv.isUserInteractionEnabled = false
-        tv.textColor = UIColor.gray
+        tv.textColor = .placeholderText
         return tv
     }()
     

@@ -27,7 +27,7 @@ class CreatePostView: UIView {
     }
     
     private func setStyleForView() {
-        self.backgroundColor = .white
+        self.backgroundColor = .systemBackground
     }
     
     /// `view` > `scrollView` > `stackView`
@@ -59,21 +59,6 @@ class CreatePostView: UIView {
         NSLayoutConstraint.activate([
             scrollViewStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
-        
-        // Keyboard의 높이에 따라 스크롤뷰 bottomConstraint 조정
-//        RxKeyboard.instance.visibleHeight
-//            .drive(onNext: { [weak self] keyboardVisibleHeight in
-//                guard let self = self else { return }
-//                let bottomConstraint = scrollViewBottomConstraint
-//
-//                if keyboardVisibleHeight == 0 {
-//                    bottomConstraint.constant = -16.0
-//                } else {
-//                    let height = keyboardVisibleHeight - self.safeAreaInsets.bottom
-//                    bottomConstraint.constant = -height - 16.0
-//                }
-//                self.layoutIfNeeded()
-//            }).disposed(by: disposeBag)
     }
     
     // MARK: UI Components
@@ -105,8 +90,6 @@ class CreatePostView: UIView {
         textView.placeholder = self.placeholder
         textView.font = .systemFont(ofSize: 17)
         textView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
-        textView.backgroundColor = .systemGroupedBackground
-//        textView.textContainerInset = .init(top: 10, left: 10, bottom: 15, right: 10)
         return textView
     }()
     
