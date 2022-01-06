@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Alamofire
+import simd
 
 extension Endpoint {
     static func profile(id: Int) -> Self {
@@ -13,12 +15,26 @@ extension Endpoint {
     }
     
     static func profile(id: Int, userProfile: UserProfile) -> Self {
-        return Endpoint(path: "user/\(id)/profile/",
-                        parameters: ["first_name": userProfile.first_name,
-                                     "last_name": userProfile.last_name,
-                                     "birth": userProfile.birth,
-                                     "gender": userProfile.gender,
-                                     "self_intro": (userProfile.self_intro != nil && userProfile.self_intro != "" ) ? userProfile.self_intro! : ""])
+        let multipartFormDataBuilder: (MultipartFormData) -> Void = { multipartFormData in
+            
+        }
+        return Endpoint(path: "user/\(id)/profile/", multipartFormDataBuilder: multipartFormDataBuilder)
+    }
+    
+    static func profile(id: Int ,updateData: [String: Any]) -> Self {
+        let multipartFormDataBuilder: (MultipartFormData) -> Void = { multipartFormData in
+            for (key, value) in updateData {
+                if value is String{
+                    //텍스트 형식의 데이터
+                    multipartFormData.append((value as! String).data(using: .utf8) ?? Data(), withName: "\(key)")
+                } else {
+                    //이미지 형식의 데이터
+                    multipartFormData.append(value as! Data, withName: "\(key)", fileName: "\(Date().timeIntervalSince1970).jpeg" , mimeType: "image/jpeg")
+                }
+            }
+        }
+        
+        return Endpoint(path: "user/\(id)/profile/", multipartFormDataBuilder: multipartFormDataBuilder)
     }
     
     static func company(id: Int) -> Self {

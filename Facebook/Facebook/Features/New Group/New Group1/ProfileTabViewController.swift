@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 import Alamofire
 import RxSwift
 import RxCocoa
@@ -24,11 +25,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     //enum SectionItem의 유형에 따라 다른 cell type을 연결
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .MainProfileItem(profileImage, coverImage, name, selfIntro):
+        case let .MainProfileItem(profileImageUrl, coverImageUrl, name, selfIntro):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
             
-            cell.profileImage.image = profileImage
-            cell.coverImage.image = coverImage
+            cell.setProfileImage(from: URL(string: profileImageUrl))
+            cell.setCoverImage(from: URL(string: coverImageUrl))
             cell.nameLabel.text = name
             cell.selfIntroLabel.text = selfIntro
             
@@ -36,13 +37,15 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 .tapGesture()
                 .when(.recognized)
                 .subscribe(onNext: { [weak self] _ in
-                    print("profile image Tap")
+                    guard let self = self else { return }
+                    self.presentPicker()
                 }).disposed(by: cell.disposeBag)
             
             cell.coverImageButton.rx
                 .tap
                 .bind { [weak self] in
-                    print("cover image button tap")
+                    guard let self = self else { return }
+                    self.presentPicker()
                 }.disposed(by: cell.disposeBag)
             
             cell.selfIntroLabel.rx
@@ -133,6 +136,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     var postDataViewModel: PaginationViewModel<Post>?
     //let postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(id: 41))
     
+    private var profileImageSelection = [String: PHPickerResult]()
+    private var profileImageIdentifiers: String = ""
+    private var coverImageSelection = [String: PHPickerResult]()
+    private var coverImageIdentifires: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         super.setNavigationBarItems(withEditButton: true)
@@ -222,8 +230,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         let mainProfileSection: [MultipleSectionModel] = [
             .ProfileImageSection(title: "메인 프로필", items: [
                 .MainProfileItem(
-                    profileImage: UIImage(systemName: "person.fill")!,
-                    coverImage: UIImage(),
+                    profileImageUrl: userProfile.profile_image ?? "" ,
+                    coverImageUrl: userProfile.cover_image ?? "",
                     name: (userProfile.username != nil) ? userProfile.username! : "username",
                     selfIntro: (userProfile.self_intro != nil) ? userProfile.self_intro! : "")
             ])
@@ -315,15 +323,48 @@ extension ProfileTabViewController {
     }
     
     func deleteSelfIntro() {
-        userProfile?.self_intro = ""
-        guard let userProfile = userProfile else { return }
+        let updateData = ["self_intro": ""]
         
         NetworkService
-            .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
-            .subscribe { [weak self] _ in
+            .update(endpoint: .profile(id: 41, updateData: updateData))
+            .subscribe{ [weak self] _ in
                 self?.loadData()
             }.disposed(by: disposeBag)
-
     }
 }
 
+extension ProfileTabViewController: PHPickerViewControllerDelegate {
+    
+    private func presentPicker() {
+        var configuration = PHPickerConfiguration(photoLibrary: .shared())
+        
+        configuration.selectionLimit = 1
+        configuration.filter = .any(of: [.images])
+        configuration.preferredAssetRepresentationMode = .current
+        
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        
+        present(picker, animated: true)
+    }
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        // itemProvider 를 가져온다.
+        if let result = results.first{
+            result.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                guard let image = image as? UIImage else { return }
+                guard let imageData = image.pngData() else { return }
+                
+                let uploadData = ["self_intro": "테스트 자기소개", "profile_image": imageData]  as [String : Any]
+                
+                NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe(onNext: { event in
+                    print(event)
+                    print("upload complete!")
+                }).disposed(by: self.disposeBag)
+
+            }
+        }
+        
+        dismiss(animated: true, completion: nil)
+    }
+}

@@ -314,14 +314,12 @@ extension EditProfileViewController {
     }
     
     func deleteSelfIntro() {
-        userProfile?.self_intro = ""
-        guard let userProfile = userProfile else { return }
+        let updateData = ["self_intro": ""]
         
         NetworkService
-            .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
-            .subscribe { [weak self] _ in
+            .update(endpoint: .profile(id: 41, updateData: updateData))
+            .subscribe{ [weak self] _ in
                 self?.loadData()
             }.disposed(by: disposeBag)
-
     }
 }

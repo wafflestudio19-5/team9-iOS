@@ -14,6 +14,7 @@ struct Endpoint {
     var page: Int?  // special case로 처리
     var cursor: String?  // special case로 처리
     var parameters: Parameters?  // request body (data)
+    var multipartFormDataBuilder: ((MultipartFormData) -> Void)?  // multipart data builder when uploading files
     
     var url: URL {
         var components = URLComponents()
@@ -33,8 +34,7 @@ struct Endpoint {
 //        components.port = 8000
         
         // for production
-        components.host = "13.125.113.114"
-        //"ec2-3-34-188-255.ap-northeast-2.compute.amazonaws.com"
+        components.host = "ec2-13-125-113-114.ap-northeast-2.compute.amazonaws.com"
         
         guard let url = components.url else {
             preconditionFailure(

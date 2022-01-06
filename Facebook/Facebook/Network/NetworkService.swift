@@ -60,6 +60,14 @@ struct NetworkService {
     static func put<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
         return session.rx.responseDecodable(.put, endpoint.url, parameters: endpoint.parameters)
     }
+    
+    /*
+     MARK: Upload files
+     */
+    
+    static func update(endpoint: Endpoint) -> Observable<UploadRequest> {
+        return session.rx.upload(multipartFormData: endpoint.multipartFormDataBuilder!, to: endpoint.url, method: .put, headers: [.contentType("multipart/form-data")])
+    }
 }
 
 

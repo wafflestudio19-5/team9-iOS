@@ -190,14 +190,13 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
             }
         
             let birth = self.selectedYear + "-" + month + "-" + day
-            self.userProfile?.birth = birth
-            self.userProfile?.gender = self.selectedGender
             
-            guard let userProfile = self.userProfile else { return }
+            let updateData = ["birth": birth,
+                              "gender": self.selectedGender]
             
             //프로필 편집 
             NetworkService
-                .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
+                .update(endpoint: .profile(id: 41, updateData: updateData))
                 .subscribe { [weak self] _ in
                     guard let self = self else { return }
                     let VCcount = self.navigationController?.viewControllers.count

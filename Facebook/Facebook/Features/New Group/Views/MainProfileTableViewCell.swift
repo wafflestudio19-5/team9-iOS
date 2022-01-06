@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import Kingfisher
 
 class MainProfileTableViewCell: UITableViewCell {
 
@@ -48,5 +49,33 @@ class MainProfileTableViewCell: UITableViewCell {
         profileImage.layer.borderWidth = 5
         
         editProfileButton.layer.cornerRadius = 5
+    }
+}
+
+extension MainProfileTableViewCell {
+    func setProfileImage(from url: URL?) {
+        guard let url = url else { return }
+        
+        let processor = DownsamplingImageProcessor(size: CGSize(width: 200, height: 200))
+        KF.url(url)
+            .setProcessor(processor)
+            .loadDiskFileSynchronously()
+            .cacheMemoryOnly()
+            .fade(duration: 0.1)
+            .onFailure { error in print("커버 이미지 로딩 실패", error)}
+            .set(to: self.profileImage)
+    }
+    
+    func setCoverImage(from url: URL?) {
+        guard let url = url else { return }
+        
+        let processor = DownsamplingImageProcessor(size: CGSize(width: 300, height: 300))
+        KF.url(url)
+            .setProcessor(processor)
+            .loadDiskFileSynchronously()
+            .cacheMemoryOnly()
+            .fade(duration: 0.1)
+            .onFailure { error in print("커버 이미지 로딩 실패", error)}
+            .set(to: self.coverImage)
     }
 }

@@ -105,13 +105,11 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
                 if !isFirstNameEmpty && !isLastNameEmpty {
                     self.editUserProfileView.setAlertLabelText(as: Validation.valid.message())
                     
-                    self.userProfile?.first_name = self.firstName.value
-                    self.userProfile?.last_name = self.lastName.value
-                    
-                    guard let userProfile = self.userProfile else { return }
+                    let updateData = ["first_name": self.firstName.value,
+                                      "last_name": self.lastName.value]
 
                     NetworkService
-                        .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
+                        .update(endpoint: .profile(id: 41, updateData: updateData))
                         .subscribe { [weak self] _ in
                             self?.navigationController?.popViewController(animated: true)
                         }.disposed(by: self.disposeBag)

@@ -74,13 +74,12 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
         addSelfIntroView.saveButton.rx.tap
             .bind{ [weak self] _ in
                 guard let self = self else { return }
-                self.userProfile?.self_intro = self.addSelfIntroView.inputTextView.text
-                guard let userProfile = self.userProfile else { return }
+                let updateData = ["self_intro": self.addSelfIntroView.inputTextView.text]
                 
                 NetworkService
-                    .put(endpoint: .profile(id: 41, userProfile: userProfile), as: UserProfile.self)
-                    .subscribe { [weak self] _ in
-                        self?.dismiss(animated: true, completion: nil)
+                    .update(endpoint: .profile(id: 41, updateData: updateData))
+                    .subscribe{ [weak self] _ in
+                        self?.loadData()
                     }.disposed(by: self.disposeBag)
             }.disposed(by: disposeBag)
         
