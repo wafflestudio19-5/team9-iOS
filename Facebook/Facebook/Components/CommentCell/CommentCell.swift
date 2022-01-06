@@ -24,7 +24,6 @@ class CommentCell: UITableViewCell {
             guard let comment = comment else { return }
             likeCountLabel.text = comment.likes.withCommas()
             likeButton.isSelected = comment.is_liked
-            print(comment.id, likeButton.state)
         }
     }
     

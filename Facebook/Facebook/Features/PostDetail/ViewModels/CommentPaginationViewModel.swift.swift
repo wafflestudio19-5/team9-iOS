@@ -30,7 +30,18 @@ class CommentPaginationViewModel: PaginationViewModel<Comment> {
         return recursivelyFlatten(comments: results) + oldData
     }
     
-    /// 업로드된 댓글이 어디에 삽입되어야 하는지 계산하고 해당 위치에 삽입한다.
+    func invalidateLikeState(of comment: Comment, with response: LikeResponse) {
+        var comments = dataList.value
+        if let firstIndex = comments.firstIndex(where: {$0.id == comment.id}) {
+            var target = comments[firstIndex]
+            target.is_liked = response.is_liked
+            target.likes = response.likes
+            comments[firstIndex] = target
+        }
+        dataList.accept(comments)
+    }
+    
+    /// 업로드된 댓글이 어디에 삽입되어야 하는지 계산한다.
     func findInsertionIndexPath(of comment: Comment) -> IndexPath {
         let flattenComments = dataList.value
         

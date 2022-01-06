@@ -236,8 +236,9 @@ extension PostDetailViewController {
                         guard let self = self else { return }
                         cell.like()
                         NetworkService.put(endpoint: .commentLike(postId: self.post.id, commentId: comment.id), as: LikeResponse.self)
-                            .bind { response in
-                                cell.like(syncWith: response.1)
+                            .bind { _, response in
+                                cell.like(syncWith: response)
+                                self.commentViewModel.invalidateLikeState(of: comment, with: response)
                             }
                             .disposed(by: cell.disposeBag)
                     }
