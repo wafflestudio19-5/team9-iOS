@@ -17,8 +17,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     let disposeBag = DisposeBag()
     var hiddenTextView = UITextView()  // to be deprecated
     var didConfigurePostDetailView: Bool = false
-    var initialInputAccessoryHeight: CGFloat?
-    private var didSetupViewConstraints = false
     
     lazy var commentViewModel: PaginationViewModel<Comment> = {
         return PaginationViewModel<Comment>(endpoint: .comment(postId: 796))
@@ -84,7 +82,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 //        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
 //        appDelegate.window = UIWindow(frame: UIScreen.main.bounds)
 //        appDelegate.window?.makeKeyAndVisible()
-        bindKeyboardHeight()
         bindTableView()
         bindLikeButton()
         bindCommentButton()
@@ -113,9 +110,10 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        initialInputAccessoryHeight = 0
+        bindKeyboardHeight()
         if self.asFirstResponder && !textView.isFirstResponder {
             textView.becomeFirstResponder()
+            self.asFirstResponder = false
         }
     }
     
@@ -144,19 +142,12 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    override func updateViewConstraints() {
-        super.updateViewConstraints()
-        print("updateViewConstraints")
-        guard !self.didSetupViewConstraints else { return }
-        self.didSetupViewConstraints = true
-    }
-    
     
     private func bindKeyboardHeight() {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
-                guard let self = self, self.didSetupViewConstraints else { return }
-                print(keyboardVisibleHeight)
+                guard let self = self else { return }
+                let toolbarHeight = self.keyboardAccessory.frame.height
                 self.keyboardAccessory.snp.remakeConstraints { make in
                     make.left.right.equalTo(0)
                     make.bottom.equalTo(keyboardVisibleHeight == 0 ? self.view.safeAreaLayoutGuide.snp.bottom : self.view.snp.bottom).offset(-keyboardVisibleHeight)
@@ -164,8 +155,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
                 
                 self.view.setNeedsLayout()
                 UIView.animate(withDuration: 0) {
-                    
-                    self.commentTableView.contentInset.bottom = keyboardVisibleHeight + self.keyboardAccessory.frame.height
+                    self.commentTableView.contentInset.bottom = (keyboardVisibleHeight == 0 ? toolbarHeight : keyboardVisibleHeight + toolbarHeight - self.view.safeAreaInsets.bottom) + CGFloat.standardTopMargin
                     self.commentTableView.verticalScrollIndicatorInsets.bottom = self.commentTableView.contentInset.bottom
                     self.view.layoutIfNeeded()
                     
@@ -233,7 +223,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     lazy var keyboardAccessory: UIView = {
         let customInputView = UIView()
-        customInputView.backgroundColor = .red
+        customInputView.backgroundColor = .white
         customInputView.addSubview(textView)
         customInputView.addSubview(sendButton)
         customInputView.addSubview(divider)
