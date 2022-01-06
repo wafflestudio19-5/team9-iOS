@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import RxKeyboard
 import SnapKit
+import RxGesture
 
 class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var post: Post
@@ -31,7 +32,9 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
             }
         }
         didSet {
-            focusedItem?.cell.focus()
+            guard let focusedItem = focusedItem else { return }
+            focusedItem.cell.focus()
+            postView.showFocusedInfo(with: focusedItem.comment.author.username)
         }
     }
     
@@ -147,7 +150,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     private func setKeyboardToolbar() {
         postView.addSubview(keyboardAccessory)
         keyboardAccessory.snp.makeConstraints { make in
-            make.height.equalTo(50)
             make.leading.trailing.equalTo(0)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
@@ -163,10 +165,9 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
                     make.left.right.equalTo(0)
                     make.bottom.equalTo(keyboardVisibleHeight == 0 ? self.view.safeAreaLayoutGuide.snp.bottom : self.view.snp.bottom).offset(-keyboardVisibleHeight)
                 }
-                
                 self.view.setNeedsLayout()
                 UIView.animate(withDuration: 0) {
-                    self.commentTableView.contentInset.bottom = (keyboardVisibleHeight == 0 ? toolbarHeight : keyboardVisibleHeight + toolbarHeight - self.view.safeAreaInsets.bottom) + CGFloat.standardTopMargin
+                    self.commentTableView.contentInset.bottom = (keyboardVisibleHeight == 0 ? toolbarHeight : keyboardVisibleHeight + toolbarHeight - self.view.safeAreaInsets.bottom) + CGFloat.standardTopMargin + 7
                     self.commentTableView.verticalScrollIndicatorInsets.bottom = self.commentTableView.contentInset.bottom
                     self.view.layoutIfNeeded()
                 }
@@ -287,11 +288,19 @@ extension PostDetailViewController {
                     })
                     .disposed(by: self.disposeBag)
                 self.keyboardTextView.text = ""
+                self.postView.hideFocusedInfo()
                 self.focusedItem = nil
             }
             .disposed(by: disposeBag)
         
-        
+        /// 답글 남기기 취소 버튼
+        postView.cancelFocusingButton.rx.tapGesture().when(.recognized)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.postView.hideFocusedInfo()
+                self.focusedItem = nil
+            }
+            .disposed(by: disposeBag)
     }
     
 }

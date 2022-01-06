@@ -60,8 +60,29 @@ class PostDetailView: UIView {
         textView.maxHeight = 80
         textView.layer.cornerRadius = 17
         textView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
-        textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
+    }()
+    
+    
+    var focusedAuthorLabel = InfoLabel(size: 12, weight: .semibold)
+    var cancelFocusingButton = InfoLabel(size: 12, weight: .regular)
+    
+    /// "~에게 답글 남기는 중 ·" 부분
+    lazy var focusedCommentInfo: UIStackView = {
+        let stackview = UIStackView()
+        stackview.axis = .horizontal
+        stackview.alignment = .center
+        stackview.isHidden = true
+        
+        let trailingLabel = InfoLabel(size: 12, weight: .regular)
+        trailingLabel.text = "님에게 답글 남기는 중 · "
+        cancelFocusingButton.text = "취소"
+        
+        stackview.addArrangedSubview(focusedAuthorLabel)
+        stackview.addArrangedSubview(trailingLabel)
+        stackview.addArrangedSubview(cancelFocusingButton)
+        
+        return stackview
     }()
     
     var sendButton: UIButton = {
@@ -71,7 +92,6 @@ class PostDetailView: UIView {
         
         let button = UIButton()
         button.configuration = config
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
         button.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
         return button
@@ -83,7 +103,6 @@ class PostDetailView: UIView {
         config.cornerStyle = .capsule
         
         let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.configuration = config
         return button
     }()
@@ -96,12 +115,14 @@ class PostDetailView: UIView {
         customInputView.addSubview(textView)
         customInputView.addSubview(sendButton)
         customInputView.addSubview(divider)
+        customInputView.addSubview(focusedCommentInfo)
         
         textView.snp.makeConstraints { make in
             make.leading.equalTo(CGFloat.standardLeadingMargin)
-            make.top.equalTo(8)
             make.bottom.equalTo(customInputView.safeAreaLayoutGuide.snp.bottom).offset(-8)
             make.trailing.equalTo(sendButton.snp.leading)
+            make.top.equalTo(focusedCommentInfo.snp.bottom)
+            make.height.equalTo(34)
         }
         
         sendButton.snp.makeConstraints { make in
@@ -115,6 +136,33 @@ class PostDetailView: UIView {
             make.top.leading.trailing.equalTo(0)
         }
         
+        focusedCommentInfo.snp.makeConstraints { make in
+            make.height.equalTo(0)  // update to 20 when expanded
+            make.leading.equalTo(textView.snp.leading).offset(CGFloat.standardLeadingMargin)
+            make.top.equalTo(8)
+        }
+        
+        
         return customInputView
     }()
+    
+    func showFocusedInfo(with authorName: String) {
+        focusedAuthorLabel.text = authorName
+        focusedCommentInfo.isHidden = false
+        focusedCommentInfo.snp.remakeConstraints { make in
+            make.height.equalTo(20)
+            make.leading.equalTo(textView.snp.leading).offset(CGFloat.standardLeadingMargin)
+            make.top.equalTo(2)
+        }
+    }
+    
+    func hideFocusedInfo() {
+        focusedAuthorLabel.text = ""
+        focusedCommentInfo.isHidden = true
+        focusedCommentInfo.snp.remakeConstraints { make in
+            make.height.equalTo(0)  // update to 20 when expanded
+            make.leading.equalTo(textView.snp.leading).offset(CGFloat.standardLeadingMargin)
+            make.top.equalTo(8)
+        }
+    }
 }
