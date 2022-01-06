@@ -15,11 +15,19 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var post: Post
     var asFirstResponder: Bool
     let disposeBag = DisposeBag()
-    var hiddenTextView = UITextView()  // to be deprecated
     var didConfigurePostDetailView: Bool = false
     
-    lazy var commentViewModel: PaginationViewModel<Comment> = {
-        return PaginationViewModel<Comment>(endpoint: .comment(postId: 796))
+    /// 댓글 셀의 정보를 임시로 저장한다.
+    struct FocusedComment {
+        let row: Int
+        let comment: Comment
+        let cell: CommentCell
+    }
+    
+    var focusedComment: FocusedComment?
+    
+    lazy var commentViewModel: CommentPaginationViewModel = {
+        return CommentPaginationViewModel(endpoint: .comment(postId: post.id))
     }()
     
     init(post: Post, asFirstResponder: Bool = false) {
@@ -45,6 +53,14 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return postView.commentTableView
     }
     
+    var keyboardAccessory: UIView {
+        return postView.keyboardAccessory
+    }
+    
+    var keyboardTextView: FlexibleTextView {
+        return postView.textView
+    }
+    
     lazy var authorHeaderView: AuthorInfoHeaderView = {
         let view = AuthorInfoHeaderView(imageWidth: 40)
         view.configure(with: post)
@@ -56,6 +72,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         config.image = UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(weight: .heavy))
         config.imagePadding = 0
         config.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 8)
+        
         
         let button = UIButton.init(configuration: config)
         button.rx.tap.bind { [weak self] _ in
@@ -100,8 +117,8 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         bindKeyboardHeight()
-        if self.asFirstResponder && !textView.isFirstResponder {
-            textView.becomeFirstResponder()
+        if self.asFirstResponder && !keyboardTextView.isFirstResponder {
+            keyboardTextView.becomeFirstResponder()
             self.asFirstResponder = false
         }
     }
@@ -147,74 +164,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
             })
             .disposed(by: disposeBag)
     }
-    
-    // MARK: Keyboard Accessory Components
-    
-    lazy var textView: FlexibleTextView = {
-        let textView = FlexibleTextView()
-        textView.placeholder = "댓글을 입력하세요..."
-        textView.font = .systemFont(ofSize: 15)
-        textView.backgroundColor = .grayscales.bubbleGray
-        textView.maxHeight = 80
-        textView.layer.cornerRadius = 17
-        textView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        return textView
-    }()
-    
-    var sendButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "paperplane.fill")
-        config.baseForegroundColor = FacebookColor.blue.color()
-        
-        let button = UIButton()
-        button.configuration = config
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
-        button.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
-        return button
-    }()
-    
-    let photosButton: UIButton = {
-        var config = UIButton.Configuration.tinted()
-        config.image = UIImage(systemName: "photo.on.rectangle.angled")
-        config.cornerStyle = .capsule
-        
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.configuration = config
-        return button
-    }()
-    
-    let divider = Divider()
-    
-    lazy var keyboardAccessory: UIView = {
-        let customInputView = UIView()
-        customInputView.backgroundColor = .white
-        customInputView.addSubview(textView)
-        customInputView.addSubview(sendButton)
-        customInputView.addSubview(divider)
-        
-        textView.snp.makeConstraints { make in
-            make.leading.equalTo(CGFloat.standardLeadingMargin)
-            make.top.equalTo(8)
-            make.bottom.equalTo(customInputView.safeAreaLayoutGuide.snp.bottom).offset(-8)
-            make.trailing.equalTo(sendButton.snp.leading)
-        }
-        
-        sendButton.snp.makeConstraints { make in
-            make.leading.equalTo(textView.snp.trailing)
-            make.trailing.equalTo(-8)
-            make.bottom.equalTo(customInputView.safeAreaLayoutGuide.snp.bottom).offset(-8)
-        }
-        
-        divider.snp.makeConstraints { make in
-            make.height.equalTo(1)
-            make.top.leading.trailing.equalTo(0)
-        }
-        
-        return customInputView
-    }()
 }
 
 // MARK: Handle Buttons
@@ -238,7 +187,7 @@ extension PostDetailViewController {
         postView.commentButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                self.textView.becomeFirstResponder()
+                self.keyboardTextView.becomeFirstResponder()
             }
             .disposed(by: disposeBag)
     }
@@ -248,34 +197,39 @@ extension PostDetailViewController {
 
 extension PostDetailViewController {
     
-    /// Flatten nested comment data via preorder traversal.
-    private func recursivelyFlatten(comments: [Comment]) -> [Comment] {
-        var flatten: [Comment] = []
-        
-        func preorderTraversal(root: Comment) {
-            flatten.append(root)
-            for child in root.children {
-                preorderTraversal(root: child)
-            }
-        }
-        
-        for comment in comments {
-            preorderTraversal(root: comment)
-        }
-        return flatten
-    }
+    
     
     
     func bindTableView(){
+        
         /// 댓글 데이터 테이블뷰 바인딩
         commentViewModel.dataList
             .observe(on: MainScheduler.instance)
-            .map { [weak self] (comments: [Comment]) -> [Comment] in
-                guard let self = self else { return comments }
-                return self.recursivelyFlatten(comments: comments)
-            }
-            .bind(to: commentTableView.rx.items(cellIdentifier: CommentCell.reuseIdentifier, cellType: CommentCell.self)) { row, comment, cell in
+            .bind(to: commentTableView.rx.items(cellIdentifier: CommentCell.reuseIdentifier, cellType: CommentCell.self)) { [weak self] row, comment, cell in
+                guard let self = self else { return }
+                
                 cell.configure(with: comment)
+                if row == self.focusedComment?.row {
+                    cell.focus()
+                }
+                
+                cell.likeButton.rx.tap
+                    .bind { [weak self] _ in
+                        
+                    }
+                    .disposed(by: cell.disposeBag)
+                
+                cell.replyButton.rx.tap
+                    .bind { [weak self] _ in
+                        guard let self = self else { return }
+                        self.focusedComment?.cell.unfocus()
+                        self.postView.textView.becomeFirstResponder()
+                        self.commentTableView.scrollToRow(at: IndexPath(row: row, section: 0), at: .bottom, animated: true)
+                        self.focusedComment = .init(row: row, comment: comment, cell: cell)
+                        self.focusedComment?.cell.focus()
+                    }
+                    .disposed(by: cell.disposeBag)
+                
             }
             .disposed(by: disposeBag)
         
@@ -302,6 +256,33 @@ extension PostDetailViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        /// 댓글 전송 버튼의 활성화 여부를 바인딩합니다.
+        keyboardTextView.isEmptyObservable.map({ !$0 }).bind(to: postView.sendButton.rx.isEnabled).disposed(by: disposeBag)
+        
+        /// 전송 버튼을 누르면 댓글을 등록합니다.
+        postView.sendButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let focused = self.focusedComment?.comment
+                let parentId = focused?.depth == 2 ? focused?.parent : focused?.id  // 대댓글에는 댓글을 달 수 없다.
+                
+                NetworkService.upload(endpoint: .comment(postId: self.post.id, to: parentId, content: self.keyboardTextView.text))
+                    .subscribe(onNext: { data in
+                        data.responseDecodable(of: Comment.self) { dataResponse in
+                            guard let comment = dataResponse.value else { return }
+                            let indexPath = self.commentViewModel.findInsertionIndexPath(of: comment)
+                            self.commentViewModel.insert(comment, at: indexPath)
+                            self.commentTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                        }
+                    }, onError: { error in
+                        print(error)
+                    })
+                    .disposed(by: self.disposeBag)
+                self.keyboardTextView.text = ""
+            }
+            .disposed(by: disposeBag)
+        
         
     }
     

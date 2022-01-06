@@ -48,7 +48,7 @@ class CreatePostViewController: UIViewController {
     
     func setNavigationBarItems() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark")?.withTintColor(.black, renderingMode: .alwaysOriginal),
+            image: UIImage(systemName: "xmark")?.withTintColor(.secondaryLabel, renderingMode: .alwaysOriginal),
             style: .plain,
             target: self,
             action: #selector(popToPrevious)

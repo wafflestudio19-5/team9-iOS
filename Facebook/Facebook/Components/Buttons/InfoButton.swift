@@ -27,7 +27,7 @@ class InfoButton: UIButton {
         return container
     }
     
-    init(text: String = "", color: UIColor = .darkGray, size: CGFloat = 14, weight: UIFont.Weight = .regular) {
+    init(text: String = "", color: UIColor = .grayscales.label, size: CGFloat = 14, weight: UIFont.Weight = .regular) {
         self.color = color
         self.size = size
         self.weight = weight

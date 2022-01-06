@@ -9,22 +9,17 @@ import UIKit
 import RxSwift
 import RxGesture
 import SwiftUI
+import SnapKit
 
 class CommentCell: UITableViewCell {
     
     static let reuseIdentifier = "CommentCell"
     
-    private let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     private var leftMarginConstraint: NSLayoutConstraint?
     private var profileHeightConstraint: NSLayoutConstraint?
     private var profileWidthConstraint: NSLayoutConstraint?
-    
-    private var profileImageSize: CGFloat = 40 {
-        didSet {
-            self.profileWidthConstraint?.constant = profileImageSize
-            self.profileHeightConstraint?.constant = profileImageSize
-        }
-    }
+    var comment: Comment?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: CommentCell.reuseIdentifier)
@@ -36,74 +31,47 @@ class CommentCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+        unfocus()
+    }
+    
     func configure(with comment: Comment) {
+        self.comment = comment
         authorLabel.text = comment.author.username
-        contentLabel.text = String(repeating: comment.content, count: comment.id / 25 + 2) + String(comment.id)
+        contentLabel.text = "\(comment.id)  |  \(comment.content)"
         createdLabel.text = comment.posted_at
-        profileImageSize = comment.profileImageSize
-        leftMarginConstraint?.constant = comment.leftMargin
+        
+        profileImage.snp.updateConstraints { make in
+            make.height.width.equalTo(comment.profileImageSize)
+            make.leading.equalTo(comment.leftMargin)
+        }
     }
     
     private func setLayout() {
-        
-        // 코멘트 작성자 이름과 코멘트 내용으로 이루어진 verticalStackForContents 와
-        // 작성 시간, 좋아요 버튼, 답글 달기 버튼을 담고 있는 horizontalStackForButtons 으로 구성되어 있습니다.
-        
-        // verticalStackForContents로 따로 분리한 이유는 이 둘을 묶어 배경에 roundedRectangle이 있고 여기에 padding(inset)이 있는 형식으로 만들기 위함이었습니다. 로컬에서 초안처럼 생각나는대로 짜둔 구조라서 더 나은 구조가 있다면 변경하시면 됩니다.
-        
         contentView.addSubview(profileImage)
-        
-        let horizontalStackForButtons = UIStackView()
-        horizontalStackForButtons.axis = .horizontal
-        horizontalStackForButtons.addArrangedSubview(createdLabel)
-        horizontalStackForButtons.addArrangedSubview(likesLabel)
-        horizontalStackForButtons.addArrangedSubview(addChildCommentLabel)
-        horizontalStackForButtons.setCustomSpacing(8, after: createdLabel)
-        horizontalStackForButtons.setCustomSpacing(2, after: likesLabel)
-        horizontalStackForButtons.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(horizontalStackForButtons)
-        
-        let bubbleView = UIView()
-        bubbleView.addSubview(authorLabel)
-        bubbleView.addSubview(contentLabel)
-        authorLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentLabel.translatesAutoresizingMaskIntoConstraints = false
-        bubbleView.backgroundColor = .grayscales.bubbleGray
-        bubbleView.layer.cornerRadius = 18
-        bubbleView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(horizontalButtonStack)
         contentView.addSubview(bubbleView)
         
-        leftMarginConstraint = profileImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin - 5)
-        profileHeightConstraint = profileImage.heightAnchor.constraint(equalToConstant: profileImageSize)
-        profileWidthConstraint = profileImage.widthAnchor.constraint(equalToConstant: profileImageSize)
-        authorLabel.translatesAutoresizingMaskIntoConstraints = false
-        contentLabel.translatesAutoresizingMaskIntoConstraints = false
-        authorLabel.setContentHuggingPriority(.required, for: .horizontal)
-        NSLayoutConstraint.activate([
-            profileImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
-            leftMarginConstraint!,
-            profileHeightConstraint!,
-            profileWidthConstraint!,
-            
-            bubbleView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
-            bubbleView.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 4),
-            bubbleView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
-            
-            contentLabel.topAnchor.constraint(equalTo: authorLabel.bottomAnchor),
-            contentLabel.trailingAnchor.constraint(equalTo: bubbleView.trailingAnchor, constant: -12),
-            contentLabel.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor, constant: 12),
-            contentLabel.bottomAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: -6),
-            
-            authorLabel.topAnchor.constraint(equalTo: bubbleView.topAnchor, constant: 6),
-            authorLabel.trailingAnchor.constraint(lessThanOrEqualTo: bubbleView.trailingAnchor, constant: -6),
-            authorLabel.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor, constant: 6),
-            authorLabel.heightAnchor.constraint(equalToConstant: 20),
-            
-            horizontalStackForButtons.topAnchor.constraint(equalTo: bubbleView.bottomAnchor, constant: 4),
-            horizontalStackForButtons.leadingAnchor.constraint(equalTo: bubbleView.leadingAnchor, constant: .standardLeadingMargin),
-            horizontalStackForButtons.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            horizontalStackForButtons.heightAnchor.constraint(equalToConstant: 20),
-        ])
+        profileImage.snp.makeConstraints { make in
+            make.top.equalTo(CGFloat.standardTopMargin)
+            make.height.width.equalTo(40)
+            make.leading.equalTo(10)
+        }
+        
+        bubbleView.snp.makeConstraints { make in
+            make.top.equalTo(CGFloat.standardTopMargin)
+            make.leading.equalTo(profileImage.snp.trailing).offset(4)
+            make.trailing.lessThanOrEqualTo(CGFloat.standardTrailingMargin)
+        }
+        
+        horizontalButtonStack.snp.makeConstraints { make in
+            make.top.equalTo(bubbleView.snp.bottom).offset(4)
+            make.leading.equalTo(bubbleView.snp.leading).offset(CGFloat.standardLeadingMargin)
+            make.bottom.equalTo(0)
+            make.height.equalTo(20)
+        }
     }
     
     private func bind() {
@@ -112,27 +80,66 @@ class CommentCell: UITableViewCell {
                 print("profile Image tapped")
                 // move to user profile view
             }.disposed(by: disposeBag)
-        
-        likesLabel.rx.tap
-            .bind { [weak self] _ in
-                print("likeslabel tapped")
-                // send POST request to server
-            }.disposed(by: disposeBag)
-        
-        addChildCommentLabel.rx.tap
-            .bind { [weak self] _ in
-                print("답글 달기 tapped")
-                // add some action for creating child comment
-            }.disposed(by: disposeBag)
+    }
+    
+    // MARK: Public Functions
+    
+    func focus() {
+        UIView.animate(withDuration: 0.5) {
+            self.bubbleView.backgroundColor = .grayscales.bubbleGrayFocused
+        }
+    }
+    
+    func unfocus() {
+        UIView.animate(withDuration: 0.5) {
+            self.bubbleView.backgroundColor = .grayscales.bubbleGray
+        }
     }
     
     // MARK: UI Components
     
+    private lazy var horizontalButtonStack: UIStackView = {
+        let horizontalStackForButtons = UIStackView()
+        horizontalStackForButtons.axis = .horizontal
+        horizontalStackForButtons.addArrangedSubview(createdLabel)
+        horizontalStackForButtons.addArrangedSubview(likeButton)
+        horizontalStackForButtons.addArrangedSubview(replyButton)
+        horizontalStackForButtons.setCustomSpacing(8, after: createdLabel)
+        horizontalStackForButtons.setCustomSpacing(2, after: likeButton)
+        return horizontalStackForButtons
+    }()
+    
+    private lazy var bubbleView: UIView = {
+        let bubbleView = UIView()
+        bubbleView.addSubview(authorLabel)
+        bubbleView.addSubview(contentLabel)
+        bubbleView.backgroundColor = .grayscales.bubbleGray
+        bubbleView.layer.cornerRadius = 18
+        authorLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(bubbleView).offset(6)
+            make.trailing.lessThanOrEqualTo(bubbleView).offset(-6)
+            make.height.equalTo(20)
+        }
+        
+        contentLabel.snp.makeConstraints { make in
+            make.top.equalTo(authorLabel.snp.bottom)
+            make.trailing.equalTo(-12)
+            make.leading.equalTo(12)
+            make.bottom.equalTo(-6)
+        }
+        return bubbleView
+    }()
+    
     private let profileImage = ProfileImageView()
-    private let authorLabel = InfoButton(color: .black, size: 14, weight: .semibold)
+    private let authorLabel: InfoButton = {
+        let button = InfoButton(color: .label, size: 14, weight: .semibold)
+        button.setContentHuggingPriority(.required, for: .horizontal)
+        return button
+        
+    }()
     
     private let contentLabel: UILabel = {
-        let label = InfoLabel(color: .black, size: 16, weight: .regular)
+        let label = InfoLabel(color: .label, size: 16, weight: .regular)
         label.numberOfLines = 0
         label.lineBreakStrategy = .hangulWordPriority
         return label
@@ -140,10 +147,12 @@ class CommentCell: UITableViewCell {
     
     private var createdLabel = InfoLabel()
     
-    private var likesLabel = InfoButton(text: "좋아요", weight: .semibold)
+    var likeButton = InfoButton(text: "좋아요", weight: .semibold)
     
-    private var addChildCommentLabel = InfoButton(text: "답글 달기", weight: .semibold)
+    var replyButton = InfoButton(text: "답글 달기", weight: .semibold)
 }
+
+// MARK: SwiftUI Preview
 
 struct CommentCellRepresentable: UIViewRepresentable {
     func makeUIView(context: Context) -> some UIView {

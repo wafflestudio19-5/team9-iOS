@@ -68,7 +68,7 @@ class CreatePostHeaderView: UIView {
         container.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         
         var configuration = UIButton.Configuration.tinted()
-        configuration.baseForegroundColor = .black
+        configuration.baseForegroundColor = .grayscales.label
         configuration.contentInsets = .init(.init(top: 7, leading: 5, bottom: 7, trailing: 5))
         configuration.attributedTitle = AttributedString(buttonLabel, attributes: container)
         button.configuration = configuration

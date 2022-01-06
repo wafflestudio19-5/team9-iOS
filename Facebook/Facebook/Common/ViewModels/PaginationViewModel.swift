@@ -86,6 +86,11 @@ class PaginationViewModel<DataModel: Codable> {
             }
             .disposed(by: disposeBag)
     }
+    
+    /// `dataList`에 방출하기 전에 전처리를 거친다.
+    func preprocessBeforeAccept(results: [DataModel]) -> [DataModel] {
+        return results
+    }
         
     private func publishToDataList(isRefreshing: Bool = false) {
         let endpoint = endpoint.withCursor(cursor: nextCursor)
@@ -96,11 +101,11 @@ class PaginationViewModel<DataModel: Codable> {
                 let paginatedResponse = element.1
                 self.lastResponse = paginatedResponse
                 if isRefreshing {
-                    self.dataList.accept(paginatedResponse.results)
+                    self.dataList.accept(self.preprocessBeforeAccept(results: paginatedResponse.results))
                     self.isRefreshing.accept(false)
                     self.refreshComplete.accept(true)
                 } else {
-                    self.dataList.accept(self.dataList.value + paginatedResponse.results)
+                    self.dataList.accept(self.preprocessBeforeAccept(results: self.dataList.value + paginatedResponse.results))
                     self.isLoading.accept(false)
                 }
             }, onError: { error in

@@ -49,4 +49,72 @@ class PostDetailView: UIView {
             postContentHeaderView.widthAnchor.constraint(equalTo: commentTableView.widthAnchor)
         ])
     }
+    
+    // MARK: Keyboard Accessory Components
+    
+    lazy var textView: FlexibleTextView = {
+        let textView = FlexibleTextView()
+        textView.placeholder = "댓글을 입력하세요..."
+        textView.font = .systemFont(ofSize: 15)
+        textView.backgroundColor = .grayscales.bubbleGray
+        textView.maxHeight = 80
+        textView.layer.cornerRadius = 17
+        textView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        return textView
+    }()
+    
+    var sendButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "paperplane.fill")
+        config.baseForegroundColor = FacebookColor.blue.color()
+        
+        let button = UIButton()
+        button.configuration = config
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setContentHuggingPriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
+        button.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: NSLayoutConstraint.Axis.horizontal)
+        return button
+    }()
+    
+    let photosButton: UIButton = {
+        var config = UIButton.Configuration.tinted()
+        config.image = UIImage(systemName: "photo.on.rectangle.angled")
+        config.cornerStyle = .capsule
+        
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.configuration = config
+        return button
+    }()
+    
+    let divider = Divider()
+    
+    lazy var keyboardAccessory: UIView = {
+        let customInputView = UIView()
+        customInputView.backgroundColor = .white
+        customInputView.addSubview(textView)
+        customInputView.addSubview(sendButton)
+        customInputView.addSubview(divider)
+        
+        textView.snp.makeConstraints { make in
+            make.leading.equalTo(CGFloat.standardLeadingMargin)
+            make.top.equalTo(8)
+            make.bottom.equalTo(customInputView.safeAreaLayoutGuide.snp.bottom).offset(-8)
+            make.trailing.equalTo(sendButton.snp.leading)
+        }
+        
+        sendButton.snp.makeConstraints { make in
+            make.leading.equalTo(textView.snp.trailing)
+            make.trailing.equalTo(-8)
+            make.bottom.equalTo(customInputView.safeAreaLayoutGuide.snp.bottom).offset(-8)
+        }
+        
+        divider.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.top.leading.trailing.equalTo(0)
+        }
+        
+        return customInputView
+    }()
 }

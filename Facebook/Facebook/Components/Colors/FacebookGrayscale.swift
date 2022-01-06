@@ -11,13 +11,16 @@ import UIKit
 extension UIColor {
     struct grayscales {
         /// background gray color (for newsfeed divider)
-        static var gray1 = UIColor(red: 211/255.0, green: 214/255.0, blue: 216/255.0, alpha: 1)
+        static var gray1 = UIColor.opaqueSeparator.withAlphaComponent(0.8)
         
         /// 1px border gray color
-        static var gray2 = UIColor.gray.withAlphaComponent(0.2)
+        static var gray2 = UIColor.opaqueSeparator.withAlphaComponent(0.3)
         
+        /// 댓글, 말풍선에 사용되는 회색
+        static var bubbleGray = UIColor.tertiarySystemGroupedBackground.withAlphaComponent(0.7)
+        static var bubbleGrayFocused = UIColor.systemGray5
         
-        // 댓글, 말풍선에 사용되는 회색
-        static var bubbleGray = UIColor.systemGroupedBackground.withAlphaComponent(0.8)
+        /// dark gray 색상 대신 사용
+        static var label = UIColor.secondaryLabel.withAlphaComponent(0.85)
     }
 }

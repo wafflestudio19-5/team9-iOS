@@ -65,7 +65,7 @@ class PostDetailHeaderView: UIStackView {
     private let imageGridCollectionView = ImageGridCollectionView()
     
     // 좋아요 수 라벨
-    private let likeCountLabel: UILabel = InfoLabel(color: .black, weight: .semibold)
+    private let likeCountLabel: UILabel = InfoLabel(color: .grayscales.label, weight: .semibold)
     
     // 따봉 아이콘 + 좋아요 수
     private lazy var likeCountLabelWithIcon: UIStackView = {
