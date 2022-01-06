@@ -74,6 +74,7 @@
 		B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */; };
 		BE0D43672786D29B00E2162F /* CommentPaginationViewModel.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift.swift */; };
 		BE0D43692787235000E2162F /* UIColor+TintColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D43682787235000E2162F /* UIColor+TintColors.swift */; };
+		BE0D436B2787631400E2162F /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D436A2787631400E2162F /* HapticManager.swift */; };
 		BE1F75B12785895000E51A28 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B02785895000E51A28 /* Spinner.swift */; };
 		BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */; };
 		BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B42785D2C600E51A28 /* InfoButton.swift */; };
@@ -194,6 +195,7 @@
 		B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPaginationViewModel.swift.swift; sourceTree = "<group>"; };
 		BE0D43682787235000E2162F /* UIColor+TintColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+TintColors.swift"; sourceTree = "<group>"; };
+		BE0D436A2787631400E2162F /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		BE1F75B02785895000E51A28 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+BottomSpinner.swift"; sourceTree = "<group>"; };
 		BE1F75B42785D2C600E51A28 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
@@ -683,6 +685,7 @@
 				BEFFFAA5276B125E009CBF25 /* Models */,
 				BE9C7CA527716EC00089247F /* ViewModels */,
 				BEF254F5277B49F000FBAACB /* SwiftUIRepresentable.swift */,
+				BE0D436A2787631400E2162F /* HapticManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -894,6 +897,7 @@
 				77547907275CE6CC0065711C /* CommentTableViewCellXib.swift in Sources */,
 				B85D67F22784B5A5002CCC04 /* CommentCell.swift in Sources */,
 				BE86BAD727830F7600948CAA /* CommentTableViewCell.swift in Sources */,
+				BE0D436B2787631400E2162F /* HapticManager.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				77B635422768B2C100C41EB3 /* DetailProfileView.swift in Sources */,
 				BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */,

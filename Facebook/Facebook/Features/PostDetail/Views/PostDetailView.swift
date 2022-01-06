@@ -121,7 +121,7 @@ class PostDetailView: UIView {
             make.bottom.equalTo(customInputView.safeAreaLayoutGuide.snp.bottom).offset(-8)
             make.trailing.equalTo(sendButton.snp.leading)
             make.top.equalTo(focusedCommentInfo.snp.bottom)
-            make.height.equalTo(34)
+            make.height.greaterThanOrEqualTo(34)
         }
         
         sendButton.snp.makeConstraints { make in

@@ -24,6 +24,7 @@ class CommentCell: UITableViewCell {
             guard let comment = comment else { return }
             likeCountLabel.text = comment.likes.withCommas()
             likeButton.isSelected = comment.is_liked
+            likeCountLabelWithIcon.isHidden = comment.likes == 0
         }
     }
     
@@ -47,6 +48,9 @@ class CommentCell: UITableViewCell {
         guard let oldComment = comment else { return }
         comment?.likes = oldComment.is_liked ? max(0, oldComment.likes - 1) : oldComment.likes + 1
         comment?.is_liked = !oldComment.is_liked
+        if let isLiked = comment?.is_liked, isLiked {
+            HapticManager.shared.impact(style: .light)
+        }
     }
     
     func like(syncWith response: LikeResponse) {
@@ -57,7 +61,7 @@ class CommentCell: UITableViewCell {
     func configure(with comment: Comment) {
         self.comment = comment
         authorLabel.text = comment.author.username
-        contentLabel.text = "\(comment.id) | \(comment.content)"
+        contentLabel.text = comment.content
         createdLabel.text = comment.posted_at
         
         profileImage.snp.updateConstraints { make in

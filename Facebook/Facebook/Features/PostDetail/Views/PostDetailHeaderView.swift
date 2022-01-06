@@ -52,6 +52,9 @@ class PostDetailHeaderView: UIStackView {
         copied.likes = post.is_liked ? max(0, post.likes - 1) : post.likes + 1
         copied.is_liked = !post.is_liked
         post = copied
+        if copied.is_liked {
+            HapticManager.shared.impact(style: .light)
+        }
     }
     
     /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
