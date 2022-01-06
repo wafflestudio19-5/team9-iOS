@@ -40,7 +40,7 @@ class CommentCell: UITableViewCell {
     func configure(with comment: Comment) {
         self.comment = comment
         authorLabel.text = comment.author.username
-        contentLabel.text = "\(comment.id)  |  \(comment.content)"
+        contentLabel.text = comment.content
         createdLabel.text = comment.posted_at
         
         profileImage.snp.updateConstraints { make in

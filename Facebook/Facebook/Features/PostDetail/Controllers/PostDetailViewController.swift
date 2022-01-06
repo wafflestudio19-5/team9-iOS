@@ -18,13 +18,22 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var didConfigurePostDetailView: Bool = false
     
     /// 댓글 셀의 정보를 임시로 저장한다.
-    struct FocusedComment {
+    struct FocusedItem {
         let row: Int
         let comment: Comment
         let cell: CommentCell
     }
     
-    var focusedComment: FocusedComment?
+    var focusedItem: FocusedItem? {
+        willSet(newVal) {
+            if newVal == nil || focusedItem?.row != newVal?.row {
+                focusedItem?.cell.unfocus()
+            }
+        }
+        didSet {
+            focusedItem?.cell.focus()
+        }
+    }
     
     lazy var commentViewModel: CommentPaginationViewModel = {
         return CommentPaginationViewModel(endpoint: .comment(postId: post.id))
@@ -209,7 +218,7 @@ extension PostDetailViewController {
                 guard let self = self else { return }
                 
                 cell.configure(with: comment)
-                if row == self.focusedComment?.row {
+                if row == self.focusedItem?.row {
                     cell.focus()
                 }
                 
@@ -222,11 +231,9 @@ extension PostDetailViewController {
                 cell.replyButton.rx.tap
                     .bind { [weak self] _ in
                         guard let self = self else { return }
-                        self.focusedComment?.cell.unfocus()
                         self.postView.textView.becomeFirstResponder()
                         self.commentTableView.scrollToRow(at: IndexPath(row: row, section: 0), at: .bottom, animated: true)
-                        self.focusedComment = .init(row: row, comment: comment, cell: cell)
-                        self.focusedComment?.cell.focus()
+                        self.focusedItem = .init(row: row, comment: comment, cell: cell)
                     }
                     .disposed(by: cell.disposeBag)
                 
@@ -264,7 +271,7 @@ extension PostDetailViewController {
         postView.sendButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                let focused = self.focusedComment?.comment
+                let focused = self.focusedItem?.comment
                 let parentId = focused?.depth == 2 ? focused?.parent : focused?.id  // 대댓글에는 댓글을 달 수 없다.
                 
                 NetworkService.upload(endpoint: .comment(postId: self.post.id, to: parentId, content: self.keyboardTextView.text))
@@ -280,6 +287,7 @@ extension PostDetailViewController {
                     })
                     .disposed(by: self.disposeBag)
                 self.keyboardTextView.text = ""
+                self.focusedItem = nil
             }
             .disposed(by: disposeBag)
         

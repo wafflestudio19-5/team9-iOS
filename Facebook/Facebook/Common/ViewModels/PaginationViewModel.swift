@@ -105,7 +105,7 @@ class PaginationViewModel<DataModel: Codable> {
                     self.isRefreshing.accept(false)
                     self.refreshComplete.accept(true)
                 } else {
-                    self.dataList.accept(self.preprocessBeforeAccept(results: self.dataList.value + paginatedResponse.results))
+                    self.dataList.accept(self.dataList.value + self.preprocessBeforeAccept(results: paginatedResponse.results))
                     self.isLoading.accept(false)
                 }
             }, onError: { error in
