@@ -57,7 +57,10 @@ struct NetworkService {
         return session.rx.responseDecodable(.post, endpoint.url, parameters: endpoint.parameters, encoding: JSONEncoding.default)
     }
     
-<<<<<<< HEAD
+    static func put<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
+        return session.rx.responseDecodable(.put, endpoint.url, parameters: endpoint.parameters)
+    }
+    
     /*
      MARK: Upload files
      */
@@ -65,30 +68,10 @@ struct NetworkService {
     static func upload(endpoint: Endpoint) -> Observable<UploadRequest> {
         return session.rx.upload(multipartFormData: endpoint.multipartFormDataBuilder!, to: endpoint.url, method: .post, headers: [.contentType("multipart/form-data")])
     }
-}
-
-extension NetworkService {
-//    static func post
-=======
-    static func put<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
-        return session.rx.responseDecodable(.put, endpoint.url, parameters: endpoint.parameters)
-    }
-<<<<<<< HEAD
->>>>>>> c7a9757 (생일 및 성별 수정 기능 구현)
-=======
-    
-    /*
-     MARK: Upload files
-     */
-    
-    static func upload(endpoint: Endpoint) -> Observable<UploadRequest> {
-            return session.rx.upload(multipartFormData: endpoint.multipartFormDataBuilder!, to: endpoint.url, method: .post, headers: [.contentType("multipart/form-data")])
-        }
     
     static func update(endpoint: Endpoint) -> Observable<UploadRequest> {
         return session.rx.upload(multipartFormData: endpoint.multipartFormDataBuilder!, to: endpoint.url, method: .put, headers: [.contentType("multipart/form-data")])
     }
->>>>>>> 3edc169 (프로필 관련 네트워크 수정)
 }
 
 

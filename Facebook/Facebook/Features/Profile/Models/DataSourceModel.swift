@@ -19,18 +19,6 @@ enum MultipleSectionModel {
 }
 
 enum SectionItem {
-<<<<<<< HEAD
-    case MainProfileItem(profileImage: UIImage, coverImage: UIImage, name: String)
-    case ProfileImageItem(image: UIImage)
-    case CoverImageItem(image: UIImage)
-    case SimpleInformationItem(style: SimpleInformationTableViewCell.Style, image: UIImage, information: String)
-    case DetailInformationItem(style: DetailInformationTableViewCell.Style, image: UIImage, information: String, time: String = "", description: String = "", privacyBound: String = "")
-    case ButtonItem(style: ButtonTableViewCell.Style, buttonText: String)
-    case LabelItem(style: LabelTableViewCell.Style, labelText: String)
-    case TextFieldItem(text: String)
-    case PostItem(post: Post)
-    case SelectDateItem(style: DateSelectTableViewCell.Style)
-=======
     case MainProfileItem(profileImageUrl: String, coverImageUrl: String, name: String, selfIntro: String)
     case ImageItem(style: ImageTableViewCell.Style, imageUrl: String)
     case SimpleInformationItem(style: SimpleInformationTableViewCell.Style,
@@ -59,7 +47,6 @@ enum SectionItem {
     case BirthSelectItem(style: BirthSelectTableViewCell.Style, birthInfo: String)
     case EditUsernameItem(username: String)
     case GenderSelectItem(style: GenderSelectTableViewCell.Style, selectedGender: String)
->>>>>>> 7080fa7 (파일 이름 에러 수정)
 }
 
 extension MultipleSectionModel: SectionModelType {

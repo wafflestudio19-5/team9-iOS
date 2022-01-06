@@ -44,34 +44,10 @@ class PaginationViewModel<DataModel: Codable> {
     }
     
     init(endpoint: Endpoint) {
-<<<<<<< HEAD
         self.endpoint = endpoint
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         NetworkService.post(endpoint: .login(email: "team9@test.com", password: "team9"), as: LoginResponse.self)
             .subscribe(onNext: { element in
                 let response = element.1
-=======
-=======
->>>>>>> d6a8edc (직장, 대학 정보 추가 뷰 기능 일부 구현)
-        NetworkService.post(endpoint: .login(email: "profile@test.com", password: "password"), as: LoginResponse.self)
-            .subscribe { event in
-                if event.isCompleted {
-                    return
-                }
-<<<<<<< HEAD
-                
-=======
-
->>>>>>> d6a8edc (직장, 대학 정보 추가 뷰 기능 일부 구현)
-                guard let response = event.element?.1 else {
-                    print("로그인 오류")
-                    print(event)
-                    return
-                }
-<<<<<<< HEAD
->>>>>>> 522a3b2 (프로필 탭 유저 프로필 데이터 불러오기)
                 NetworkService.registerToken(token: response.token)
                 self.bind()
                 self.loadMore()
@@ -79,50 +55,7 @@ class PaginationViewModel<DataModel: Codable> {
                 print(error)
             })
             .disposed(by: disposeBag)
-=======
-//        NetworkService.post(endpoint: .login(email: "profile@test.com", password: "password"), as: LoginResponse.self)
-//            .subscribe { event in
-//                if event.isCompleted {
-//                    return
-//                }
-//
-//                guard let response = event.element?.1 else {
-//                    print("로그인 오류")
-//                    print(event)
-//                    return
-//                }
-//
-//                NetworkService.registerToken(token: response.token)
-//                self.bind()
-//                self.loadMore()
-//            }
-//            .disposed(by: disposeBag)
-        self.bind()
-        self.loadMore()
->>>>>>> e2b67c4 (페이지 네이션 모델 로그인 삭제)
-=======
-
-                NetworkService.registerToken(token: response.token)
-                self.bind()
-                self.loadMore()
-            }
-            .disposed(by: disposeBag)
->>>>>>> d6a8edc (직장, 대학 정보 추가 뷰 기능 일부 구현)
     }
-=======
-            self.endpoint = endpoint
-            NetworkService.post(endpoint: .login(email: "team9@test.com", password: "team9"), as: LoginResponse.self)
-                .subscribe(onNext: { element in
-                    let response = element.1
-                    NetworkService.registerToken(token: response.token)
-                    self.bind()
-                    self.loadMore()
-                }, onError: { error in
-                    print(error)
-                })
-                .disposed(by: disposeBag)
-        }
->>>>>>> 240cdb5 (Edit files to resolve conflict)
     
     func loadMore() {
         if isFetchingData || !hasNext { return }
@@ -162,15 +95,6 @@ class PaginationViewModel<DataModel: Codable> {
                 guard let self = self else { return }
                 let paginatedResponse = element.1
                 self.lastResponse = paginatedResponse
-<<<<<<< HEAD
-=======
-                
-<<<<<<< HEAD
-                
-                
->>>>>>> 522a3b2 (프로필 탭 유저 프로필 데이터 불러오기)
-=======
->>>>>>> e2b67c4 (페이지 네이션 모델 로그인 삭제)
                 if isRefreshing {
                     self.dataList.accept(paginatedResponse.results)
                     self.isRefreshing.accept(false)

@@ -208,7 +208,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         
         /// 새로고침이 완료될 때마다 `refreshControl`의 애니메이션을 중단시킵니다.
         postDataViewModel.refreshComplete
-            .asDriver()
+            .asDriver(onErrorJustReturn: false)
             .drive(onNext : { [weak self] refreshComplete in
                 if refreshComplete {
                     self?.tabView.refreshControl.endRefreshing()
@@ -300,45 +300,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         return 5
     }
 }
-<<<<<<< HEAD:Facebook/Facebook/Features/Profile/Controllers/ProfileTabViewController.swift
-<<<<<<< HEAD:Facebook/Facebook/Features/Profile/Controllers/ProfileTabViewController.swift
-
-extension ProfileTabViewController: MainProfileTableViewCellDelegate,EditProfileTableViewCellDelegate {
-    func goEditProfileView() {
-        let editProfileViewController = EditProfileViewController()
-        
-        self.navigationController?.pushViewController(editProfileViewController, animated: true)
-    }
-}
-
-extension ProfileTabViewController: ShowProfileTableViewCellDelegate {
-    func goDetailProfileView() {
-        let detailProfileViewController = DetailProfileViewController()
-        
-        self.navigationController?.pushViewController(detailProfileViewController, animated: true)
-    }
-}
-
-extension ProfileTabViewController: CreatePostTableViewCellDelegate {
-    func goCreatePostView() {
-        let createPostViewController = CreatePostViewController()
-        createPostViewController.view.backgroundColor = .white
-        
-        self.navigationController?.pushViewController(createPostViewController, animated: true)
-    }
-}
-
-extension ProfileTabViewController: PostTableViewCellDelegate {
-    func goPostView() {
-//        let postViewController = PostViewController()
-//        
-//        self.navigationController?.pushViewController(postViewController, animated: true)
-    }
-}
-
-=======
->>>>>>> 2026e71 (ProfileTab TableView Cell button, tap bind fix):Facebook/Facebook/Features/New Group/New Group1/ProfileTabViewController.swift
-=======
 
 extension ProfileTabViewController {
     //자기 소개가 이미 있을 때 자기 소개 관련 메뉴(alertsheet형식) present
@@ -380,9 +341,6 @@ extension ProfileTabViewController {
     }
 }
 
-<<<<<<< HEAD:Facebook/Facebook/Features/Profile/Controllers/ProfileTabViewController.swift
->>>>>>> 1dea1e0 (프로필 탭 자기소개 표시 ):Facebook/Facebook/Features/New Group/New Group1/ProfileTabViewController.swift
-=======
 extension ProfileTabViewController: PHPickerViewControllerDelegate {
     
     private func presentPicker() {
@@ -418,4 +376,3 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
 }
->>>>>>> 3edc169 (프로필 관련 네트워크 수정):Facebook/Facebook/Features/New Group/New Group1/ProfileTabViewController.swift
