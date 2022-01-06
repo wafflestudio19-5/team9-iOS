@@ -53,7 +53,7 @@ class PostDetailHeaderView: UIStackView {
     }
     
     /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
-    func like(syncWith response: PostLikeResponse) {
+    func like(syncWith response: LikeResponse) {
         var copied = post
         copied.likes = response.likes
         copied.is_liked = response.is_liked

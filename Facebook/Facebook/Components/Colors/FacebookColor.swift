@@ -12,7 +12,6 @@ enum FacebookColor {
     case mediumBlue
     case blue
     case mildBlue
-    case gray
     
     func color() -> UIColor {
         switch self {
@@ -20,7 +19,6 @@ enum FacebookColor {
         case .mediumBlue: return UIColor(red: 0.0 / 255.0, green: 87.0 / 255.0, blue: 203.0 / 255.0, alpha: 1.0)
         case .blue: return UIColor(red: 22.0 / 255.0, green: 116.0 / 255.0, blue: 228.0 / 255.0, alpha: 1.0)
         case .mildBlue: return UIColor(red: 231.0 / 255.0, green: 242.0 / 255.0, blue: 254.0 / 255.0, alpha: 1.0)
-        case .gray: return UIColor(red: 201.0 / 255.0, green: 202.0 / 255.0, blue: 209.0 / 255.0, alpha: 1.0)
         }
     }
 }

@@ -72,7 +72,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
                 // 좋아요 버튼 바인딩
                 cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
                     cell.like()
-                    NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: PostLikeResponse.self)
+                    NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
                         .bind { response in
                             cell.like(syncWith: response.1)
                         }

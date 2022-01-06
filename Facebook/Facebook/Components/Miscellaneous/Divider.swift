@@ -17,7 +17,7 @@ class Divider: UIView {
     override init(frame: CGRect) {
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = .grayscales.gray2
+        self.backgroundColor = .grayscales.border
     }
     
     required init?(coder: NSCoder) {

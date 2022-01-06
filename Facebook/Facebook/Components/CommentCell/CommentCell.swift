@@ -86,13 +86,13 @@ class CommentCell: UITableViewCell {
     
     func focus() {
         UIView.animate(withDuration: 0.5) {
-            self.bubbleView.backgroundColor = .grayscales.bubbleGrayFocused
+            self.bubbleView.backgroundColor = .grayscales.bubbleFocused
         }
     }
     
     func unfocus() {
         UIView.animate(withDuration: 0.5) {
-            self.bubbleView.backgroundColor = .grayscales.bubbleGray
+            self.bubbleView.backgroundColor = .grayscales.bubble
         }
     }
     
@@ -113,7 +113,7 @@ class CommentCell: UITableViewCell {
         let bubbleView = UIView()
         bubbleView.addSubview(authorLabel)
         bubbleView.addSubview(contentLabel)
-        bubbleView.backgroundColor = .grayscales.bubbleGray
+        bubbleView.backgroundColor = .grayscales.bubble
         bubbleView.layer.cornerRadius = 18
         authorLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(bubbleView).offset(6)

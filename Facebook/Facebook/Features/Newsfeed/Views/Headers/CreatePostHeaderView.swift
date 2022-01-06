@@ -80,5 +80,5 @@ class CreatePostHeaderView: UIView {
         return button
     }()
     
-    private let divider = Divider(color: .grayscales.gray1)
+    private let divider = Divider(color: .grayscales.newsfeedDivider)
 }

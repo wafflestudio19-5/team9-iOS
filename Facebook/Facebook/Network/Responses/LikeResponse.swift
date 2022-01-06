@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PostLikeResponse: Codable {
+struct LikeResponse: Codable {
     let likes: Int
     let is_liked: Bool
 }

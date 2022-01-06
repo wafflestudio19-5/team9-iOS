@@ -184,7 +184,7 @@ extension PostDetailViewController {
             .bind { [weak self] _ in
                 guard let self = self else { return }
                 self.postView.postContentHeaderView.like()
-                NetworkService.put(endpoint: .newsfeedLike(postId: self.post.id), as: PostLikeResponse.self)
+                NetworkService.put(endpoint: .newsfeedLike(postId: self.post.id), as: LikeResponse.self)
                     .bind { response in
                         self.postView.postContentHeaderView.like(syncWith: response.1)
                     }

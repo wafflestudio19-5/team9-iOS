@@ -56,7 +56,7 @@ class PostDetailView: UIView {
         let textView = FlexibleTextView()
         textView.placeholder = "댓글을 입력하세요..."
         textView.font = .systemFont(ofSize: 15)
-        textView.backgroundColor = .grayscales.bubbleGray
+        textView.backgroundColor = .grayscales.bubble
         textView.maxHeight = 80
         textView.layer.cornerRadius = 17
         textView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
