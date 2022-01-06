@@ -79,22 +79,11 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-//        appDelegate.window = UIWindow(frame: UIScreen.main.bounds)
-//        appDelegate.window?.makeKeyAndVisible()
         bindTableView()
         bindLikeButton()
         bindCommentButton()
         setLeftBarButtonItems()
         setKeyboardToolbar()
-        
-        // firstResponder 관련 문제 workaround
-        //        view.addSubview(hiddenTextView)
-        //        hiddenTextView.isHidden = true
-        //        hiddenTextView.inputAccessoryView = keyboardAccessory
-        //        if self.asFirstResponder {
-        //            hiddenTextView.becomeFirstResponder()
-        //        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,10 +111,6 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         if !didConfigurePostDetailView {
             postView.postContentHeaderView.configure(with: post)
             didConfigurePostDetailView = true
-        }
-        if self.commentTableView.contentInset.bottom == 0 {
-            self.commentTableView.contentInset.bottom = self.keyboardAccessory.frame.height
-            self.commentTableView.verticalScrollIndicatorInsets.bottom = self.commentTableView.contentInset.bottom
         }
         postView.commentTableView.adjustHeaderHeight()
     }
@@ -158,27 +143,9 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
                     self.commentTableView.contentInset.bottom = (keyboardVisibleHeight == 0 ? toolbarHeight : keyboardVisibleHeight + toolbarHeight - self.view.safeAreaInsets.bottom) + CGFloat.standardTopMargin
                     self.commentTableView.verticalScrollIndicatorInsets.bottom = self.commentTableView.contentInset.bottom
                     self.view.layoutIfNeeded()
-                    
-                    //                    let keyboardHeight = keyboardVisibleHeight - (self.initialInputAccessoryHeight ?? 0) + CGFloat.standardTopMargin
-                    //                    self.commentTableView.contentInset.bottom = keyboardHeight
-                    //                    self.toolbarButtonConstraint?.constant = -keyboardVisibleHeight
-                    //                    self.commentTableView.scrollIndicatorInsets.bottom = self.commentTableView.contentInset.bottom
                 }
             })
             .disposed(by: disposeBag)
-        
-        //        RxKeyboard.instance.willShowVisibleHeight
-        //            .drive(onNext: { [weak self] keyboardVisibleHeight in
-        //                guard let self = self else { return }
-        //                self.view.setNeedsLayout()
-        //                UIView.animate(withDuration: 0) {
-        //                    let keyboardHeight = keyboardVisibleHeight - (self.initialInputAccessoryHeight ?? 0) + CGFloat.standardTopMargin
-        //                    self.commentTableView.contentInset.bottom = keyboardHeight
-        //                    self.commentTableView.scrollIndicatorInsets.bottom = self.commentTableView.contentInset.bottom
-        //                    self.view.layoutIfNeeded()
-        //                }
-        //            })
-        //            .disposed(by: disposeBag)
     }
     
     // MARK: Keyboard Accessory Components
@@ -228,21 +195,24 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         customInputView.addSubview(sendButton)
         customInputView.addSubview(divider)
         
-        NSLayoutConstraint.activate([
-            textView.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor),
-            textView.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor, constant: .standardLeadingMargin),
-            textView.topAnchor.constraint(equalTo: customInputView.topAnchor, constant: 8),
-            textView.bottomAnchor.constraint(equalTo: customInputView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            
-            sendButton.leadingAnchor.constraint(equalTo: textView.trailingAnchor, constant: 0),
-            sendButton.trailingAnchor.constraint(equalTo: customInputView.trailingAnchor, constant: -8),
-            sendButton.bottomAnchor.constraint(equalTo: customInputView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            
-            divider.heightAnchor.constraint(equalToConstant: 1),
-            divider.topAnchor.constraint(equalTo: customInputView.topAnchor),
-            divider.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: customInputView.trailingAnchor),
-        ])
+        textView.snp.makeConstraints { make in
+            make.leading.equalTo(CGFloat.standardLeadingMargin)
+            make.top.equalTo(8)
+            make.bottom.equalTo(customInputView.safeAreaLayoutGuide.snp.bottom).offset(-8)
+            make.trailing.equalTo(sendButton.snp.leading)
+        }
+        
+        sendButton.snp.makeConstraints { make in
+            make.leading.equalTo(textView.snp.trailing)
+            make.trailing.equalTo(-8)
+            make.bottom.equalTo(customInputView.safeAreaLayoutGuide.snp.bottom).offset(-8)
+        }
+        
+        divider.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.top.leading.trailing.equalTo(0)
+        }
+        
         return customInputView
     }()
 }
