@@ -62,13 +62,13 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             
             cell.initialSetup(cellStyle: .style3)
             if company.is_active! {
-                cell.configureCell(image: UIImage(systemName: "briefcase.fill")!,
+                cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
                                    information: company.name!,
                                    time: company.join_date! + " - 현재",
                                    description: (company.detail != nil) ? company.detail! : "",
                                    privacyBound: "전체 공개")
             } else {
-                cell.configureCell(image: UIImage(systemName: "briefcase.fill")!,
+                cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
                                    information: company.name!,
                                    time: company.join_date! + " ~ " + company.leave_date!,
                                    description: (company.detail != nil) ? company.detail! : "",
@@ -87,13 +87,13 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             
             cell.initialSetup(cellStyle: .style3)
             if university.is_active! {
-                cell.configureCell(image: UIImage(systemName: "graduationcap.fill")!,
+                cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
                                    information: university.name!,
                                    time: university.join_date! + " - 현재",
                                    description: "",
                                    privacyBound: "전체 공개")
             } else {
-                cell.configureCell(image: UIImage(systemName: "graduationcap.fill")!,
+                cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
                                    information: university.name!,
                                    time: university.join_date! + "~" + university.graduate_date!,
                                    description: "",
@@ -170,19 +170,24 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         
         let sections: [MultipleSectionModel] = [
             .DetailInformationSection(title: "직장", items: [
-                .SimpleInformationItem(style: .style3, informationType: .company ,image: UIImage(systemName: "briefcase")!,information: "직장 추가")
+                .SimpleInformationItem(style: .style3,
+                                       informationType: .company,
+                                       image: UIImage(systemName: "briefcase.circle")!,
+                                       information: "직장 추가")
             ] + companyItems ),
             .DetailInformationSection(title: "학력", items:[
-                .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "대학교 추가"),
-                .SimpleInformationItem(style: .style3, informationType: .university, image: UIImage(systemName: "graduationcap")!,information: "고등학교 추가")
+                .SimpleInformationItem(style: .style3,
+                                       informationType: .university,
+                                       image: UIImage(systemName: "graduationcap.circle")!,
+                                       information: "학력 추가")
             ] + universityItems ),
             .DetailInformationSection(title: "기본 정보", items: [
                 .DetailInformationItem(style: .style1,
-                                       image: UIImage(systemName: "person.fill")!,
+                                       image: UIImage(systemName: "person.circle")!,
                                        information: (userProfile.gender == "M") ? "남성" : "여성",
                                        description: "성별"),
                 .DetailInformationItem(style: .style2,
-                                       image: UIImage(systemName: "gift.fill")!,
+                                       image: UIImage(systemName: "gift.circle")!,
                                        information:
                                         String(userProfile.birth.split(separator: "-")[0]) + "년 " +
                                         String(userProfile.birth.split(separator: "-")[1]) + "월 " +

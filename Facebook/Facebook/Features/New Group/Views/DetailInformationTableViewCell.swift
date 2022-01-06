@@ -103,7 +103,6 @@ class DetailInformationTableViewCell: UITableViewCell {
             informationImage.layer.cornerRadius = 17.5
             informationImage.clipsToBounds = true
             informationImage.tintColor = .black
-            informationImage.backgroundColor = .systemGray4
             
             descriptionLabel.textColor = .gray
         case .style2:
@@ -111,7 +110,6 @@ class DetailInformationTableViewCell: UITableViewCell {
             informationImage.layer.cornerRadius = 17.5
             informationImage.clipsToBounds = true
             informationImage.tintColor = .black
-            informationImage.backgroundColor = .systemGray4
             
             descriptionLabel.textColor = .gray
         case .style3:

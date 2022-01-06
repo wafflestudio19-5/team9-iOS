@@ -76,7 +76,6 @@ class SimpleInformationTableViewCell: UITableViewCell {
             informationImage.contentMode = .scaleAspectFit
             informationImage.layer.cornerRadius = 17.5
             informationImage.clipsToBounds = true
-            informationImage.backgroundColor = .systemGray4
             informationImage.tintColor = .gray
             
             informationLabel.font = UIFont.systemFont(ofSize: 18)
@@ -87,7 +86,6 @@ class SimpleInformationTableViewCell: UITableViewCell {
             informationImage.clipsToBounds = true
             informationImage.layer.borderColor = CGColor(gray: 1, alpha: 1)
             informationImage.layer.borderWidth = 1
-            informationImage.backgroundColor = .systemGray6
             informationImage.tintColor = .gray
             
             informationLabel.font = UIFont.systemFont(ofSize: 20)

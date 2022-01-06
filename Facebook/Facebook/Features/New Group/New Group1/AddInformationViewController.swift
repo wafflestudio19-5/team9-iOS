@@ -314,7 +314,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             self.title = "직장 추가"
             sections = [
                 .DetailInformationSection(title: "직장", items: [
-                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase")!, information: "직장 추가")
+                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase.circle.fill")!, information: "직장 추가")
                 ])
             ]
         
@@ -323,7 +323,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
             sections = [
                 .DetailInformationSection(title: "학력", items: [
-                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap")!, information: "학교 이름"),
+                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap.circle.fill")!, information: "학교 이름"),
                     .AddInfomrationLabelItem(style: .major, information: "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
