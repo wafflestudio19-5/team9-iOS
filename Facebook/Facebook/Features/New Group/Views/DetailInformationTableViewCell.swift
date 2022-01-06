@@ -36,6 +36,7 @@ class DetailInformationTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
           super.prepareForReuse()
+          resetCell()
           disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
     }
     
@@ -48,6 +49,12 @@ class DetailInformationTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func initialSetup(cellStyle: Style) {
+        self.cellStyle = cellStyle
+        setLayout()
+        setStyle()
     }
     
     func configureCell(image: UIImage, information: String, time: String = "", description: String = "", privacyBound: String = "") {
@@ -78,10 +85,15 @@ class DetailInformationTableViewCell: UITableViewCell {
         }
     }
     
-    func initialSetup(cellStyle: Style) {
-        self.cellStyle = cellStyle
-        setLayout()
-        setStyle()
+    private func resetCell() {
+        for view in self.contentView.subviews{
+            view.removeFromSuperview()
+        }
+        
+        informationLabel.text = ""
+        descriptionLabel.text = ""
+        timeLabel.text = ""
+        descriptionLabel.text = ""
     }
     
     private func setStyle() {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 import RxSwift
 import RxCocoa
 import RxDataSources
@@ -34,10 +35,25 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .ImageItem(image):
+        case let .ImageItem(style, imageUrl):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: idxPath) as? ImageTableViewCell else { return UITableViewCell() }
             
-            cell.imgView.image = image
+            cell.configureCell(cellStyle: style, imageUrl: imageUrl)
+            
+            cell.imgView.rx
+                .tapGesture()
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    switch style {
+                    case .profileImage:
+                        self.imageType = "profile_image"
+                    case .coverImage:
+                        self.imageType = "cover_image"
+                    }
+                    self.presentPicker()
+                }).disposed(by: cell.disposeBag)
+            
             return cell
         case let .SimpleInformationItem(style, informationType, image, information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
@@ -117,6 +133,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     
     var userProfile: UserProfile?
     
+    private var imageType = "profile_image"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -166,10 +184,10 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         
         let sections: [MultipleSectionModel] = [
             .ProfileImageSection(title: "프로필 사진", items: [
-                .ImageItem(image: UIImage(systemName: "person.circle.fill")!)
+                .ImageItem(style: .profileImage, imageUrl: userProfile.profile_image ?? "")
             ]),
             .CoverImageSection(title: "커버 사진", items: [
-                .ImageItem(image: UIImage(systemName: "photo")!)
+                .ImageItem(style: .coverImage, imageUrl: userProfile.cover_image ?? "")
             ]),
             .SelfIntroSection(title: "소개", items: [
                 .LabelItem(style: .style1,
@@ -225,12 +243,16 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         
         switch section {
         case 0:
-            sectionButton.rx.tap.bind {
-                
+            sectionButton.rx.tap.bind { [weak self] in
+                guard let self = self else { return }
+                self.imageType = "profile_image"
+                self.presentPicker()
             }.disposed(by: disposeBag)
         case 1:
-            sectionButton.rx.tap.bind {
-                print("tap section 2 button!")
+            sectionButton.rx.tap.bind { [weak self] in
+                guard let self = self else { return }
+                self.imageType = "cover_image"
+                self.presentPicker()
             }.disposed(by: disposeBag)
         case 2:
             sectionButton.rx.tap.bind {
@@ -323,3 +345,38 @@ extension EditProfileViewController {
             }.disposed(by: disposeBag)
     }
 }
+
+extension EditProfileViewController: PHPickerViewControllerDelegate {
+    
+    private func presentPicker() {
+        var configuration = PHPickerConfiguration(photoLibrary: .shared())
+        
+        configuration.selectionLimit = 1
+        configuration.filter = .any(of: [.images])
+        configuration.preferredAssetRepresentationMode = .current
+        
+        let picker = PHPickerViewController(configuration: configuration)
+        picker.delegate = self
+        
+        present(picker, animated: true)
+    }
+    
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        // itemProvider 를 가져온다.
+        if let result = results.first{
+            result.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
+                guard let image = image as? UIImage else { return }
+                guard let imageData = image.pngData() else { return }
+                
+                let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
+                
+                NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe(onNext: { event in
+                    print(event)
+                    print("upload complete!")
+                }).disposed(by: self.disposeBag)
+            }
+        }
+        dismiss(animated: true, completion: nil)
+    }
+}
+

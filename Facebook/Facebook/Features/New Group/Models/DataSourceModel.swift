@@ -20,7 +20,7 @@ enum MultipleSectionModel {
 
 enum SectionItem {
     case MainProfileItem(profileImageUrl: String, coverImageUrl: String, name: String, selfIntro: String)
-    case ImageItem(image: UIImage)
+    case ImageItem(style: ImageTableViewCell.Style, imageUrl: String)
     case SimpleInformationItem(style: SimpleInformationTableViewCell.Style,
                                informationType: AddInformationViewController<AddInformationView>.InformationType? = nil,
                                image: UIImage,

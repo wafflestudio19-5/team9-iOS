@@ -28,25 +28,36 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         case let .MainProfileItem(profileImageUrl, coverImageUrl, name, selfIntro):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
             
-            cell.setProfileImage(from: URL(string: profileImageUrl))
-            cell.setCoverImage(from: URL(string: coverImageUrl))
-            cell.nameLabel.text = name
-            cell.selfIntroLabel.text = selfIntro
+            cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro)
             
             cell.profileImage.rx
                 .tapGesture()
                 .when(.recognized)
                 .subscribe(onNext: { [weak self] _ in
                     guard let self = self else { return }
+                    self.imageType = "profile_image"
                     self.presentPicker()
                 }).disposed(by: cell.disposeBag)
             
-            cell.coverImageButton.rx
-                .tap
-                .bind { [weak self] in
-                    guard let self = self else { return }
-                    self.presentPicker()
-                }.disposed(by: cell.disposeBag)
+            if coverImageUrl != "" {
+                cell.coverImage.rx
+                    .tapGesture()
+                    .when(.recognized)
+                    .subscribe(onNext: { [weak self] _ in
+                        guard let self = self else { return }
+                        self.imageType = "cover_image"
+                        self.presentPicker()
+                    }).disposed(by: cell.disposeBag)
+            } else {
+                cell.coverImageButton.rx
+                    .tap
+                    .bind { [weak self] in
+                        guard let self = self else { return }
+                        self.imageType = "cover_image"
+                        self.presentPicker()
+                    }.disposed(by: cell.disposeBag)
+            }
+            
             
             cell.selfIntroLabel.rx
                 .tapGesture()
@@ -136,10 +147,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     var postDataViewModel: PaginationViewModel<Post>?
     //let postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(id: 41))
     
-    private var profileImageSelection = [String: PHPickerResult]()
-    private var profileImageIdentifiers: String = ""
-    private var coverImageSelection = [String: PHPickerResult]()
-    private var coverImageIdentifires: String = ""
+    private var imageType = "profile_image"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -355,7 +363,7 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                 guard let image = image as? UIImage else { return }
                 guard let imageData = image.pngData() else { return }
                 
-                let uploadData = ["self_intro": "테스트 자기소개", "profile_image": imageData]  as [String : Any]
+                let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
                 
                 NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe(onNext: { event in
                     print(event)
