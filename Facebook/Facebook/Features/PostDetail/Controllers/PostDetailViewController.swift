@@ -233,7 +233,13 @@ extension PostDetailViewController {
                 
                 cell.likeButton.rx.tap
                     .bind { [weak self] _ in
-                        
+                        guard let self = self else { return }
+                        cell.like()
+                        NetworkService.put(endpoint: .commentLike(postId: self.post.id, commentId: comment.id), as: LikeResponse.self)
+                            .bind { response in
+                                cell.like(syncWith: response.1)
+                            }
+                            .disposed(by: cell.disposeBag)
                     }
                     .disposed(by: cell.disposeBag)
                 

@@ -43,14 +43,23 @@ class InfoButton: UIButton {
             self.text = text
         }
         
+        let darkGray: UIColor = .darkGray.withAlphaComponent(0.2)
         
         configurationUpdateHandler = { button in
             switch button.state {
+            case [.selected, .highlighted]:
+                button.configuration?.baseForegroundColor = FacebookColor.blue.color()
+                button.configuration?.baseBackgroundColor = darkGray
+            case .selected:
+                button.configuration?.baseForegroundColor = FacebookColor.blue.color()
+                button.configuration?.baseBackgroundColor = .clear
             case .highlighted:
-                button.configuration?.baseBackgroundColor = .darkGray.withAlphaComponent(0.2)
+                button.configuration?.baseBackgroundColor = darkGray
             case .normal:
+                button.configuration?.baseForegroundColor = color
                 button.configuration?.baseBackgroundColor = .clear
             default:
+                print(text, "디폴트")
                 button.configuration?.baseBackgroundColor = .clear
             }
         }

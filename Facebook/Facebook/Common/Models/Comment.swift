@@ -14,10 +14,10 @@ struct Comment: Codable, Identifiable {
     let author: User
     let content: String
     let file: String?
-    let likes: Int
+    var likes: Int
     let children_count: Int
     let children: [Comment]
-    let is_liked: Bool
+    var is_liked: Bool
     let depth: Int
     let parent: Int?
     let posted_at: String

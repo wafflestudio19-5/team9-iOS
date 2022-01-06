@@ -19,7 +19,14 @@ class CommentCell: UITableViewCell {
     private var leftMarginConstraint: NSLayoutConstraint?
     private var profileHeightConstraint: NSLayoutConstraint?
     private var profileWidthConstraint: NSLayoutConstraint?
-    var comment: Comment?
+    var comment: Comment? {
+        didSet {
+            guard let comment = comment else { return }
+            likeCountLabel.text = comment.likes.withCommas()
+            likeButton.isSelected = comment.is_liked
+            print(comment.id, likeButton.state)
+        }
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: CommentCell.reuseIdentifier)
@@ -35,6 +42,17 @@ class CommentCell: UITableViewCell {
         super.prepareForReuse()
         disposeBag = DisposeBag()
         unfocus()
+    }
+    
+    func like() {
+        guard let oldComment = comment else { return }
+        comment?.likes = oldComment.is_liked ? max(0, oldComment.likes - 1) : oldComment.likes + 1
+        comment?.is_liked = !oldComment.is_liked
+    }
+    
+    func like(syncWith response: LikeResponse) {
+        comment?.likes = response.likes
+        comment?.is_liked = response.is_liked
     }
     
     func configure(with comment: Comment) {

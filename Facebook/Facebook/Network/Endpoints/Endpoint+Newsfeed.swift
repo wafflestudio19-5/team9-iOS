@@ -51,4 +51,8 @@ extension Endpoint {
         }
         return Endpoint(path: "newsfeed/\(postId)/comment/", multipartFormDataBuilder: builder)
     }
+    
+    static func commentLike(postId: Int, commentId: Int) -> Self {
+        return Endpoint(path: "newsfeed/\(postId)/\(commentId)/like/")
+    }
 }
