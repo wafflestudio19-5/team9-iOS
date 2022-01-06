@@ -235,6 +235,33 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		77266B582786EF820034DE6E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				7754B868277F33ED00775D81 /* Models */,
+				77266B592786EFAB0034DE6E /* Controllers */,
+				BE9C7CAB2771707A0089247F /* Views */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		77266B592786EFAB0034DE6E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B897A918274E378300FB67D3 /* ProfileTabViewController.swift */,
+				77B635432768B2E200C41EB3 /* DetailProfileViewController.swift */,
+				77B635472768B30A00C41EB3 /* EditProfileViewController.swift */,
+				77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */,
+				7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */,
+				77ABC5D92774A9B0000431E1 /* AddInformationViewController.swift */,
+				77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */,
+				7754B8702781D66400775D81 /* EditUserProfileViewController.swift */,
+				7754B87A2782A0CC00775D81 /* EditUsernameViewController.swift */,
+				7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		7754B868277F33ED00775D81 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -388,8 +415,8 @@
 				BE9C7CB52771731D0089247F /* Search */,
 				BE9C7CAF277171A20089247F /* Authentication */,
 				BE9C7CAE277171320089247F /* Notification */,
-				BE9C7CAA2771706A0089247F /* Profile */,
 				BE9C7CA7277170160089247F /* Newsfeed */,
+				77266B582786EF820034DE6E /* Profile */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -417,17 +444,6 @@
 				B897A91E274E389000FB67D3 /* NewsfeedTabViewController.swift */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		BE9C7CAA2771706A0089247F /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-				7754B868277F33ED00775D81 /* Models */,
-				BE9C7CAC277170840089247F /* Controllers */,
-				BE9C7CAB2771707A0089247F /* Views */,
-			);
-			name = Profile;
-			path = "New Group";
 			sourceTree = "<group>";
 		};
 		BE9C7CAB2771707A0089247F /* Views */ = {
@@ -459,24 +475,6 @@
 				7754B8742781DD9A00775D81 /* GenderSelectTableViewCell.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		BE9C7CAC277170840089247F /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				B897A918274E378300FB67D3 /* ProfileTabViewController.swift */,
-				77B635432768B2E200C41EB3 /* DetailProfileViewController.swift */,
-				77B635472768B30A00C41EB3 /* EditProfileViewController.swift */,
-				77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */,
-				7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */,
-				77ABC5D92774A9B0000431E1 /* AddInformationViewController.swift */,
-				77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */,
-				7754B8702781D66400775D81 /* EditUserProfileViewController.swift */,
-				7754B87A2782A0CC00775D81 /* EditUsernameViewController.swift */,
-				7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */,
-			);
-			name = Controllers;
-			path = "New Group1";
 			sourceTree = "<group>";
 		};
 		BE9C7CAE277171320089247F /* Notification */ = {
