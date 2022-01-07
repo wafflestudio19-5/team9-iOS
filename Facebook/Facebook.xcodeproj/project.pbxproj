@@ -35,6 +35,7 @@
 		77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA32769A98900B8F191 /* CreatePostViewController.swift */; };
 		B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */; };
 		B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91F2787F93F00750397 /* KakaoLoginView.swift */; };
+		B82EC9242788414400750397 /* Endpoint+Kakao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC9232788414400750397 /* Endpoint+Kakao.swift */; };
 		B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA42754E53700513B77 /* KakaoAuthManager.swift */; };
 		B846BDA72754F35800513B77 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA62754F35800513B77 /* LoginView.swift */; };
 		B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA92754F5A900513B77 /* FacebookColor.swift */; };
@@ -144,6 +145,7 @@
 		AF0AA20D3E5E391258D676CE /* Pods-Facebook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.release.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.release.xcconfig"; sourceTree = "<group>"; };
 		B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		B82EC91F2787F93F00750397 /* KakaoLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginView.swift; sourceTree = "<group>"; };
+		B82EC9232788414400750397 /* Endpoint+Kakao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Kakao.swift"; sourceTree = "<group>"; };
 		B846BDA42754E53700513B77 /* KakaoAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthManager.swift; sourceTree = "<group>"; };
 		B846BDA62754F35800513B77 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B846BDA92754F5A900513B77 /* FacebookColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookColor.swift; sourceTree = "<group>"; };
@@ -690,6 +692,7 @@
 				BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */,
 				BE9C7C91276CDF230089247F /* Endpoint+User.swift */,
 				B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */,
+				B82EC9232788414400750397 /* Endpoint+Kakao.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -827,6 +830,7 @@
 			files = (
 				BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */,
 				77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */,
+				B82EC9242788414400750397 /* Endpoint+Kakao.swift in Sources */,
 				BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */,
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
 				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
