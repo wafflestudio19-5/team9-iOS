@@ -162,7 +162,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: self.userId))
         
         super.init(nibName: nil, bundle: nil)
-        self.loadData()
     }
     
     required init?(coder: NSCoder) {
@@ -173,6 +172,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         super.viewDidLoad()
         super.setNavigationBarItems(withEditButton: true)
         
+        loadData()
         bind()
     }
     
@@ -180,6 +180,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
         if userProfile != nil {
             loadData()
+            postDataViewModel.refresh()
         }
     }
     
@@ -200,7 +201,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
             
                 self.userProfile = response
-                self.createSection()
         }.disposed(by: disposeBag)
     }
     
@@ -303,7 +303,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         }
         
         //다른 사람 프로필일 경우 정보 수정 버튼 삭제
-        if (userId == CurrentUser.shared.profile?.id) {
+        if (userId != CurrentUser.shared.profile?.id) {
             otherItems.removeLast()
         }
         
