@@ -49,6 +49,7 @@ extension KakaoLoginViewController {
         KakaoAuthManager.shared.requestKakaoLogin(type: .connect)
             .subscribe (onNext: { [weak self] success in
                 if success {
+                    UserDefaults.standard.setValue(true, forKey: "didLogin")
                     self?.changeRootViewController(to: RootTabBarController())
                 } else {
                     self?.alert(title: "카카오 연동 실패", message: "이미 등록된 계정입니다.", action: "확인")
