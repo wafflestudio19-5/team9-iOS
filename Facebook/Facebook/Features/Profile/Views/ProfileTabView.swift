@@ -9,12 +9,12 @@ import UIKit
 
 class ProfileTabView: UIView {
 
-    let profileTableView = UITableView(frame: .zero, style: .grouped)
+    let profileTableView = ResponsiveTableView(frame: .zero, style: .grouped)
     let refreshControl = UIRefreshControl()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .white
+        self.backgroundColor = .systemBackground
         setLayoutForView()
         configureTableView()
     }

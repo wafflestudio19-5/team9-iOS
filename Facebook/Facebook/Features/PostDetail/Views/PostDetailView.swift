@@ -36,7 +36,6 @@ class PostDetailView: UIView {
         commentTableView.register(CommentCell.self, forCellReuseIdentifier: CommentCell.reuseIdentifier)
         commentTableView.allowsSelection = false
         commentTableView.translatesAutoresizingMaskIntoConstraints = false
-        commentTableView.delaysContentTouches = false
         commentTableView.keyboardDismissMode = .interactive
         commentTableView.separatorStyle = .none
         NSLayoutConstraint.activate([
