@@ -5,7 +5,6 @@
 //  Created by 박신홍 on 2021/12/30.
 //
 
-import Foundation
 import UIKit
 
 extension NSLayoutConstraint {

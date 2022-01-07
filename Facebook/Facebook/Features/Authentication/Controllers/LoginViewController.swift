@@ -23,7 +23,7 @@ class LoginViewController<View: LoginView>: UIViewController {
         return view
     }
     
-    private let id = BehaviorRelay<String>(value: "")
+    private let email = BehaviorRelay<String>(value: "")
     private let password = BehaviorRelay<String>(value: "")
     
     override func viewDidLoad() {
@@ -34,30 +34,25 @@ class LoginViewController<View: LoginView>: UIViewController {
     }
     
     private func bindView() {
-        loginView.loginButton.rx.tap.bind {
-            print("login button tapped")
-            
-            // 로그인에 실패한 경우 보이는 알림창 sample
-            self.alert(title: "잘못된 사용자 이름", message: "입력하신 사용자 이름에 해당하는 계정을 찾을 수 없습니다. 사용자 이름을 확인하고 다시 시도하세요.", action: "확인")
-            
-            // login validation
+        loginView.loginButton.rx.tap.bind { [weak self] _ in
+            self?.login()
         }.disposed(by: disposeBag)
         
         loginView.forgotPasswordButton.rx.tap.bind {
             // navigate to findPasswordView
+            // 사용X
         }.disposed(by: disposeBag)
         
         loginView.backButton.rx.tap.bind {
-            
+            // 사용X
         }.disposed(by: disposeBag)
         
         loginView.createAccountButton.rx.tap.bind { [weak self] _ in
-            guard let self = self else { return }
-            self.push(viewController: EnterUsernameViewController())
+            self?.push(viewController: EnterUsernameViewController())
         }.disposed(by: disposeBag)
 
-        loginView.idTextField.rx.text.orEmpty
-            .bind(to: id)
+        loginView.emailTextField.rx.text.orEmpty
+            .bind(to: email)
             .disposed(by: disposeBag)
         
         loginView.passwordTextField.rx.text.orEmpty
@@ -65,7 +60,7 @@ class LoginViewController<View: LoginView>: UIViewController {
             .disposed(by: disposeBag)
         
         // 두 개의 textfield가 모두 비어있지 않은가?에 대한 event 방출
-        let hasEnteredBoth = Observable.combineLatest(id, password, resultSelector: { (!$0.isEmpty && !$1.isEmpty) })
+        let hasEnteredBoth = Observable.combineLatest(email, password, resultSelector: { (!$0.isEmpty && !$1.isEmpty) })
         
         // 두 개의 textfield가 비어있지 않을 경우에 loginButton 활성화
         hasEnteredBoth
@@ -102,11 +97,28 @@ class LoginViewController<View: LoginView>: UIViewController {
             }
         }).bind { [weak self] _ in
             guard let self = self else { return }
-            if self.loginView.idTextField.isEditing {
-                self.loginView.idTextField.endEditing(true)
+            if self.loginView.emailTextField.isEditing {
+                self.loginView.emailTextField.endEditing(true)
             } else if self.loginView.passwordTextField.isEditing {
                 self.loginView.passwordTextField.endEditing(true)
             }
         }.disposed(by: disposeBag)
+    }
+}
+
+extension LoginViewController {
+    private func login() {
+        AuthManager.login(email: self.email.value, password: self.password.value)
+            .subscribe { [weak self] result in
+                guard let success = result.element else { return }
+                
+                switch success {
+                case true:
+                    // 카카오 로그인 페이지로 이동
+                    self?.changeRootViewController(to: RootTabBarController())
+                case false:
+                    self?.alert(title: "잘못된 이메일", message: "입력한 이메일이 계정에 포함된 이메일이 아닌 것 같습니다. 이메일 주소를 확인하고 다시 시도해주세요.", action: "확인")
+                }
+            }.disposed(by: disposeBag)
     }
 }

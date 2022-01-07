@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import KakaoSDKCommon
 
 class PostDetailView: UIView {
     
@@ -42,7 +41,6 @@ class PostDetailView: UIView {
             commentTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
             commentTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             commentTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-    
         ])
     }
 }
