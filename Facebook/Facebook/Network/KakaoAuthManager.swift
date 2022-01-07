@@ -108,9 +108,10 @@ class KakaoAuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .loginWithKakao(accessToken: accessToken), as: AuthResponse.self)
                 .subscribe(onNext: { response in
-                    print(response.1.token)
+                    //print(response.1.token)
                     if response.0.statusCode == 200 {
                         CurrentUser.shared.profile = response.1.user
+                        CurrentUser.shared.saveCurrentUser()
                         NetworkService.registerToken(token: response.1.token)
                         result(.success(true))
                     } else {

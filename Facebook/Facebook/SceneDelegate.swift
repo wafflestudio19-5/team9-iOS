@@ -49,7 +49,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         window.rootViewController = {
-            if didLogin { return UINavigationController(rootViewController: RootTabBarController()) }
+            if didLogin {
+                CurrentUser.shared.getCurrentUser()
+                return UINavigationController(rootViewController: RootTabBarController())
+            }
             else { return UINavigationController(rootViewController: LoginViewController()) }
         }()
         

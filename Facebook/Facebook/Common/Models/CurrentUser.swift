@@ -15,5 +15,16 @@ class CurrentUser {
     
     var profile: User?
     
+    func saveCurrentUser() {
+        let currentUserData = try? JSONEncoder().encode(self.profile)
+        UserDefaults.standard.setValue(currentUserData, forKey: "CurrentUser")
+        print(self.profile?.email)
+    }
     
+    func getCurrentUser() {
+        let data = UserDefaults.standard.value(forKey: "CurrentUser") as? Data
+        let currentUserData = try? JSONDecoder().decode(User.self, from: data!)
+        self.profile = currentUserData
+        print(self.profile?.email)
+    }
 }
