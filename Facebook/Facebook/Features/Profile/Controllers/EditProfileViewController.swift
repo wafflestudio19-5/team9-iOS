@@ -121,7 +121,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.configureCell(buttonText: buttonText)
             
             cell.button.rx.tap.bind { [weak self] in
-                let detailProfileViewController = DetailProfileViewController()
+                let detailProfileViewController = DetailProfileViewController(userId: CurrentUser.shared.profile?.id ?? 0)
                 self?.push(viewController: detailProfileViewController)
             }.disposed(by: cell.disposeBag)
             
@@ -153,7 +153,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     }
     
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
                 
