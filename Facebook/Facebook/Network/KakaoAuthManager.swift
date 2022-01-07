@@ -50,8 +50,8 @@ class KakaoAuthManager {
                                     }
                                 }.disposed(by: self.disposeBag)
                         }
-                    }, onError: { _ in
-                        result.onNext(false)
+                    }, onError: { error in
+                        result.onError(error)
                     }).disposed(by: self.disposeBag)
             } else {
                 UserApi.shared.rx.loginWithKakaoAccount()
@@ -79,8 +79,8 @@ class KakaoAuthManager {
                                     }
                                 }.disposed(by: self.disposeBag)
                         }
-                    }, onError: { _ in
-                        result.onNext(false)
+                    }, onError: { error in
+                        result.onError(error)
                     }).disposed(by: self.disposeBag)
             }
             return Disposables.create()
@@ -108,9 +108,14 @@ class KakaoAuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .loginWithKakao(accessToken: accessToken), as: AuthResponse.self)
                 .subscribe(onNext: { response in
-                    CurrentUser.shared.profile = response.1.user
-                    NetworkService.registerToken(token: response.1.token)
-                    result(.success(true))
+                    print(response.1.token)
+                    if response.0.statusCode == 200 {
+                        CurrentUser.shared.profile = response.1.user
+                        NetworkService.registerToken(token: response.1.token)
+                        result(.success(true))
+                    } else {
+                        result(.success(false))
+                    }
                 }, onError: { error in
                     result(.failure(error))
                 }).disposed(by: self.disposeBag)

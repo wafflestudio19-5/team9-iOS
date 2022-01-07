@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
-        window.rootViewController = viewController
+        window.rootViewController = UINavigationController(rootViewController: viewController)
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -52,7 +52,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = {
             if didLogin { return UINavigationController(rootViewController: LoginViewController()) }
             else { return UINavigationController(rootViewController: LoginViewController()) }
-            
         }()
         
         window.makeKeyAndVisible()
