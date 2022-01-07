@@ -145,7 +145,7 @@ class PostCell: UITableViewCell {
     private let imageGridCollectionView = ImageGridCollectionView()
     
     // 포스트 헤더 (프로필 이미지, 작성자, 날짜, 각종 버튼이 들어가는 곳)
-    private let postHeader = AuthorInfoHeaderView()
+    let postHeader = AuthorInfoHeaderView()
     
     // 좋아요, 댓글, 공유 버튼 나란히 있는 스택 뷰
     let buttonHorizontalStackView = InteractionButtonStackView()

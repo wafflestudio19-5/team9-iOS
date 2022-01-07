@@ -10,6 +10,7 @@ import RxSwift
 import RxAlamofire
 import UIKit
 import RxCocoa
+import RxGesture
 
 class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
@@ -101,12 +102,23 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
                         .disposed(by: cell.disposeBag)
                 }.disposed(by: cell.disposeBag)
                 
-                // 댓글 버튼 클릭시 디테일 화면으로 이동
+                // 댓글 버튼 터치 시 디테일 화면으로 이동
                 cell.buttonHorizontalStackView.commentButton.rx.tap
                     .observe(on: MainScheduler.instance)
                     .bind { [weak self] _ in
                         self?.pushToDetailVC(cell: cell, asFirstResponder: true)
                     }.disposed(by: cell.disposeBag)
+                
+                // 셀 헤더 부분 터치 시 디테일 화면으로 이동
+                cell.postHeader.rx.tapGesture(configuration: { _, delegate in
+                    delegate.touchReceptionPolicy = .custom { _, shouldReceive in
+                        return !(shouldReceive.view is UIControl)
+                    }
+                })
+                    .bind { [weak self] _ in
+                        self?.pushToDetailVC(cell: cell, asFirstResponder: false)
+                    }
+                    .disposed(by: cell.disposeBag)
                 
                 // 댓글 수 클릭시 디테일 화면으로 이동
                 cell.commentCountButton.rx.tap
@@ -157,7 +169,6 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
                 }
             }
             .disposed(by: disposeBag)
-        
         
     }
 }
