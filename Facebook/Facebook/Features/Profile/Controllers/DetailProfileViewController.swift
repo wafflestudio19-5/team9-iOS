@@ -41,12 +41,14 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             cell.initialSetup(cellStyle: style)
             cell.configureCell(image: image, information: information)
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let informationType = informationType else { return }
-                
-                let addInformationViewController = AddInformationViewController(informationType: informationType)
-                self?.push(viewController: addInformationViewController)
-            }).disposed(by: cell.disposeBag)
+            if self.userId == nil {
+                cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                    guard let informationType = informationType else { return }
+                    
+                    let addInformationViewController = AddInformationViewController(informationType: informationType)
+                    self?.push(viewController: addInformationViewController)
+                }).disposed(by: cell.disposeBag)
+            }
             
             return cell
         case let .DetailInformationItem(style, image, information, time, description, privacyBound):
@@ -76,10 +78,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                    privacyBound: "전체 공개")
             }
             
-            cell.editButton.rx.tap.bind { [weak self] in
-                let addInformationViewController = AddInformationViewController(informationType: .company, id: company.id ?? nil)
-                self?.push(viewController: addInformationViewController)
-            }.disposed(by: cell.disposeBag)
+            if self.userId == nil {
+                cell.editButton.rx.tap.bind { [weak self] in
+                    let addInformationViewController = AddInformationViewController(informationType: .company, id: company.id ?? nil)
+                    self?.push(viewController: addInformationViewController)
+                }.disposed(by: cell.disposeBag)
+            }
             
             return cell
         case let .UniversityItem(university):
@@ -101,10 +105,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                    privacyBound: "전체 공개")
             }
             
-            cell.editButton.rx.tap.bind { [weak self] in
-                let addInformationViewController = AddInformationViewController(informationType: .university, id: university.id ?? nil)
-                self?.push(viewController: addInformationViewController)
-            }.disposed(by: cell.disposeBag)
+            if self.userId == nil {
+                cell.editButton.rx.tap.bind { [weak self] in
+                    let addInformationViewController = AddInformationViewController(informationType: .university, id: university.id ?? nil)
+                    self?.push(viewController: addInformationViewController)
+                }.disposed(by: cell.disposeBag)
+            }
             
             return cell
         case let .PostItem(post):
@@ -120,7 +126,18 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
     
-    var userProfile: UserProfile?
+    private var userId: Int? = nil
+    private var userProfile: UserProfile?
+    
+    init(userId: Int? = nil) {
+        super.init(nibName: nil, bundle: nil)
+        //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
+        self.userId = userId
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -169,34 +186,68 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             SectionItem.UniversityItem(university: university)
         }) ?? []
         
-        let sections: [MultipleSectionModel] = [
-            .DetailInformationSection(title: "직장", items: [
-                .SimpleInformationItem(style: .style3,
-                                       informationType: .company,
-                                       image: UIImage(systemName: "briefcase.circle") ?? UIImage(),
-                                       information: "직장 추가")
-            ] + companyItems ),
-            .DetailInformationSection(title: "학력", items:[
-                .SimpleInformationItem(style: .style3,
-                                       informationType: .university,
-                                       image: UIImage(systemName: "graduationcap.circle") ?? UIImage(),
-                                       information: "학력 추가")
-            ] + universityItems ),
-            .DetailInformationSection(title: "기본 정보", items: [
-                .DetailInformationItem(style: .style1,
-                                       image: UIImage(systemName: "person.circle")!,
-                                       information: (userProfile.gender == "M") ? "남성" : "여성",
-                                       description: "성별"),
-                .DetailInformationItem(style: .style2,
-                                       image: UIImage(systemName: "gift.circle")!,
-                                       information:
-                                        String(userProfile.birth.split(separator: "-")[0]) + "년 " +
-                                        String(userProfile.birth.split(separator: "-")[1]) + "월 " +
-                                        String(userProfile.birth.split(separator: "-")[2]) + "일 ",
-                                       description: "생일",
-                                       privacyBound: "회원님의 친구의 친구")
-            ])
-        ]
+        var sections: [MultipleSectionModel]
+        if userId == nil {
+            sections = [
+                .DetailInformationSection(title: "직장", items: [
+                    .SimpleInformationItem(style: .style3,
+                                           informationType: .company,
+                                           image: UIImage(systemName: "briefcase.circle") ?? UIImage(),
+                                           information: "직장 추가")
+                ] + companyItems ),
+                .DetailInformationSection(title: "학력", items:[
+                    .SimpleInformationItem(style: .style3,
+                                           informationType: .university,
+                                           image: UIImage(systemName: "graduationcap.circle") ?? UIImage(),
+                                           information: "학력 추가")
+                ] + universityItems ),
+                .DetailInformationSection(title: "기본 정보", items: [
+                    .DetailInformationItem(style: .style1,
+                                           image: UIImage(systemName: "person.circle")!,
+                                           information: (userProfile.gender == "M") ? "남성" : "여성",
+                                           description: "성별"),
+                    .DetailInformationItem(style: .style2,
+                                           image: UIImage(systemName: "gift.circle")!,
+                                           information:
+                                            String(userProfile.birth.split(separator: "-")[0]) + "년 " +
+                                            String(userProfile.birth.split(separator: "-")[1]) + "월 " +
+                                            String(userProfile.birth.split(separator: "-")[2]) + "일 ",
+                                           description: "생일",
+                                           privacyBound: "회원님의 친구의 친구")
+                ])
+            ]
+        } else {
+            sections = [
+                .DetailInformationSection(title: "직장", items: [
+                    (companyItems.count == 0) ? [
+                        .SimpleInformationItem(style: .style3,
+                                               informationType: .company,
+                                               image: UIImage(systemName: "briefcase.circle") ?? UIImage(),
+                                               information: "표시할 직장 정보 없음")
+                    ] : companyItems ),
+                .DetailInformationSection(title: "학력", items:[
+                    (universityItems.count == 0) ? [
+                        .SimpleInformationItem(style: .style3,
+                                               informationType: .company,
+                                               image: UIImage(systemName: "graduationcap.circle") ?? UIImage(),
+                                               information: "표시할 학교 정보 없음")
+                    ] : universityItems),
+                .DetailInformationSection(title: "기본 정보", items: [
+                    .DetailInformationItem(style: .style1,
+                                           image: UIImage(systemName: "person.circle")!,
+                                           information: (userProfile.gender == "M") ? "남성" : "여성",
+                                           description: "성별"),
+                    .DetailInformationItem(style: .style2,
+                                           image: UIImage(systemName: "gift.circle")!,
+                                           information:
+                                            String(userProfile.birth.split(separator: "-")[0]) + "년 " +
+                                            String(userProfile.birth.split(separator: "-")[1]) + "월 " +
+                                            String(userProfile.birth.split(separator: "-")[2]) + "일 ",
+                                           description: "생일",
+                                           privacyBound: "회원님의 친구의 친구")
+                ])
+            ]
+        }
         
         sectionsBR.accept(sections)
     }
@@ -235,27 +286,29 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15)
         ])
         
-        if section == 2 || section == 3 {
-            let sectionButton = UIButton(type: .system)
-            sectionButton.setTitle("수정", for: .normal)
-            sectionButton.setTitleColor(UIColor.systemBlue, for: .normal)
-            sectionButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-            headerView.addSubview(sectionButton)
-            sectionButton.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                sectionButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-                sectionButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
-            ])
-            
-            //section header의 버튼 클릭 시 동작
-            switch section {
-            case 2:
-                sectionButton.rx.tap.bind { [weak self] in
-                    let editUserProfileViewController = EditUserProfileViewController()
-                    self?.push(viewController: editUserProfileViewController)
-                }.disposed(by: disposeBag)
-            default: break
+        if userId == nil {
+            if section == 2 || section == 3 {
+                let sectionButton = UIButton(type: .system)
+                sectionButton.setTitle("수정", for: .normal)
+                sectionButton.setTitleColor(UIColor.systemBlue, for: .normal)
+                sectionButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+                headerView.addSubview(sectionButton)
+                sectionButton.translatesAutoresizingMaskIntoConstraints = false
+                
+                NSLayoutConstraint.activate([
+                    sectionButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                    sectionButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
+                ])
+                
+                //section header의 버튼 클릭 시 동작
+                switch section {
+                case 2:
+                    sectionButton.rx.tap.bind { [weak self] in
+                        let editUserProfileViewController = EditUserProfileViewController()
+                        self?.push(viewController: editUserProfileViewController)
+                    }.disposed(by: disposeBag)
+                default: break
+                }
             }
         }
         
