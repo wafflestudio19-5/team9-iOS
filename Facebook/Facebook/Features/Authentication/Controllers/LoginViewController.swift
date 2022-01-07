@@ -30,6 +30,8 @@ class LoginViewController<View: LoginView>: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = .black
         self.navigationItem.backButtonTitle = ""
+        
+        self.navigationItem.titleView = loginView.logoImage
         bindView()
     }
     

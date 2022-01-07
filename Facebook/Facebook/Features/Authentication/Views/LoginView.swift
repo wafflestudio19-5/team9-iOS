@@ -9,6 +9,8 @@ import UIKit
 
 class LoginView: UIView {
     
+    let logoImage = UIImageView(image: UIImage(named: "WafflebookLogo"))
+    
     let loginButton = RectangularSlimButton(title: "로그인", titleColor: .systemGray3, backgroundColor: FacebookColor.blue.color())
     
     let kakaoLoginButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
@@ -44,6 +46,11 @@ class LoginView: UIView {
         orLabel.textColor = .darkGray
         
         kakaoLoginButton.contentMode = .scaleAspectFit
+        
+        logoImage.contentMode = .scaleAspectFill
+        logoImage.layer.cornerCurve = .continuous
+        logoImage.layer.cornerRadius = 10.0
+        logoImage.clipsToBounds = true
     }
 
     private func setLayoutForView() {
@@ -60,6 +67,7 @@ class LoginView: UIView {
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         createAccountButton.translatesAutoresizingMaskIntoConstraints = false
         orLabel.translatesAutoresizingMaskIntoConstraints = false
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
         
         // FacebookTextField 및 RectangularSlimButton의 UITemporaryLayoutHeight와의 충돌 방지
         layoutIfNeeded()
@@ -72,7 +80,11 @@ class LoginView: UIView {
         }
         
         NSLayoutConstraint.activate([
-            emailTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 8.0),
+            
+            logoImage.widthAnchor.constraint(equalToConstant: 36.0),
+            logoImage.heightAnchor.constraint(equalToConstant: 36.0),
+            
+            emailTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16.0),
             emailTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             emailTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             

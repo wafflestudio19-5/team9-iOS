@@ -50,7 +50,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         window.rootViewController = {
-            if didLogin { return UINavigationController(rootViewController: KakaoLoginViewController()) }
+            if didLogin { return UINavigationController(rootViewController: LoginViewController()) }
             else { return UINavigationController(rootViewController: LoginViewController()) }
             
         }()
