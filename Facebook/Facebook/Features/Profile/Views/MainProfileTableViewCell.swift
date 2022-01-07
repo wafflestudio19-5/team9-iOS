@@ -37,9 +37,10 @@ class MainProfileTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configureCell(profileImageUrl: String, coverImageUrl: String, name: String, selfIntro: String) {
+    func configureCell(profileImageUrl: String, coverImageUrl: String, name: String, selfIntro: String, buttonText: String) {
         nameLabel.text = name
         selfIntroLabel.text = selfIntro
+        editProfileButton.setTitle(buttonText, for: .normal)
         
         if profileImageUrl != "" {
             loadProfileImage(from: URL(string: profileImageUrl))

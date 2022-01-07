@@ -25,60 +25,62 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     //enum SectionItem의 유형에 따라 다른 cell type을 연결
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
         switch dataSource[idxPath] {
-        case let .MainProfileItem(profileImageUrl, coverImageUrl, name, selfIntro):
+        case let .MainProfileItem(profileImageUrl, coverImageUrl, name, selfIntro, buttonText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
             
-            cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro)
+            cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro, buttonText: buttonText)
             
-            cell.profileImage.rx
-                .tapGesture()
-                .when(.recognized)
-                .subscribe(onNext: { [weak self] _ in
-                    guard let self = self else { return }
-                    self.imageType = "profile_image"
-                    self.presentPicker()
-                }).disposed(by: cell.disposeBag)
-            
-            if coverImageUrl != "" {
-                cell.coverImage.rx
+            if self.userId == nil {
+                cell.profileImage.rx
                     .tapGesture()
                     .when(.recognized)
                     .subscribe(onNext: { [weak self] _ in
                         guard let self = self else { return }
-                        self.imageType = "cover_image"
+                        self.imageType = "profile_image"
                         self.presentPicker()
                     }).disposed(by: cell.disposeBag)
-            } else {
-                cell.coverImageButton.rx
+                
+                if coverImageUrl != "" {
+                    cell.coverImage.rx
+                        .tapGesture()
+                        .when(.recognized)
+                        .subscribe(onNext: { [weak self] _ in
+                            guard let self = self else { return }
+                            self.imageType = "cover_image"
+                            self.presentPicker()
+                        }).disposed(by: cell.disposeBag)
+                } else {
+                    cell.coverImageButton.rx
+                        .tap
+                        .bind { [weak self] in
+                            guard let self = self else { return }
+                            self.imageType = "cover_image"
+                            self.presentPicker()
+                        }.disposed(by: cell.disposeBag)
+                }
+                
+                
+                cell.selfIntroLabel.rx
+                    .tapGesture()
+                    .when(.recognized)
+                    .subscribe(onNext: { [weak self] _ in
+                        if selfIntro == "" {
+                            let addSelfIntroViewController = AddSelfIntroViewController()
+                            let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+                            navigationController.modalPresentationStyle = .fullScreen
+                            self?.present(navigationController, animated: true, completion: nil)
+                        } else {
+                            self?.showAlertMenu()
+                        }
+                    }).disposed(by: cell.disposeBag)
+                
+                cell.editProfileButton.rx
                     .tap
                     .bind { [weak self] in
-                        guard let self = self else { return }
-                        self.imageType = "cover_image"
-                        self.presentPicker()
+                        let editProfileViewController = EditProfileViewController()
+                        self?.push(viewController: editProfileViewController)
                     }.disposed(by: cell.disposeBag)
             }
-            
-            
-            cell.selfIntroLabel.rx
-                .tapGesture()
-                .when(.recognized)
-                .subscribe(onNext: { [weak self] _ in
-                    if selfIntro == "" {
-                        let addSelfIntroViewController = AddSelfIntroViewController()
-                        let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
-                        navigationController.modalPresentationStyle = .fullScreen
-                        self?.present(navigationController, animated: true, completion: nil)
-                    } else {
-                        self?.showAlertMenu()
-                    }
-                }).disposed(by: cell.disposeBag)
-            
-            cell.editProfileButton.rx
-                .tap
-                .bind { [weak self] in
-                    let editProfileViewController = EditProfileViewController()
-                    self?.push(viewController: editProfileViewController)
-                }.disposed(by: cell.disposeBag)
             
             return cell
         case let .SimpleInformationItem(style, informationType,image, information):
@@ -149,7 +151,18 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     var postDataViewModel: PaginationViewModel<Post>?
     //let postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(id: 41))
     
+    private var userId: Int? = nil
     private var imageType = "profile_image"
+    
+    init(userId: Int? = nil) {
+        super.init(nibName: nil, bundle: nil)
+        //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
+        self.userId = userId
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,7 +171,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         loadData()
         bind()
     }
-    
     
     //유저 프로필 관련 데이터 불러오기
     func loadData() {
@@ -242,7 +254,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 .MainProfileItem(profileImageUrl: userProfile.profile_image ?? "" ,
                                  coverImageUrl: userProfile.cover_image ?? "",
                                  name: userProfile.username ?? "username",
-                                 selfIntro: userProfile.self_intro ?? "")
+                                 selfIntro: userProfile.self_intro ?? "",
+                                 buttonText: (userId == nil) ? "프로필 편집" : "친구 추가")
             ])
         ]
 
@@ -273,9 +286,15 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             otherItems = [
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
-                                                  information: "내 정보 보기"),
+                                                  information: (userId == nil) ?
+                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
                 SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
             ]
+        }
+        
+        //다른 사람 프로필일 경우 정보 수정 버튼 삭제
+        if userId != nil {
+            otherItems.removeLast()
         }
         
         let detailSection: [MultipleSectionModel] = [
