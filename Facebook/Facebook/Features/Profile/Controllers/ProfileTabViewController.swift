@@ -32,15 +32,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro, buttonText: buttonText)
             
             if (self.userId == CurrentUser.shared.profile?.id) {
-                cell.profileImage.rx
-                    .tapGesture()
-                    .when(.recognized)
-                    .subscribe(onNext: { [weak self] _ in
-                        guard let self = self else { return }
-                        self.imageType = "profile_image"
-                        self.presentPicker()
-                    }).disposed(by: cell.disposeBag)
-                
                 if coverImageUrl != "" {
                     cell.coverImage.rx
                         .tapGesture()
@@ -83,6 +74,16 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     }.disposed(by: cell.disposeBag)
             }
             
+            cell.profileImage.rx
+                .tapGesture()
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.imageType = "profile_image"
+                    self.presentPicker()
+                }).disposed(by: cell.disposeBag)
+            
+            
             return cell
         case let .SimpleInformationItem(style, informationType,image, information):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
@@ -91,8 +92,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.configureCell(image: image, information: information)
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let detailProfileViewController = DetailProfileViewController()
-                self?.push(viewController: detailProfileViewController)
+                guard let self = self else { return }
+                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                self.push(viewController: detailProfileViewController)
             }).disposed(by: cell.disposeBag)
             
             return cell
@@ -116,8 +118,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                information: company.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let detailProfileViewController = DetailProfileViewController()
-                self?.push(viewController: detailProfileViewController)
+                guard let self = self else { return }
+                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                self.push(viewController: detailProfileViewController)
             }).disposed(by: cell.disposeBag)
             
             return cell
@@ -129,8 +132,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                information: university.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let detailProfileViewController = DetailProfileViewController()
-                self?.push(viewController: detailProfileViewController)
+                guard let self = self else { return }
+                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                self.push(viewController: detailProfileViewController)
             }).disposed(by: cell.disposeBag)
             
             return cell
@@ -157,12 +161,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
         if userId != nil { self.userId = userId! }
         else if CurrentUser.shared.profile != nil { self.userId = CurrentUser.shared.profile!.id }
-        else { self.userId = 0}
+        else { self.userId = 0 }
 
         postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: self.userId))
         
         super.init(nibName: nil, bundle: nil)
-        self.loadData()
     }
     
     required init?(coder: NSCoder) {
@@ -173,6 +176,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         super.viewDidLoad()
         super.setNavigationBarItems(withEditButton: true)
         
+        loadData()
         bind()
     }
     
@@ -200,7 +204,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
             
                 self.userProfile = response
-                self.createSection()
+                self.postDataViewModel.refresh()
         }.disposed(by: disposeBag)
     }
     
@@ -225,7 +229,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.loadData()
-                self.postDataViewModel.refresh()
             })
             .disposed(by: disposeBag)
         
@@ -303,7 +306,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         }
         
         //다른 사람 프로필일 경우 정보 수정 버튼 삭제
-        if (userId == CurrentUser.shared.profile?.id) {
+        if (userId != CurrentUser.shared.profile?.id) {
             otherItems.removeLast()
         }
         

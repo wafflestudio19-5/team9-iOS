@@ -14,13 +14,6 @@ extension Endpoint {
         return Endpoint(path: "user/\(id)/profile/")
     }
     
-    static func profile(id: Int, userProfile: UserProfile) -> Self {
-        let multipartFormDataBuilder: (MultipartFormData) -> Void = { multipartFormData in
-            
-        }
-        return Endpoint(path: "user/\(id)/profile/", multipartFormDataBuilder: multipartFormDataBuilder)
-    }
-    
     static func profile(id: Int ,updateData: [String: Any]) -> Self {
         let multipartFormDataBuilder: (MultipartFormData) -> Void = { multipartFormData in
             for (key, value) in updateData {
@@ -42,27 +35,83 @@ extension Endpoint {
     }
     
     static func company(company: Company) -> Self {
-        return Endpoint(path: "user/company/",
-                        parameters: [ : ])
+        if company.is_active! == true {
+            return Endpoint(path: "user/company/",
+                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                                         "name": company.name ?? "",
+                                         "role": company.role ?? "",
+                                         "location": company.location ?? "" ,
+                                         "join_date": company.join_date ?? "",
+                                         "detail": company.detail ?? ""])
+        } else {
+            return Endpoint(path: "user/company/",
+                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                                         "name": company.name ?? "",
+                                         "role": company.role ?? "",
+                                         "location": company.location ?? "" ,
+                                         "join_date": company.join_date ?? "",
+                                         "leave_date": company.leave_date ?? "",
+                                         "detail": company.detail ?? ""])
+        }
     }
     
     static func company(id: Int, company: Company) -> Self {
-        return Endpoint(path: "user/company/\(id)/",
-                        parameters: [ : ])
+        if company.is_active! == true {
+            return Endpoint(path: "user/company/\(id)/",
+                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                                         "name": company.name ?? "",
+                                         "role": company.role ?? "",
+                                         "location": company.location ?? "" ,
+                                         "join_date": company.join_date ?? "",
+                                         "detail": company.detail ?? ""])
+        } else {
+            return Endpoint(path: "user/company/\(id)/",
+                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                                         "name": company.name ?? "",
+                                         "role": company.role ?? "",
+                                         "location": company.location ?? "" ,
+                                         "join_date": company.join_date ?? "",
+                                         "leave_date": company.leave_date ?? "",
+                                         "detail": company.detail ?? ""])
+        }
     }
     
     static func university(id: Int) -> Self {
-        return Endpoint(path: "user/university/\(id)")
+        return Endpoint(path: "user/university/\(id)/")
     }
     
     static func university(university: University) -> Self {
-        return Endpoint(path: "user/university/",
-                        parameters: [ : ])
+        if university.is_active! == true {
+            return Endpoint(path: "user/university/",
+                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                                         "name": university.name ?? "",
+                                         "major": university.major ?? "" ,
+                                         "join_date": university.join_date ?? ""])
+        } else {
+            return Endpoint(path: "user/university/",
+                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                                         "name": university.name ?? "",
+                                         "major": university.major ?? "" ,
+                                         "join_date": university.join_date ?? "",
+                                         "graduate_date": university.graduate_date ?? ""])
+        }
     }
     
     static func university(id: Int, university: University) -> Self {
-        return Endpoint(path: "user/university/\(id)/",
-                        parameters: [ : ])
+        if university.is_active! == true {
+            return Endpoint(path: "user/university/\(id)/",
+                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                                         "name": university.name ?? "",
+                                         "major": university.major ?? "" ,
+                                         "join_date": university.join_date ?? ""])
+        } else {
+            return Endpoint(path: "user/university/\(id)/",
+                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                                         "name": university.name ?? "",
+                                         "major": university.major ?? "" ,
+                                         "join_date": university.join_date ?? "",
+                                         "graduate_date": university.graduate_date ?? ""])
+        }
     }
     
 }

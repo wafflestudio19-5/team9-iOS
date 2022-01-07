@@ -54,7 +54,7 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
     }
     
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
             
@@ -111,7 +111,7 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
                                       "last_name": self.lastName.value]
 
                     NetworkService
-                        .update(endpoint: .profile(id: 41, updateData: updateData))
+                        .update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: updateData))
                         .subscribe { [weak self] _ in
                             self?.navigationController?.popViewController(animated: true)
                         }.disposed(by: self.disposeBag)

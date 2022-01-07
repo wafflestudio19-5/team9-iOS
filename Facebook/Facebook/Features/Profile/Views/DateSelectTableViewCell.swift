@@ -87,8 +87,8 @@ class DateSelectTableViewCell: UITableViewCell {
         setDataForPicker()
     }
     
-    func configureCell(birthInfo: String) {
-        if birthInfo == "" {
+    func configureCell(dateInfo: String) {
+        if dateInfo == "" {
             switch self.cellStyle {
             case .startDateStyle:
                 dateKindLabel.text = "시작 날짜"
@@ -101,10 +101,10 @@ class DateSelectTableViewCell: UITableViewCell {
                 
                 yearTextField.text = String(currentYear)
                 monthTextField.text = "\(currentMonth)월"
-                dayTextField.text = String(currentDay)
+                dayTextField.text = String(currentDay).trimmingCharacters(in: ["0"])
                 selectedYear = String(currentYear)
                 selectedMonth = "\(currentMonth)월"
-                selectedDay =  String(currentDay)
+                selectedDay =  String(currentDay).trimmingCharacters(in: ["0"])
                 
                 hideAddDateLabel()
                 showYearTextField()
@@ -128,12 +128,12 @@ class DateSelectTableViewCell: UITableViewCell {
                 dateKindLabel.text = "종료 날짜"
             }
             
-            yearTextField.text = String(birthInfo.split(separator: "-")[0])
-            monthTextField.text = birthInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
-            dayTextField.text = String(birthInfo.split(separator: "-")[2])
-            selectedYear = String(birthInfo.split(separator: "-")[0])
-            selectedMonth = birthInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
-            selectedDay = String(birthInfo.split(separator: "-")[2])
+            yearTextField.text = String(dateInfo.split(separator: "-")[0])
+            monthTextField.text = dateInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
+            dayTextField.text = String(dateInfo.split(separator: "-")[2])
+            selectedYear = String(dateInfo.split(separator: "-")[0])
+            selectedMonth = dateInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
+            selectedDay = String(dateInfo.split(separator: "-")[2])
             
             hideAddDateLabel()
             showYearTextField()
@@ -402,10 +402,7 @@ class DateSelectTableViewCell: UITableViewCell {
     }
     
     private func dateInformationPass() {
-        
-        if (selectedYear == "" || selectedMonth == "" || selectedDay == "") {
-            dateBS.onNext("")
-        } else {
+        if !(selectedYear == "" || selectedMonth == "" || selectedDay == "") {
             var month = selectedMonth.trimmingCharacters(in: ["월"])
             if month.count == 1 {
                 month = "0" + month

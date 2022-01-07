@@ -44,12 +44,12 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             //값의 입력된 정보라면 textColor를 black으로
             switch style {
             case .company:
-                if self.companyInformation.name != nil {
+                if (self.companyInformation.name != nil && self.companyInformation.name != "") {
                     cell.informationLabel.textColor = .black
                     cell.deleteButton.isHidden = false
                 }
             case .university:
-                if self.universityInformation.name != nil {
+                if (self.universityInformation.name != nil && self.universityInformation.name != "") {
                     cell.informationLabel.textColor = .black
                     cell.deleteButton.isHidden = false
                 }
@@ -58,13 +58,14 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             }
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
                 
                 var selectInformationViewController: SelectInformationViewController<SelectInformationView>
                 switch style {
                 case .company:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style, information: information)
+                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style, information: self.companyInformation.name ?? "")
                 case .university:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style, information: information)
+                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style, information: self.universityInformation.name ?? "")
                 default:
                     selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style)
                 }
@@ -90,7 +91,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         self.createActiveSection()
                     }).disposed(by: cell.disposeBag)
                 
-                self?.push(viewController: selectInformationViewController)
+                self.push(viewController: selectInformationViewController)
             }).disposed(by: cell.disposeBag)
             
             cell.deleteButton.rx.tap.bind { [weak self] in
@@ -118,15 +119,15 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             //값의 입력된 정보라면 textColor를 black으로
             switch style {
             case .role:
-                if self.companyInformation.role != nil {
+                if (self.companyInformation.role != nil && self.companyInformation.role != "") {
                     cell.label.textColor = .black
                 }
             case .location:
-                if self.companyInformation.location != nil {
+                if (self.companyInformation.location != nil && self.companyInformation.location != "") {
                     cell.label.textColor = .black
                 }
             case .major:
-                if self.universityInformation.major != nil {
+                if (self.universityInformation.major != nil && self.universityInformation.major != ""){
                     cell.label.textColor = .black
                 }
             default:
@@ -134,15 +135,15 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             }
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                
+                guard let self = self else { return }
                 var selectInformationViewController: SelectInformationViewController<SelectInformationView>
                 switch style {
                 case .role:
-                    selectInformationViewController =  SelectInformationViewController(cellType: .withoutImage, informationType: style, information: information)
+                    selectInformationViewController =  SelectInformationViewController(cellType: .withoutImage, informationType: style, information: self.companyInformation.role ?? "" )
                 case .location:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style, information: information)
+                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style, information: self.companyInformation.location ?? "" )
                 case .major:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style, information: information)
+                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style, information: self.universityInformation.major ?? "" )
                 default:
                     selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style)
                 }
@@ -171,7 +172,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         }
                     }).disposed(by: cell.disposeBag)
                 
-                self?.push(viewController: selectInformationViewController)
+                self.push(viewController: selectInformationViewController)
             }).disposed(by: cell.disposeBag)
             
             return cell
@@ -179,7 +180,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TextViewTableViewCell.reuseIdentifier, for: idxPath) as? TextViewTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup()
-            cell.configureCell()
+            cell.configureCell(text: text)
             
             cell.textView.rx.text
                 .orEmpty
@@ -188,14 +189,15 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 }).disposed(by: cell.disposeBag)
             
             return cell
-        case let .SelectDateItem(style, birthInfo):
+        case let .SelectDateItem(style, dateInfo):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DateSelectTableViewCell.reuseIdentifier, for: idxPath) as? DateSelectTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: style)
-            cell.configureCell(birthInfo: birthInfo)
+            cell.configureCell(dateInfo: dateInfo)
             
             cell.dateBS.subscribe(onNext: { [weak self] date in
                 guard let self = self else { return }
+                if date == "" { return }
                 switch self.informationType {
                 case .company:
                     switch style {
@@ -320,7 +322,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 print(self.universityInformation)
             }
             
-            self.saveData()
+           self.saveData()
         }.disposed(by: disposeBag)
     }
     
@@ -328,7 +330,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         if let id = self.id {
             switch self.informationType {
             case .company:
-                if self.companyInformation.name == "" {
+                if (self.companyInformation.name == nil || self.companyInformation.name == "")  {
                     NetworkService.delete(endpoint: .company(id: id)).subscribe(onNext: { [weak self] _ in
                         self?.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
@@ -338,7 +340,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     }).disposed(by: self.disposeBag)
                 }
             case .university:
-                if self.universityInformation.name == "" {
+                if (self.universityInformation.name == nil || self.universityInformation.name == "") {
                     NetworkService.delete(endpoint: .university(id: id)).subscribe(onNext: { [weak self] _ in
                         self?.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
@@ -388,7 +390,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 ]),
                 .DetailInformationSection(title: "학력", items: [
                     .SelectDateItem(style: .startDateStyle,
-                                    birthInfo: universityInformation.join_date ?? ""),
+                                    dateInfo: universityInformation.join_date ?? ""),
                 ])
             ]
         }
@@ -405,31 +407,31 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             sections = [
                 .DetailInformationSection(title: "직장", items: [
                     .AddInformationWithImageItem(style: .company,
-                                                 image: UIImage(systemName: "briefcase") ?? UIImage(),
+                                                 image: UIImage(systemName: "briefcase.circle.fill") ?? UIImage(),
                                                  information:  (companyInformation.name != nil && companyInformation.name != "") ? companyInformation.name! : "직장 추가"),
                     .AddInfomrationLabelItem(style: .role,
                                              information: (companyInformation.role != nil && companyInformation.role != "") ? companyInformation.role! : "직책(선택 사항)"),
                     .AddInfomrationLabelItem(style: .location,
                                              information: (companyInformation.location != nil && companyInformation.location != "") ? companyInformation.location! : "위치(선택 사항)"),
-                    .TextFieldItem(text: "text")
+                    .TextFieldItem(text: companyInformation.detail ?? "")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
                     .SelectDateItem(style: .startDateStyle,
-                                    birthInfo: companyInformation.join_date ?? "")
+                                    dateInfo: companyInformation.join_date ?? "")
                 ])
             ]
         case .university:
             sections = [
                 .DetailInformationSection(title: "학력", items: [
                     .AddInformationWithImageItem(style: .university,
-                                                 image: UIImage(systemName: "graduationcap") ?? UIImage(),
+                                                 image: UIImage(systemName: "graduationcap.circle.fill") ?? UIImage(),
                                                  information: (universityInformation.name != nil && universityInformation.name != "") ? universityInformation.name! : "학교 이름"),
                     .AddInfomrationLabelItem(style: .major,
                                              information: (universityInformation.major != nil && universityInformation.major != "") ? universityInformation.major! : "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
                     .SelectDateItem(style: .startDateStyle,
-                                    birthInfo: universityInformation.join_date ?? ""),
+                                    dateInfo: universityInformation.join_date ?? ""),
                 ])
             ]
         }
@@ -446,35 +448,35 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             sections = [
                 .DetailInformationSection(title: "직장", items: [
                     .AddInformationWithImageItem(style: .company,
-                                                 image: UIImage(systemName: "briefcase") ?? UIImage(),
+                                                 image: UIImage(systemName: "briefcase.circle.fill") ?? UIImage(),
                                                  information: (companyInformation.name != nil && companyInformation.name != "") ? companyInformation.name! : "직장 추가"),
                     .AddInfomrationLabelItem(style: .role,
                                              information: (companyInformation.role != nil && companyInformation.role != "") ? companyInformation.role! : "직책(선택 사항)"),
                     .AddInfomrationLabelItem(style: .location,
                                              information: (companyInformation.location != nil && companyInformation.location != "") ? companyInformation.location! : "위치(선택 사항)"),
-                    .TextFieldItem(text: "text")
+                    .TextFieldItem(text: companyInformation.detail ?? "")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
                     .SelectDateItem(style: .startDateStyle,
-                                    birthInfo: companyInformation.join_date ?? ""),
+                                    dateInfo: companyInformation.join_date ?? ""),
                     .SelectDateItem(style: .endDateStyle,
-                                    birthInfo: companyInformation.leave_date ?? "")
+                                    dateInfo: companyInformation.leave_date ?? "")
                 ])
             ]
         case .university:
             sections = [
                 .DetailInformationSection(title: "학력", items: [
                     .AddInformationWithImageItem(style: .university,
-                                                 image: UIImage(systemName: "graduationcap") ?? UIImage(),
+                                                 image: UIImage(systemName: "graduationcap.circle.fill") ?? UIImage(),
                                                  information: (universityInformation.name != nil && universityInformation.name != "") ? universityInformation.name! : "학교 이름"),
                     .AddInfomrationLabelItem(style: .major,
                                              information: (universityInformation.major != nil && universityInformation.major != "") ? universityInformation.major! : "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
                     .SelectDateItem(style: .startDateStyle,
-                                    birthInfo: universityInformation.join_date ?? ""),
+                                    dateInfo: universityInformation.join_date ?? ""),
                     .SelectDateItem(style: .endDateStyle,
-                                    birthInfo: universityInformation.graduate_date ?? "")
+                                    dateInfo: universityInformation.graduate_date ?? "")
                 ])
             ]
         }
