@@ -82,7 +82,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     lazy var authorHeaderView: AuthorInfoHeaderView = {
-        let view = AuthorInfoHeaderView(imageWidth: 40)
+        let view = AuthorInfoHeaderView(imageWidth: 38)
         view.configure(with: post)
         return view
     }()
