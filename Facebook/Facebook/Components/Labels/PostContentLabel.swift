@@ -20,7 +20,7 @@ class PostContentLabel: UILabel {
     init() {
         super.init(frame: .zero)
         self.textColor = .label
-        self.numberOfLines = 3
+        self.numberOfLines = 0
         self.font = .systemFont(ofSize: 16)
         self.translatesAutoresizingMaskIntoConstraints = false
         
