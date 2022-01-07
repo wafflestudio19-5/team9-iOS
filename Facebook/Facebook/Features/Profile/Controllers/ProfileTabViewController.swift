@@ -295,7 +295,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                                   information: "학교"),
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
-                                                  information: "내 정보 보기"),
+                                                  information: (userId == CurrentUser.shared.profile?.id)  ?
+                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
                 SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
             ]
         } else {
