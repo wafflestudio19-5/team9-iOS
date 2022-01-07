@@ -21,7 +21,6 @@ struct NetworkService {
     }
     
     static func registerToken(token: String) {
-        print(token)
         self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [JWTAdapter(token: token)]))
     }
     
@@ -68,10 +67,10 @@ struct NetworkService {
     static func upload(endpoint: Endpoint) -> Observable<UploadRequest> {
         return session.rx.upload(multipartFormData: endpoint.multipartFormDataBuilder!, to: endpoint.url, method: .post, headers: [.contentType("multipart/form-data")])
     }
-}
-
-extension NetworkService {
-//    static func post
+    
+    static func update(endpoint: Endpoint) -> Observable<UploadRequest> {
+        return session.rx.upload(multipartFormData: endpoint.multipartFormDataBuilder!, to: endpoint.url, method: .put, headers: [.contentType("multipart/form-data")])
+    }
 }
 
 

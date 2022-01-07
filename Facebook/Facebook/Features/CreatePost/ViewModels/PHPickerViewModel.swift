@@ -5,13 +5,11 @@
 //  Created by 박신홍 on 2021/12/30.
 //
 
-import Foundation
 import RxSwift
 import RxCocoa
 import UIKit
 import PhotosUI
 import MobileCoreServices
-
 
 class PHPickerViewModel {
     private var selection = [String: PHPickerResult]()
@@ -59,8 +57,9 @@ extension PHPickerViewModel: PHPickerViewControllerDelegate {
         let existingSelection = self.selection
         var newSelection = [String: PHPickerResult]()
         for result in results {
-            let identifier = result.assetIdentifier!
-            newSelection[identifier] = existingSelection[identifier] ?? result
+            if let identifier = result.assetIdentifier {
+                newSelection[identifier] = existingSelection[identifier] ?? result
+            }
         }
         
         // Track the selection in case the user deselects it later.

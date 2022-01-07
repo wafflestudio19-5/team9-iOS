@@ -166,4 +166,5 @@ class PostDetailHeaderView: UIStackView {
     func hideLoadingSpinner() {
         spinner.isHidden = true
     }
+    
 }

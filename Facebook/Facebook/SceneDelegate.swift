@@ -40,8 +40,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         window.rootViewController = {
-            if didLogin { return RootTabBarController() }
+            if didLogin { return UINavigationController(rootViewController: LoginViewController()) }
             else { return UINavigationController(rootViewController: LoginViewController()) }
+            
         }()
         
         window.makeKeyAndVisible()

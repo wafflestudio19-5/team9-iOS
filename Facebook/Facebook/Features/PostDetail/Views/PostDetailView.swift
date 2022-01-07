@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import KakaoSDKCommon
 
 class PostDetailView: UIView {
     
