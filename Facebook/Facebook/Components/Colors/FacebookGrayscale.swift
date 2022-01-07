@@ -15,7 +15,5 @@ extension UIColor {
         
         /// 1px border gray color
         static var gray2 = UIColor.gray.withAlphaComponent(0.2)
-        
-        static var gray3 = UIColor(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 1.0)
     }
 }
