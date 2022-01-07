@@ -72,6 +72,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                         let editProfileViewController = EditProfileViewController()
                         self?.push(viewController: editProfileViewController)
                     }.disposed(by: cell.disposeBag)
+            } else {
+                cell.coverLabel.isHidden = true
+                cell.coverImageButton.isHidden = true
             }
             
             cell.profileImage.rx

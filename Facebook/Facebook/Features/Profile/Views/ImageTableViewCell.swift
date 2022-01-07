@@ -59,6 +59,7 @@ class ImageTableViewCell: UITableViewCell {
                 ])
                 imgView.layer.cornerRadius = 5
                 imgView.image = UIImage(systemName: "person.circle.fill")
+                imgView.contentMode = .center
             case .coverImage:
                 NSLayoutConstraint.activate([
                     imgView.heightAnchor.constraint(equalToConstant: 225),
@@ -67,6 +68,7 @@ class ImageTableViewCell: UITableViewCell {
                 ])
                 imgView.layer.cornerRadius = 5
                 imgView.image = UIImage(systemName: "photo")
+                imgView.contentMode = .center
             }
         }
     }
@@ -91,6 +93,7 @@ extension ImageTableViewCell {
             ])
             imgView.layer.cornerRadius = 175 / 2
             imgView.clipsToBounds = true
+            imgView.contentMode = .scaleAspectFill
         case .coverImage:
             NSLayoutConstraint.activate([
                 imgView.heightAnchor.constraint(equalToConstant: 225),
@@ -98,6 +101,7 @@ extension ImageTableViewCell {
                 imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
             ])
             imgView.layer.cornerRadius = 5
+            imgView.contentMode = .scaleAspectFill
         }
     }
 }
