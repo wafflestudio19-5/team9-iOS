@@ -30,7 +30,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             
             cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro, buttonText: buttonText)
             
-            if self.userId == nil {
+            if (self.userId == CurrentUser.shared.profile?.id) {
                 cell.profileImage.rx
                     .tapGesture()
                     .when(.recognized)
@@ -148,16 +148,21 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
     
     var userProfile: UserProfile?
-    var postDataViewModel: PaginationViewModel<Post>?
-    //let postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(id: 41))
+    let postDataViewModel: PaginationViewModel<Post>
     
-    private var userId: Int? = nil
+    private var userId: Int
     private var imageType = "profile_image"
     
     init(userId: Int? = nil) {
-        super.init(nibName: nil, bundle: nil)
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
-        self.userId = userId
+        if userId != nil { self.userId = userId! }
+        else if CurrentUser.shared.profile != nil { self.userId = CurrentUser.shared.profile!.id }
+        else { self.userId = 0}
+
+        postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: self.userId))
+        
+        super.init(nibName: nil, bundle: nil)
+        self.loadData()
     }
     
     required init?(coder: NSCoder) {
@@ -168,13 +173,19 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         super.viewDidLoad()
         super.setNavigationBarItems(withEditButton: true)
         
-        loadData()
         bind()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
+        if userProfile != nil {
+            loadData()
+        }
     }
     
     //유저 프로필 관련 데이터 불러오기
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: self.userId), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
             
@@ -189,15 +200,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
             
                 self.userProfile = response
+                self.createSection()
         }.disposed(by: disposeBag)
-        
-        postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: 41))
     }
     
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
-        
-        guard let postDataViewModel = postDataViewModel else { return }
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
         postDataViewModel.isLoading
@@ -215,8 +223,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         /// 새로고침 제스쳐가 인식될 때마다 `refresh` 함수를 실행합니다.
         tabView.refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
-                postDataViewModel.refresh()
-                self?.createSection()
+                guard let self = self else { return }
+                self.loadData()
+                self.postDataViewModel.refresh()
             })
             .disposed(by: disposeBag)
         
@@ -226,6 +235,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .drive(onNext : { [weak self] refreshComplete in
                 if refreshComplete {
                     self?.tabView.refreshControl.endRefreshing()
+                    self?.createSection()
                 }
             })
             .disposed(by: disposeBag)
@@ -237,7 +247,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             let contentHeight = self.tableView.contentSize.height
             
             if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
-                postDataViewModel.loadMore()
+                self.postDataViewModel.loadMore()
             }
         }
         .disposed(by: disposeBag)
@@ -255,7 +265,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                  coverImageUrl: userProfile.cover_image ?? "",
                                  name: userProfile.username ?? "username",
                                  selfIntro: userProfile.self_intro ?? "",
-                                 buttonText: (userId == nil) ? "프로필 편집" : "친구 추가")
+                                 buttonText: (userId == CurrentUser.shared.profile?.id) ? "프로필 편집" : "친구 추가")
             ])
         ]
 
@@ -286,14 +296,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             otherItems = [
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
-                                                  information: (userId == nil) ?
+                                                  information: (userId == CurrentUser.shared.profile?.id)  ?
                                                   "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
                 SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
             ]
         }
         
         //다른 사람 프로필일 경우 정보 수정 버튼 삭제
-        if userId != nil {
+        if (userId == CurrentUser.shared.profile?.id) {
             otherItems.removeLast()
         }
         
@@ -302,7 +312,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                       items: (companyItems+universityItems+otherItems))
         ]
         
-        let postItems = postDataViewModel?.dataList.value.map({ post in
+        let postItems = postDataViewModel.dataList.value.map({ post in
             SectionItem.PostItem(post: post)
         }) ?? []
         
@@ -415,7 +425,7 @@ extension ProfileTabViewController {
         let updateData = ["self_intro": ""]
         
         NetworkService
-            .update(endpoint: .profile(id: 41, updateData: updateData))
+            .update(endpoint: .profile(id: self.userId, updateData: updateData))
             .subscribe{ [weak self] _ in
                 self?.loadData()
             }.disposed(by: disposeBag)
@@ -446,12 +456,12 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                 
                 let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
                 
-                NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe { event in
+                NetworkService.update(endpoint: .profile(id: self.userId, updateData: uploadData)).subscribe { event in
                     let request = event.element
                     let progress = request?.uploadProgress
                     
                     request?.responseString(completionHandler: { data in
-                        print("upload complete!")
+                        self.loadData()
                     })
                 }.disposed(by: self.disposeBag)
 

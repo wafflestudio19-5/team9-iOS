@@ -46,14 +46,18 @@ class ImageTableViewCell: UITableViewCell {
         }else {
             switch self.cellStyle {
             case .profileImage:
+                imgView.layer.cornerRadius = 5
                 imgView.image = UIImage(systemName: "person.circle.fill")
                 NSLayoutConstraint.activate([
+                    imgView.heightAnchor.constraint(equalToConstant: 225),
                     imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
                     imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
                 ])
             case .coverImage:
+                imgView.layer.cornerRadius = 5
                 imgView.image = UIImage(systemName: "photo")
                 NSLayoutConstraint.activate([
+                    imgView.heightAnchor.constraint(equalToConstant: 225),
                     imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
                     imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
                 ])
@@ -75,14 +79,17 @@ extension ImageTableViewCell {
         
         switch cellStyle {
         case .profileImage:
-            imgView.heightAnchor.constraint(equalToConstant: 175).isActive = true
-            imgView.widthAnchor.constraint(equalToConstant: 175).isActive = true
+            imgView.removeConstraints(imgView.constraints)
+            NSLayoutConstraint.activate([
+                imgView.heightAnchor.constraint(equalToConstant: 175),
+                imgView.widthAnchor.constraint(equalToConstant: 175)
+            ])
             imgView.layer.cornerRadius = 175 / 2
             imgView.clipsToBounds = true
-            imgView.layer.borderColor = UIColor.white.cgColor//white color
-            imgView.layer.borderWidth = 5
         case .coverImage:
+            imgView.layer.cornerRadius = 5
             NSLayoutConstraint.activate([
+                imgView.heightAnchor.constraint(equalToConstant: 225),
                 imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
                 imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
             ])
