@@ -24,12 +24,12 @@ extension Endpoint {
     static func profile(id: Int ,updateData: [String: Any]) -> Self {
         let multipartFormDataBuilder: (MultipartFormData) -> Void = { multipartFormData in
             for (key, value) in updateData {
-                if value is String{
+                if let value = value as? String {
                     //텍스트 형식의 데이터
-                    multipartFormData.append((value as! String).data(using: .utf8) ?? Data(), withName: "\(key)")
-                } else {
+                    multipartFormData.append(value.data(using: .utf8) ?? Data(), withName: "\(key)")
+                } else if let value = value as? Data {
                     //이미지 형식의 데이터
-                    multipartFormData.append(value as! Data, withName: "\(key)", fileName: "\(Date().timeIntervalSince1970).jpeg" , mimeType: "image/jpeg")
+                    multipartFormData.append(value, withName: "\(key)", fileName: "\(Date().timeIntervalSince1970).jpeg" , mimeType: "image/jpeg")
                 }
             }
         }

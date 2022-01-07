@@ -370,7 +370,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             self.title = "직장 추가"
             sections = [
                 .DetailInformationSection(title: "직장", items: [
-                    .AddInformationWithImageItem(style: .company, image: UIImage(systemName: "briefcase.circle.fill")!, information: "직장 추가")
+                    .AddInformationWithImageItem(style: .company,
+                                                 image: UIImage(systemName: "briefcase.circle.fill") ?? UIImage(),
+                                                 information: "직장 추가")
                 ])
             ]
         
@@ -379,11 +381,14 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
             sections = [
                 .DetailInformationSection(title: "학력", items: [
-                    .AddInformationWithImageItem(style: .university, image: UIImage(systemName: "graduationcap.circle.fill")!, information: "학교 이름"),
+                    .AddInformationWithImageItem(style: .university,
+                                                 image: UIImage(systemName: "graduationcap.circle.fill") ?? UIImage(),
+                                                 information: "학교 이름"),
                     .AddInfomrationLabelItem(style: .major, information: "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
-                    .SelectDateItem(style: .startDateStyle, birthInfo: universityInformation.join_date ?? ""),
+                    .SelectDateItem(style: .startDateStyle,
+                                    birthInfo: universityInformation.join_date ?? ""),
                 ])
             ]
         }
@@ -400,7 +405,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             sections = [
                 .DetailInformationSection(title: "직장", items: [
                     .AddInformationWithImageItem(style: .company,
-                                                 image: UIImage(systemName: "briefcase")!,
+                                                 image: UIImage(systemName: "briefcase") ?? UIImage(),
                                                  information:  (companyInformation.name != nil && companyInformation.name != "") ? companyInformation.name! : "직장 추가"),
                     .AddInfomrationLabelItem(style: .role,
                                              information: (companyInformation.role != nil && companyInformation.role != "") ? companyInformation.role! : "직책(선택 사항)"),
@@ -409,20 +414,22 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     .TextFieldItem(text: "text")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
-                    .SelectDateItem(style: .startDateStyle, birthInfo: companyInformation.join_date ?? "")
+                    .SelectDateItem(style: .startDateStyle,
+                                    birthInfo: companyInformation.join_date ?? "")
                 ])
             ]
         case .university:
             sections = [
                 .DetailInformationSection(title: "학력", items: [
                     .AddInformationWithImageItem(style: .university,
-                                                 image: UIImage(systemName: "graduationcap")!,
+                                                 image: UIImage(systemName: "graduationcap") ?? UIImage(),
                                                  information: (universityInformation.name != nil && universityInformation.name != "") ? universityInformation.name! : "학교 이름"),
                     .AddInfomrationLabelItem(style: .major,
                                              information: (universityInformation.major != nil && universityInformation.major != "") ? universityInformation.major! : "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
-                    .SelectDateItem(style: .startDateStyle, birthInfo: universityInformation.join_date ?? ""),
+                    .SelectDateItem(style: .startDateStyle,
+                                    birthInfo: universityInformation.join_date ?? ""),
                 ])
             ]
         }
@@ -439,7 +446,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             sections = [
                 .DetailInformationSection(title: "직장", items: [
                     .AddInformationWithImageItem(style: .company,
-                                                 image: UIImage(systemName: "briefcase")!,
+                                                 image: UIImage(systemName: "briefcase") ?? UIImage(),
                                                  information: (companyInformation.name != nil && companyInformation.name != "") ? companyInformation.name! : "직장 추가"),
                     .AddInfomrationLabelItem(style: .role,
                                              information: (companyInformation.role != nil && companyInformation.role != "") ? companyInformation.role! : "직책(선택 사항)"),
@@ -448,22 +455,26 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     .TextFieldItem(text: "text")
                 ]),
                 .DetailInformationSection(title: "직장", items: [
-                    .SelectDateItem(style: .startDateStyle, birthInfo: companyInformation.join_date ?? ""),
-                    .SelectDateItem(style: .endDateStyle, birthInfo: companyInformation.leave_date ?? "")
+                    .SelectDateItem(style: .startDateStyle,
+                                    birthInfo: companyInformation.join_date ?? ""),
+                    .SelectDateItem(style: .endDateStyle,
+                                    birthInfo: companyInformation.leave_date ?? "")
                 ])
             ]
         case .university:
             sections = [
                 .DetailInformationSection(title: "학력", items: [
                     .AddInformationWithImageItem(style: .university,
-                                                 image: UIImage(systemName: "graduationcap")!,
+                                                 image: UIImage(systemName: "graduationcap") ?? UIImage(),
                                                  information: (universityInformation.name != nil && universityInformation.name != "") ? universityInformation.name! : "학교 이름"),
                     .AddInfomrationLabelItem(style: .major,
                                              information: (universityInformation.major != nil && universityInformation.major != "") ? universityInformation.major! : "전공(선택 사항)")
                 ]),
                 .DetailInformationSection(title: "학력", items: [
-                    .SelectDateItem(style: .startDateStyle, birthInfo: universityInformation.join_date ?? ""),
-                    .SelectDateItem(style: .endDateStyle, birthInfo: universityInformation.graduate_date ?? "")
+                    .SelectDateItem(style: .startDateStyle,
+                                    birthInfo: universityInformation.join_date ?? ""),
+                    .SelectDateItem(style: .endDateStyle,
+                                    birthInfo: universityInformation.graduate_date ?? "")
                 ])
             ]
         }

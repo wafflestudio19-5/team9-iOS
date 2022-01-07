@@ -70,7 +70,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                    privacyBound: "전체 공개")
             } else {
                 cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
-                                   information: company.name!,
+                                   information: company.name ?? "",
                                    time: (company.join_date ?? "") + " ~ " + (company.leave_date ?? ""),
                                    description: company.detail ?? "",
                                    privacyBound: "전체 공개")
@@ -89,13 +89,13 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             cell.initialSetup(cellStyle: .style3)
             if university.is_active! {
                 cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
-                                   information: university.name!,
+                                   information: university.name ?? "",
                                    time: university.join_date! + " - 현재",
                                    description: "",
                                    privacyBound: "전체 공개")
             } else {
                 cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
-                                   information: university.name!,
+                                   information: university.name ?? "",
                                    time: university.join_date! + "~" + university.graduate_date!,
                                    description: "",
                                    privacyBound: "전체 공개")
@@ -173,13 +173,13 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             .DetailInformationSection(title: "직장", items: [
                 .SimpleInformationItem(style: .style3,
                                        informationType: .company,
-                                       image: UIImage(systemName: "briefcase.circle")!,
+                                       image: UIImage(systemName: "briefcase.circle") ?? UIImage(),
                                        information: "직장 추가")
             ] + companyItems ),
             .DetailInformationSection(title: "학력", items:[
                 .SimpleInformationItem(style: .style3,
                                        informationType: .university,
-                                       image: UIImage(systemName: "graduationcap.circle")!,
+                                       image: UIImage(systemName: "graduationcap.circle") ?? UIImage(),
                                        information: "학력 추가")
             ] + universityItems ),
             .DetailInformationSection(title: "기본 정보", items: [

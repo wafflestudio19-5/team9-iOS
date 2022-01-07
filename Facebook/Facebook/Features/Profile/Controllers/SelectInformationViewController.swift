@@ -134,9 +134,13 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
                     case .withImage:
                         var addCellData: SectionItem
                         if self.informationType == .company {
-                            addCellData = .SimpleInformationItem(style: .style4, image: UIImage(systemName: "briefcase.fill")!, information: "\"\(text)\" 추가")
+                            addCellData = .SimpleInformationItem(style: .style4,
+                                                                 image: UIImage(systemName: "briefcase.fill") ?? UIImage(),
+                                                                 information: "\"\(text)\" 추가")
                         } else {
-                            addCellData = .SimpleInformationItem(style: .style4, image: UIImage(systemName: "graduationcap.fill")!, information: "\"\(text)\" 추가")
+                            addCellData = .SimpleInformationItem(style: .style4,
+                                                                 image: UIImage(systemName: "graduationcap.fill") ?? UIImage(),
+                                                                 information: "\"\(text)\" 추가")
                         }
                         
                         let searchData: [MultipleSectionModel] = [.DetailInformationSection(title: "검색 결과", items: [addCellData])]

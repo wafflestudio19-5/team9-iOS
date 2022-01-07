@@ -76,7 +76,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 guard let self = self else { return }
                 
-                if (self.userProfile?.self_intro == nil || self.userProfile?.self_intro == "") {
+                if (labelText == "회원님에 대해 설명해주세요...") {
                     let addSelfIntroViewController = AddSelfIntroViewController()
                     let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
                     navigationController.modalPresentationStyle = .fullScreen
@@ -91,7 +91,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: .style1)
-            cell.configureCell(image: UIImage(systemName: "briefcase")!, information: company.name!)
+            cell.configureCell(image: UIImage(systemName: "briefcase") ?? UIImage(),
+                               information: company.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
@@ -104,7 +105,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: .style1)
-            cell.configureCell(image: UIImage(systemName: "graduationcap")!, information: university.name!)
+            cell.configureCell(image: UIImage(systemName: "graduationcap") ?? UIImage(),
+                               information: university.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()

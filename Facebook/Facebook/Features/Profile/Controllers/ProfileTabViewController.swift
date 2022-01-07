@@ -109,7 +109,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: .style1)
-            cell.configureCell(image: UIImage(systemName: "briefcase.fill")!, information: company.name ?? "")
+            cell.configureCell(image: UIImage(systemName: "briefcase.fill") ?? UIImage(),
+                               information: company.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
@@ -121,7 +122,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             guard let cell = tableView.dequeueReusableCell(withIdentifier: SimpleInformationTableViewCell.reuseIdentifier, for: idxPath) as? SimpleInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: .style1)
-            cell.configureCell(image: UIImage(systemName: "graduationcap.fill")!, information: university.name ?? "")
+            cell.configureCell(image: UIImage(systemName: "graduationcap.fill") ?? UIImage(),
+                               information: university.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
@@ -160,7 +162,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     //유저 프로필 관련 데이터 불러오기
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: 136), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
             
@@ -237,11 +239,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         
         let mainProfileSection: [MultipleSectionModel] = [
             .ProfileImageSection(title: "메인 프로필", items: [
-                .MainProfileItem(
-                    profileImageUrl: userProfile.profile_image ?? "" ,
-                    coverImageUrl: userProfile.cover_image ?? "",
-                    name: userProfile.username ?? "username",
-                    selfIntro: userProfile.self_intro ?? "")
+                .MainProfileItem(profileImageUrl: userProfile.profile_image ?? "" ,
+                                 coverImageUrl: userProfile.cover_image ?? "",
+                                 name: userProfile.username ?? "username",
+                                 selfIntro: userProfile.self_intro ?? "")
             ])
         ]
 
@@ -253,10 +254,29 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             SectionItem.UniversityItem(university: university)
         }) ?? []
         
-        let otherItems = [
-            SectionItem.SimpleInformationItem(style: .style1, image: UIImage(systemName: "ellipsis")!, information: "내 정보 보기"),
-            SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
-        ]
+        var otherItems: [SectionItem]
+        
+        if companyItems.count == 0 && universityItems.count == 0 {
+            otherItems = [
+                SectionItem.SimpleInformationItem(style: .style1,
+                                                  image: UIImage(systemName: "briefcase.fill") ?? UIImage(),
+                                                  information: "직장"),
+                SectionItem.SimpleInformationItem(style: .style1,
+                                                  image: UIImage(systemName: "graduationcap.fill") ?? UIImage(),
+                                                  information: "학교"),
+                SectionItem.SimpleInformationItem(style: .style1,
+                                                  image: UIImage(systemName: "ellipsis") ?? UIImage(),
+                                                  information: "내 정보 보기"),
+                SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
+            ]
+        } else {
+            otherItems = [
+                SectionItem.SimpleInformationItem(style: .style1,
+                                                  image: UIImage(systemName: "ellipsis") ?? UIImage(),
+                                                  information: "내 정보 보기"),
+                SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
+            ]
+        }
         
         let detailSection: [MultipleSectionModel] = [
             .DetailInformationSection(title: "상세 정보",

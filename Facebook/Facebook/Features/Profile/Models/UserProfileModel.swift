@@ -9,15 +9,15 @@ import Foundation
 
 struct UserProfile: Codable  {
     let id: Int?
-    var first_name: String
-    var last_name: String
+    let first_name: String
+    let last_name: String
     let username: String?
     let email: String?
-    var birth: String
-    var gender: String
-    var self_intro: String?
-    var profile_image: String?
-    var cover_image: String?
+    let birth: String
+    let gender: String
+    let self_intro: String?
+    let profile_image: String?
+    let cover_image: String?
     let company: [Company]?
     let university: [University]?
 }
