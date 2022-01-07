@@ -46,8 +46,14 @@ class TextViewTableViewCell: UITableViewCell {
         setTextViewPlaceholder()
     }
     
-    func configureCell() {
-        textView.text = "직업에 대해 설명해주세요(선택 사항)"
+    func configureCell(text: String) {
+        if text != "" {
+            textView.text = text
+            textView.textColor = .black
+        }
+        else {
+            textView.text = "직업에 대해 설명해주세요(선택 사항)"
+        }
     }
 
     
