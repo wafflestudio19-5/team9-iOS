@@ -15,8 +15,6 @@
 		7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */; };
 		7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094482750ECDC00AD8DC2 /* ButtonTableViewCell.swift */; };
 		77547904275CE66A0065711C /* PostDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77547903275CE66A0065711C /* PostDetailViewController.swift */; };
-		77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77547905275CE6CC0065711C /* CommentTableViewCell.swift */; };
-		77547908275CE6CC0065711C /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77547906275CE6CC0065711C /* CommentTableViewCell.xib */; };
 		7754B861277D68D200775D81 /* DetailInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B860277D68D200775D81 /* DetailInformationTableViewCell.swift */; };
 		7754B863277DAE2F00775D81 /* AddSelfIntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B862277DAE2F00775D81 /* AddSelfIntroView.swift */; };
 		7754B865277DAE5300775D81 /* AddSelfIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */; };
@@ -50,13 +48,13 @@
 		77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B635472768B30A00C41EB3 /* EditProfileViewController.swift */; };
 		77E12FA22769A97800B8F191 /* CreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA12769A97800B8F191 /* CreatePostView.swift */; };
 		77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA32769A98900B8F191 /* CreatePostViewController.swift */; };
-		B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */; };
-		B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91F2787F93F00750397 /* KakaoLoginView.swift */; };
-		B82EC9242788414400750397 /* Endpoint+Kakao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC9232788414400750397 /* Endpoint+Kakao.swift */; };
 		77FE72872775E00600482CE7 /* SelectInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72862775E00600482CE7 /* SelectInformationView.swift */; };
 		77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */; };
 		77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728A2776021600482CE7 /* SearchHeaderView.swift */; };
 		77FE728D2777512000482CE7 /* DateSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */; };
+		B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */; };
+		B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91F2787F93F00750397 /* KakaoLoginView.swift */; };
+		B82EC9242788414400750397 /* Endpoint+Kakao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC9232788414400750397 /* Endpoint+Kakao.swift */; };
 		B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA42754E53700513B77 /* KakaoAuthManager.swift */; };
 		B846BDA72754F35800513B77 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA62754F35800513B77 /* LoginView.swift */; };
 		B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA92754F5A900513B77 /* FacebookColor.swift */; };
@@ -97,7 +95,7 @@
 		B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */; };
 		B8A7F8342767507000F659D2 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8332767507000F659D2 /* LabelWithPadding.swift */; };
 		B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */; };
-		BE0D43672786D29B00E2162F /* CommentPaginationViewModel.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift.swift */; };
+		BE0D43672786D29B00E2162F /* CommentPaginationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift */; };
 		BE0D43692787235000E2162F /* UIColor+TintColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D43682787235000E2162F /* UIColor+TintColors.swift */; };
 		BE0D436B2787631400E2162F /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D436A2787631400E2162F /* HapticManager.swift */; };
 		BE0D436D278892D600E2162F /* NewsfeedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D436C278892D600E2162F /* NewsfeedTableView.swift */; };
@@ -119,7 +117,6 @@
 		BE827A1427722ABD00BD3566 /* CreatePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE827A1227722ABD00BD3566 /* CreatePostTableViewCell.swift */; };
 		BE827A1727722B9400BD3566 /* CreatePostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE827A1627722B9400BD3566 /* CreatePostTableViewCell.xib */; };
 		BE86BAD52783047500948CAA /* LikeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BAD42783047500948CAA /* LikeResponse.swift */; };
-		BE86BAD727830F7600948CAA /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BAD627830F7600948CAA /* CommentTableViewCell.swift */; };
 		BE86BAD927830FC100948CAA /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BAD827830FC100948CAA /* Comment.swift */; };
 		BE86BADE2783F45B00948CAA /* FlexibleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BADD2783F45A00948CAA /* FlexibleTextView.swift */; };
 		BE86BAE02784012F00948CAA /* CustomInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BADF2784012F00948CAA /* CustomInputAccessoryView.swift */; };
@@ -158,8 +155,6 @@
 		7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInformationTableViewCell.swift; sourceTree = "<group>"; };
 		774094482750ECDC00AD8DC2 /* ButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTableViewCell.swift; sourceTree = "<group>"; };
 		77547903275CE66A0065711C /* PostDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailViewController.swift; sourceTree = "<group>"; };
-		77547905275CE6CC0065711C /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
-		77547906275CE6CC0065711C /* CommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
 		7754B860277D68D200775D81 /* DetailInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInformationTableViewCell.swift; sourceTree = "<group>"; };
 		7754B862277DAE2F00775D81 /* AddSelfIntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSelfIntroView.swift; sourceTree = "<group>"; };
 		7754B864277DAE5300775D81 /* AddSelfIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSelfIntroViewController.swift; sourceTree = "<group>"; };
@@ -243,7 +238,7 @@
 		B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
 		B8A7F8332767507000F659D2 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
 		B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
-		BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPaginationViewModel.swift.swift; sourceTree = "<group>"; };
+		BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPaginationViewModel.swift; sourceTree = "<group>"; };
 		BE0D43682787235000E2162F /* UIColor+TintColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+TintColors.swift"; sourceTree = "<group>"; };
 		BE0D436A2787631400E2162F /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		BE0D436C278892D600E2162F /* NewsfeedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedTableView.swift; sourceTree = "<group>"; };
@@ -265,7 +260,6 @@
 		BE827A1227722ABD00BD3566 /* CreatePostTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreatePostTableViewCell.swift; sourceTree = "<group>"; };
 		BE827A1627722B9400BD3566 /* CreatePostTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreatePostTableViewCell.xib; sourceTree = "<group>"; };
 		BE86BAD42783047500948CAA /* LikeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeResponse.swift; sourceTree = "<group>"; };
-		BE86BAD627830F7600948CAA /* CommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
 		BE86BAD827830FC100948CAA /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		BE86BADD2783F45A00948CAA /* FlexibleTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlexibleTextView.swift; sourceTree = "<group>"; };
 		BE86BADF2784012F00948CAA /* CustomInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputAccessoryView.swift; sourceTree = "<group>"; };
@@ -431,7 +425,7 @@
 		BE0D43652786D28700E2162F /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift.swift */,
+				BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -736,10 +730,7 @@
 			children = (
 				77AC749A275CEDAD00F10BD5 /* PostDetailView.swift */,
 				BEF254F3277B0DC500FBAACB /* PostDetailHeaderView.swift */,
-				77547906275CE6CC0065711C /* CommentTableViewCell.xib */,
-				77547905275CE6CC0065711C /* CommentTableViewCell.swift */,
 				77799318274FD8E4007A3898 /* PostTableViewCell.swift */,
-				BE86BAD627830F7600948CAA /* CommentTableViewCell.swift */,
 				77799319274FD8E4007A3898 /* PostTableViewCell.xib */,
 			);
 			path = Views;
@@ -909,7 +900,6 @@
 				B897A90A274E303700FB67D3 /* LaunchScreen.storyboard in Resources */,
 				774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */,
 				B897A907274E303700FB67D3 /* Assets.xcassets in Resources */,
-				77547908275CE6CC0065711C /* CommentTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -971,7 +961,7 @@
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
 				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
-				7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */,
+				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
 				B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
 				BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */,
@@ -979,11 +969,8 @@
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */,
 				B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */,
-				77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */,
 				B85D67F22784B5A5002CCC04 /* CommentCell.swift in Sources */,
-				BE86BAD727830F7600948CAA /* CommentTableViewCell.swift in Sources */,
 				BE0D436B2787631400E2162F /* HapticManager.swift in Sources */,
-				77547907275CE6CC0065711C /* CommentTableViewCell.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				7754B87B2782A0CC00775D81 /* EditUsernameViewController.swift in Sources */,
 				7754B867277DB05800775D81 /* TextViewTableViewCell.swift in Sources */,
@@ -1096,7 +1083,7 @@
 				7754B865277DAE5300775D81 /* AddSelfIntroViewController.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
 				B85D67E6277ECA76002CCC04 /* CurrentUser.swift in Sources */,
-				BE0D43672786D29B00E2162F /* CommentPaginationViewModel.swift.swift in Sources */,
+				BE0D43672786D29B00E2162F /* CommentPaginationViewModel.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
 				775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */,
 			);
