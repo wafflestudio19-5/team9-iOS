@@ -772,8 +772,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 205D6EF1B8DCC8419E2F53266F6ADCDC;
 			remoteInfo = KakaoSDKCommon;
-			remoteGlobalIDString = 83CA882AD877ED964BDF66235E416BC1;
-			remoteInfo = KakaoSDKAuth;
 		};
 		EA29A7DDEED10200762D93C54E69CED8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1959,8 +1957,6 @@
 			);
 			name = Kingfisher;
 			path = Kingfisher;
-			name = RxKakaoSDKCommon;
-			path = RxKakaoSDKCommon;
 			sourceTree = "<group>";
 		};
 		435CE7D77FE77AB9B9251178EBB2B688 /* Targets Support Files */ = {
