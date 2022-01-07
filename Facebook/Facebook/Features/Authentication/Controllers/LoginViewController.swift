@@ -38,15 +38,10 @@ class LoginViewController<View: LoginView>: UIViewController {
             self?.login()
         }.disposed(by: disposeBag)
         
-        loginView.forgotPasswordButton.rx.tap.bind { [weak self] _ in
-            // navigate to findPasswordView
-            self?.kakaoLogin()
-            // 사용X
-        }.disposed(by: disposeBag)
-        
-        loginView.backButton.rx.tap.bind {
-            // 사용X
-        }.disposed(by: disposeBag)
+        loginView.kakaoLoginButton.rx.tapGesture().when(.recognized)
+            .bind { [weak self] _ in
+                self?.kakaoLogin()
+            }.disposed(by: disposeBag)
         
         loginView.createAccountButton.rx.tap.bind { [weak self] _ in
             self?.push(viewController: EnterUsernameViewController())

@@ -10,8 +10,11 @@ import UIKit
 class LoginView: UIView {
     
     let loginButton = RectangularSlimButton(title: "로그인", titleColor: .systemGray3, backgroundColor: FacebookColor.blue.color())
-    let forgotPasswordButton = RectangularSlimButton(title: "비밀번호를 잊으셨나요?", titleColor: FacebookColor.blue.color(), backgroundColor: .white)
-    let backButton = RectangularSlimButton(title: "돌아가기", titleColor: FacebookColor.blue.color(), backgroundColor: .white)
+    //let forgotPasswordButton = RectangularSlimButton(title: "비밀번호를 잊으셨나요?", titleColor: FacebookColor.blue.color(), backgroundColor: .white)
+    //let backButton = RectangularSlimButton(title: "돌아가기", titleColor: FacebookColor.blue.color(), backgroundColor: .white)
+    
+    let kakaoLoginButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
+    
     let createAccountButton = RectangularSlimButton(title: "새 계정 만들기", titleColor: FacebookColor.blue.color(), backgroundColor: FacebookColor.mildBlue.color())
     
     let emailTextField = FacebookTextField(placeholderText: "이메일 주소")
@@ -41,20 +44,20 @@ class LoginView: UIView {
         orLabel.text = "또는"
         orLabel.font = .systemFont(ofSize: 12.0, weight: .regular)
         orLabel.textColor = .darkGray
+        
+        kakaoLoginButton.contentMode = .scaleAspectFit
     }
 
     private func setLayoutForView() {
         self.addSubview(loginButton)
-        self.addSubview(forgotPasswordButton)
-        self.addSubview(backButton)
+        self.addSubview(kakaoLoginButton)
         self.addSubview(emailTextField)
         self.addSubview(passwordTextField)
         self.addSubview(createAccountButton)
         self.addSubview(orLabel)
         
         loginButton.translatesAutoresizingMaskIntoConstraints = false
-        forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.translatesAutoresizingMaskIntoConstraints = false
+        kakaoLoginButton.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         createAccountButton.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +74,7 @@ class LoginView: UIView {
         }
         
         NSLayoutConstraint.activate([
-            emailTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 50.0),
+            emailTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 8.0),
             emailTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             emailTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             
@@ -83,14 +86,13 @@ class LoginView: UIView {
             loginButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             loginButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
             
-            forgotPasswordButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 16.0),
-            forgotPasswordButton.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
-            
-            backButton.topAnchor.constraint(equalTo: forgotPasswordButton.bottomAnchor, constant: 0.0),
-            backButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            kakaoLoginButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 10.0),
+            kakaoLoginButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            kakaoLoginButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
+            kakaoLoginButton.heightAnchor.constraint(equalTo: kakaoLoginButton.widthAnchor, multiplier: 0.15),
             
             orLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            orLabel.bottomAnchor.constraint(equalTo: createAccountButton.topAnchor, constant: -18.0),
+            orLabel.bottomAnchor.constraint(equalTo: createAccountButton.topAnchor, constant: -16.0),
             
             createAccountButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             createAccountButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
