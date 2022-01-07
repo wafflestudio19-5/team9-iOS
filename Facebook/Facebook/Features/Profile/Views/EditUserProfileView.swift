@@ -10,6 +10,22 @@ import UIKit
 class EditUserProfileView: UIView {
 
     let editUserProfileTableView = UITableView()
+    
+    let headerStackView: UIStackView = {
+        let stackView = UIStackView(frame: CGRect(x: 0, y: 0, width: 0, height: 50))
+        stackView.backgroundColor = .systemGray4
+        
+        return stackView
+    }()
+    
+    let alertLabel: LabelWithPadding = {
+        let label = LabelWithPadding(padding: UIEdgeInsets(top: 10.0, left: 7.0, bottom: 10.0, right: 7.0))
+        label.backgroundColor = .systemRed
+        label.textColor = .white
+        
+        return label
+    }()
+    
     let footerView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemGray4
@@ -51,6 +67,21 @@ class EditUserProfileView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setAlertLabelText(as text: String) {
+        if !text.isEmpty { showAlertLabel(as: text) }
+        else { hideAlertLabel() }
+    }
+    
+    func showAlertLabel(as text: String) {
+        headerStackView.addArrangedSubview(alertLabel)
+        alertLabel.text = text
+    }
+    
+    func hideAlertLabel() {
+        headerStackView.removeArrangedSubview(alertLabel)
+        alertLabel.removeFromSuperview()
+    }
+    
     private func setLayoutForView() {
         self.addSubview(editUserProfileTableView)
         editUserProfileTableView.translatesAutoresizingMaskIntoConstraints = false
@@ -80,6 +111,7 @@ class EditUserProfileView: UIView {
     }
 
     private func configureTableView() {
+        editUserProfileTableView.tableHeaderView = headerStackView
         editUserProfileTableView.tableFooterView = footerView
         editUserProfileTableView.backgroundColor = .systemGray4
         editUserProfileTableView.register(BirthSelectTableViewCell.self, forCellReuseIdentifier: BirthSelectTableViewCell.reuseIdentifier)

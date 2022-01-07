@@ -91,6 +91,8 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
                 self.editUserProfileView.firstNameTextField.endEditing(true)
             } else if self.editUserProfileView.lastNameTextField.isEditing {
                 self.editUserProfileView.lastNameTextField.endEditing(true)
+            } else if self.editUserProfileView.passwordTextField.isEditing {
+                self.editUserProfileView.passwordTextField.endEditing(true)
             }
         }.disposed(by: disposeBag)
         

@@ -12,6 +12,24 @@ import RxDataSources
 
 class EditUserProfileViewController<View: EditUserProfileView>: UIViewController, UITableViewDelegate {
 
+    private enum BirthdateValidation {
+        case valid
+        case invalid
+        
+        // 페이스북 앱에서는 5세 이상이면 다음 페이지로 넘어갈 수 있습니다
+        init(age: Int) {
+            if age >= 5 { self = .valid }
+            else { self = .invalid }
+        }
+        
+        func message() -> String {
+            switch self {
+            case .valid: return ""
+            case .invalid: return "잘못된 정보를 입력한 것 같습니다. 실제 생일을 입력해주세요."
+            }
+        }
+    }
+    
     override func loadView() {
         view = View()
     }
@@ -46,19 +64,19 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
                 self.selectedMonth = cell.monthTextField.text ?? ""
                 self.selectedDay = cell.dayTextField.text ?? ""
                 
-                cell.monthTextField.rx.text.orEmpty.subscribe { [weak self] selectedMonth in
+                cell.monthTextField.rx.text.orEmpty.subscribe(onNext: { [weak self] selectedMonth in
                     self?.selectedMonth = selectedMonth
-                }.disposed(by: cell.disposeBag)
+                }).disposed(by: cell.disposeBag)
                 
-                cell.dayTextField.rx.text.orEmpty.subscribe { [weak self] selectedDay in
+                cell.dayTextField.rx.text.orEmpty.subscribe(onNext:{ [weak self] selectedDay in
                     self?.selectedDay = selectedDay
-                }.disposed(by: cell.disposeBag)
+                }).disposed(by: cell.disposeBag)
             case .birthYear:
                 self.selectedYear = cell.yearTextField.text ?? ""
                 
-                cell.yearTextField.rx.text.orEmpty.subscribe { [weak self] selectedYear in
+                cell.yearTextField.rx.text.orEmpty.subscribe(onNext: { [weak self] selectedYear in
                     self?.selectedYear = selectedYear
-                }.disposed(by: cell.disposeBag)
+                }).disposed(by: cell.disposeBag)
             }
             
             return cell
@@ -123,7 +141,7 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         loadData()
-        bindTableView()
+        bind()
     }
     
     func loadData() {
@@ -170,40 +188,42 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
         sectionsBR.accept(sections)
     }
 
-    func bindTableView() {
+    func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
         editUserProfileView.saveButton.rx.tap.bind{ [weak self] _ in
             guard let self = self else { return }
+            let isValidBirthdate = BirthdateValidation.init(age: self.calculateAge())
+
+            self.editUserProfileView.setAlertLabelText(as: isValidBirthdate.message())
             
-            //생일 입력 정보를 형식에 맞게 변환
-            var month = self.selectedMonth.trimmingCharacters(in: ["월"])
-            if month.count == 1 {
-                month = "0" + month
+            if isValidBirthdate == .valid {
+                //생일 입력 정보를 형식에 맞게 변환
+                var month = self.selectedMonth.trimmingCharacters(in: ["월"])
+                if month.count == 1 {
+                    month = "0" + month
+                }
+                var day = self.selectedDay
+                if day.count == 1 {
+                    day = "0" + day
+                }
+                let birth = self.selectedYear + "-" + month + "-" + day
+                let updateData = ["birth": birth,
+                                  "gender": self.selectedGender]
+                
+                //프로필 편집
+                NetworkService
+                    .update(endpoint: .profile(id: 41, updateData: updateData))
+                    .subscribe { [weak self] _ in
+                        guard let self = self else { return }
+                        let VCcount = self.navigationController?.viewControllers.count
+                        guard let detailProfileVC = self.navigationController?.viewControllers[VCcount! - 2] as? DetailProfileViewController else { return }
+                        detailProfileVC.loadData()
+                        self.navigationController?.popViewController(animated: true)
+                    }.disposed(by: self.disposeBag)
             }
-            
-            var day = self.selectedDay
-            if day.count == 1 {
-                day = "0" + day
-            }
-        
-            let birth = self.selectedYear + "-" + month + "-" + day
-            
-            let updateData = ["birth": birth,
-                              "gender": self.selectedGender]
-            
-            //프로필 편집 
-            NetworkService
-                .update(endpoint: .profile(id: 41, updateData: updateData))
-                .subscribe { [weak self] _ in
-                    guard let self = self else { return }
-                    let VCcount = self.navigationController?.viewControllers.count
-                    guard let detailProfileVC = self.navigationController?.viewControllers[VCcount! - 2] as? DetailProfileViewController else { return }
-                    detailProfileVC.loadData()
-                    self.navigationController?.popViewController(animated: true)
-                }.disposed(by: self.disposeBag)
         }.disposed(by: disposeBag)
         
         editUserProfileView.cancelButton.rx.tap.bind{
@@ -236,4 +256,23 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
         return 30
     }
     
+}
+
+extension EditUserProfileViewController {
+    private func calculateAge() -> Int {
+        let month = self.selectedMonth.trimmingCharacters(in: ["월"])
+        let day = self.selectedDay
+        
+        let currentDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: Date())
+        
+        guard case let (birthDateYear?, birthDateMonth?, birthDateDay?, currentDateYear?, currentDateMonth?, currentDateDay?) = (Int(self.selectedYear), Int(month), Int(day), currentDateComponents.year, currentDateComponents.month, currentDateComponents.day) else {
+            return 0
+        }
+        
+        if birthDateMonth * 10 + birthDateDay <= currentDateMonth * 10 + currentDateDay {
+            return currentDateYear - birthDateYear
+        } else {
+            return currentDateYear - birthDateYear - 1
+        }
+    }
 }
