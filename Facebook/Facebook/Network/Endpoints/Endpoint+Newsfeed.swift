@@ -14,6 +14,10 @@ extension Endpoint {
         return Endpoint(path: "newsfeed/", cursor: cursor)
     }
     
+    static func newsfeed(userId: Int, cursor: String? = nil) -> Self {
+        return Endpoint(path: "user/\(userId)/newsfeed/", cursor: cursor)
+    }
+    
     static func newsfeed(content: String, files: [Data] = [], subcontents: [String] = []) -> Self {
         assert(files.count == subcontents.count, "파일 개수와 캡션의 개수는 일치해야합니다.")
         let filesCount = files.count

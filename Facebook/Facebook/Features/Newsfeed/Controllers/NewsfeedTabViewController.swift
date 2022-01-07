@@ -116,7 +116,5 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             }
         }
         .disposed(by: disposeBag)
-        
-        
     }
 }

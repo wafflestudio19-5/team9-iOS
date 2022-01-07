@@ -52,6 +52,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.rootViewController = {
             if didLogin { return UINavigationController(rootViewController: LoginViewController()) }
             else { return UINavigationController(rootViewController: LoginViewController()) }
+            
         }()
         
         window.makeKeyAndVisible()
