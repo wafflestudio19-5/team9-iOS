@@ -35,7 +35,8 @@ class KakaoAuthManager {
                                 .subscribe { success in
                                     switch success {
                                     case .success(true): result.onNext(true)
-                                    default: result.onNext(false)
+                                    case .success(false): result.onNext(false)
+                                    case .failure(let error): result.onError(error)
                                     }
                                 }.disposed(by: self.disposeBag)
                             return
@@ -44,7 +45,8 @@ class KakaoAuthManager {
                                 .subscribe { success in
                                     switch success {
                                     case .success(true): result.onNext(true)
-                                    default: result.onNext(false)
+                                    case .success(false): result.onNext(false)
+                                    case .failure(let error): result.onError(error)
                                     }
                                 }.disposed(by: self.disposeBag)
                         }
@@ -62,7 +64,8 @@ class KakaoAuthManager {
                                 .subscribe { success in
                                     switch success {
                                     case .success(true): result.onNext(true)
-                                    default: result.onNext(false)
+                                    case .success(false): result.onNext(false)
+                                    case .failure(let error): result.onError(error)
                                     }
                                 }.disposed(by: self.disposeBag)
                             return
@@ -71,7 +74,8 @@ class KakaoAuthManager {
                                 .subscribe { success in
                                     switch success {
                                     case .success(true): result.onNext(true)
-                                    default: result.onNext(false)
+                                    case .success(false): result.onNext(false)
+                                    case .failure(let error): result.onError(error)
                                     }
                                 }.disposed(by: self.disposeBag)
                         }
@@ -91,8 +95,8 @@ class KakaoAuthManager {
                 .subscribe(onNext: { response in
                     if response.0.statusCode == 201 { result(.success(true)) }
                     else { result(.success(false)) }
-                }, onError: { _ in
-                    result(.success(false))
+                }, onError: { error in
+                    result(.failure(error))
                 }).disposed(by: self.disposeBag)
             return Disposables.create()
         }
@@ -107,8 +111,8 @@ class KakaoAuthManager {
                     CurrentUser.shared.profile = response.1.user
                     NetworkService.registerToken(token: response.1.token)
                     result(.success(true))
-                }, onError: { _ in
-                    result(.success(false))
+                }, onError: { error in
+                    result(.failure(error))
                 }).disposed(by: self.disposeBag)
             return Disposables.create()
         }
