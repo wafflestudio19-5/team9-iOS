@@ -29,8 +29,8 @@ class CreatePostHeaderView: UIView {
         self.addSubview(profileImage)
         NSLayoutConstraint.activate([
             profileImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            profileImage.widthAnchor.constraint(equalToConstant: 50),
-            profileImage.heightAnchor.constraint(equalToConstant: 50),
+            profileImage.widthAnchor.constraint(equalToConstant: .profileImageSize),
+            profileImage.heightAnchor.constraint(equalToConstant: .profileImageSize),
             profileImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 12)
         ])
         
@@ -50,12 +50,11 @@ class CreatePostHeaderView: UIView {
         ])
     }
     
-    private lazy var profileImage: UIImageView = {
-        let config = UIImage.SymbolConfiguration(hierarchicalColor: .systemFill)
-        let image = UIImage(systemName: "person.crop.circle.fill", withConfiguration: config)
-        let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+    private var profileImage: ProfileImageView = {
+        let imageView = ProfileImageView()
+        if let string = CurrentUser.shared.profile?.profile_image {
+            imageView.setImage(from: URL(string: string))
+        }
         return imageView
     }()
     

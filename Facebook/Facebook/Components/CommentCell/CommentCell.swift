@@ -64,6 +64,10 @@ class CommentCell: UITableViewCell {
         contentLabel.text = comment.content
         createdLabel.text = comment.posted_at
         
+        if let urlString = comment.author.profile_image {
+            profileImage.setImage(from: URL(string: urlString))
+        }
+        
         profileImage.snp.updateConstraints { make in
             make.height.width.equalTo(comment.profileImageSize)
             make.leading.equalTo(comment.leftMargin)
@@ -98,7 +102,7 @@ class CommentCell: UITableViewCell {
         likeCountLabelWithIcon.snp.makeConstraints { make in
             make.centerY.equalTo(horizontalButtonStack).offset(-2)
             make.trailing.equalTo(contentView).offset(CGFloat.standardTrailingMargin)
-//            make.height.equalTo(horizontalButtonStack)
+            //            make.height.equalTo(horizontalButtonStack)
         }
     }
     

@@ -48,6 +48,9 @@ class AuthorInfoHeaderView: UIView {
     func configure(with post: Post) {
         authorNameLabel.text = post.author?.username
         postDateLabel.text = post.posted_at
+        if let urlString = post.author?.profile_image {
+            profileImageView.setImage(from: URL(string: urlString))
+        }
     }
     
     required init?(coder: NSCoder) {
