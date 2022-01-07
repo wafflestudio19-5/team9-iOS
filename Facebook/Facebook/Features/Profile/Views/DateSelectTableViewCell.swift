@@ -82,7 +82,8 @@ class DateSelectTableViewCell: UITableViewCell {
         
         setStyle()
         setLayout()
-        bindPickerToolbar()
+        bindPicker()
+        bindPickerToolBar()
         setDataForPicker()
     }
     
@@ -242,7 +243,7 @@ class DateSelectTableViewCell: UITableViewCell {
         }
     }
     
-    private func bindPickerToolbar() {
+    private func bindPicker() {
         yearDataBR.bind(to: yearPickerView.rx.itemTitles) { (row, element) in
             return "\(element)"
         }.disposed(by: disposeBag)
@@ -287,7 +288,9 @@ class DateSelectTableViewCell: UITableViewCell {
                     self.dayPickerView.selectRow(dayIndex, inComponent: 0, animated: false)
                 }
             }).disposed(by: disposeBag)
-        
+    }
+    
+    private func bindPickerToolBar() {
         //연도 선택 시 동작
         doneButtonList[0].rx.tap.bind { [weak self] in
             guard let self = self else { return }
