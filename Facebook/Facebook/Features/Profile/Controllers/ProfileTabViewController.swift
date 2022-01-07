@@ -288,16 +288,55 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         }) ?? []
         
         let postSection: [MultipleSectionModel] = [
-            .PostSection(title: "내가 쓴 글",items: postItems)
+            .PostSection(title: "게시물",items: postItems)
         ]
         
         sectionsBR.accept(mainProfileSection + detailSection + postSection)
     }
     
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section != 2 { return UIView() }
+        
+        let headerView = UIView()
+        
+        let label: UILabel = {
+            let label = UILabel()
+            label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+            label.text = "게시물"
+            label.translatesAutoresizingMaskIntoConstraints = false
+            
+            return label
+        }()
+        
+        let createHeaderView = CreatePostHeaderView()
+        
+        headerView.addSubview(label)
+        headerView.addSubview(createHeaderView)
+        NSLayoutConstraint.activate([
+            label.heightAnchor.constraint(equalToConstant: 20),
+            label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
+            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
+            createHeaderView.topAnchor.constraint(equalTo: label.bottomAnchor),
+            createHeaderView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+            createHeaderView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+            createHeaderView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor)
+        ])
+        
+        createHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
+            guard let self = self else { return }
+            let createPostViewController = CreatePostViewController()
+            let navigationController = UINavigationController(rootViewController: createPostViewController)
+            navigationController.modalPresentationStyle = .fullScreen
+            self.present(navigationController, animated: true, completion: nil)
+        }.disposed(by: disposeBag)
+        
+        return headerView
+    }
+    
     //각 section의 footerView 설정
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-    
+        
         let footerView = UIView()
         footerView.backgroundColor = .white
         
@@ -313,6 +352,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 2 { return 100 }
         return 0
     }
     

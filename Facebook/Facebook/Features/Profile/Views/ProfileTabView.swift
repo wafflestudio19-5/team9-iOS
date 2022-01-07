@@ -9,7 +9,7 @@ import UIKit
 
 class ProfileTabView: UIView {
 
-    let profileTableView = UITableView()
+    let profileTableView = UITableView(frame: .zero, style: .grouped)
     let refreshControl = UIRefreshControl()
     
     override init(frame: CGRect) {
@@ -35,7 +35,7 @@ class ProfileTabView: UIView {
     }
     
     private func configureTableView() {
-        profileTableView.tableHeaderView = UIView()  // removes the separator at the top
+        profileTableView.tableHeaderView = UIView(frame: .zero)  // removes the separator at the top
         profileTableView.separatorStyle = .none
         profileTableView.register(UINib(nibName: "MainProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "MainProfileCell")
         profileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
