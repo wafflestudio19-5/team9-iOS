@@ -175,13 +175,25 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     func createSection() {
         guard let userProfile = userProfile else { return }
         
-        let companyItems = userProfile.company?.map({ company in
+        var companyItems = userProfile.company?.map({ company in
             SectionItem.CompanyItem(company: company)
         }) ?? []
         
-        let universityItems = userProfile.university?.map({ university in
+        var universityItems = userProfile.university?.map({ university in
             SectionItem.UniversityItem(university: university)
         }) ?? []
+        
+        if companyItems.count == 0 {
+            companyItems = [ .SimpleInformationItem(style: .style2,
+                                                    image: UIImage(systemName: "briefcase") ?? UIImage(),
+                                                    information: "직장") ]
+        }
+        
+        if universityItems.count == 0 {
+            universityItems = [ .SimpleInformationItem(style: .style2,
+                                                      image: UIImage(systemName: "graduationcap") ?? UIImage(),
+                                                      information: "학력") ]
+        }
         
         let sections: [MultipleSectionModel] = [
             .ProfileImageSection(title: "프로필 사진", items: [

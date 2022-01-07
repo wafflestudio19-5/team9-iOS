@@ -194,6 +194,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 guard let self = self else { return }
             
                 if event.isCompleted {
+                    self.createSection()
                     return
                 }
             
@@ -204,7 +205,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
             
                 self.userProfile = response
-                self.createSection()
         }.disposed(by: disposeBag)
     }
     
