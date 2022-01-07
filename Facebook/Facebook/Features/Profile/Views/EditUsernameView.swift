@@ -129,6 +129,7 @@ class EditUsernameView: UIView {
         let textField = UITextField()
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.gray.cgColor
+        textField.isSecureTextEntry = true
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField

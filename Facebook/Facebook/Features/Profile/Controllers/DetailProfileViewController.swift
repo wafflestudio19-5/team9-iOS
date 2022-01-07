@@ -42,12 +42,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             cell.configureCell(image: image, information: information)
             
             if self.userId == CurrentUser.shared.profile?.id {
-                cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                /* cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                     guard let informationType = informationType else { return }
                     
                     let addInformationViewController = AddInformationViewController(informationType: informationType)
                     self?.push(viewController: addInformationViewController)
-                }).disposed(by: cell.disposeBag)
+                }).disposed(by: cell.disposeBag) */
             }
             
             return cell
@@ -205,6 +205,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                            image: UIImage(systemName: "graduationcap.circle") ?? UIImage(),
                                            information: "학력 추가")
                 ] + universityItems ),
+                .DetailInformationSection(title: "연락처 정보", items: [
+                    .DetailInformationItem(style: .style2,
+                                           image: UIImage(systemName: "envelope.circle")!,
+                                           information: userProfile.email ?? "",
+                                           description: "이메일",
+                                           privacyBound: "전체 공개" )]),
                 .DetailInformationSection(title: "기본 정보", items: [
                     .DetailInformationItem(style: .style1,
                                            image: UIImage(systemName: "person.circle")!,
@@ -235,9 +241,18 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                            information: "표시할 학교 정보 없음") ]
             }
             
+            let birthInfo = String(userProfile.birth.split(separator: "-")[0]) + "년 " +                     String(userProfile.birth.split(separator: "-")[1]) + "월 " +
+                            String(userProfile.birth.split(separator: "-")[2]) + "일 "
+            
             sections = [
                 .DetailInformationSection(title: "직장", items: companyItems),
                 .DetailInformationSection(title: "학력", items: universityItems),
+                .DetailInformationSection(title: "연락처 정보", items: [
+                    .DetailInformationItem(style: .style2,
+                                           image: UIImage(systemName: "envelope.circle")!,
+                                           information: userProfile.email ?? "",
+                                           description: "이메일",
+                                           privacyBound: "전체 공개" )]),
                 .DetailInformationSection(title: "기본 정보", items: [
                     .DetailInformationItem(style: .style1,
                                            image: UIImage(systemName: "person.circle")!,
@@ -245,12 +260,9 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                            description: "성별"),
                     .DetailInformationItem(style: .style2,
                                            image: UIImage(systemName: "gift.circle")!,
-                                           information:
-                                            String(userProfile.birth.split(separator: "-")[0]) + "년 " +
-                                            String(userProfile.birth.split(separator: "-")[1]) + "월 " +
-                                            String(userProfile.birth.split(separator: "-")[2]) + "일 ",
+                                           information: birthInfo,
                                            description: "생일",
-                                           privacyBound: "회원님의 친구의 친구")
+                                           privacyBound: "전체 공개")
                 ])
             ]
         }
@@ -308,7 +320,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 
                 //section header의 버튼 클릭 시 동작
                 switch section {
-                case 2:
+                case 3:
                     sectionButton.rx.tap.bind { [weak self] in
                         let editUserProfileViewController = EditUserProfileViewController()
                         self?.push(viewController: editUserProfileViewController)
@@ -339,11 +351,11 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 1 { return 0 }
         return 40
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == sectionsBR.value.count - 1 { return 0 }
         return 5
     }
 }

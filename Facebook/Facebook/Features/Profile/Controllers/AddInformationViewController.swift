@@ -185,6 +185,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             cell.textView.rx.text
                 .orEmpty
                 .subscribe(onNext: { [weak self] detail in
+                    if detail == "직업에 대해 설명해주세요(선택 사항)" { return }
                     self?.companyInformation.detail = detail
                 }).disposed(by: cell.disposeBag)
             
@@ -322,7 +323,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 print(self.universityInformation)
             }
             
-           self.saveData()
+           //self.saveData()
         }.disposed(by: disposeBag)
     }
     

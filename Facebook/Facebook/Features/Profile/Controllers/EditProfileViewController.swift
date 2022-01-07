@@ -315,7 +315,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == (sectionsBR.value.count - 1)  { return 0 }
+        if section == sectionsBR.value.count - 1 { return 0 }
         return 5
     }
 }
@@ -382,7 +382,7 @@ extension EditProfileViewController: PHPickerViewControllerDelegate {
                 guard let image = image as? UIImage else { return }
                 guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
                 
-                let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
+                let uploadData = [self.imageType: imageData]  as [String : Any]
                 
                 NetworkService.update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: uploadData)).subscribe { event in
                     let request = event.element

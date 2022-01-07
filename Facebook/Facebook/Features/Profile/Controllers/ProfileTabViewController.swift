@@ -72,6 +72,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                         let editProfileViewController = EditProfileViewController()
                         self?.push(viewController: editProfileViewController)
                     }.disposed(by: cell.disposeBag)
+            } else {
+                cell.coverLabel.isHidden = true
+                cell.coverImageButton.isHidden = true
             }
             
             cell.profileImage.rx
@@ -204,7 +207,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
             
                 self.userProfile = response
-                self.postDataViewModel.refresh()
+                self.createSection()
         }.disposed(by: disposeBag)
     }
     
@@ -228,7 +231,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         tabView.refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.loadData()
+                self.postDataViewModel.refresh()
             })
             .disposed(by: disposeBag)
         
@@ -238,7 +241,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .drive(onNext : { [weak self] refreshComplete in
                 if refreshComplete {
                     self?.tabView.refreshControl.endRefreshing()
-                    self?.createSection()
+                    self?.loadData()
                 }
             })
             .disposed(by: disposeBag)
@@ -292,7 +295,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                                   information: "학교"),
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
-                                                  information: "내 정보 보기"),
+                                                  information: (userId == CurrentUser.shared.profile?.id)  ?
+                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
                 SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
             ]
         } else {
@@ -341,27 +345,36 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             return label
         }()
         
-        let createHeaderView = CreatePostHeaderView()
-        
-        headerView.addSubview(label)
-        headerView.addSubview(createHeaderView)
-        NSLayoutConstraint.activate([
-            label.heightAnchor.constraint(equalToConstant: 20),
-            label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
-            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
-            createHeaderView.topAnchor.constraint(equalTo: label.bottomAnchor),
-            createHeaderView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-            createHeaderView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            createHeaderView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor)
-        ])
-        
-        createHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
-            guard let self = self else { return }
-            let createPostViewController = CreatePostViewController()
-            let navigationController = UINavigationController(rootViewController: createPostViewController)
-            navigationController.modalPresentationStyle = .fullScreen
-            self.present(navigationController, animated: true, completion: nil)
-        }.disposed(by: disposeBag)
+        if userId == CurrentUser.shared.profile?.id {
+            let createHeaderView = CreatePostHeaderView()
+            headerView.addSubview(label)
+            headerView.addSubview(createHeaderView)
+            NSLayoutConstraint.activate([
+                label.heightAnchor.constraint(equalToConstant: 20),
+                label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
+                label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
+                createHeaderView.topAnchor.constraint(equalTo: label.bottomAnchor),
+                createHeaderView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+                createHeaderView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+                createHeaderView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor)
+            ])
+            
+            createHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
+                guard let self = self else { return }
+                let createPostViewController = CreatePostViewController()
+                let navigationController = UINavigationController(rootViewController: createPostViewController)
+                navigationController.modalPresentationStyle = .fullScreen
+                self.present(navigationController, animated: true, completion: nil)
+            }.disposed(by: disposeBag)
+        } else {
+            headerView.addSubview(label)
+            NSLayoutConstraint.activate([
+                label.heightAnchor.constraint(equalToConstant: 20),
+                label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
+                label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
+                label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -10)
+            ])
+        }
         
         headerView.backgroundColor = .white
         
@@ -386,11 +399,16 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 2 { return 100 }
+        if section == 2 {
+            if userId != CurrentUser.shared.profile?.id { return 40 }
+            else { return 100 }
+        }
+        
         return 0
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == sectionsBR.value.count - 1 { return 0 }
         return 5
     }
 }
@@ -457,7 +475,7 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                 guard let image = image as? UIImage else { return }
                 guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
                 
-                let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
+                let uploadData = [self.imageType: imageData]  as [String : Any]
                 
                 NetworkService.update(endpoint: .profile(id: self.userId, updateData: uploadData)).subscribe { event in
                     let request = event.element

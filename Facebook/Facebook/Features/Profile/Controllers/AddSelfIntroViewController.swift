@@ -67,6 +67,7 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
     func setTextView() {
         guard let userProfile = userProfile else { return }
         
+        addSelfIntroView.nameLabel.text = userProfile.username ?? "이름" 
         addSelfIntroView.inputTextView.text = (userProfile.self_intro != nil && userProfile.self_intro != "") ? userProfile.self_intro : ""
     }
     

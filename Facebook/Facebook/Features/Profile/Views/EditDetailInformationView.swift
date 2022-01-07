@@ -38,6 +38,7 @@ class EditDetailInformationView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
+        editDetailInformationTableView.backgroundColor = .white
         setLayoutforView()
         configureTableView()
     }
