@@ -211,6 +211,7 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == sectionsBR.value.count - 1 { return 0 }
         return 5
     }
 }

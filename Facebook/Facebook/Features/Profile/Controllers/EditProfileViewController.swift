@@ -315,7 +315,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == (sectionsBR.value.count - 1)  { return 0 }
+        if section == sectionsBR.value.count - 1 { return 0 }
         return 5
     }
 }
