@@ -82,7 +82,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     lazy var authorHeaderView: AuthorInfoHeaderView = {
-        let view = AuthorInfoHeaderView(imageWidth: 40)
+        let view = AuthorInfoHeaderView(imageWidth: 38)
         view.configure(with: post)
         return view
     }()
@@ -231,6 +231,18 @@ extension PostDetailViewController {
                     cell.focus()
                 }
                 
+                let b = cell.authorLabel.rx.tap.map{ return true }
+                let a = cell.profileImage.rx.tapGesture().when(.recognized).map{ _ in return true }
+                
+                Observable.of(a, b)
+                    .merge()
+                    .bind { [weak self] _ in
+                        let profileVC = ProfileTabViewController(userId: comment.author.id)
+                        self?.push(viewController: profileVC)
+                    }
+                    .disposed(by: cell.disposeBag)
+                
+                
                 cell.likeButton.rx.tap
                     .bind { [weak self] _ in
                         guard let self = self else { return }
@@ -296,6 +308,10 @@ extension PostDetailViewController {
                             let indexPath = self.commentViewModel.findInsertionIndexPath(of: comment)
                             self.commentViewModel.insert(comment, at: indexPath)
                             self.commentTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+                            
+                            var commentIncrementedPost = self.post
+                            commentIncrementedPost.comments += 1
+                            self.postView.postContentHeaderView.postUpdated.accept(commentIncrementedPost)
                         }
                     }, onError: { error in
                         print(error)
