@@ -738,8 +738,8 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1A538A5499B1706F0983D6826042657B;
-			remoteInfo = RxAlamofire;
+			remoteGlobalIDString = 83CA882AD877ED964BDF66235E416BC1;
+			remoteInfo = KakaoSDKAuth;
 		};
 		C2559C2961C99486AC7D1C9FA3B5B030 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -1771,6 +1771,7 @@
 				37544E57CB5ADEFCB75DDC5487E3D5E8 /* Network */,
 				17C28AD2399BCF4361066DDA1DEFDBC4 /* Support Files */,
 			);
+			name = RxKakaoSDKCommon;
 			path = RxKakaoSDKCommon;
 			sourceTree = "<group>";
 		};
@@ -2606,14 +2607,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		405F444A1B6A226C3DB927EF98AB5957 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AF60D688FF1FAA8EFAE4F5A3981B4F11 /* KakaoSDKCommon-umbrella.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5043046EDF457F64B47371EAA2E28C4F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -2780,7 +2773,7 @@
 			);
 			name = "Pods-Facebook";
 			productName = Pods_Facebook;
-			productReference = 8350F8C1C34B817ABBA9936B98ACDB9A /* Pods_Facebook.framework */;
+			productReference = 8350F8C1C34B817ABBA9936B98ACDB9A /* Pods-Facebook */;
 			productType = "com.apple.product-type.framework";
 		};
 		3F7BF367078951B6E8BC95B3DA89967A /* KakaoSDKUser */ = {

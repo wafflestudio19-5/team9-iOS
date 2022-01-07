@@ -7,27 +7,29 @@
 
 import UIKit
 import RxSwift
-
-protocol MainProfileTableViewCellDelegate: AnyObject {
-    func goEditProfileView()
-}
+import Kingfisher
 
 class MainProfileTableViewCell: UITableViewCell {
 
+    @IBOutlet weak var coverImage: UIImageView!
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var selfIntroLabel: UILabel!
+    @IBOutlet weak var coverLabel: UILabel!
     @IBOutlet weak var editProfileButton: UIButton!
+    @IBOutlet weak var coverImageButton: UIButton!
     
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
+    
+    override func prepareForReuse() {
+          super.prepareForReuse()
+          disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        editProfileButton.layer.cornerRadius = 5
-        profileImage.layer.cornerRadius = profileImage.frame.width / 2
-        profileImage.clipsToBounds = true
-        
-        bindButton()
+        setStyle()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -35,11 +37,64 @@ class MainProfileTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    weak var delegate: MainProfileTableViewCellDelegate?
+    func configureCell(profileImageUrl: String, coverImageUrl: String, name: String, selfIntro: String, buttonText: String) {
+        nameLabel.text = name
+        selfIntroLabel.text = selfIntro
+        editProfileButton.setTitle(buttonText, for: .normal)
+        
+        if profileImageUrl != "" {
+            loadProfileImage(from: URL(string: profileImageUrl))
+        }
+        
+        if coverImageUrl != "" {
+            loadCoverImage(from: URL(string: coverImageUrl))
+        }
+    }
     
-    func bindButton() {
-        editProfileButton.rx.tap.bind { [weak self] in
-            self?.delegate?.goEditProfileView()
-        }.disposed(by: disposeBag)
+    private func setStyle() {
+        self.coverImage.layer.zPosition = 0
+        self.profileImage.layer.zPosition = 1
+        self.coverImageButton.layer.zPosition = 1
+        self.coverLabel.layer.zPosition = 1
+        
+        coverImageButton.layer.cornerRadius = 5
+        
+        coverImage.layer.cornerRadius = 15
+        coverImage.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        profileImage.layer.cornerRadius = profileImage.frame.width / 2
+        profileImage.clipsToBounds = true
+        profileImage.layer.borderColor = UIColor.white.cgColor//white color
+        profileImage.layer.borderWidth = 5
+        
+        editProfileButton.layer.cornerRadius = 5
+    }
+}
+
+extension MainProfileTableViewCell {
+    func loadProfileImage(from url: URL?) {
+        guard let url = url else { return }
+        
+        KF.url(url)
+            .loadDiskFileSynchronously()
+            .cacheMemoryOnly()
+            .fade(duration: 0.1)
+            .onFailure { error in print("프로필 이미지 로딩 실패", error)}
+            .set(to: self.profileImage)
+    }
+    
+    func loadCoverImage(from url: URL?) {
+        guard let url = url else { return }
+        
+        KF.url(url)
+            .loadDiskFileSynchronously()
+            .cacheMemoryOnly()
+            .fade(duration: 0.1)
+            .onFailure { error in print("커버 이미지 로딩 실패", error)}
+            .set(to: self.coverImage)
+        
+        coverLabel.isHidden = true
+        coverImageButton.isHidden = true
+        
     }
 }

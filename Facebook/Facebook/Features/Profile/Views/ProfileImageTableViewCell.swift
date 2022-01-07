@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ProfileImageTableViewCell: UITableViewCell {
+class ImageTableViewCell: UITableViewCell {
 
     @IBOutlet weak var profileImage: UIImageView!
     
