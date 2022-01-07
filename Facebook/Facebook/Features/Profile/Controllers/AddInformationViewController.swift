@@ -322,7 +322,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 print(self.universityInformation)
             }
             
-           // self.saveData()
+           self.saveData()
         }.disposed(by: disposeBag)
     }
     
@@ -330,7 +330,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         if let id = self.id {
             switch self.informationType {
             case .company:
-                if self.companyInformation.name == "" {
+                if (self.companyInformation.name == nil || self.companyInformation.name == "")  {
                     NetworkService.delete(endpoint: .company(id: id)).subscribe(onNext: { [weak self] _ in
                         self?.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
@@ -340,7 +340,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     }).disposed(by: self.disposeBag)
                 }
             case .university:
-                if self.universityInformation.name == "" {
+                if (self.universityInformation.name == nil || self.universityInformation.name == "") {
                     NetworkService.delete(endpoint: .university(id: id)).subscribe(onNext: { [weak self] _ in
                         self?.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)

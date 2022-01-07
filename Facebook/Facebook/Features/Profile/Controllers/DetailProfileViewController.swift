@@ -83,6 +83,8 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                     let addInformationViewController = AddInformationViewController(informationType: .company, id: company.id ?? nil)
                     self?.push(viewController: addInformationViewController)
                 }.disposed(by: cell.disposeBag)
+            } else {
+                cell.editButton.isHidden = true
             }
             
             return cell
@@ -110,6 +112,8 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                     let addInformationViewController = AddInformationViewController(informationType: .university, id: university.id ?? nil)
                     self?.push(viewController: addInformationViewController)
                 }.disposed(by: cell.disposeBag)
+            } else {
+                cell.editButton.isHidden = true
             }
             
             return cell
