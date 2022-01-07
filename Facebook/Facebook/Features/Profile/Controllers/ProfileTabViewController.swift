@@ -184,7 +184,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
         if userProfile != nil {
             loadData()
-            postDataViewModel.refresh()
         }
     }
     
@@ -205,7 +204,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
             
                 self.userProfile = response
-                self.createSection()
+                self.postDataViewModel.refresh()
         }.disposed(by: disposeBag)
     }
     
@@ -230,7 +229,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.loadData()
-                self.postDataViewModel.refresh()
             })
             .disposed(by: disposeBag)
         
@@ -251,7 +249,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             let offSetY = self.tableView.contentOffset.y
             let contentHeight = self.tableView.contentSize.height
             
-            if offSetY > (contentHeight - self.tableView.frame.size.height - 100) && self.postDataViewModel.dataList.value.count != 0 {
+            if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
                 self.postDataViewModel.loadMore()
             }
         }
