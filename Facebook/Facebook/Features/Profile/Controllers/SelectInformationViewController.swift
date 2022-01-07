@@ -76,11 +76,14 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
         }
     }
     
-    init(cellType: CellType, informationType: InformationType) {
+    init(cellType: CellType, informationType: InformationType, information: String? = nil) {
         self.cellType = cellType
         self.informationType = informationType
         super.init(nibName: nil, bundle: nil)
-
+        
+        if let information = information {
+            self.selectInformationView.searchHeaderView.searchTextField.text = information
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -146,6 +149,12 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
                     
                 }
             }).disposed(by: disposeBag)
+        
+        selectInformationView.searchHeaderView.deleteButton.rx.tap.bind { [weak self] in
+            guard let self = self else { return }
+            self.selectInformationView.searchHeaderView.searchTextField.text = ""
+            self.selectedInformation.onNext("")
+        }.disposed(by: disposeBag)
         
         searchResultBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         

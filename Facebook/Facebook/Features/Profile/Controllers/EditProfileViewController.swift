@@ -96,9 +96,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
                 self?.push(viewController: detailProfileViewController)
-            }).disposed(by: self.disposeBag)
-            
-            
+            }).disposed(by: cell.disposeBag)
+
             
             return cell
         case let .UniversityItem(university):
@@ -110,7 +109,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
                 self?.push(viewController: detailProfileViewController)
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: cell.disposeBag)
             
             return cell
         case let .ButtonItem(style, buttonText):

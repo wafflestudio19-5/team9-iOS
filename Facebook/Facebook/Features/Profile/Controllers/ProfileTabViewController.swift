@@ -90,7 +90,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
                 self?.push(viewController: detailProfileViewController)
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: cell.disposeBag)
             
             return cell
         case let .ButtonItem(style, buttonText):
@@ -102,7 +102,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.button.rx.tap.bind { [weak self] in
                 let editProfileViewController = EditProfileViewController()
                 self?.push(viewController: editProfileViewController)
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: cell.disposeBag)
             
             return cell
         case let .CompanyItem(company):
@@ -114,7 +114,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
                 self?.push(viewController: detailProfileViewController)
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: cell.disposeBag)
             
             return cell
         case let .UniversityItem(university):
@@ -126,7 +126,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let detailProfileViewController = DetailProfileViewController()
                 self?.push(viewController: detailProfileViewController)
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: cell.disposeBag)
             
             return cell
         case let .PostItem(post):
@@ -177,7 +177,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 self.userProfile = response
         }.disposed(by: disposeBag)
         
-        postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed())
+        postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: 41))
     }
     
     func bind() {

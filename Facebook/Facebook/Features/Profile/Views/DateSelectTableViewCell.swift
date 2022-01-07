@@ -42,7 +42,7 @@ class DateSelectTableViewCell: UITableViewCell {
     lazy var selectedMonth = ""
     lazy var selectedDay = ""
     
-    let datePS = PublishSubject<String>()
+    let dateBS = BehaviorSubject<String>(value: "")
     
     enum Style {
         case startDateStyle
@@ -399,8 +399,9 @@ class DateSelectTableViewCell: UITableViewCell {
     }
     
     private func dateInformationPass() {
+        
         if (selectedYear == "" || selectedMonth == "" || selectedDay == "") {
-            datePS.onNext("")
+            dateBS.onNext("")
         } else {
             var month = selectedMonth.trimmingCharacters(in: ["월"])
             if month.count == 1 {
@@ -414,11 +415,11 @@ class DateSelectTableViewCell: UITableViewCell {
             
             let date = selectedYear + "-" + month + "-" + day
             
-            datePS.onNext(date)
+            dateBS.onNext(date)
         }
     }
     
-    //컴포넌트의 숨김 설정 
+    //컴포넌트의 숨김 설정
     private func showAddDateLabel() {
         if addDateLabel.isHidden {
             addDateLabel.isHidden = false

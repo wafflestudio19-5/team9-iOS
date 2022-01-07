@@ -11,9 +11,12 @@ import RxSwift
 
 class SearchHeaderView: UIView {
     
+    let disposeBag = DisposeBag()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
+        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -48,6 +51,20 @@ class SearchHeaderView: UIView {
             divider.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 50),
             divider.trailingAnchor.constraint(equalTo: self.trailingAnchor),
         ])
+        
+        self.addSubview(deleteButton)
+        NSLayoutConstraint.activate([
+            deleteButton.heightAnchor.constraint(equalToConstant: 15),
+            deleteButton.widthAnchor.constraint(equalToConstant: 15),
+            deleteButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            deleteButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+        ])
+    }
+    
+    private func bind() {
+        searchTextField.rx.text.orEmpty.subscribe(onNext: { [weak self] text in
+            self?.deleteButton.isHidden = ((text == "") ? true : false)
+        }).disposed(by: self.disposeBag)
     }
     
     private lazy var searchImage: UIImageView = {
@@ -59,12 +76,22 @@ class SearchHeaderView: UIView {
         return imageView
     }()
     
+    
     lazy var searchTextField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont.systemFont(ofSize: 18)
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
+    }()
+    
+    lazy var deleteButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "x.circle.fill"), for: .normal)
+        button.tintColor = .gray
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
     }()
     
     private lazy var divider: UIView = {
