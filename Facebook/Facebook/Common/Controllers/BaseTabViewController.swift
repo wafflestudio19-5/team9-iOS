@@ -42,13 +42,8 @@ class BaseTabViewController<View: UIView>: UIViewController {
             self?.navigationController?.pushViewController(SearchViewController(), animated: false)
         }.disposed(by: disposeBag)
         
-        editButton.rx.tap.bind { _ in
-            print("edit button tapped")
-            // editProfileViewController 띄우기
-            let editProfileViewController = EditProfileViewController()
-            
-            self.navigationController?.pushViewController(editProfileViewController, animated: true)
+        editButton.rx.tap.bind { [weak self] _ in
+            self?.push(viewController: EditProfileViewController())
         }.disposed(by: disposeBag)
     }
-
 }

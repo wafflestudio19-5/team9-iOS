@@ -110,7 +110,4 @@ class PostDetailHeaderView: UIView {
         ])
         
     }
-    
-    
-    
 }
