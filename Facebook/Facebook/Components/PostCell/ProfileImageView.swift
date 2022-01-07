@@ -6,23 +6,35 @@
 //
 
 import UIKit
+import Kingfisher
 
-class ProfileImageView: UIImageView {
-
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+class ProfileImageView: UIView {
+    private var imageView = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let config = UIImage.SymbolConfiguration(hierarchicalColor: .systemFill)
-        self.image = UIImage(systemName: "person.crop.circle.fill", withConfiguration: config)
-        self.contentMode = .scaleAspectFit
+        
+        self.addSubview(imageView)
+        
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = .secondarySystemFill
+        
         self.translatesAutoresizingMaskIntoConstraints = false
+        self.clipsToBounds = true
+        self.layer.cornerRadius = self.frame.width
+        self.backgroundColor = .grayscales.bubbleFocused
+        
+        setImage(from: nil)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        self.layer.cornerRadius = self.frame.width / 2
+    }
+    
+    convenience init(from url: URL?) {
+        self.init(frame: .zero)
+        setImage(from: url)
     }
     
     required init?(coder: NSCoder) {
@@ -31,6 +43,28 @@ class ProfileImageView: UIImageView {
     
     convenience init() {
         self.init(frame: .zero)
+    }
+    
+    func setImage(from url: URL?) {
+        guard let url = url else {
+            imageView.image = UIImage(systemName: "person.fill")
+            imageView.snp.remakeConstraints { make in
+                make.height.equalTo(30)
+                make.centerX.centerY.equalTo(self)
+            }
+            return
+        }
+        imageView.snp.remakeConstraints { make in
+            make.edges.equalTo(0)
+        }
+        let processor = DownsamplingImageProcessor(size: CGSize(width: 400, height: 400))
+        KF.url(url)
+          .setProcessor(processor)
+          .loadDiskFileSynchronously()
+          .cacheMemoryOnly()
+          .fade(duration: 0.1)
+          .onFailure { error in print("로딩 실패", error)}
+          .set(to: self.imageView)
     }
     
 }

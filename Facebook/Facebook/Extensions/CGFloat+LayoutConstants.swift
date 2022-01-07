@@ -15,6 +15,6 @@ extension CGFloat {
     static var standardBottomMargin: CGFloat = -10
     
     static var gradientIconWidth: CGFloat = 16
-    static var profileImageSize: CGFloat = 50
+    static var profileImageSize: CGFloat = 40
     static var buttonGroupHeight: CGFloat = 37.5
 }
