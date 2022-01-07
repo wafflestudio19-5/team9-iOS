@@ -64,7 +64,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let editDetailInformationViewController = EditDetailInformationViewController()
                 self?.push(viewController: editDetailInformationViewController)
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: cell.disposeBag)
             
             return cell
         case let .LabelItem(style, labelText):
@@ -121,7 +121,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.configureCell(buttonText: buttonText)
             
             cell.button.rx.tap.bind { [weak self] in
-                let detailProfileViewController = DetailProfileViewController()
+                let detailProfileViewController = DetailProfileViewController(userId: CurrentUser.shared.profile?.id ?? 0)
                 self?.push(viewController: detailProfileViewController)
             }.disposed(by: cell.disposeBag)
             
@@ -153,7 +153,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     }
     
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
                 
@@ -175,13 +175,25 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     func createSection() {
         guard let userProfile = userProfile else { return }
         
-        let companyItems = userProfile.company?.map({ company in
+        var companyItems = userProfile.company?.map({ company in
             SectionItem.CompanyItem(company: company)
         }) ?? []
         
-        let universityItems = userProfile.university?.map({ university in
+        var universityItems = userProfile.university?.map({ university in
             SectionItem.UniversityItem(university: university)
         }) ?? []
+        
+        if companyItems.count == 0 {
+            companyItems = [ .SimpleInformationItem(style: .style2,
+                                                    image: UIImage(systemName: "briefcase") ?? UIImage(),
+                                                    information: "직장") ]
+        }
+        
+        if universityItems.count == 0 {
+            universityItems = [ .SimpleInformationItem(style: .style2,
+                                                      image: UIImage(systemName: "graduationcap") ?? UIImage(),
+                                                      information: "학력") ]
+        }
         
         let sections: [MultipleSectionModel] = [
             .ProfileImageSection(title: "프로필 사진", items: [
@@ -341,7 +353,7 @@ extension EditProfileViewController {
         let updateData = ["self_intro": ""]
         
         NetworkService
-            .update(endpoint: .profile(id: 41, updateData: updateData))
+            .update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: updateData))
             .subscribe{ [weak self] _ in
                 self?.loadData()
             }.disposed(by: disposeBag)
@@ -372,7 +384,7 @@ extension EditProfileViewController: PHPickerViewControllerDelegate {
                 
                 let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
                 
-                NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe { event in
+                NetworkService.update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: uploadData)).subscribe { event in
                     let request = event.element
                     let progress = request?.uploadProgress
                     

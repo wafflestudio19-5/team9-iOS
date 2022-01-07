@@ -135,11 +135,11 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
                         var addCellData: SectionItem
                         if self.informationType == .company {
                             addCellData = .SimpleInformationItem(style: .style4,
-                                                                 image: UIImage(systemName: "briefcase.fill") ?? UIImage(),
+                                                                 image: UIImage(systemName: "briefcase.circle.fill") ?? UIImage(),
                                                                  information: "\"\(text)\" 추가")
                         } else {
                             addCellData = .SimpleInformationItem(style: .style4,
-                                                                 image: UIImage(systemName: "graduationcap.fill") ?? UIImage(),
+                                                                 image: UIImage(systemName: "graduationcap.circle.fill") ?? UIImage(),
                                                                  information: "\"\(text)\" 추가")
                         }
                         
