@@ -33,19 +33,18 @@ class KakaoLoginViewController<View: KakaoLoginView>: UIViewController {
         customView.kakaoLoginButton.rx.tapGesture()
             .when(.recognized)
             .bind { [weak self] _ in
-                print("kakao login button tapped")
                 self?.requestKakaoLogin()
             }.disposed(by: disposeBag)
     }
     
     private func requestKakaoLogin() {
         KakaoAuthManager.shared.requestKakaoLogin(type: .connect)
-            .subscribe { response in
+            .subscribe { [weak self] response in
                 guard let success = response.element else { return }
                 if success {
-                    print("kakao connection success")
+                    self?.changeRootViewController(to: RootTabBarController())
                 } else {
-                    print("unable to connect kakao")
+                    self?.alert(title: "카카오 연동 실패", message: "이미 등록된 계정입니다.", action: "확인")
                 }
             }.disposed(by: disposeBag)
     }

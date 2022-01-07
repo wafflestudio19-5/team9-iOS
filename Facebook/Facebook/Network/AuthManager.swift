@@ -7,36 +7,40 @@
 
 import RxSwift
 
-struct AuthManager {
+class AuthManager {
+    
+    private let disposeBag = DisposeBag()
+    
+    static let shared = AuthManager()
+    private init() { }
     
     // 회원가입
-    static func signup(user: NewUser) -> Observable<Bool> {
-        return Observable.create { isSuccess in
+    func signup(user: NewUser) -> Single<Bool> {
+        return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .createUser(newUser: NewUser.shared), as: AuthResponse.self)
-                .subscribe { event in
-                    guard let response = event.element?.1 else {
-                        isSuccess.onNext(false)
-                        return
-                    }
-                    CurrentUser.shared.profile = response.user
-                    NetworkService.registerToken(token: response.token)
-                    isSuccess.onNext(true)
-                }
+                .subscribe (onNext: { response in
+                    CurrentUser.shared.profile = response.1.user
+                    NetworkService.registerToken(token: response.1.token)
+                    result(.success(true))
+                }, onError: { _ in
+                    result(.success(false))
+                }).disposed(by: self.disposeBag)
+            return Disposables.create()
         }
     }
     
     // 로그인
-    static func login(email: String, password: String) -> Single<Bool> {
+    func login(email: String, password: String) -> Single<Bool> {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .login(email: email, password: password), as: AuthResponse.self)
-                .subscribe(onNext: { event in
-                    let response = event.1
-                    CurrentUser.shared.profile = response.user
-                    NetworkService.registerToken(token: response.token)
+                .subscribe(onNext: { response in
+                    CurrentUser.shared.profile = response.1.user
+                    NetworkService.registerToken(token: response.1.token)
                     result(.success(true))
                 }, onError: { _ in
                     result(.success(false))
-                })
+                }).disposed(by: self.disposeBag)
+            return Disposables.create()
         }
     }
 }

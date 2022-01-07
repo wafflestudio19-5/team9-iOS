@@ -113,21 +113,17 @@ extension LoginViewController {
             .subscribe { [weak self] result in
                 guard let success = result.element else { return }
                 
-                print("\nwaiting for response\n")
-                
                 switch success {
                 case true:
-                    print("카카오 로그인 성공!")
                     self?.changeRootViewController(to: RootTabBarController())
                 case false:
-                    print("카카오 로그인 실패")
                     self?.alert(title: "카카오 로그인 실패", message: "등록되지 않은 계정입니다. 이메일을 통하여 로그인 혹은 회원가입 후 카카오 계정을 연동해주시기 바랍니다.", action: "확인")
                 }
             }.disposed(by: disposeBag)
     }
     
     private func login() {
-        AuthManager.login(email: self.email.value, password: self.password.value)
+        AuthManager.shared.login(email: self.email.value, password: self.password.value)
             .subscribe { [weak self] success in
                 switch success {
                 case .success(true): self?.changeRootViewController(to: RootTabBarController())
