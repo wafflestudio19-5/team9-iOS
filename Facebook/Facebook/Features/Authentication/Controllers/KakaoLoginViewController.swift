@@ -39,7 +39,15 @@ class KakaoLoginViewController<View: KakaoLoginView>: UIViewController {
     }
     
     private func requestKakaoLogin() {
-        
+        KakaoAuthManager.shared.requestKakaoLogin(type: .connect)
+            .subscribe { response in
+                guard let success = response.element else { return }
+                if success {
+                    print("kakao connection success")
+                } else {
+                    print("unable to connect kakao")
+                }
+            }.disposed(by: disposeBag)
     }
 }
 
