@@ -339,7 +339,6 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 1 { return 0 }
         return 40
     }
     
