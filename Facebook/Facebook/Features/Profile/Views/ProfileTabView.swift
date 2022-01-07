@@ -14,7 +14,7 @@ class ProfileTabView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .systemBackground
+        profileTableView.backgroundColor = .white
         setLayoutForView()
         configureTableView()
     }
