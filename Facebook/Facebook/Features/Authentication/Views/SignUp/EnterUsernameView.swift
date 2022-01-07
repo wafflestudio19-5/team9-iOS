@@ -9,8 +9,8 @@ import UIKit
 
 class EnterUsernameView: BaseSignUpView {
 
-    let firstNameTextField = FacebookTextField(placeholderText: "성")
-    let lastNameTextField = FacebookTextField(placeholderText: "이름")
+    let firstNameTextField = FacebookTextField(placeholderText: "이름")
+    let lastNameTextField = FacebookTextField(placeholderText: "성")
     
     let horizontalStackForTextFields = UIStackView()
     

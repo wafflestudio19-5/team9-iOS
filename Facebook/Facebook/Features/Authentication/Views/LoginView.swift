@@ -10,8 +10,6 @@ import UIKit
 class LoginView: UIView {
     
     let loginButton = RectangularSlimButton(title: "로그인", titleColor: .systemGray3, backgroundColor: FacebookColor.blue.color())
-    //let forgotPasswordButton = RectangularSlimButton(title: "비밀번호를 잊으셨나요?", titleColor: FacebookColor.blue.color(), backgroundColor: .white)
-    //let backButton = RectangularSlimButton(title: "돌아가기", titleColor: FacebookColor.blue.color(), backgroundColor: .white)
     
     let kakaoLoginButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
     
