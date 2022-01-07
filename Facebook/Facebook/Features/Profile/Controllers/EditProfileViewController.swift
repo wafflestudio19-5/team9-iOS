@@ -382,7 +382,7 @@ extension EditProfileViewController: PHPickerViewControllerDelegate {
                 guard let image = image as? UIImage else { return }
                 guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
                 
-                let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
+                let uploadData = [self.imageType: imageData]  as [String : Any]
                 
                 NetworkService.update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: uploadData)).subscribe { event in
                     let request = event.element

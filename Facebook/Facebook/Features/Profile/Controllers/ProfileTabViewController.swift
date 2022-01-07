@@ -207,7 +207,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
             
                 self.userProfile = response
-                self.postDataViewModel.refresh()
+                self.createSection()
         }.disposed(by: disposeBag)
     }
     
@@ -231,7 +231,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         tabView.refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.loadData()
+                self.postDataViewModel.refresh()
             })
             .disposed(by: disposeBag)
         
@@ -241,7 +241,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .drive(onNext : { [weak self] refreshComplete in
                 if refreshComplete {
                     self?.tabView.refreshControl.endRefreshing()
-                    self?.createSection()
+                    self?.loadData()
                 }
             })
             .disposed(by: disposeBag)
