@@ -353,7 +353,7 @@ extension EditProfileViewController {
         let updateData = ["self_intro": ""]
         
         NetworkService
-            .update(endpoint: .profile(id: 41, updateData: updateData))
+            .update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: updateData))
             .subscribe{ [weak self] _ in
                 self?.loadData()
             }.disposed(by: disposeBag)
