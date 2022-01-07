@@ -115,6 +115,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
                         return !(shouldReceive.view is UIControl)
                     }
                 })
+                    .when(.recognized)
                     .bind { [weak self] _ in
                         self?.pushToDetailVC(cell: cell, asFirstResponder: false)
                     }
