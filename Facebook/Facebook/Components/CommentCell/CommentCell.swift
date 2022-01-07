@@ -31,7 +31,6 @@ class CommentCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: CommentCell.reuseIdentifier)
         setLayout()
-        bind()
     }
     
     required init?(coder: NSCoder) {
@@ -106,14 +105,6 @@ class CommentCell: UITableViewCell {
         }
     }
     
-    private func bind() {
-        profileImage.rx.tapGesture().when(.recognized)
-            .bind { [weak self] _ in
-                print("profile Image tapped")
-                // move to user profile view
-            }.disposed(by: disposeBag)
-    }
-    
     // MARK: Public Functions
     
     func focus() {
@@ -163,8 +154,8 @@ class CommentCell: UITableViewCell {
         return bubbleView
     }()
     
-    private let profileImage = ProfileImageView()
-    private let authorLabel: InfoButton = {
+    let profileImage = ProfileImageView()
+    let authorLabel: InfoButton = {
         let button = InfoButton(color: .label, size: 13, weight: .semibold)
         button.setContentHuggingPriority(.required, for: .horizontal)
         return button

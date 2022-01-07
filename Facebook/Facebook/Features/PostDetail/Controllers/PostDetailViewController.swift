@@ -231,6 +231,18 @@ extension PostDetailViewController {
                     cell.focus()
                 }
                 
+                let b = cell.authorLabel.rx.tap.map{ return true }
+                let a = cell.profileImage.rx.tapGesture().when(.recognized).map{ _ in return true }
+                
+                Observable.of(a, b)
+                    .merge()
+                    .bind { [weak self] _ in
+                        let profileVC = ProfileTabViewController(userId: comment.author.id)
+                        self?.push(viewController: profileVC)
+                    }
+                    .disposed(by: cell.disposeBag)
+                
+                
                 cell.likeButton.rx.tap
                     .bind { [weak self] _ in
                         guard let self = self else { return }
