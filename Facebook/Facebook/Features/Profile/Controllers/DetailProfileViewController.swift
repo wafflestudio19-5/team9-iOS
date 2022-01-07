@@ -198,8 +198,6 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             ])
         ]
         
-        print(sections)
-        
         sectionsBR.accept(sections)
     }
     
@@ -211,7 +209,9 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         /// 새로고침 제스쳐
         detailProfileView.refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
-                self?.loadData()
+                guard let self = self else { return }
+                self.loadData()
+                self.tableView.refreshControl?.endRefreshing()
             }).disposed(by: disposeBag)
     }
     

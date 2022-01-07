@@ -14,6 +14,7 @@ class ProfileTabView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
         setLayoutForView()
         configureTableView()
     }
@@ -35,7 +36,6 @@ class ProfileTabView: UIView {
     }
     
     private func configureTableView() {
-        profileTableView.tableHeaderView = UIView(frame: .zero)  // removes the separator at the top
         profileTableView.separatorStyle = .none
         profileTableView.register(UINib(nibName: "MainProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "MainProfileCell")
         profileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)

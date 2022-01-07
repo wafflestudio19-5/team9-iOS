@@ -74,9 +74,7 @@ extension MainProfileTableViewCell {
     func loadProfileImage(from url: URL?) {
         guard let url = url else { return }
         
-        let processor = DownsamplingImageProcessor(size: CGSize(width: 200, height: 200))
         KF.url(url)
-            .setProcessor(processor)
             .loadDiskFileSynchronously()
             .cacheMemoryOnly()
             .fade(duration: 0.1)
@@ -87,9 +85,7 @@ extension MainProfileTableViewCell {
     func loadCoverImage(from url: URL?) {
         guard let url = url else { return }
         
-        let processor = DownsamplingImageProcessor(size: CGSize(width: 300, height: 300))
         KF.url(url)
-            .setProcessor(processor)
             .loadDiskFileSynchronously()
             .cacheMemoryOnly()
             .fade(duration: 0.1)

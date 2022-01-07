@@ -95,8 +95,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                                information: company.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let detailProfileViewController = DetailProfileViewController()
-                self?.push(viewController: detailProfileViewController)
+                let editDetailInformationViewController = EditDetailInformationViewController()
+                self?.push(viewController: editDetailInformationViewController)
             }).disposed(by: cell.disposeBag)
 
             
@@ -109,8 +109,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                                information: university.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let detailProfileViewController = DetailProfileViewController()
-                self?.push(viewController: detailProfileViewController)
+                let editDetailInformationViewController = EditDetailInformationViewController()
+                self?.push(viewController: editDetailInformationViewController)
             }).disposed(by: cell.disposeBag)
             
             return cell
@@ -367,14 +367,18 @@ extension EditProfileViewController: PHPickerViewControllerDelegate {
         if let result = results.first{
             result.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                 guard let image = image as? UIImage else { return }
-                guard let imageData = image.pngData() else { return }
+                guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
                 
                 let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
                 
-                NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe(onNext: { event in
-                    print(event)
-                    print("upload complete!")
-                }).disposed(by: self.disposeBag)
+                NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe { event in
+                    let request = event.element
+                    let progress = request?.uploadProgress
+                    
+                    request?.responseString(completionHandler: { data in
+                        self.loadData()
+                    })
+                }.disposed(by: self.disposeBag)
             }
         }
         dismiss(animated: true, completion: nil)

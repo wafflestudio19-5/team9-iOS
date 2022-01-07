@@ -14,6 +14,7 @@ class DetailProfileView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = .white
         setLayoutForView()
         configureTableView()
     }
@@ -40,6 +41,8 @@ class DetailProfileView: UIView {
         detailProfileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         detailProfileTableView.register(DetailInformationTableViewCell.self, forCellReuseIdentifier: DetailInformationTableViewCell.reuseIdentifier)
         detailProfileTableView.allowsSelection = false
+        detailProfileTableView.refreshControl = refreshControl
+        detailProfileTableView.delaysContentTouches = false
     }
     
     private lazy var bottomSpinner: UIView = {

@@ -331,6 +331,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             self.present(navigationController, animated: true, completion: nil)
         }.disposed(by: disposeBag)
         
+        headerView.backgroundColor = .white
+        
         return headerView
     }
     
@@ -421,14 +423,18 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
         if let result = results.first{
             result.itemProvider.loadObject(ofClass: UIImage.self) { (image, error) in
                 guard let image = image as? UIImage else { return }
-                guard let imageData = image.pngData() else { return }
+                guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
                 
                 let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
                 
-                NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe(onNext: { event in
-                    print(event)
-                    print("upload complete!")
-                }).disposed(by: self.disposeBag)
+                NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe { event in
+                    let request = event.element
+                    let progress = request?.uploadProgress
+                    
+                    request?.responseString(completionHandler: { data in
+                        print("upload complete!")
+                    })
+                }.disposed(by: self.disposeBag)
 
             }
         }

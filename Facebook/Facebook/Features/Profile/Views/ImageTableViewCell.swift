@@ -66,9 +66,7 @@ extension ImageTableViewCell {
     private func loadImage(from url: URL?) {
         guard let url = url else { return }
         
-        let processor = DownsamplingImageProcessor(size: CGSize(width: 200, height: 200))
         KF.url(url)
-            .setProcessor(processor)
             .loadDiskFileSynchronously()
             .cacheMemoryOnly()
             .fade(duration: 0.1)
@@ -77,8 +75,9 @@ extension ImageTableViewCell {
         
         switch cellStyle {
         case .profileImage:
-            imgView.widthAnchor.constraint(equalToConstant: 150).isActive = true
-            imgView.layer.cornerRadius = imgView.frame.height / 2
+            imgView.heightAnchor.constraint(equalToConstant: 175).isActive = true
+            imgView.widthAnchor.constraint(equalToConstant: 175).isActive = true
+            imgView.layer.cornerRadius = 175 / 2
             imgView.clipsToBounds = true
             imgView.layer.borderColor = UIColor.white.cgColor//white color
             imgView.layer.borderWidth = 5
