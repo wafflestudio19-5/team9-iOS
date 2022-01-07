@@ -9,7 +9,7 @@ import UIKit
 
 class DetailProfileView: UIView {
 
-    let detailProfileTableView = UITableView(frame: .zero, style: .grouped)
+    let detailProfileTableView = ResponsiveTableView(frame: .zero, style: .grouped)
     let refreshControl = UIRefreshControl()
     
     override init(frame: CGRect) {
@@ -42,7 +42,6 @@ class DetailProfileView: UIView {
         detailProfileTableView.register(DetailInformationTableViewCell.self, forCellReuseIdentifier: DetailInformationTableViewCell.reuseIdentifier)
         detailProfileTableView.allowsSelection = false
         detailProfileTableView.refreshControl = refreshControl
-        detailProfileTableView.delaysContentTouches = false
     }
     
     private lazy var bottomSpinner: UIView = {

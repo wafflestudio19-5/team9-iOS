@@ -38,7 +38,7 @@ class ImageGridCell: UICollectionViewCell {
         super.init(frame: frame)
         setLayout()
         contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.3).cgColor
+        contentView.layer.borderColor = UIColor.grayscales.imageBorder.cgColor
     }
     
     required init?(coder: NSCoder) {
@@ -62,6 +62,8 @@ extension ImageGridCell {
         guard let url = url else {
             return
         }
+        
+        
 
         let processor = DownsamplingImageProcessor(size: CGSize(width: 400, height: 200))
         KF.url(url)
@@ -79,6 +81,7 @@ extension ImageGridCell {
     func displayMedia(from pickerResult: PHPickerResult) {
         let progress: Progress?
         let itemProvider = pickerResult.itemProvider
+        
         if itemProvider.canLoadObject(ofClass: PHLivePhoto.self) {
             progress = itemProvider.loadObject(ofClass: PHLivePhoto.self) { [weak self] livePhoto, error in
                 DispatchQueue.main.async {

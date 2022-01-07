@@ -24,5 +24,8 @@ target 'Facebook' do
 
   # Kingfisher
   pod 'Kingfisher'
+  
+  # Snapkit
+  pod 'SnapKit', '~> 5.0.0'
 
 end

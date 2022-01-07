@@ -58,7 +58,7 @@ class AuthorInfoHeaderView: UIView {
     private let profileImageView = ProfileImageView()
     
     // 작성자 이름 라벨
-    private let authorNameLabel: UILabel = InfoLabel(color: .black, size: 16, weight: .medium)
+    private let authorNameLabel: UILabel = InfoLabel(color: .label, size: 16, weight: .medium)
     
     // 작성 시간 라벨
     private let postDateLabel: UILabel = InfoLabel()
