@@ -178,11 +178,11 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     func createSection() {
         guard let userProfile = userProfile else { return }
 
-        let companyItems = userProfile.company?.map({ company in
+        var companyItems = userProfile.company?.map({ company in
             SectionItem.CompanyItem(company: company)
         }) ?? []
         
-        let universityItems = userProfile.university?.map({ university in
+        var universityItems = userProfile.university?.map({ university in
             SectionItem.UniversityItem(university: university)
         }) ?? []
         
@@ -217,21 +217,23 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 ])
             ]
         } else {
+            if companyItems.count == 0 {
+                companyItems = [ .SimpleInformationItem(style: .style3,
+                                                        informationType: .company,
+                                                        image: UIImage(systemName: "briefcase.circle") ?? UIImage(),
+                                                        information: "표시할 직장 정보 없음") ]
+            }
+            
+            if universityItems.count == 0 {
+                universityItems = [ .SimpleInformationItem(style: .style3,
+                                           informationType: .company,
+                                           image: UIImage(systemName: "graduationcap.circle") ?? UIImage(),
+                                           information: "표시할 학교 정보 없음") ]
+            }
+            
             sections = [
-                .DetailInformationSection(title: "직장", items: [
-                    (companyItems.count == 0) ? [
-                        .SimpleInformationItem(style: .style3,
-                                               informationType: .company,
-                                               image: UIImage(systemName: "briefcase.circle") ?? UIImage(),
-                                               information: "표시할 직장 정보 없음")
-                    ] : companyItems ),
-                .DetailInformationSection(title: "학력", items:[
-                    (universityItems.count == 0) ? [
-                        .SimpleInformationItem(style: .style3,
-                                               informationType: .company,
-                                               image: UIImage(systemName: "graduationcap.circle") ?? UIImage(),
-                                               information: "표시할 학교 정보 없음")
-                    ] : universityItems),
+                .DetailInformationSection(title: "직장", items: companyItems),
+                .DetailInformationSection(title: "학력", items: universityItems),
                 .DetailInformationSection(title: "기본 정보", items: [
                     .DetailInformationItem(style: .style1,
                                            image: UIImage(systemName: "person.circle")!,
