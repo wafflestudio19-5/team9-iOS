@@ -162,7 +162,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     //유저 프로필 관련 데이터 불러오기
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: 136), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
             

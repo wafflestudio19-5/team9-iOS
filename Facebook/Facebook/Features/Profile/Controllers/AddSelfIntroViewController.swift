@@ -81,6 +81,8 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
                     .subscribe{ [weak self] _ in
                         self?.loadData()
                     }.disposed(by: self.disposeBag)
+                
+                self.navigationController?.dismiss(animated: true, completion: nil)
             }.disposed(by: disposeBag)
         
         //textView의 입력한 text길이 표시 및 제한
