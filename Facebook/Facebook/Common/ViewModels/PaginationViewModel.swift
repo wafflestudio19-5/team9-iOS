@@ -45,7 +45,7 @@ class PaginationViewModel<DataModel: Codable> {
     
     init(endpoint: Endpoint) {
         self.endpoint = endpoint
-        NetworkService.post(endpoint: .login(email: "team9@test.com", password: "team9"), as: LoginResponse.self)
+        NetworkService.post(endpoint: .login(email: "team9@test.com", password: "team9"), as: AuthResponse.self)
             .subscribe(onNext: { element in
                 let response = element.1
                 NetworkService.registerToken(token: response.token)

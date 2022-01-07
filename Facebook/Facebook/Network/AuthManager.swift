@@ -12,7 +12,7 @@ struct AuthManager {
     // 회원가입
     static func signup(user: NewUser) -> Observable<Bool> {
         return Observable.create { isSuccess in
-            NetworkService.post(endpoint: .createUser(newUser: NewUser.shared), as: SignUpResponse.self)
+            NetworkService.post(endpoint: .createUser(newUser: NewUser.shared), as: AuthResponse.self)
                 .subscribe { event in
                     guard let response = event.element?.1 else {
                         isSuccess.onNext(false)
@@ -28,7 +28,7 @@ struct AuthManager {
     // 로그인
     static func login(email: String, password: String) -> Observable<Bool> {
         return Observable.create { isSuccess in
-            NetworkService.post(endpoint: .login(email: email, password: password), as: LoginResponse.self)
+            NetworkService.post(endpoint: .login(email: email, password: password), as: AuthResponse.self)
                 .subscribe { event in
                     guard let response = event.element?.1 else {
                         isSuccess.onNext(false)
