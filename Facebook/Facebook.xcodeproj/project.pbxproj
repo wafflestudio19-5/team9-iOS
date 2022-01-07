@@ -50,6 +50,9 @@
 		77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B635472768B30A00C41EB3 /* EditProfileViewController.swift */; };
 		77E12FA22769A97800B8F191 /* CreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA12769A97800B8F191 /* CreatePostView.swift */; };
 		77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA32769A98900B8F191 /* CreatePostViewController.swift */; };
+		B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */; };
+		B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91F2787F93F00750397 /* KakaoLoginView.swift */; };
+		B82EC9242788414400750397 /* Endpoint+Kakao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC9232788414400750397 /* Endpoint+Kakao.swift */; };
 		77FE72872775E00600482CE7 /* SelectInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72862775E00600482CE7 /* SelectInformationView.swift */; };
 		77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */; };
 		77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728A2776021600482CE7 /* SearchHeaderView.swift */; };
@@ -195,6 +198,9 @@
 		77FE728A2776021600482CE7 /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
 		77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectTableViewCell.swift; sourceTree = "<group>"; };
 		AF0AA20D3E5E391258D676CE /* Pods-Facebook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.release.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.release.xcconfig"; sourceTree = "<group>"; };
+		B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
+		B82EC91F2787F93F00750397 /* KakaoLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginView.swift; sourceTree = "<group>"; };
+		B82EC9232788414400750397 /* Endpoint+Kakao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Kakao.swift"; sourceTree = "<group>"; };
 		B846BDA42754E53700513B77 /* KakaoAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthManager.swift; sourceTree = "<group>"; };
 		B846BDA62754F35800513B77 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B846BDA92754F5A900513B77 /* FacebookColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookColor.swift; sourceTree = "<group>"; };
@@ -640,6 +646,7 @@
 			isa = PBXGroup;
 			children = (
 				B846BDA62754F35800513B77 /* LoginView.swift */,
+				B82EC91F2787F93F00750397 /* KakaoLoginView.swift */,
 				B86194E7275D135300957BBC /* SignUp */,
 			);
 			path = Views;
@@ -649,6 +656,7 @@
 			isa = PBXGroup;
 			children = (
 				B846BDAD275504AA00513B77 /* LoginViewController.swift */,
+				B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */,
 				B86194EA275D15A700957BBC /* SignUp */,
 			);
 			path = Controllers;
@@ -817,6 +825,7 @@
 				BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */,
 				BE9C7C91276CDF230089247F /* Endpoint+User.swift */,
 				B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */,
+				B82EC9232788414400750397 /* Endpoint+Kakao.swift */,
 				7754B86C2781A0B900775D81 /* Endpoint+Profile.swift */,
 			);
 			path = Endpoints;
@@ -956,11 +965,14 @@
 				BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */,
 				7754B8822782C25800775D81 /* PhotoPopUpView.swift in Sources */,
 				77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */,
+				B82EC9242788414400750397 /* Endpoint+Kakao.swift in Sources */,
 				BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */,
 				7754B8732781D7BC00775D81 /* BirthSelectTableViewCell.swift in Sources */,
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
 				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
+				7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */,
+				B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
 				BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */,
 				B85D67E4277C964F002CCC04 /* AuthResponse.swift in Sources */,
@@ -1012,6 +1024,7 @@
 				BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */,
 				B85D67F027840F16002CCC04 /* AuthManager.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
+				B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */,
 				B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */,
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
 				BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */,
