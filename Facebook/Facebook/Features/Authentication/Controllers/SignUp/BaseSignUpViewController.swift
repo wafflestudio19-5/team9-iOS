@@ -29,11 +29,11 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
             .subscribe { [weak self] result in
                 guard let success = result.element else { return }
                 
-                switch success {
-                case true:
+                if success {
                     // 카카오 로그인 페이지로 이동
-                    self?.changeRootViewController(to: RootTabBarController())
-                case false:
+                    self?.push(viewController: KakaoLoginViewController())
+                    //self?.changeRootViewController(to: RootTabBarController())
+                } else {
                     // 임의로 만들었습니다
                     self?.alert(title: "회원가입 실패", message: "이미 등록되어 있거나 가입할 수 없는 계정입니다. 입력하신 정보를 다시 확인해주시기 바랍니다.", action: "확인")
                 }

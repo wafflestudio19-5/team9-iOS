@@ -10,7 +10,7 @@ import UIKit
 class KakaoLoginView: UIView {
 
     let instructionLabel = UILabel()
-    let kakaoLoginButton = UIImageView()
+    let kakaoLoginButton = RectangularSlimButton(title: "카카오 계정 연동하기", titleColor: .brown, backgroundColor: .systemYellow)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,7 +26,7 @@ class KakaoLoginView: UIView {
     }
     
     private func setTextForLabel() {
-        instructionLabel.text = "회원가입 및 로그인 과정의 마지막 절차입니다.\n아래 버튼을 눌러 카카오 계정을 연동해주시기 바랍니다."
+        instructionLabel.text = "카카오 계정 연동을 통해 로그인 화면에서 간편 로그인 기능을 사용할 수 있습니다.\n카카오 계정 연동을 원하신다면, 아래 버튼을 눌러 연동 과정을 진행하시기 바랍니다. \"건너뛰기\"를 누르시면 추후 마이페이지 등을 통해서도 카카오 계정을 연동하실 수 있습니다."
     }
     
     private func setStyleForView() {

@@ -38,7 +38,7 @@ class LoginViewController<View: LoginView>: UIViewController {
             self?.login()
         }.disposed(by: disposeBag)
         
-        loginView.forgotPasswordButton.rx.tap.bind {
+        loginView.forgotPasswordButton.rx.tap.bind { [weak self] _ in
             // navigate to findPasswordView
             // 사용X
         }.disposed(by: disposeBag)
