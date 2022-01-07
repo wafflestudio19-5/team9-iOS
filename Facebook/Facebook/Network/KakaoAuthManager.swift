@@ -33,16 +33,18 @@ class KakaoAuthManager {
                         case .connect:
                             self.connectKakaoAccount(accessToken: response.accessToken)
                                 .subscribe { success in
-                                    if let success = success.element {
-                                        result.onNext(success ? true : false)
+                                    switch success {
+                                    case .success(true): result.onNext(true)
+                                    default: result.onNext(false)
                                     }
                                 }.disposed(by: self.disposeBag)
                             return
                         case .login:
                             self.loginKakaoAccount(accessToken: response.accessToken)
                                 .subscribe { success in
-                                    if let success = success.element {
-                                        result.onNext(success ? true : false)
+                                    switch success {
+                                    case .success(true): result.onNext(true)
+                                    default: result.onNext(false)
                                     }
                                 }.disposed(by: self.disposeBag)
                         }
@@ -58,16 +60,18 @@ class KakaoAuthManager {
                         case .connect:
                             self.connectKakaoAccount(accessToken: response.accessToken)
                                 .subscribe { success in
-                                    if let success = success.element {
-                                        result.onNext(success ? true : false)
+                                    switch success {
+                                    case .success(true): result.onNext(true)
+                                    default: result.onNext(false)
                                     }
                                 }.disposed(by: self.disposeBag)
                             return
                         case .login:
                             self.loginKakaoAccount(accessToken: response.accessToken)
                                 .subscribe { success in
-                                    if let success = success.element {
-                                        result.onNext(success ? true : false)
+                                    switch success {
+                                    case .success(true): result.onNext(true)
+                                    default: result.onNext(false)
                                     }
                                 }.disposed(by: self.disposeBag)
                         }
@@ -79,42 +83,33 @@ class KakaoAuthManager {
         }
     }
     
-    private func connectKakaoAccount(accessToken: String) -> Observable<Bool> {
+    private func connectKakaoAccount(accessToken: String) -> Single<Bool> {
         // 카카오 access token과 유저의 JWT 토큰으로 서버에 "카카오 계정 연결" 요청
-        // 성공하면 String 메시지만 반환됨
-        
-        print("\ntrying to connect....\n")
-        return Observable<Bool>.create { result in
+
+        return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .connectWithKakao(accessToken: accessToken), as: String.self)
-                .subscribe { response in
-                    guard let status = response.element?.0.statusCode else { return }
-                    if status == 201 {
-                        print("NetworkService 성공")
-                        result.onNext(true)
-                    } else {
-                        print("NetworkService 실패")
-                        result.onNext(false)
-                    }
-                }.disposed(by: self.disposeBag)
+                .subscribe(onNext: { response in
+                    if response.0.statusCode == 201 { result(.success(true)) }
+                    else { result(.success(false)) }
+                }, onError: { _ in
+                    result(.success(false))
+                }).disposed(by: self.disposeBag)
             return Disposables.create()
         }
     }
     
-    private func loginKakaoAccount(accessToken: String) -> Observable<Bool> {
+    private func loginKakaoAccount(accessToken: String) -> Single<Bool> {
         // 카카오 access token으로 서버에 "카카오 계정으로 로그인" 요청
         
-        print("\ntrying to login....\n")
-        return Observable<Bool>.create { result in
+        return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .loginWithKakao(accessToken: accessToken), as: AuthResponse.self)
-                .subscribe { response in
-                    guard let response = response.element?.1 else {
-                        result.onNext(false)
-                        return
-                    }
-                    CurrentUser.shared.profile = response.user
-                    NetworkService.registerToken(token: response.token)
-                    result.onNext(true)
-                }.disposed(by: self.disposeBag)
+                .subscribe(onNext: { response in
+                    CurrentUser.shared.profile = response.1.user
+                    NetworkService.registerToken(token: response.1.token)
+                    result(.success(true))
+                }, onError: { _ in
+                    result(.success(false))
+                }).disposed(by: self.disposeBag)
             return Disposables.create()
         }
     }
