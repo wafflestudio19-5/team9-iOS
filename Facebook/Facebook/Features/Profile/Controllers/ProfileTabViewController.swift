@@ -90,8 +90,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.configureCell(image: image, information: information)
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let detailProfileViewController = DetailProfileViewController()
-                self?.push(viewController: detailProfileViewController)
+                guard let self = self else { return }
+                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                self.push(viewController: detailProfileViewController)
             }).disposed(by: cell.disposeBag)
             
             return cell
@@ -115,8 +116,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                information: company.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let detailProfileViewController = DetailProfileViewController()
-                self?.push(viewController: detailProfileViewController)
+                guard let self = self else { return }
+                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                self.push(viewController: detailProfileViewController)
             }).disposed(by: cell.disposeBag)
             
             return cell
@@ -128,8 +130,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                information: university.name ?? "")
             
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let detailProfileViewController = DetailProfileViewController()
-                self?.push(viewController: detailProfileViewController)
+                guard let self = self else { return }
+                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                self.push(viewController: detailProfileViewController)
             }).disposed(by: cell.disposeBag)
             
             return cell
@@ -157,7 +160,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
         if userId != nil { self.userId = userId! }
         else if CurrentUser.shared.profile != nil { self.userId = CurrentUser.shared.profile!.id }
-        else { self.userId = 0}
+        else { self.userId = 0 }
 
         postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: self.userId))
         
@@ -201,6 +204,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
             
                 self.userProfile = response
+                self.createSection()
         }.disposed(by: disposeBag)
     }
     

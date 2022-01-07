@@ -41,7 +41,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             cell.initialSetup(cellStyle: style)
             cell.configureCell(image: image, information: information)
             
-            if self.userId == nil {
+            if self.userId == CurrentUser.shared.profile?.id {
                 cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                     guard let informationType = informationType else { return }
                     
@@ -78,7 +78,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                    privacyBound: "전체 공개")
             }
             
-            if self.userId == nil {
+            if self.userId == CurrentUser.shared.profile?.id {
                 cell.editButton.rx.tap.bind { [weak self] in
                     let addInformationViewController = AddInformationViewController(informationType: .company, id: company.id ?? nil)
                     self?.push(viewController: addInformationViewController)
@@ -105,7 +105,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                    privacyBound: "전체 공개")
             }
             
-            if self.userId == nil {
+            if self.userId == CurrentUser.shared.profile?.id {
                 cell.editButton.rx.tap.bind { [weak self] in
                     let addInformationViewController = AddInformationViewController(informationType: .university, id: university.id ?? nil)
                     self?.push(viewController: addInformationViewController)
@@ -126,13 +126,13 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
     
-    private var userId: Int? = nil
+    private var userId: Int
     private var userProfile: UserProfile?
     
-    init(userId: Int? = nil) {
-        super.init(nibName: nil, bundle: nil)
+    init(userId: Int) {
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
         self.userId = userId
+        super.init(nibName: nil, bundle: nil)
     }
     
     required init?(coder: NSCoder) {
@@ -156,7 +156,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
     
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: 41), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: self.userId), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
                 
@@ -187,7 +187,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         }) ?? []
         
         var sections: [MultipleSectionModel]
-        if userId == nil {
+        if userId == CurrentUser.shared.profile?.id {
             sections = [
                 .DetailInformationSection(title: "직장", items: [
                     .SimpleInformationItem(style: .style3,
@@ -288,7 +288,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15)
         ])
         
-        if userId == nil {
+        if userId == CurrentUser.shared.profile?.id {
             if section == 2 || section == 3 {
                 let sectionButton = UIButton(type: .system)
                 sectionButton.setTitle("수정", for: .normal)
