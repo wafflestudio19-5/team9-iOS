@@ -23,8 +23,9 @@ class ImageTableViewCell: UITableViewCell {
     var cellStyle: Style = .profileImage
     
     override func prepareForReuse() {
-          super.prepareForReuse()
-          disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
+        super.prepareForReuse()
+        disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
+        resetCell()
     }
     
     override func awakeFromNib() {
@@ -39,6 +40,11 @@ class ImageTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    func resetCell() {
+        self.removeConstraints(self.constraints)
+        imgView.removeConstraints(imgView.constraints)
+    }
+    
     func configureCell(cellStyle: Style, imageUrl: String){
         self.cellStyle = cellStyle
         if imageUrl != "" {
@@ -46,21 +52,21 @@ class ImageTableViewCell: UITableViewCell {
         }else {
             switch self.cellStyle {
             case .profileImage:
+                NSLayoutConstraint.activate([
+                    imgView.heightAnchor.constraint(equalToConstant: 225),
+                    imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
+                    imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
+                ])
                 imgView.layer.cornerRadius = 5
                 imgView.image = UIImage(systemName: "person.circle.fill")
+            case .coverImage:
                 NSLayoutConstraint.activate([
                     imgView.heightAnchor.constraint(equalToConstant: 225),
                     imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
                     imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
                 ])
-            case .coverImage:
                 imgView.layer.cornerRadius = 5
                 imgView.image = UIImage(systemName: "photo")
-                NSLayoutConstraint.activate([
-                    imgView.heightAnchor.constraint(equalToConstant: 225),
-                    imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-                    imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
-                ])
             }
         }
     }
@@ -79,7 +85,6 @@ extension ImageTableViewCell {
         
         switch cellStyle {
         case .profileImage:
-            imgView.removeConstraints(imgView.constraints)
             NSLayoutConstraint.activate([
                 imgView.heightAnchor.constraint(equalToConstant: 175),
                 imgView.widthAnchor.constraint(equalToConstant: 175)
@@ -87,12 +92,12 @@ extension ImageTableViewCell {
             imgView.layer.cornerRadius = 175 / 2
             imgView.clipsToBounds = true
         case .coverImage:
-            imgView.layer.cornerRadius = 5
             NSLayoutConstraint.activate([
                 imgView.heightAnchor.constraint(equalToConstant: 225),
                 imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
                 imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
             ])
+            imgView.layer.cornerRadius = 5
         }
     }
 }

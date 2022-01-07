@@ -35,9 +35,9 @@ class DetailInformationTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-          super.prepareForReuse()
-          resetCell()
-          disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
+        super.prepareForReuse()
+        disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
+        resetCell()
     }
     
     override func awakeFromNib() {
@@ -93,7 +93,7 @@ class DetailInformationTableViewCell: UITableViewCell {
         informationLabel.text = ""
         descriptionLabel.text = ""
         timeLabel.text = ""
-        descriptionLabel.text = ""
+        privacyBoundLabel.text = ""
     }
     
     private func setStyle() {
