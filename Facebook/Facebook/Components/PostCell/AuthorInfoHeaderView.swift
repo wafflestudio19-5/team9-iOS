@@ -26,7 +26,6 @@ class AuthorInfoHeaderView: UIView {
             profileImageView.heightAnchor.constraint(equalToConstant: imageWidth)
         ])
         
-        let labelStack = UIView()
         labelStack.translatesAutoresizingMaskIntoConstraints = false
         labelStack.addSubview(authorNameLabel)
         labelStack.addSubview(postDateLabel)
@@ -46,7 +45,7 @@ class AuthorInfoHeaderView: UIView {
     }
     
     func configure(with post: Post) {
-        authorNameLabel.text = post.author?.username
+        authorNameLabel.text = post.author?.username ?? "알 수 없음"
         postDateLabel.text = post.posted_at
         if let urlString = post.author?.profile_image {
             profileImageView.setImage(from: URL(string: urlString))
@@ -57,11 +56,13 @@ class AuthorInfoHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    let labelStack = UIView()
+    
     // Profile Image가 표시되는 뷰 (현재는 아이콘으로 구현)
-    private let profileImageView = ProfileImageView()
+    let profileImageView = ProfileImageView()
     
     // 작성자 이름 라벨
-    private let authorNameLabel: UILabel = InfoLabel(color: .label, size: 16, weight: .medium)
+    let authorNameLabel: InfoLabel = InfoLabel(color: .label, size: 16, weight: .medium)
     
     // 작성 시간 라벨
     private let postDateLabel: UILabel = InfoLabel()

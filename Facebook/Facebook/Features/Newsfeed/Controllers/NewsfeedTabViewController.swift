@@ -161,15 +161,13 @@ extension UIViewController {
                 self?.pushToDetailVC(cell: cell, asFirstResponder: true)
             }.disposed(by: cell.disposeBag)
         
-        // 셀 헤더 부분 터치 시 디테일 화면으로 이동
-        cell.postHeader.rx.tapGesture(configuration: { _, delegate in
-            delegate.touchReceptionPolicy = .custom { _, shouldReceive in
-                return !(shouldReceive.view is UIControl)
-            }
-        })
-            .when(.recognized)
+        let authorNameTapped = cell.postHeader.authorNameLabel.rx.tapGesture().when(.recognized)  // not working...
+        let profileImageTapped = cell.postHeader.profileImageView.rx.tapGesture().when(.recognized)
+        Observable.of(profileImageTapped, authorNameTapped)
+            .merge()
             .bind { [weak self] _ in
-                self?.pushToDetailVC(cell: cell, asFirstResponder: false)
+                let profileVC = ProfileTabViewController(userId: post.author?.id)
+                self?.push(viewController: profileVC)
             }
             .disposed(by: cell.disposeBag)
         
