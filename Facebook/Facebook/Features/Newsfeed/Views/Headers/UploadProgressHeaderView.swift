@@ -21,12 +21,7 @@ class UploadProgressHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var divider: UIView = {
-        let view = UIView()
-        view.backgroundColor = .Grayscales.gray2
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    let divider = Divider()
     
     var progressView: UIProgressView = {
         let progressView = UIProgressView()

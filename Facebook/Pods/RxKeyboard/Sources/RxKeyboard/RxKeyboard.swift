@@ -125,11 +125,16 @@ public class RxKeyboard: NSObject, RxKeyboardType {
     // gesture recognizer
     self.panRecognizer.delegate = self
     
-    UIApplication.rx.didFinishLaunching // when RxKeyboard is initialized before UIApplication.window is created
-      .subscribe(onNext: { _ in
-        UIApplication.shared.windows.first?.addGestureRecognizer(self.panRecognizer)
-      })
-      .disposed(by: self.disposeBag)
+      if let window = UIApplication.shared.windows.first(where: { (window) -> Bool in window.isKeyWindow}) {
+          window.addGestureRecognizer(self.panRecognizer)
+      } else {
+          UIApplication.rx.didFinishLaunching // when RxKeyboard is initialized before UIApplication.window is created
+              .subscribe(onNext: { _ in
+                if let window = UIApplication.shared.windows.first(where: { (window) -> Bool in window.isKeyWindow}) {
+                  window.addGestureRecognizer(self.panRecognizer)
+                }
+          }).disposed(by: disposeBag)
+      }
   }
 
 }

@@ -9,6 +9,8 @@ import Alamofire
 import RxSwift
 import RxAlamofire
 import UIKit
+import RxCocoa
+import RxGesture
 
 class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
@@ -25,54 +27,58 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
+        bindNavigationBar()
     }
     
-    /// `tableHeaderView`의 높이를 다이나믹하게 조절한다.
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if let headerView = tableView.tableHeaderView {
-            let height = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-            var headerFrame = headerView.frame
-
-            // Comparison necessary to avoid infinite loop
-            if height != headerFrame.size.height {
-                headerFrame.size.height = height
-                headerView.frame = headerFrame
-                tableView.tableHeaderView = headerView
+        tableView.adjustHeaderHeight()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    private func bindNavigationBar() {
+        tableView.rx.panGesture()
+            .when(.recognized)
+            .bind { [weak self] recognizer in
+                guard let self = self else { return }
+                let transition = recognizer.translation(in: self.tableView).y
+                if transition < -100 {
+                    self.navigationController?.setNavigationBarHidden(true, animated: true)
+                } else if transition > 100 {
+                    self.navigationController?.setNavigationBarHidden(false, animated: true)
+                }
             }
-        }
+            .disposed(by: disposeBag)
     }
     
     func bind() {
         
         /// `무슨 생각을 하고 계신가요?` 버튼을 클릭하면 포스트 작성 화면으로 넘어가도록 바인딩
-        tabView.mainTableHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
-            guard let self = self else { return }
-            let createPostViewController = CreatePostViewController()
-            let navigationController = UINavigationController(rootViewController: createPostViewController)
-            navigationController.modalPresentationStyle = .fullScreen
-            self.present(navigationController, animated: true, completion: nil)
-        }
-        .disposed(by: disposeBag)
+        tabView.mainTableHeaderView.createPostButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let createPostViewController = CreatePostViewController()
+                let navigationController = UINavigationController(rootViewController: createPostViewController)
+                navigationController.modalPresentationStyle = .fullScreen
+                self.present(navigationController, animated: true, completion: nil)
+            }
+            .disposed(by: disposeBag)
         
         /// `viewModel.dataList`와 `tableView`의 dataSource를 바인딩합니다.
         viewModel.dataList
-            .bind(to: tableView.rx.items(cellIdentifier: "PostCell", cellType: PostCell.self)) { row, post, cell in
-                cell.configureCell(with: post)
-                
-                // buttons
-                cell.buttonHorizontalStackView.likeButton.rx.tap.bind { [weak self] _ in
-                    cell.like(post: post)
-                    NetworkService.put(endpoint: .newsfeedLike(postId: post.id))
-                        .bind { response in
-                            print(response)
-//                            cell.setLikes(count: response.1.likes)
-                        }.disposed(by: cell.disposeBag)
-                }.disposed(by: cell.disposeBag)
-                
-                cell.buttonHorizontalStackView.commentButton.rx.tap.bind { [weak self] _ in
-                    self?.push(viewController: PostDetailViewController(post: post))
-                }.disposed(by: cell.disposeBag)  // cell이 reuse될 때 disposeBag은 새로운 것으로 갈아끼워진다(prepareForReuse에 의해). 따라서 기존 cell의 구독이 취소된다.
+            .observe(on: MainScheduler.instance)
+            .bind(to: tableView.rx.items(cellIdentifier: PostCell.reuseIdentifier, cellType: PostCell.self)) { [weak self] row, post, cell in
+                guard let self = self else { return }
+                self.configure(cell: cell, with: post)
             }
             .disposed(by: disposeBag)
         
@@ -81,9 +87,9 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             .asDriver()
             .drive(onNext: { [weak self] isLoading in
                 if isLoading {
-                    self?.tabView.showBottomSpinner()
+                    self?.tableView.showBottomSpinner()
                 } else {
-                    self?.tabView.hideBottomSpinner()
+                    self?.tableView.hideBottomSpinner()
                 }
             })
             .disposed(by: disposeBag)
@@ -106,15 +112,72 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             .disposed(by: disposeBag)
         
         /// 테이블 맨 아래까지 스크롤할 때마다 `loadMore` 함수를 실행합니다.
-        tableView.rx.didScroll.subscribe { [weak self] _ in
-            guard let self = self else { return }
-            let offSetY = self.tableView.contentOffset.y
-            let contentHeight = self.tableView.contentSize.height
-            
-            if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
-                self.viewModel.loadMore()
+        tableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let offSetY = self.tableView.contentOffset.y
+                let contentHeight = self.tableView.contentSize.height
+                if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
+                    self.viewModel.loadMore()
+                }
             }
-        }
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
+        
+    }
+}
+
+extension UIViewController {
+    func pushToDetailVC(cell: PostCell, asFirstResponder: Bool) {
+        let detailVC = PostDetailViewController(post: cell.post, asFirstResponder: asFirstResponder)
+        
+        // subscribe to changes is DetailView
+        detailVC.postView.postContentHeaderView.postUpdated
+            .bind { updatedPost in
+                cell.post = updatedPost  // cell will be updated accordingly
+            }
+            .disposed(by: detailVC.disposeBag)
+        
+        self.push(viewController: detailVC)
+    }
+    
+    /// PostCell Configuration Logic
+    func configure(cell: PostCell, with post: Post) {
+        cell.configureCell(with: post)
+        
+        // 좋아요 버튼 바인딩
+        cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
+            cell.like()
+            NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
+                .bind { response in
+                    cell.like(syncWith: response.1)
+                }
+                .disposed(by: cell.disposeBag)
+        }.disposed(by: cell.disposeBag)
+        
+        // 댓글 버튼 터치 시 디테일 화면으로 이동
+        cell.buttonHorizontalStackView.commentButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] _ in
+                self?.pushToDetailVC(cell: cell, asFirstResponder: true)
+            }.disposed(by: cell.disposeBag)
+        
+        // 셀 헤더 부분 터치 시 디테일 화면으로 이동
+        cell.postHeader.rx.tapGesture(configuration: { _, delegate in
+            delegate.touchReceptionPolicy = .custom { _, shouldReceive in
+                return !(shouldReceive.view is UIControl)
+            }
+        })
+            .when(.recognized)
+            .bind { [weak self] _ in
+                self?.pushToDetailVC(cell: cell, asFirstResponder: false)
+            }
+            .disposed(by: cell.disposeBag)
+        
+        // 댓글 수 클릭시 디테일 화면으로 이동
+        cell.commentCountButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] _ in
+                self?.pushToDetailVC(cell: cell, asFirstResponder: false)
+            }.disposed(by: cell.disposeBag)
     }
 }

@@ -15,11 +15,11 @@ class ImageGridCollectionView: ContentSizeFitCollectionView {
     /// 버그 수정을 위한 workaround
     let eps: CGFloat = 0.000001
     
-    init() {
+    init(frame: CGRect = .zero) {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = spacing
         layout.minimumInteritemSpacing = spacing
-        super.init(frame: .zero, collectionViewLayout: layout)
+        super.init(frame: frame, collectionViewLayout: layout)
         self.register(ImageGridCell.self, forCellWithReuseIdentifier: ImageGridCell.reuseIdentifier)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.isScrollEnabled = false
@@ -62,6 +62,8 @@ extension ImageGridCollectionView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let item = indexPath.item
         switch numberOfImages {
+        case 0:
+            return .zero
         case 1:
             return getItemSize(width: .one, height: .threeFourths)
         case 2:

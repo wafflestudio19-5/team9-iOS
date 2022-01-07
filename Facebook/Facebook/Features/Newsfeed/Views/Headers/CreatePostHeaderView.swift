@@ -68,7 +68,7 @@ class CreatePostHeaderView: UIView {
         container.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         
         var configuration = UIButton.Configuration.tinted()
-        configuration.baseForegroundColor = .black
+        configuration.baseForegroundColor = .grayscales.label
         configuration.contentInsets = .init(.init(top: 7, leading: 5, bottom: 7, trailing: 5))
         configuration.attributedTitle = AttributedString(buttonLabel, attributes: container)
         button.configuration = configuration
@@ -80,10 +80,5 @@ class CreatePostHeaderView: UIView {
         return button
     }()
     
-    private lazy var divider: UIView = {
-        let divider = UIView()
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = .Grayscales.gray1
-        return divider
-    }()
+    private let divider = Divider(color: .grayscales.newsfeedDivider)
 }

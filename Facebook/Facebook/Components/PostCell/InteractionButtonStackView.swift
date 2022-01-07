@@ -17,14 +17,14 @@ class InteractionButtonStackView: UIStackView {
     // 버튼 스택 뷰 위에 보이는 디바이더
     private let topBorder: UIView = {
         let line = UIView()
-        line.backgroundColor = .Grayscales.gray2
+        line.backgroundColor = .grayscales.border
         line.translatesAutoresizingMaskIntoConstraints = false
         return line
     }()
     
     private let bottomBorder: UIView = {
         let line = UIView()
-        line.backgroundColor = .Grayscales.gray2
+        line.backgroundColor = .grayscales.border
         line.translatesAutoresizingMaskIntoConstraints = false
         return line
     }()

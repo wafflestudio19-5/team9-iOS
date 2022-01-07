@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     // 로그인 여부를 확인하는 변수
     private var didLogin: Bool {
-        return true
+//        return true
         guard let didLogin = UserDefaults.standard.value(forKey: "didLogin") as? Bool else {
             print("\n로그인 정보가 없습니다!\n")
             return false
@@ -40,7 +40,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         window.rootViewController = {
-            if didLogin { return UINavigationController(rootViewController: LoginViewController()) }
+            if didLogin { return RootTabBarController() }
             else { return UINavigationController(rootViewController: LoginViewController()) }
             
         }()

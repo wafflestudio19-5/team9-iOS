@@ -36,7 +36,7 @@ class InteractionButton: UIButton {
         container.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
         
         var configuration = UIButton.Configuration.plain()
-        configuration.baseForegroundColor = .darkGray
+        configuration.baseForegroundColor = .grayscales.label
         configuration.baseBackgroundColor = .clear
         configuration.image = UIImage(systemName: symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))
         configuration.imagePadding = 5
@@ -72,12 +72,12 @@ class LikeButton: InteractionButton {
                 button.configuration?.image = UIImage(systemName: self.filledSymbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))
                 button.configuration?.baseForegroundColor = FacebookColor.blue.color()
             case .highlighted:
-                button.configuration?.baseForegroundColor = .darkGray
+                button.configuration?.baseForegroundColor = .grayscales.label
             case .normal:
                 button.configuration?.image = UIImage(systemName: self.symbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))
-                button.configuration?.baseForegroundColor = .darkGray
+                button.configuration?.baseForegroundColor = .grayscales.label
             default:
-                button.configuration?.baseForegroundColor = .yellow
+                button.configuration?.baseForegroundColor = .grayscales.label
             }
         }
     }

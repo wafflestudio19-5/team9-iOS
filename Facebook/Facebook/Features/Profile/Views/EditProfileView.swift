@@ -9,7 +9,7 @@ import UIKit
 
 class EditProfileView: UIView {
 
-    let editProfileTableView = UITableView(frame: .zero, style: .grouped)
+    let editProfileTableView = ResponsiveTableView(frame: .zero, style: .grouped)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

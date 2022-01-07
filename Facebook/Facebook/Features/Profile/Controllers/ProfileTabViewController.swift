@@ -23,7 +23,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
     
     //enum SectionItem의 유형에 따라 다른 cell type을 연결
-    private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { dataSource, tableView, idxPath, _ in
+    private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { [weak self] dataSource, tableView, idxPath, _ in
+        guard let self = self else { return UITableViewCell() }
         switch dataSource[idxPath] {
         case let .MainProfileItem(profileImageUrl, coverImageUrl, name, selfIntro, buttonText):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
@@ -135,8 +136,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             return cell
         case let .PostItem(post):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
-
-            cell.configureCell(with: post)
+            self.configure(cell: cell, with: post)
             return cell
         default:
             let cell = UITableViewCell()

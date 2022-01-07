@@ -25,13 +25,9 @@ class NewsfeedTabView: UIView {
     
     private func setLayoutForView() {
         self.addSubview(newsfeedTableView)
-        newsfeedTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            newsfeedTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            newsfeedTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            newsfeedTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            newsfeedTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
-        ])
+        newsfeedTableView.snp.makeConstraints { make in
+            make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
     }
     
     private func configureTableView() {
@@ -42,31 +38,6 @@ class NewsfeedTabView: UIView {
         newsfeedTableView.allowsSelection = false
         newsfeedTableView.refreshControl = refreshControl
         newsfeedTableView.delaysContentTouches = false
-    }
-    
-    // MARK: Bottom Spinner
-    
-    private lazy var bottomSpinner: UIView = {
-        let view = UIView(frame: CGRect(
-            x: 0,
-            y: 0,
-            width: self.frame.size.width,
-            height: 100)
-        )
-        let spinner = UIActivityIndicatorView()
-        view.addSubview(spinner)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        spinner.startAnimating()
-        return view
-    }()
-    
-    func showBottomSpinner() {
-        self.newsfeedTableView.tableFooterView = self.bottomSpinner
-    }
-    
-    func hideBottomSpinner() {
-        self.newsfeedTableView.tableFooterView = UIView(frame: .zero)
+        newsfeedTableView.separatorStyle = .none
     }
 }

@@ -15,7 +15,7 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.tintColor = .systemBlue
         self.tabBar.unselectedItemTintColor = .darkGray
         
-        self.view.backgroundColor = .white
+        self.view.backgroundColor = .systemBackground
         self.view.tintColor = .darkGray
         self.navigationItem.backButtonTitle = ""
         
@@ -28,7 +28,7 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
                            notificationNavController]
         
         self.viewControllers = controllers
-        self.tabBar.backgroundColor = UIColor.white
+        self.tabBar.backgroundColor = .systemBackground
     }
     
     lazy var newsfeedNavController: UINavigationController = {

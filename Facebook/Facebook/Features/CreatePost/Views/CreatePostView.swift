@@ -7,50 +7,27 @@
 
 import UIKit
 import RxSwift
+import RxKeyboard
 
 class CreatePostView: UIView {
     let placeholder = "무슨 생각을 하고 계신가요?"
     let imageGridCollectionView = ImageGridCollectionView()
     private let disposeBag = DisposeBag()
+    var scrollViewBottomConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setStyleForView()
         setLayoutForView()
-        bindPlaceholder()
-        contentTextView.inputAccessoryView = keyboardInputAccessory
+        contentTextView.inputAccessoryView = keyboardAccessory
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func bindPlaceholder() {
-        contentTextView.text = placeholder
-        contentTextView.textColor = .lightGray
-        contentTextView.rx.didBeginEditing
-            .subscribe { [weak self] _ in
-                guard let self = self else {return}
-                if self.contentTextView.text == self.placeholder {
-                    self.contentTextView.text = nil
-                    self.contentTextView.textColor = .black
-                }
-            }
-            .disposed(by: disposeBag)
-        
-        contentTextView.rx.didEndEditing
-            .subscribe { [weak self] _ in
-                guard let self = self else {return}
-                if self.contentTextView.text == nil || self.contentTextView.text == "" {
-                    self.contentTextView.text = self.placeholder
-                    self.contentTextView.textColor = .lightGray
-                }
-            }
-            .disposed(by: disposeBag)
-    }
-    
     private func setStyleForView() {
-        self.backgroundColor = .white
+        self.backgroundColor = .systemBackground
     }
     
     /// `view` > `scrollView` > `stackView`
@@ -59,6 +36,7 @@ class CreatePostView: UIView {
     private func setLayoutForView() {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.keyboardDismissMode = .interactive
         
         let scrollViewStack = UIStackView()
         scrollViewStack.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +47,14 @@ class CreatePostView: UIView {
         self.addSubview(scrollView)
         scrollView.addSubview(scrollViewStack)
         
-        NSLayoutConstraint.activateFourWayConstraints(subview: scrollView, containerView: self)
+        scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        scrollViewBottomConstraint?.priority = .defaultHigh
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: self.topAnchor),
+            scrollViewBottomConstraint!,
+        ])
         NSLayoutConstraint.activateFourWayConstraints(subview: scrollViewStack, containerView: scrollView)
         NSLayoutConstraint.activate([
             scrollViewStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
@@ -78,22 +63,33 @@ class CreatePostView: UIView {
     
     // MARK: UI Components
     
-    lazy var keyboardInputAccessory: UIView = {
-        let inputAccessory = UIView(frame: .init(x: 0, y: 0, width: 0, height: 50))
-        inputAccessory.addSubview(photosButton)
+    lazy var keyboardAccessory: UIView = {
+        let divider = Divider()
+        let customInputView = CustomInputAccessoryView()
+        customInputView.addSubview(photosButton)
+        customInputView.addSubview(divider)
         NSLayoutConstraint.activate([
-            photosButton.bottomAnchor.constraint(equalTo: inputAccessory.bottomAnchor, constant: .standardBottomMargin),
-            photosButton.leadingAnchor.constraint(equalTo: inputAccessory.leadingAnchor, constant: .standardLeadingMargin),
-            photosButton.widthAnchor.constraint(equalToConstant: 50)
+            photosButton.topAnchor.constraint(equalTo: customInputView.topAnchor, constant: 8),
+            photosButton.bottomAnchor.constraint(equalTo: customInputView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            photosButton.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor, constant: .standardLeadingMargin),
+            photosButton.widthAnchor.constraint(equalToConstant: 50),
+            photosButton.heightAnchor.constraint(equalToConstant: 35),
+            
+            divider.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor),
+            divider.trailingAnchor.constraint(equalTo: customInputView.trailingAnchor),
+            divider.topAnchor.constraint(equalTo: customInputView.topAnchor),
+            divider.heightAnchor.constraint(equalToConstant: 1)
+            
         ])
-        return inputAccessory
+        return customInputView
     }()
     
-    let contentTextView: UITextView = {
-        let textView = UITextView()
+    lazy var contentTextView: PlaceholderTextView = {
+        let textView = PlaceholderTextView()
         textView.isScrollEnabled = false
+        textView.placeholder = self.placeholder
         textView.font = .systemFont(ofSize: 17)
-        textView.textContainerInset = .init(top: 10, left: 10, bottom: 15, right: 10)
+        textView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
         return textView
     }()
     
