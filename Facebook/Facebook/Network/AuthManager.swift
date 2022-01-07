@@ -30,21 +30,13 @@ struct AuthManager {
         return Observable.create { isSuccess in
             NetworkService.post(endpoint: .login(email: email, password: password), as: LoginResponse.self)
                 .subscribe { event in
-                    guard let success = event.element?.1.success else {
+                    guard let response = event.element?.1 else {
                         isSuccess.onNext(false)
                         return
                     }
-                    switch success {
-                    case true:
-                        guard let user = event.element?.1.user, let token = event.element?.1.token else { isSuccess.onNext(false)
-                            return
-                        }
-                        CurrentUser.shared.profile = user
-                        NetworkService.registerToken(token: token)
-                        isSuccess.onNext(true)
-                    case false:
-                        isSuccess.onNext(false)
-                    }
+                    CurrentUser.shared.profile = response.user
+                    NetworkService.registerToken(token: response.token)
+                    isSuccess.onNext(true)
                 }
         }
     }
