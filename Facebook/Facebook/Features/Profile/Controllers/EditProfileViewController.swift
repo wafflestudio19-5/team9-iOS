@@ -64,7 +64,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                 let editDetailInformationViewController = EditDetailInformationViewController()
                 self?.push(viewController: editDetailInformationViewController)
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: cell.disposeBag)
             
             return cell
         case let .LabelItem(style, labelText):

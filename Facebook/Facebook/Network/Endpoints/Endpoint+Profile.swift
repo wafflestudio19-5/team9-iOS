@@ -77,7 +77,7 @@ extension Endpoint {
     }
     
     static func university(id: Int) -> Self {
-        return Endpoint(path: "user/university/\(id)")
+        return Endpoint(path: "user/university/\(id)/")
     }
     
     static func university(university: University) -> Self {
