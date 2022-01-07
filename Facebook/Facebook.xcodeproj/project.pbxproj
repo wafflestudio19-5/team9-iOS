@@ -33,6 +33,8 @@
 		77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B635472768B30A00C41EB3 /* EditProfileViewController.swift */; };
 		77E12FA22769A97800B8F191 /* CreatePostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA12769A97800B8F191 /* CreatePostView.swift */; };
 		77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77E12FA32769A98900B8F191 /* CreatePostViewController.swift */; };
+		B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */; };
+		B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91F2787F93F00750397 /* KakaoLoginView.swift */; };
 		B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA42754E53700513B77 /* KakaoAuthManager.swift */; };
 		B846BDA72754F35800513B77 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA62754F35800513B77 /* LoginView.swift */; };
 		B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA92754F5A900513B77 /* FacebookColor.swift */; };
@@ -140,6 +142,8 @@
 		77E12FA12769A97800B8F191 /* CreatePostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostView.swift; sourceTree = "<group>"; };
 		77E12FA32769A98900B8F191 /* CreatePostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewController.swift; sourceTree = "<group>"; };
 		AF0AA20D3E5E391258D676CE /* Pods-Facebook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.release.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.release.xcconfig"; sourceTree = "<group>"; };
+		B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
+		B82EC91F2787F93F00750397 /* KakaoLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginView.swift; sourceTree = "<group>"; };
 		B846BDA42754E53700513B77 /* KakaoAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthManager.swift; sourceTree = "<group>"; };
 		B846BDA62754F35800513B77 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B846BDA92754F5A900513B77 /* FacebookColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookColor.swift; sourceTree = "<group>"; };
@@ -528,6 +532,7 @@
 			isa = PBXGroup;
 			children = (
 				B846BDA62754F35800513B77 /* LoginView.swift */,
+				B82EC91F2787F93F00750397 /* KakaoLoginView.swift */,
 				B86194E7275D135300957BBC /* SignUp */,
 			);
 			path = Views;
@@ -537,6 +542,7 @@
 			isa = PBXGroup;
 			children = (
 				B846BDAD275504AA00513B77 /* LoginViewController.swift */,
+				B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */,
 				B86194EA275D15A700957BBC /* SignUp */,
 			);
 			path = Controllers;
@@ -826,6 +832,7 @@
 				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* EditProfileTableViewCell.swift in Sources */,
+				B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */,
 				BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */,
 				B85D67E4277C964F002CCC04 /* AuthResponse.swift in Sources */,
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
@@ -861,6 +868,7 @@
 				BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */,
 				B85D67F027840F16002CCC04 /* AuthManager.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
+				B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */,
 				B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */,
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
 				BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */,
