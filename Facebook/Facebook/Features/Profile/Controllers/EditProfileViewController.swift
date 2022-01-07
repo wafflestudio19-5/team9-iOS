@@ -256,7 +256,8 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                 self.presentPicker()
             }.disposed(by: disposeBag)
         case 2:
-            sectionButton.rx.tap.bind {
+            sectionButton.rx.tap.bind { [weak self] in
+                guard let self = self else { return }
                 if (self.userProfile?.self_intro == nil || self.userProfile?.self_intro == "") {
                     let addSelfIntroViewController = AddSelfIntroViewController()
                     let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
@@ -267,9 +268,9 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                 }
             }.disposed(by: disposeBag)
         case 3:
-            sectionButton.rx.tap.bind {
+            sectionButton.rx.tap.bind { [weak self] in
                 let editDetailInformationViewController = EditDetailInformationViewController()
-                self.push(viewController: editDetailInformationViewController)
+                self?.push(viewController: editDetailInformationViewController)
             }.disposed(by: disposeBag)
         default: break
         }
