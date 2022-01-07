@@ -31,15 +31,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro, buttonText: buttonText)
             
             if (self.userId == CurrentUser.shared.profile?.id) {
-                cell.profileImage.rx
-                    .tapGesture()
-                    .when(.recognized)
-                    .subscribe(onNext: { [weak self] _ in
-                        guard let self = self else { return }
-                        self.imageType = "profile_image"
-                        self.presentPicker()
-                    }).disposed(by: cell.disposeBag)
-                
                 if coverImageUrl != "" {
                     cell.coverImage.rx
                         .tapGesture()
@@ -81,6 +72,16 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                         self?.push(viewController: editProfileViewController)
                     }.disposed(by: cell.disposeBag)
             }
+            
+            cell.profileImage.rx
+                .tapGesture()
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.imageType = "profile_image"
+                    self.presentPicker()
+                }).disposed(by: cell.disposeBag)
+            
             
             return cell
         case let .SimpleInformationItem(style, informationType,image, information):
@@ -194,7 +195,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 guard let self = self else { return }
             
                 if event.isCompleted {
-                    self.createSection()
                     return
                 }
             
@@ -205,6 +205,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
             
                 self.userProfile = response
+                self.createSection()
         }.disposed(by: disposeBag)
     }
     
@@ -250,7 +251,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             let offSetY = self.tableView.contentOffset.y
             let contentHeight = self.tableView.contentSize.height
             
-            if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
+            if offSetY > (contentHeight - self.tableView.frame.size.height - 100) && self.postDataViewModel.dataList.value.count != 0 {
                 self.postDataViewModel.loadMore()
             }
         }

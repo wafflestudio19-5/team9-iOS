@@ -384,7 +384,7 @@ extension EditProfileViewController: PHPickerViewControllerDelegate {
                 
                 let uploadData = ["self_intro": "테스트 자기소개", self.imageType: imageData]  as [String : Any]
                 
-                NetworkService.update(endpoint: .profile(id: 41, updateData: uploadData)).subscribe { event in
+                NetworkService.update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: uploadData)).subscribe { event in
                     let request = event.element
                     let progress = request?.uploadProgress
                     
