@@ -79,10 +79,10 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
             cell.initialSetup(cellStyle: .style3)
             cell.configureCell(buttonText: buttonText)
             
-            cell.button.rx.tap.bind { [weak self] in
+            /* cell.button.rx.tap.bind { [weak self] in
                 let addInformationViewController = AddInformationViewController(informationType: style)
                 self?.push(viewController: addInformationViewController)
-            }.disposed(by: cell.disposeBag)
+            }.disposed(by: cell.disposeBag) */
             
             return cell
         default:
