@@ -65,6 +65,8 @@ class CommentCell: UITableViewCell {
         
         if let urlString = comment.author.profile_image {
             profileImage.setImage(from: URL(string: urlString))
+        } else {
+            profileImage.setImage(from: nil)
         }
         
         profileImage.snp.updateConstraints { make in

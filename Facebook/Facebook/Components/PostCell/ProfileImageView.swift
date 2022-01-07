@@ -16,7 +16,6 @@ class ProfileImageView: UIView {
         
         self.addSubview(imageView)
         
-        imageView.image = UIImage(systemName: "person.fill")
         imageView.contentMode = .scaleAspectFill
         imageView.tintColor = .secondarySystemFill
         
@@ -25,10 +24,7 @@ class ProfileImageView: UIView {
         self.layer.cornerRadius = self.frame.width
         self.backgroundColor = .grayscales.bubbleFocused
         
-        imageView.snp.makeConstraints { make in
-            make.height.equalTo(30)
-            make.centerX.centerY.equalTo(self)
-        }
+        setImage(from: nil)
     }
     
     override func layoutSubviews() {
@@ -51,6 +47,11 @@ class ProfileImageView: UIView {
     
     func setImage(from url: URL?) {
         guard let url = url else {
+            imageView.image = UIImage(systemName: "person.fill")
+            imageView.snp.remakeConstraints { make in
+                make.height.equalTo(30)
+                make.centerX.centerY.equalTo(self)
+            }
             return
         }
         imageView.snp.remakeConstraints { make in

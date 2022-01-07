@@ -37,6 +37,7 @@ class PostCell: UITableViewCell {
         didSet {
             likeCountLabel.text = post.likes.withCommas(unit: "개")
             likeButton.isSelected = post.is_liked
+            commentCountButton.text = "댓글 \(post.comments.withCommas(unit: "개"))"
             layoutIfNeeded()
         }
     }
@@ -66,7 +67,6 @@ class PostCell: UITableViewCell {
     
     func configureCell(with newPost: Post) {
         post = newPost
-        commentCountButton.text = "댓글 \(post.comments.withCommas(unit: "개"))"
         textContentLabel.text = post.content
         postHeader.configure(with: post)
         

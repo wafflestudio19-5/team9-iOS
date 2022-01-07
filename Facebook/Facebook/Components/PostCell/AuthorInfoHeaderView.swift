@@ -50,6 +50,8 @@ class AuthorInfoHeaderView: UIView {
         postDateLabel.text = post.posted_at
         if let urlString = post.author?.profile_image {
             profileImageView.setImage(from: URL(string: urlString))
+        } else {
+            profileImageView.setImage(from: nil)
         }
     }
     
