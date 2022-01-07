@@ -328,7 +328,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section != 2 { return UIView() }
+        if section != 2 || userId != CurrentUser.shared.profile?.id { return UIView() }
         
         let headerView = UIView()
         
@@ -341,27 +341,33 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             return label
         }()
         
-        let createHeaderView = CreatePostHeaderView()
-        
         headerView.addSubview(label)
-        headerView.addSubview(createHeaderView)
         NSLayoutConstraint.activate([
             label.heightAnchor.constraint(equalToConstant: 20),
             label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
-            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
-            createHeaderView.topAnchor.constraint(equalTo: label.bottomAnchor),
-            createHeaderView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-            createHeaderView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-            createHeaderView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor)
+            label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15)
         ])
         
-        createHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
-            guard let self = self else { return }
-            let createPostViewController = CreatePostViewController()
-            let navigationController = UINavigationController(rootViewController: createPostViewController)
-            navigationController.modalPresentationStyle = .fullScreen
-            self.present(navigationController, animated: true, completion: nil)
-        }.disposed(by: disposeBag)
+        if userId == CurrentUser.shared.profile?.id {
+            let createHeaderView = CreatePostHeaderView()
+            headerView.addSubview(createHeaderView)
+            NSLayoutConstraint.activate([
+                createHeaderView.topAnchor.constraint(equalTo: label.bottomAnchor),
+                createHeaderView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+                createHeaderView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
+                createHeaderView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor)
+            ])
+            
+            createHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
+                guard let self = self else { return }
+                let createPostViewController = CreatePostViewController()
+                let navigationController = UINavigationController(rootViewController: createPostViewController)
+                navigationController.modalPresentationStyle = .fullScreen
+                self.present(navigationController, animated: true, completion: nil)
+            }.disposed(by: disposeBag)
+        } else {
+            label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10).isActive = true
+        }
         
         headerView.backgroundColor = .white
         
@@ -386,7 +392,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 2 { return 100 }
+        if section == 2 {
+            if userId == CurrentUser.shared.profile?.id { return 40 }
+            else { return 100 }
+        }
+        
         return 0
     }
     
