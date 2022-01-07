@@ -59,19 +59,6 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             .disposed(by: disposeBag)
     }
     
-    private func pushToDetailVC(cell: PostCell, asFirstResponder: Bool) {
-        let detailVC = PostDetailViewController(post: cell.post, asFirstResponder: asFirstResponder)
-        
-        detailVC.postView.postContentHeaderView.postUpdated
-            .bind { updatedPost in
-                cell.post = updatedPost  // cell will be updated accordingly
-            }
-            .disposed(by: detailVC.disposeBag)
-        
-        self.push(viewController: detailVC)
-    }
-    
-    
     func bind() {
         
         /// `무슨 생각을 하고 계신가요?` 버튼을 클릭하면 포스트 작성 화면으로 넘어가도록 바인딩
@@ -89,44 +76,9 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         /// `viewModel.dataList`와 `tableView`의 dataSource를 바인딩합니다.
         viewModel.dataList
             .observe(on: MainScheduler.instance)
-            .bind(to: tableView.rx.items(cellIdentifier: PostCell.reuseIdentifier, cellType: PostCell.self)) { row, post, cell in
-                cell.configureCell(with: post)
-                
-                // 좋아요 버튼 바인딩
-                cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
-                    cell.like()
-                    NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
-                        .bind { response in
-                            cell.like(syncWith: response.1)
-                        }
-                        .disposed(by: cell.disposeBag)
-                }.disposed(by: cell.disposeBag)
-                
-                // 댓글 버튼 터치 시 디테일 화면으로 이동
-                cell.buttonHorizontalStackView.commentButton.rx.tap
-                    .observe(on: MainScheduler.instance)
-                    .bind { [weak self] _ in
-                        self?.pushToDetailVC(cell: cell, asFirstResponder: true)
-                    }.disposed(by: cell.disposeBag)
-                
-                // 셀 헤더 부분 터치 시 디테일 화면으로 이동
-                cell.postHeader.rx.tapGesture(configuration: { _, delegate in
-                    delegate.touchReceptionPolicy = .custom { _, shouldReceive in
-                        return !(shouldReceive.view is UIControl)
-                    }
-                })
-                    .when(.recognized)
-                    .bind { [weak self] _ in
-                        self?.pushToDetailVC(cell: cell, asFirstResponder: false)
-                    }
-                    .disposed(by: cell.disposeBag)
-                
-                // 댓글 수 클릭시 디테일 화면으로 이동
-                cell.commentCountButton.rx.tap
-                    .observe(on: MainScheduler.instance)
-                    .bind { [weak self] _ in
-                        self?.pushToDetailVC(cell: cell, asFirstResponder: false)
-                    }.disposed(by: cell.disposeBag)
+            .bind(to: tableView.rx.items(cellIdentifier: PostCell.reuseIdentifier, cellType: PostCell.self)) { [weak self] row, post, cell in
+                guard let self = self else { return }
+                self.configure(cell: cell, with: post)
             }
             .disposed(by: disposeBag)
         
@@ -171,5 +123,61 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             }
             .disposed(by: disposeBag)
         
+    }
+}
+
+extension UIViewController {
+    func pushToDetailVC(cell: PostCell, asFirstResponder: Bool) {
+        let detailVC = PostDetailViewController(post: cell.post, asFirstResponder: asFirstResponder)
+        
+        // subscribe to changes is DetailView
+        detailVC.postView.postContentHeaderView.postUpdated
+            .bind { updatedPost in
+                cell.post = updatedPost  // cell will be updated accordingly
+            }
+            .disposed(by: detailVC.disposeBag)
+        
+        self.push(viewController: detailVC)
+    }
+    
+    /// PostCell Configuration Logic
+    func configure(cell: PostCell, with post: Post) {
+        cell.configureCell(with: post)
+        
+        // 좋아요 버튼 바인딩
+        cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
+            cell.like()
+            NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
+                .bind { response in
+                    cell.like(syncWith: response.1)
+                }
+                .disposed(by: cell.disposeBag)
+        }.disposed(by: cell.disposeBag)
+        
+        // 댓글 버튼 터치 시 디테일 화면으로 이동
+        cell.buttonHorizontalStackView.commentButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] _ in
+                self?.pushToDetailVC(cell: cell, asFirstResponder: true)
+            }.disposed(by: cell.disposeBag)
+        
+        // 셀 헤더 부분 터치 시 디테일 화면으로 이동
+        cell.postHeader.rx.tapGesture(configuration: { _, delegate in
+            delegate.touchReceptionPolicy = .custom { _, shouldReceive in
+                return !(shouldReceive.view is UIControl)
+            }
+        })
+            .when(.recognized)
+            .bind { [weak self] _ in
+                self?.pushToDetailVC(cell: cell, asFirstResponder: false)
+            }
+            .disposed(by: cell.disposeBag)
+        
+        // 댓글 수 클릭시 디테일 화면으로 이동
+        cell.commentCountButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] _ in
+                self?.pushToDetailVC(cell: cell, asFirstResponder: false)
+            }.disposed(by: cell.disposeBag)
     }
 }
