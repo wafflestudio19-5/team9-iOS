@@ -1,6 +1,8 @@
 disabled_rules:
     - identifier_name
     - line_length
+    - trailing_whitespace
+    - type_name
     
 type_body_length:
     warning: 300

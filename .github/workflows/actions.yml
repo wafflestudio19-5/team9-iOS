@@ -22,4 +22,4 @@ jobs:
         with:
           args: --force-exclude
         env:
-          WORKING_DIRECTORY: Facebook
+        WORKING_DIRECTORY: Facebook
