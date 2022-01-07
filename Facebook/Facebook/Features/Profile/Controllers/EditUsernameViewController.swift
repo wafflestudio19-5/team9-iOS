@@ -27,6 +27,7 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
         case emptyFirstName
         case emptyLastName
         case emptyBoth
+        case passwordError
         case valid
         
         func message() -> String {
@@ -34,6 +35,7 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
             case .emptyFirstName: return "성을 입력하세요"
             case .emptyLastName: return "이름을 입력하세요"
             case .emptyBoth: return "이름이 무엇인가요?"
+            case .passwordError: return "잘못된 비밀번호를 입력하셨습니다."
             case .valid: return ""
             }
         }
@@ -105,16 +107,19 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
                 let isLastNameEmpty = self.lastName.value.isEmpty
 
                 if !isFirstNameEmpty && !isLastNameEmpty {
-                    self.editUserProfileView.setAlertLabelText(as: Validation.valid.message())
-                    
-                    let updateData = ["first_name": self.firstName.value,
-                                      "last_name": self.lastName.value]
-
-                    NetworkService
-                        .update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: updateData))
-                        .subscribe { [weak self] _ in
-                            self?.navigationController?.popViewController(animated: true)
-                        }.disposed(by: self.disposeBag)
+                    if let password = self.editUserProfileView.passwordTextField.text {
+                        NetworkService.post(endpoint: .login(email: CurrentUser.shared.profile!.email, password: password), as: AuthResponse.self)
+                            .subscribe { [weak self] event in
+                                guard let self = self else { return }
+                                
+                                guard let response = event.element?.1 else {
+                                    self.editUserProfileView.setAlertLabelText(as: Validation.passwordError.message()) 
+                                    return
+                                }
+                                
+                                self.saveName()
+                            }.disposed(by: self.disposeBag)
+                    }
                 } else {
                     self.editUserProfileView.setAlertLabelText(as: isFirstNameEmpty && isLastNameEmpty ? Validation.emptyBoth.message()
                                                            : (isFirstNameEmpty ? Validation.emptyFirstName.message() : Validation.emptyLastName.message()))
@@ -124,6 +129,19 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
         editUserProfileView.cancelButton.rx.tap.bind { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }.disposed(by: disposeBag)
+    }
+    
+    private func saveName() {
+        self.editUserProfileView.setAlertLabelText(as: Validation.valid.message())
+        
+        let updateData = ["first_name": self.firstName.value,
+                          "last_name": self.lastName.value]
+
+        NetworkService
+            .update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: updateData))
+            .subscribe { [weak self] _ in
+                self?.navigationController?.popViewController(animated: true)
+            }.disposed(by: self.disposeBag)
     }
 }
 
