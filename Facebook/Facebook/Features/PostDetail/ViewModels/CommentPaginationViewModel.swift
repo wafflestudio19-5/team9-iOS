@@ -1,11 +1,11 @@
 //
-//  CommentPaginationViewModel.swift.swift
+//  CommentPaginationViewModel.swift
 //  Facebook
 //
 //  Created by 박신홍 on 2022/01/06.
 //
 
-import Foundation
+import UIKit
 
 class CommentPaginationViewModel: PaginationViewModel<Comment> {
     

@@ -12,7 +12,6 @@ extension Endpoint {
         return Endpoint(path: "kakao/login/", parameters: ["access_token": accessToken])
     }
     
-    // JWT 토큰 필요
     static func connectWithKakao(accessToken: String) -> Self {
         return Endpoint(path: "kakao/connect/", parameters: ["access_token": accessToken])
     }

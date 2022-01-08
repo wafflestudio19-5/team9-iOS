@@ -82,7 +82,7 @@ class EnterEmailViewController: BaseSignUpViewController<EnterEmailView> {
 extension EnterEmailViewController {
     private func isValid(email: String) -> Bool {
         // "영어 대문자, 소문자, 숫자, 혹은 -, _ 1개 이상"@"영어 소문자 1개 이상"."영어 소문자 혹은 ., -을 포함하여 2개 이상"
-        let pattern = "^[A-Za-z0-9-_]+@[a-z]+\\.[a-z.-]{2,}$"
+        let pattern = "^[A-Za-z0-9-_]+@[a-z0-9]+\\.[a-z.-]{2,}$"
         let regex = try? NSRegularExpression(pattern: pattern)
         if let _ = regex?.firstMatch(in: email, range: NSRange(location: 0, length: email.count)) {
             return true

@@ -28,7 +28,7 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
         AuthManager.shared.signup(user: NewUser.shared)
             .subscribe { [weak self] success in
                 switch success {
-                case .success(true): self?.changeRootViewController(to: KakaoLoginViewController())
+                case .success(true): self?.changeRootViewController(to: KakaoLoginViewController(), wrap: true)
                 default: self?.alert(title: "회원가입 실패", message: "이미 등록되어 있거나 가입할 수 없는 계정입니다. 입력하신 정보를 다시 확인해주시기 바랍니다.", action: "확인")
                 }
             }.disposed(by: disposeBag)

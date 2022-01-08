@@ -15,7 +15,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     // 로그인 여부를 확인하는 변수
     private var didLogin: Bool {
-//        return true
         guard let didLogin = UserDefaults.standard.value(forKey: "didLogin") as? Bool else {
             print("\n로그인 정보가 없습니다!\n")
             return false
@@ -26,12 +25,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else { return false }
     }
     
-    func changeRootViewController(_ viewController: UIViewController, animated: Bool = true) {
+    func changeRootViewController(_ viewController: UIViewController, wrap: Bool = false, animated: Bool = true) {
         guard let window = self.window else {
             return
         }
-
-        window.rootViewController = UINavigationController(rootViewController: viewController)
+        
+        window.rootViewController = wrap ? UINavigationController(rootViewController: viewController) : viewController
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -50,7 +49,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         window.rootViewController = {
-            if didLogin { return RootTabBarController() }
+            if didLogin {
+                CurrentUser.shared.getCurrentUser()
+                let token = CurrentUser.shared.getToken()
+                
+                NetworkService.registerToken(token: token)
+                return RootTabBarController()
+            }
             else { return UINavigationController(rootViewController: LoginViewController()) }
         }()
         
