@@ -22,6 +22,7 @@ class AuthManager {
                     //print(response.1.token)
                     CurrentUser.shared.profile = response.1.user
                     CurrentUser.shared.saveCurrentUser()
+                    CurrentUser.shared.saveToken(token: response.1.token)
                     NetworkService.registerToken(token: response.1.token)
                     result(.success(true))
                 }, onError: { _ in
@@ -38,6 +39,7 @@ class AuthManager {
                 .subscribe(onNext: { response in
                     CurrentUser.shared.profile = response.1.user
                     CurrentUser.shared.saveCurrentUser()
+                    CurrentUser.shared.saveToken(token: response.1.token)
                     NetworkService.registerToken(token: response.1.token)
                     result(.success(true))
                 }, onError: { _ in

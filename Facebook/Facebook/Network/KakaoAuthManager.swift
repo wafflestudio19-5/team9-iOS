@@ -112,6 +112,7 @@ class KakaoAuthManager {
                     if response.0.statusCode == 200 {
                         CurrentUser.shared.profile = response.1.user
                         CurrentUser.shared.saveCurrentUser()
+                        CurrentUser.shared.saveToken(token: response.1.token)
                         NetworkService.registerToken(token: response.1.token)
                         result(.success(true))
                     } else {
