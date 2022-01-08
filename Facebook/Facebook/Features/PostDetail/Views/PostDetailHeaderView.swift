@@ -104,7 +104,7 @@ class PostDetailHeaderView: UIStackView {
         }
         imageGridCollectionView.numberOfImages = post.subposts!.count
         imageGridCollectionView.dataSource = nil
-        Observable.just(subpostUrls)
+        Observable.just(subpostUrls.prefix(5))
             .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
                 cell.displayMedia(from: data)
             }

@@ -76,7 +76,7 @@ class PostCell: UITableViewCell {
             return url
         }
         self.imageGridCollectionView.numberOfImages = post.subposts!.count
-        Observable.just(subpostUrls)
+        Observable.just(subpostUrls.prefix(5))
             .observe(on: MainScheduler.instance)
             .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
                 cell.displayMedia(from: data)
