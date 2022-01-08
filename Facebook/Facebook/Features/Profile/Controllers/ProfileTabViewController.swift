@@ -72,19 +72,19 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                         let editProfileViewController = EditProfileViewController()
                         self?.push(viewController: editProfileViewController)
                     }.disposed(by: cell.disposeBag)
+                
+                cell.profileImage.rx
+                    .tapGesture()
+                    .when(.recognized)
+                    .subscribe(onNext: { [weak self] _ in
+                        guard let self = self else { return }
+                        self.imageType = "profile_image"
+                        self.presentPicker()
+                    }).disposed(by: cell.disposeBag)
             } else {
                 cell.coverLabel.isHidden = true
                 cell.coverImageButton.isHidden = true
             }
-            
-            cell.profileImage.rx
-                .tapGesture()
-                .when(.recognized)
-                .subscribe(onNext: { [weak self] _ in
-                    guard let self = self else { return }
-                    self.imageType = "profile_image"
-                    self.presentPicker()
-                }).disposed(by: cell.disposeBag)
             
             
             return cell
@@ -177,7 +177,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        super.setNavigationBarItems(withEditButton: true)
+        if userId == CurrentUser.shared.profile?.id {
+            super.setNavigationBarItems(withEditButton: true)
+        }else {
+            super.setNavigationBarItems(withEditButton: false)
+        }
         
         loadData()
         bind()
