@@ -177,7 +177,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        super.setNavigationBarItems(withEditButton: true)
+        if userId == CurrentUser.shared.profile?.id {
+            super.setNavigationBarItems(withEditButton: true)
+        }else {
+            super.setNavigationBarItems(withEditButton: false)
+        }
         
         loadData()
         bind()
