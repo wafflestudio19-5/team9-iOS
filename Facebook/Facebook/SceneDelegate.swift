@@ -25,12 +25,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else { return false }
     }
     
-    func changeRootViewController(_ viewController: UIViewController, animated: Bool = true) {
+    func changeRootViewController(_ viewController: UIViewController, wrap: Bool = false, animated: Bool = true) {
         guard let window = self.window else {
             return
         }
-
-        window.rootViewController = UINavigationController(rootViewController: viewController)
+        
+        window.rootViewController = wrap ? UINavigationController(rootViewController: viewController) : viewController
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
