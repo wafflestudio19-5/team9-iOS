@@ -10,19 +10,22 @@ import SwiftUI
 import RxSwift
 
 class PostCell: UITableViewCell {
-    /// cell이 reuse될 때 `disposeBag`은 새로운 것으로 갈아끼워진다. 따라서 기존 cell의 구독이 취소된다.
-    var disposeBag = DisposeBag()
+    /// cell이 reuse될 때 `refreshingBag`은 새로운 것으로 갈아끼워진다. 따라서 기존 cell의 구독이 취소된다.
+    var refreshingBag = DisposeBag()
+    /// cell의 라이프사이클 전반에 걸쳐 유지되는 `DisposeBag`.
+    var permanentBag = DisposeBag()
     static let reuseIdentifier = "PostCell"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.frame.size.width = UIScreen.main.bounds.width  // important for initial layout
         setLayout()
+        bind()
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        self.disposeBag = DisposeBag()
+        self.refreshingBag = DisposeBag()
     }
     
     required init?(coder: NSCoder) {
@@ -42,6 +45,14 @@ class PostCell: UITableViewCell {
         }
     }
     
+    func bind() {
+        SyncManager.postUpdated.bind { post in
+            if self.post.id == post.id {
+                self.post = post
+            }
+        }.disposed(by: permanentBag)
+    }
+    
     // MARK: Like Button
 
     /// 서버에 요청을 보내기 전에 UI를 업데이트한다.
@@ -57,10 +68,7 @@ class PostCell: UITableViewCell {
     
     /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
     func like(syncWith response: LikeResponse) {
-        var copied = post
-        copied.likes = response.likes
-        copied.is_liked = response.is_liked
-        post = copied  // 중복 업데이트 방지
+        SyncManager.update(with: post, syncWith: response)
     }
     
     // MARK: Setup
@@ -81,7 +89,7 @@ class PostCell: UITableViewCell {
             .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
                 cell.displayMedia(from: data)
             }
-            .disposed(by: disposeBag)
+            .disposed(by: refreshingBag)
         self.layoutIfNeeded()
     }
     

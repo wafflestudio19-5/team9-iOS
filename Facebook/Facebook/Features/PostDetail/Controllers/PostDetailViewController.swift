@@ -308,10 +308,7 @@ extension PostDetailViewController {
                             let indexPath = self.commentViewModel.findInsertionIndexPath(of: comment)
                             self.commentViewModel.insert(comment, at: indexPath)
                             self.commentTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-                            
-                            var commentIncrementedPost = self.post
-                            commentIncrementedPost.comments += 1
-                            self.postView.postContentHeaderView.postUpdated.accept(commentIncrementedPost)
+                            SyncManager.update(with: self.post, commentCount: self.post.comments + 1)
                         }
                     }, onError: { error in
                         print(error)

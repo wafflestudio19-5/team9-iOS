@@ -187,11 +187,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         bind()
     }
     
+    
+    /// viewWillAppear로 매번 로딩하는 것보다
+    /// RxSwift로 바인딩하는 방식이 바람직할 것 같습니다. (`StateManager` 사용)
     override func viewWillAppear(_ animated: Bool) {
         //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
-        if userProfile != nil {
-            loadData()
-        }
+//        if userProfile != nil {
+//            loadData()
+//        }
     }
     
     //유저 프로필 관련 데이터 불러오기

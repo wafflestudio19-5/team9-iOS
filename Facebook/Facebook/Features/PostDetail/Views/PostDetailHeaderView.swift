@@ -20,13 +20,11 @@ class PostDetailHeaderView: UIStackView {
     private let authorHeaderView = AuthorInfoHeaderView()
     private let disposeBag = DisposeBag()
     
-    /// 현재 뷰에서 포스트를 업데이트(좋아요 등)하면 이 `PublishRelay`를 구독한 뷰에서도 업데이트할 수 있다.
-    let postUpdated = PublishRelay<Post>()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
         setLayout()
+        bind()
     }
     
     required init(coder: NSCoder) {
@@ -44,6 +42,14 @@ class PostDetailHeaderView: UIStackView {
         }
     }
     
+    func bind() {
+        SyncManager.postUpdated.bind { post in
+            if self.post.id == post.id {
+                self.post = post
+            }
+        }.disposed(by: disposeBag)
+    }
+    
     // MARK: Like Button
 
     /// 서버에 요청을 보내기 전에 UI를 업데이트한다.
@@ -59,11 +65,7 @@ class PostDetailHeaderView: UIStackView {
     
     /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
     func like(syncWith response: LikeResponse) {
-        var copied = post
-        copied.likes = response.likes
-        copied.is_liked = response.is_liked
-        post = copied
-        postUpdated.accept(post)
+        SyncManager.update(with: post, syncWith: response)
     }
     
     // 이미지 그리드 뷰

@@ -129,14 +129,6 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
 extension UIViewController {
     func pushToDetailVC(cell: PostCell, asFirstResponder: Bool) {
         let detailVC = PostDetailViewController(post: cell.post, asFirstResponder: asFirstResponder)
-        
-        // subscribe to changes is DetailView
-        detailVC.postView.postContentHeaderView.postUpdated
-            .bind { updatedPost in
-                cell.post = updatedPost  // cell will be updated accordingly
-            }
-            .disposed(by: detailVC.disposeBag)
-        
         self.push(viewController: detailVC)
     }
     
@@ -151,15 +143,15 @@ extension UIViewController {
                 .bind { response in
                     cell.like(syncWith: response.1)
                 }
-                .disposed(by: cell.disposeBag)
-        }.disposed(by: cell.disposeBag)
+                .disposed(by: cell.refreshingBag)
+        }.disposed(by: cell.refreshingBag)
         
         // 댓글 버튼 터치 시 디테일 화면으로 이동
         cell.buttonHorizontalStackView.commentButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
                 self?.pushToDetailVC(cell: cell, asFirstResponder: true)
-            }.disposed(by: cell.disposeBag)
+            }.disposed(by: cell.refreshingBag)
         
         let authorNameTapped = cell.postHeader.authorNameLabel.rx.tapGesture().when(.recognized)  // not working...
         let profileImageTapped = cell.postHeader.profileImageView.rx.tapGesture().when(.recognized)
@@ -169,13 +161,13 @@ extension UIViewController {
                 let profileVC = ProfileTabViewController(userId: post.author?.id)
                 self?.push(viewController: profileVC)
             }
-            .disposed(by: cell.disposeBag)
+            .disposed(by: cell.refreshingBag)
         
         // 댓글 수 클릭시 디테일 화면으로 이동
         cell.commentCountButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
                 self?.pushToDetailVC(cell: cell, asFirstResponder: false)
-            }.disposed(by: cell.disposeBag)
+            }.disposed(by: cell.refreshingBag)
     }
 }
