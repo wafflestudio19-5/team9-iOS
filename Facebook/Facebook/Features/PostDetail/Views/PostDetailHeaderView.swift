@@ -24,7 +24,6 @@ class PostDetailHeaderView: UIStackView {
         super.init(frame: frame)
         self.translatesAutoresizingMaskIntoConstraints = false
         setLayout()
-        bind()
     }
     
     required init(coder: NSCoder) {
@@ -40,14 +39,6 @@ class PostDetailHeaderView: UIStackView {
             likeCountLabel.text = post.likes.withCommas(unit: "개")
             likeButton.isSelected = post.is_liked
         }
-    }
-    
-    func bind() {
-        StateManager.of.post.asObservable.bind { post in
-            if self.post.id == post.id {
-                self.post = post
-            }
-        }.disposed(by: disposeBag)
     }
     
     // MARK: Like Button

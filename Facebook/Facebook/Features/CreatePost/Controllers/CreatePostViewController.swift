@@ -125,6 +125,16 @@ class CreatePostViewController: UIViewController {
                                     }
                                     .disposed(by: callbackDisposeBag)
                             })
+                            
+                            // TODO: refresh 없이 포스트 업데이트하기
+//                            request?.responseDecodable(of: Post.self) { dataResponse in
+////                                print(dataResponse)
+////                                guard let post = dataResponse.value else { return }
+////                                print(post)
+//                                StateManager.of.post.dispatch(.init(data: post, operation: .insert(index: 0)))
+//                                newsfeedVC.headerViews.uploadProgressHeaderView.isHidden = true
+//                                callbackDisposeBag = DisposeBag()
+//                            }
                         }
                         .disposed(by: callbackDisposeBag)
                 }

@@ -10,21 +10,60 @@ import RxSwift
 import RxRelay
 
 
+enum Operation {
+    case insert(index: Int)
+    case delete(index: Int)
+    case edit
+}
+
+
+struct Signal<DataModel> {
+    var data: DataModel
+    var operation: Operation
+}
+
+
 class Dispatcher<DataModel: Identifiable> {
-    let asObservable = PublishRelay<DataModel>()
+    let dispatchedSignals = PublishRelay<Signal<DataModel>>()
     
     func bind(with dataSource: BehaviorRelay<[DataModel]>) -> Disposable {
-        return asObservable.bind { data in
-            var dataList = dataSource.value
-            let index = dataList.firstIndex(where: { $0.id == data.id })
-            if let index = index {
-                dataList[index] = data
-                dataSource.accept(dataList)
+        return dispatchedSignals.bind { [weak self] signal in
+            guard let self = self else { return }
+            switch signal.operation {
+            case .insert:
+                self._insert(dataSource: dataSource, signal: signal)
+            case .delete:
+                self._delete(dataSource: dataSource, signal: signal)
+            case .edit:
+                self._edit(dataSource: dataSource, signal: signal)
             }
         }
     }
     
-    func dispatch(_ data: DataModel) {
-        asObservable.accept(data)
+    func _insert(dataSource: BehaviorRelay<[DataModel]>, signal: Signal<DataModel>) {
+        guard case .insert(let index) = signal.operation else { return }
+        var dataList = dataSource.value
+        dataList.insert(signal.data, at: index)
+        dataSource.accept(dataList)
+    }
+    
+    func _delete(dataSource: BehaviorRelay<[DataModel]>, signal: Signal<DataModel>) {
+        guard case .delete(let index) = signal.operation else { return }
+        var dataList = dataSource.value
+        dataList.remove(at: index)
+        dataSource.accept(dataList)
+    }
+    
+    func _edit(dataSource: BehaviorRelay<[DataModel]>, signal: Signal<DataModel>) {
+        var dataList = dataSource.value
+        let index = dataList.firstIndex(where: { $0.id == signal.data.id })
+        if let index = index {
+            dataList[index] = signal.data
+            dataSource.accept(dataList)
+        }
+    }
+    
+    func dispatch(_ signal: Signal<DataModel>) {
+        dispatchedSignals.accept(signal)
     }
 }

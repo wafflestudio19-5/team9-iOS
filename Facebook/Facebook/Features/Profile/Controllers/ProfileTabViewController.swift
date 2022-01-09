@@ -221,6 +221,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
+        // 이게 최선인가?
+        postDataViewModel.dataList.bind { [weak self] _ in
+            self?.createSection()
+        }.disposed(by: disposeBag)
+        
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
         postDataViewModel.isLoading
             .asDriver()

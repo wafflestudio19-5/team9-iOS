@@ -6,18 +6,21 @@
 //
 
 import Foundation
+import RxSwift
+import RxRelay
 
 class PostDispatcher: Dispatcher<Post> {
+    
     func dispatch(_ post: Post, commentCount: Int) {
         var post = post
         post.comments = commentCount
-        asObservable.accept(post)
+        dispatchedSignals.accept(.init(data: post, operation: .edit))
     }
     
     func dispatch(_ post: Post, syncWith response: LikeResponse) {
         var post = post
         post.likes = response.likes
         post.is_liked = response.is_liked
-        asObservable.accept(post)
+        dispatchedSignals.accept(.init(data: post, operation: .edit))
     }
 }
