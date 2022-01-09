@@ -82,6 +82,9 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             }
             .disposed(by: disposeBag)
         
+        /// `StateManager`와 `dataList`를 바인딩합니다.
+        StateManager.of.post.bind(with: viewModel.dataList).disposed(by: disposeBag)
+        
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
         viewModel.isLoading
             .asDriver()

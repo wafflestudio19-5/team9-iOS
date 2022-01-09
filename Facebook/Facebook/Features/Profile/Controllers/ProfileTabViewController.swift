@@ -253,6 +253,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             })
             .disposed(by: disposeBag)
         
+        StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
+        
         /// 테이블 맨 아래까지 스크롤할 때마다 `loadMore` 함수를 실행합니다.
         tableView.rx.didScroll.subscribe { [weak self] _ in
             guard let self = self else { return }

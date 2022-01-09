@@ -214,11 +214,10 @@ extension PostDetailViewController {
 // MARK: Handle Comments
 
 extension PostDetailViewController {
-    
-    
-    
-    
     func bindTableView(){
+        
+        /// 댓글 상태 바인딩
+        StateManager.of.comment.bind(with: commentViewModel.dataList).disposed(by: disposeBag)
         
         /// 댓글 데이터 테이블뷰 바인딩
         commentViewModel.dataList
@@ -308,7 +307,7 @@ extension PostDetailViewController {
                             let indexPath = self.commentViewModel.findInsertionIndexPath(of: comment)
                             self.commentViewModel.insert(comment, at: indexPath)
                             self.commentTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
-                            SyncManager.update(with: self.post, commentCount: self.post.comments + 1)
+                            StateManager.of.post.dispatch(self.post, commentCount: self.post.comments + 1)
                         }
                     }, onError: { error in
                         print(error)

@@ -20,7 +20,6 @@ class PostCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.frame.size.width = UIScreen.main.bounds.width  // important for initial layout
         setLayout()
-        bind()
     }
     
     override func prepareForReuse() {
@@ -45,14 +44,6 @@ class PostCell: UITableViewCell {
         }
     }
     
-    func bind() {
-        SyncManager.postUpdated.bind { post in
-            if self.post.id == post.id {
-                self.post = post
-            }
-        }.disposed(by: permanentBag)
-    }
-    
     // MARK: Like Button
 
     /// 서버에 요청을 보내기 전에 UI를 업데이트한다.
@@ -68,7 +59,7 @@ class PostCell: UITableViewCell {
     
     /// 서버에서 받은 응답에 따라 좋아요 개수를 동기화한다.
     func like(syncWith response: LikeResponse) {
-        SyncManager.update(with: post, syncWith: response)
+        StateManager.of.post.dispatch(post, syncWith: response)
     }
     
     // MARK: Setup

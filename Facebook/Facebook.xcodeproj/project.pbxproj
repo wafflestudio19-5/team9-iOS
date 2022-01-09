@@ -99,7 +99,11 @@
 		BE0D43692787235000E2162F /* UIColor+TintColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D43682787235000E2162F /* UIColor+TintColors.swift */; };
 		BE0D436B2787631400E2162F /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D436A2787631400E2162F /* HapticManager.swift */; };
 		BE0D436D278892D600E2162F /* NewsfeedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D436C278892D600E2162F /* NewsfeedTableView.swift */; };
-		BE0D4371278A7D6900E2162F /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4370278A7D6900E2162F /* SyncManager.swift */; };
+		BE0D4374278ADF1B00E2162F /* BaseDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4373278ADF1B00E2162F /* BaseDispatcher.swift */; };
+		BE0D4376278ADFCE00E2162F /* PostDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4375278ADFCE00E2162F /* PostDispatcher.swift */; };
+		BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4378278AE07E00E2162F /* StateManager.swift */; };
+		BE0D437B278AE0F100E2162F /* UserDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437A278AE0F100E2162F /* UserDispatcher.swift */; };
+		BE0D437D278AF1E500E2162F /* CommentDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */; };
 		BE1F75B12785895000E51A28 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B02785895000E51A28 /* Spinner.swift */; };
 		BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */; };
 		BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B42785D2C600E51A28 /* InfoButton.swift */; };
@@ -243,7 +247,11 @@
 		BE0D43682787235000E2162F /* UIColor+TintColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+TintColors.swift"; sourceTree = "<group>"; };
 		BE0D436A2787631400E2162F /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		BE0D436C278892D600E2162F /* NewsfeedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedTableView.swift; sourceTree = "<group>"; };
-		BE0D4370278A7D6900E2162F /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
+		BE0D4373278ADF1B00E2162F /* BaseDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDispatcher.swift; sourceTree = "<group>"; };
+		BE0D4375278ADFCE00E2162F /* PostDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDispatcher.swift; sourceTree = "<group>"; };
+		BE0D4378278AE07E00E2162F /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
+		BE0D437A278AE0F100E2162F /* UserDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDispatcher.swift; sourceTree = "<group>"; };
+		BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDispatcher.swift; sourceTree = "<group>"; };
 		BE1F75B02785895000E51A28 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+BottomSpinner.swift"; sourceTree = "<group>"; };
 		BE1F75B42785D2C600E51A28 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
@@ -430,6 +438,18 @@
 				BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		BE0D4372278ADEC200E2162F /* StateManager */ = {
+			isa = PBXGroup;
+			children = (
+				BE0D4378278AE07E00E2162F /* StateManager.swift */,
+				BE0D4373278ADF1B00E2162F /* BaseDispatcher.swift */,
+				BE0D4375278ADFCE00E2162F /* PostDispatcher.swift */,
+				BE0D437A278AE0F100E2162F /* UserDispatcher.swift */,
+				BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */,
+			);
+			path = StateManager;
 			sourceTree = "<group>";
 		};
 		BE64AF3627809F5400C25967 /* Headers */ = {
@@ -757,8 +777,8 @@
 				BEFFFAA5276B125E009CBF25 /* Models */,
 				BE9C7CA527716EC00089247F /* ViewModels */,
 				BEF254F5277B49F000FBAACB /* SwiftUIRepresentable.swift */,
+				BE0D4372278ADEC200E2162F /* StateManager */,
 				BE0D436A2787631400E2162F /* HapticManager.swift */,
-				BE0D4370278A7D6900E2162F /* SyncManager.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -977,6 +997,7 @@
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				7754B87B2782A0CC00775D81 /* EditUsernameViewController.swift in Sources */,
 				7754B867277DB05800775D81 /* TextViewTableViewCell.swift in Sources */,
+				BE0D437B278AE0F100E2162F /* UserDispatcher.swift in Sources */,
 				77B635422768B2C100C41EB3 /* DetailProfileView.swift in Sources */,
 				BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */,
 				BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */,
@@ -999,6 +1020,7 @@
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
 				77AC749B275CEDAD00F10BD5 /* PostDetailView.swift in Sources */,
 				775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */,
+				BE0D4376278ADFCE00E2162F /* PostDispatcher.swift in Sources */,
 				77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				BEF254EE277B062800FBAACB /* PostContentLabel.swift in Sources */,
@@ -1011,6 +1033,7 @@
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				BE0D436D278892D600E2162F /* NewsfeedTableView.swift in Sources */,
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
+				BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */,
 				BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */,
 				B85D67F027840F16002CCC04 /* AuthManager.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
@@ -1036,7 +1059,6 @@
 				BE827A1427722ABD00BD3566 /* CreatePostTableViewCell.swift in Sources */,
 				7754B8792782A0B700775D81 /* EditUsernameView.swift in Sources */,
 				BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */,
-				BE0D4371278A7D6900E2162F /* SyncManager.swift in Sources */,
 				77FE72872775E00600482CE7 /* SelectInformationView.swift in Sources */,
 				7779931D2750843C007A3898 /* SearchViewController.swift in Sources */,
 				B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */,
@@ -1073,10 +1095,12 @@
 				BE1F75B12785895000E51A28 /* Spinner.swift in Sources */,
 				77FE728D2777512000482CE7 /* DateSelectTableViewCell.swift in Sources */,
 				77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */,
+				BE0D4374278ADF1B00E2162F /* BaseDispatcher.swift in Sources */,
 				BE86BAD52783047500948CAA /* LikeResponse.swift in Sources */,
 				BEDA60862784658E0002A231 /* Divider.swift in Sources */,
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
 				B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */,
+				BE0D437D278AF1E500E2162F /* CommentDispatcher.swift in Sources */,
 				B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */,
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
 				BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */,
