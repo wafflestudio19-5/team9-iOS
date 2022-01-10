@@ -5,7 +5,7 @@
 //  Created by 최유림 on 2021/11/29.
 //
 
-import RxSwift
+import UIKit
 
 class FacebookTextField: UITextField {
     
