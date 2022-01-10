@@ -41,7 +41,22 @@ class AuthManager {
                     CurrentUser.shared.saveCurrentUser()
                     CurrentUser.shared.saveToken(token: response.1.token)
                     NetworkService.registerToken(token: response.1.token)
+                    print(response.1.token)
                     result(.success(true))
+                }, onError: { _ in
+                    result(.success(false))
+                }).disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
+    
+    // 로그아웃
+    func logout() -> Single<Bool> {
+        return Single<Bool>.create { (result) -> Disposable in
+            NetworkService.get(endpoint: .logout(), as: String.self)
+                .subscribe(onNext: { response in
+                    print(response)
+                    if response.0.statusCode == 200 { result(.success(true)) }
                 }, onError: { _ in
                     result(.success(false))
                 }).disposed(by: self.disposeBag)
