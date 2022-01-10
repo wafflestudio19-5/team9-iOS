@@ -1,5 +1,5 @@
 //
-//  Extensions.swift
+//  UIViewController+Extensions.swift
 //  Facebook
 //
 //  Created by 최유림 on 2021/12/13.
@@ -10,7 +10,9 @@ import UIKit
 extension UIViewController {
     
     func alert(title: String, message: String, action: String, subAction: String = "") {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: title,
+                                      message: message,
+                                      preferredStyle: .alert)
         if subAction != "" {
             alert.addAction(UIAlertAction(title: subAction, style: .default))
         }
@@ -19,12 +21,12 @@ extension UIViewController {
     }
     
     func actionSheet(title: String, message: String = "", action: (String, destructive: Bool, action: () -> ())) {
-        let sheet = UIAlertController(title: title, message: { _ -> String? in
-            return message == "" ? nil : message
-        }(String.self), preferredStyle: .actionSheet)
-        sheet.addAction(UIAlertAction(title: action.0, style: action.destructive ? .destructive : .default, handler: { _ in
-            action.action()
-        }))
+        let sheet = UIAlertController(title: title,
+                                      message: message == "" ? nil : message,
+                                      preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: action.0,
+                                      style: action.destructive ? .destructive : .default,
+                                      handler: { _ in action.action() }))
         sheet.addAction(UIAlertAction(title: "취소", style: .cancel))
         self.present(sheet, animated: true, completion: nil)
     }

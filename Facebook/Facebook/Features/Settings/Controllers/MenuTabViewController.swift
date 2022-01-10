@@ -28,6 +28,7 @@ class MenuTabViewController: BaseTabViewController<MenuTabView> {
 extension MenuTabViewController {
     private func logout() {
         AuthManager.shared.logout()
+            .delay(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
             .subscribe { [weak self] success in
                 switch success {
                 case .success(true):
