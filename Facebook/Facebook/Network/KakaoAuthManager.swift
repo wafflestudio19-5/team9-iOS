@@ -103,10 +103,7 @@ struct KakaoAuthManager {
                 .subscribe(onNext: { response in
                     //print(response.1.token)
                     if response.0.statusCode == 200 {
-                        CurrentUser.shared.profile = response.1.user
-                        CurrentUser.shared.saveCurrentUser()
-                        CurrentUser.shared.saveToken(token: response.1.token)
-                        NetworkService.registerToken(token: response.1.token)
+                        StateManager.of.user.dispatch(authResponse: response.1)
                         result(.success(true))
                     } else {
                         result(.success(false))

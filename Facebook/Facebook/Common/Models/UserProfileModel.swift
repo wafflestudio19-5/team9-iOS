@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserProfile: Codable  {
+struct UserProfile: Codable, Identifiable  {
     let id: Int
     let first_name: String
     let last_name: String
@@ -20,6 +20,14 @@ struct UserProfile: Codable  {
     let cover_image: String?
     let company: [Company]
     let university: [University]
+    
+    static func getDummyProfile() -> Self {
+        return UserProfile(id: -1, first_name: "", last_name: "", username: "", email: "", birth: "", gender: "", self_intro: "", profile_image: nil, cover_image: nil, company: [], university: [])
+    }
+    
+    static func getDummyProfile(from user: Author) -> Self {
+        return UserProfile(id: user.id, first_name: "", last_name: "", username: user.username, email: user.email, birth: "", gender: "", self_intro: "", profile_image: user.profile_image, cover_image: nil, company: [], university: [])
+    }
 }
 
 struct Company: Codable  {

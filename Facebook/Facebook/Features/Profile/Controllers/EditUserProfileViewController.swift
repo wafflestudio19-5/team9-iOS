@@ -145,7 +145,7 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
     }
     
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: UserDefaultManager.cachedUser?.id ?? 0), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
             
@@ -215,7 +215,7 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
                 
                 //프로필 편집
                 NetworkService
-                    .update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: updateData))
+                    .update(endpoint: .profile(id: UserDefaultManager.cachedUser?.id ?? 0, updateData: updateData))
                     .subscribe { [weak self] _ in
                         guard let self = self else { return }
                         let VCcount = self.navigationController?.viewControllers.count

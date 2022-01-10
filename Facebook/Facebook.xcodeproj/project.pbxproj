@@ -104,6 +104,8 @@
 		BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4378278AE07E00E2162F /* StateManager.swift */; };
 		BE0D437B278AE0F100E2162F /* UserDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437A278AE0F100E2162F /* UserDispatcher.swift */; };
 		BE0D437D278AF1E500E2162F /* CommentDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */; };
+		BE0D437F278C357500E2162F /* AuthDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437E278C357500E2162F /* AuthDispatcher.swift */; };
+		BE0D4381278C5B4C00E2162F /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4380278C5B4C00E2162F /* UserDefaultManager.swift */; };
 		BE1F75B12785895000E51A28 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B02785895000E51A28 /* Spinner.swift */; };
 		BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */; };
 		BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B42785D2C600E51A28 /* InfoButton.swift */; };
@@ -130,7 +132,7 @@
 		BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C91276CDF230089247F /* Endpoint+User.swift */; };
 		BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C95276DB3C30089247F /* PostCell.swift */; };
 		BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */; };
-		BE9C7C9F276EC6EC0089247F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9E276EC6EC0089247F /* User.swift */; };
+		BE9C7C9F276EC6EC0089247F /* Author.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9E276EC6EC0089247F /* Author.swift */; };
 		BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7CA0276ECA1F0089247F /* Int+Formatter.swift */; };
 		BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834AD275123FD00D6EC95 /* Endpoint.swift */; };
 		BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA834B427513B7700D6EC95 /* NetworkService.swift */; };
@@ -252,6 +254,8 @@
 		BE0D4378278AE07E00E2162F /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
 		BE0D437A278AE0F100E2162F /* UserDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDispatcher.swift; sourceTree = "<group>"; };
 		BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDispatcher.swift; sourceTree = "<group>"; };
+		BE0D437E278C357500E2162F /* AuthDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDispatcher.swift; sourceTree = "<group>"; };
+		BE0D4380278C5B4C00E2162F /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		BE1F75B02785895000E51A28 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+BottomSpinner.swift"; sourceTree = "<group>"; };
 		BE1F75B42785D2C600E51A28 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
@@ -278,7 +282,7 @@
 		BE9C7C91276CDF230089247F /* Endpoint+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+User.swift"; sourceTree = "<group>"; };
 		BE9C7C95276DB3C30089247F /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+QueryParameters.swift"; sourceTree = "<group>"; };
-		BE9C7C9E276EC6EC0089247F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		BE9C7C9E276EC6EC0089247F /* Author.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Author.swift; sourceTree = "<group>"; };
 		BE9C7CA0276ECA1F0089247F /* Int+Formatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Formatter.swift"; sourceTree = "<group>"; };
 		BEA834AD275123FD00D6EC95 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		BEA834B427513B7700D6EC95 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -350,7 +354,6 @@
 			isa = PBXGroup;
 			children = (
 				775F150E27730BA000C9872F /* DataSourceModel.swift */,
-				7754B869277F357F00775D81 /* UserProfileModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -447,6 +450,8 @@
 				BE0D4373278ADF1B00E2162F /* BaseDispatcher.swift */,
 				BE0D4375278ADFCE00E2162F /* PostDispatcher.swift */,
 				BE0D437A278AE0F100E2162F /* UserDispatcher.swift */,
+				BE0D4380278C5B4C00E2162F /* UserDefaultManager.swift */,
+				BE0D437E278C357500E2162F /* AuthDispatcher.swift */,
 				BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */,
 			);
 			path = StateManager;
@@ -824,7 +829,8 @@
 			isa = PBXGroup;
 			children = (
 				BEFFFAA6276B126D009CBF25 /* Post.swift */,
-				BE9C7C9E276EC6EC0089247F /* User.swift */,
+				BE9C7C9E276EC6EC0089247F /* Author.swift */,
+				7754B869277F357F00775D81 /* UserProfileModel.swift */,
 				BE86BAD827830FC100948CAA /* Comment.swift */,
 				B85D67DF2775AC03002CCC04 /* NewUser.swift */,
 				B85D67E5277ECA74002CCC04 /* CurrentUser.swift */,
@@ -1077,7 +1083,8 @@
 				BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */,
 				BE0D43692787235000E2162F /* UIColor+TintColors.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
-				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
+				BE0D4381278C5B4C00E2162F /* UserDefaultManager.swift in Sources */,
+				BE9C7C9F276EC6EC0089247F /* Author.swift in Sources */,
 				BEF254EC277ADBE800FBAACB /* InteractionButtonStackView.swift in Sources */,
 				7754B86F2781D63900775D81 /* EditUserProfileView.swift in Sources */,
 				77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */,
@@ -1111,6 +1118,7 @@
 				7754B865277DAE5300775D81 /* AddSelfIntroViewController.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
 				B85D67E6277ECA76002CCC04 /* CurrentUser.swift in Sources */,
+				BE0D437F278C357500E2162F /* AuthDispatcher.swift in Sources */,
 				BE0D43672786D29B00E2162F /* CommentPaginationViewModel.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
 				775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */,

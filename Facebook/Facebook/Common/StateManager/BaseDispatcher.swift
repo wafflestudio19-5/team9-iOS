@@ -26,6 +26,32 @@ struct Signal<DataModel> {
 class Dispatcher<DataModel: Identifiable> {
     let dispatchedSignals = PublishRelay<Signal<DataModel>>()
     
+    func dispatch(_ signal: Signal<DataModel>) {
+        dispatchedSignals.accept(signal)
+    }
+    
+    // MARK: For Simple Data
+    
+    /// Bind the dispatched signals with `DataModel` relay.
+    func bind(with dataSource: BehaviorRelay<DataModel>) -> Disposable {
+        return dispatchedSignals.bind { [weak self] signal in
+            guard let self = self else { return }
+            switch signal.operation {
+            case .edit:
+                self._edit(dataSource: dataSource, signal: signal)
+            default:
+                print("Only EDIT operation is supported for single-value dataSource.")
+            }
+        }
+    }
+    
+    func _edit(dataSource: BehaviorRelay<DataModel>, signal: Signal<DataModel>) {
+        dataSource.accept(signal.data)
+    }
+    
+    // MARK: For List Data
+    
+    /// Bind the dispatched signals with the list of `DataModel`
     func bind(with dataSource: BehaviorRelay<[DataModel]>) -> Disposable {
         return dispatchedSignals.bind { [weak self] signal in
             guard let self = self else { return }
@@ -61,9 +87,5 @@ class Dispatcher<DataModel: Identifiable> {
             dataList[index] = signal.data
             dataSource.accept(dataList)
         }
-    }
-    
-    func dispatch(_ signal: Signal<DataModel>) {
-        dispatchedSignals.accept(signal)
     }
 }

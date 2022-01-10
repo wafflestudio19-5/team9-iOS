@@ -9,7 +9,7 @@ import Foundation
 
 struct Post: Codable, Identifiable {
     let id: Int
-    let author: User?
+    let author: Author?
     var content: String
     var likes: Int
     var is_liked: Bool
