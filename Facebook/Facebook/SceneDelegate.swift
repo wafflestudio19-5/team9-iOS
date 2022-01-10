@@ -56,7 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 NetworkService.registerToken(token: token)
                 return RootTabBarController()
             }
-            else { return RootTabBarController() }
+            else { return UINavigationController(rootViewController: LoginViewController()) }
         }()
         
         window.makeKeyAndVisible()
