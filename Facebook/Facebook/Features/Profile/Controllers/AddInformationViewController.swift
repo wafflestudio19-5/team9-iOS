@@ -7,7 +7,9 @@
 
 import UIKit
 import RxSwift
+import RxGesture
 import RxCocoa
+import RxKeyboard
 import RxDataSources
 import RxKeyboard
 import MapKit
@@ -76,6 +78,8 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     .subscribe(onNext: { [weak self] information in
                         guard let self = self else { return }
                         
+                        self.name.accept(information)
+                        
                         switch self.informationType {
                         case .company:
                             self.companyInformation.name = information
@@ -103,7 +107,10 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
             cell.deleteButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
-                switch style {
+                
+                self.name.accept("")
+                
+                switch self.informationType {
                 case .company:
                     self.companyInformation.name = nil
                     if self.companyInformation.is_active == true {
@@ -118,10 +125,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     } else {
                         self.createNotActiveSection()
                     }
-                default:
-                    break
                 }
-                
             }.disposed(by: cell.disposeBag)
             
             return cell
@@ -213,6 +217,14 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
             cell.datePS.subscribe(onNext: { [weak self] date in
                 guard let self = self else { return }
+                
+                switch style {
+                case .startDateStyle:
+                    self.start_date.accept(date)
+                case .endDateStyle:
+                    self.end_date.accept(date)
+                }
+                
                 switch self.informationType {
                 case .company:
                     switch style {
@@ -251,6 +263,12 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     lazy var companyInformation = Company()
     lazy var universityInformation = University()
+    
+    private let name = BehaviorRelay<String>(value: "")
+    private let start_date = BehaviorRelay<String>(value: "")
+    private let end_date = BehaviorRelay<String>(value: "")
+    private let isActive = BehaviorRelay<Bool>(value: true)
+    
     
     init(informationType: InformationType, id: Int? = nil) {
         self.informationType = informationType
@@ -293,6 +311,8 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 
                     self.companyInformation = response
                     
+                    self.checkHasEntered()
+                    
                     if self.companyInformation.is_active! {
                         self.createActiveSection()
                     } else {
@@ -313,8 +333,10 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         print(event)
                         return
                     }
-        
+                    
                     self.universityInformation = response
+                    
+                    self.checkHasEntered()
                     
                     if self.universityInformation.is_active! {
                         self.createActiveSection()
@@ -341,6 +363,32 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
            //self.saveData()
         }.disposed(by: disposeBag)
+        
+        let hasEnteredBoth = Observable.combineLatest(name, start_date, isActive, resultSelector: { (!$0.isEmpty && !$1.isEmpty && $2 ) })
+        let hasEnteredAll = Observable.combineLatest(name, start_date, end_date, isActive,resultSelector: { !$0.isEmpty && !$1.isEmpty && !$2.isEmpty && !$3 })
+        let isEnableButton: Observable<Bool>
+        
+        if self.id == nil {
+            isEnableButton = Observable.combineLatest(hasEnteredBoth, hasEnteredAll, resultSelector: { $0 || $1 })
+            
+            isEnableButton
+                .bind(to: self.addInformationView.saveButton.rx.isEnabled)
+                .disposed(by: disposeBag)
+        } else {
+            isEnableButton = Observable.combineLatest(hasEnteredBoth, hasEnteredAll, name,resultSelector: { $0 || $1 || $2.isEmpty })
+        }
+        
+        isEnableButton
+            .bind(to: self.addInformationView.saveButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        isEnableButton
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] result in
+                guard let self = self else { return }
+                self.addInformationView.saveButton.setTitleColor((result ? .white : .gray), for: .normal)
+                self.addInformationView.saveButton.backgroundColor = (result ? .systemBlue : .systemGray4)
+            }).disposed(by: disposeBag)
     }
     
     private func saveData() {
@@ -412,6 +460,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             ]
         }
         
+        
         sectionsBR.accept(sections)
     }
     
@@ -453,6 +502,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             ]
         }
         
+        self.isActive.accept(true)
         self.sectionsBR.accept(sections)
     }
     
@@ -498,7 +548,23 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             ]
         }
         
+        self.isActive.accept(false)
         self.sectionsBR.accept(sections)
+    }
+    
+    private func checkHasEntered() {
+        switch informationType {
+        case .company:
+            name.accept(companyInformation.name ?? "")
+            start_date.accept(companyInformation.join_date ?? "")
+            end_date.accept(companyInformation.leave_date ?? "")
+            isActive.accept(companyInformation.is_active!)
+        case .university:
+            name.accept(universityInformation.name ?? "")
+            start_date.accept(universityInformation.join_date ?? "")
+            end_date.accept(universityInformation.graduate_date ?? "")
+            isActive.accept(universityInformation.is_active!)
+        }
     }
     
     //UITableView의 custom header적용

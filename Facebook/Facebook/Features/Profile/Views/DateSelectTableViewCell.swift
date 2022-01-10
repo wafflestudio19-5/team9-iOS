@@ -414,10 +414,8 @@ class DateSelectTableViewCell: UITableViewCell {
             }
             
             let date = selectedYear + "-" + month + "-" + day
-            
             datePS.onNext(date)
         } else {
-            
             datePS.onNext("")
         }
     }
