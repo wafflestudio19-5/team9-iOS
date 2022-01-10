@@ -24,6 +24,10 @@ struct NetworkService {
         self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [JWTAdapter(token: token)]))
     }
     
+    static func removeToken(token: String) {
+        self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [JWTAdapter(token: token, remove: true)]))
+    }
+    
     /*
      MARK: Basic HTTP Methods (JSON)
      */
@@ -76,14 +80,20 @@ struct NetworkService {
 
 struct JWTAdapter: RequestInterceptor {
     private let token: String
+    private let remove: Bool
     
-    init(token: String) {
+    init(token: String, remove: Bool = false) {
         self.token = token
+        self.remove = remove
     }
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var urlRequest = urlRequest
-        urlRequest.headers.add(.authorization("JWT \(self.token)"))
+        if remove {
+            urlRequest.headers.remove(name: "Authorization")
+        } else {
+            urlRequest.headers.add(.authorization("JWT \(self.token)"))
+        }
         completion(.success(urlRequest))
     }
 }

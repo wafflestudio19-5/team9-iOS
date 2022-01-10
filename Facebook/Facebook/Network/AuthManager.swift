@@ -55,8 +55,10 @@ class AuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.get(endpoint: .logout(), as: String.self)
                 .subscribe(onNext: { response in
-                    print(response)
-                    if response.0.statusCode == 200 { result(.success(true)) }
+                    if response.0.statusCode == 200 {
+                        NetworkService.removeToken(token: CurrentUser.shared.getToken())
+                        result(.success(true))
+                    }
                 }, onError: { _ in
                     result(.success(false))
                 }).disposed(by: self.disposeBag)
