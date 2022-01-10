@@ -48,6 +48,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         
+        UserDefaults.standard.removeObject(forKey: "didLogin")
+        
         window.rootViewController = {
             if didLogin {
                 CurrentUser.shared.getCurrentUser()
