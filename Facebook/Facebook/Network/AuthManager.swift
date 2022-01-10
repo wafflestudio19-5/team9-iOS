@@ -19,6 +19,7 @@ class AuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .createUser(newUser: NewUser.shared), as: AuthResponse.self)
                 .subscribe (onNext: { response in
+                    print(response.1.token)
                     CurrentUser.shared.profile = response.1.user
                     CurrentUser.shared.saveCurrentUser()
                     CurrentUser.shared.saveToken(token: response.1.token)
@@ -36,6 +37,7 @@ class AuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .login(email: email, password: password), as: AuthResponse.self)
                 .subscribe(onNext: { response in
+                    print(response.1.token)
                     CurrentUser.shared.profile = response.1.user
                     CurrentUser.shared.saveCurrentUser()
                     CurrentUser.shared.saveToken(token: response.1.token)

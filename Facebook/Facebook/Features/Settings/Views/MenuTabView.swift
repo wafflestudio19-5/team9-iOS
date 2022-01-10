@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import SnapKit
 
 class MenuTabView: UIView {
     
     let largeTitleLabel = UILabel()
     
     let logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: UIColor(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 1.0))
+    
+    let kakaoDisconnectButton = RectangularSlimButton(title: "카카오 계정 연결 끊기", titleColor: .black, backgroundColor: .systemYellow)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,14 +36,19 @@ class MenuTabView: UIView {
     
     private func setLayoutForView() {
         self.addSubview(logoutButton)
+        self.addSubview(kakaoDisconnectButton)
         
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
+        kakaoDisconnectButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             logoutButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16.0),
             logoutButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
             logoutButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
+            
+            kakaoDisconnectButton.topAnchor.constraint(equalTo: logoutButton.bottomAnchor, constant: 10.0),
+            kakaoDisconnectButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
+            kakaoDisconnectButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0)
         ])
     }
-
 }

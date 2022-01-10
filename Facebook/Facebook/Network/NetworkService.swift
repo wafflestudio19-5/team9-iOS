@@ -62,6 +62,10 @@ struct NetworkService {
         return session.rx.responseDecodable(.put, endpoint.url, parameters: endpoint.parameters, encoding: JSONEncoding.default)
     }
     
+    static func delete<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
+        return session.rx.responseDecodable(.delete, endpoint.url, parameters: endpoint.parameters, encoding: JSONEncoding.default)
+    }
+    
     /*
      MARK: Upload files
      */

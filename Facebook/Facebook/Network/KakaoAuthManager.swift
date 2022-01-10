@@ -19,6 +19,7 @@ class KakaoAuthManager {
     
     enum Request {
         case connect
+        case disconnect
         case login
     }
     
@@ -39,7 +40,15 @@ class KakaoAuthManager {
                                     case .failure(let error): result.onError(error)
                                     }
                                 }.disposed(by: self.disposeBag)
-                            return
+                        case .disconnect:
+                            self.disconnectKakaoAccount(accessToken: response.accessToken)
+                                .subscribe { success in
+                                    switch success {
+                                    case .success(true): result.onNext(true)
+                                    case .success(false): result.onNext(false)
+                                    case .failure(let error): result.onError(error)
+                                    }
+                                }.disposed(by: self.disposeBag)
                         case .login:
                             self.loginKakaoAccount(accessToken: response.accessToken)
                                 .subscribe { success in
@@ -68,14 +77,21 @@ class KakaoAuthManager {
                                     case .failure(let error): result.onError(error)
                                     }
                                 }.disposed(by: self.disposeBag)
-                            return
+                        case .disconnect:
+                            self.disconnectKakaoAccount(accessToken: response.accessToken)
+                                .subscribe { success in
+                                    switch success {
+                                    case .success(true): result.onNext(true)
+                                    default: result.onNext(false)
+                                    }
+                                }.disposed(by: self.disposeBag)
                         case .login:
                             self.loginKakaoAccount(accessToken: response.accessToken)
                                 .subscribe { success in
                                     switch success {
-                                    case .success(true): result.onNext(true)
-                                    case .success(false): result.onNext(false)
-                                    case .failure(let error): result.onError(error)
+                                    case .success(true): print("성공!!")
+                                        result.onNext(true)
+                                    default: result.onNext(false)
                                     }
                                 }.disposed(by: self.disposeBag)
                         }
@@ -114,6 +130,24 @@ class KakaoAuthManager {
                         CurrentUser.shared.saveCurrentUser()
                         CurrentUser.shared.saveToken(token: response.1.token)
                         NetworkService.registerToken(token: response.1.token)
+                        result(.success(true))
+                    } else {
+                        result(.success(false))
+                    }
+                }, onError: { error in
+                    result(.failure(error))
+                }).disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
+    
+    private func disconnectKakaoAccount(accessToken: String) -> Single<Bool> {
+        // 카카오 access token과 유저의 JWT 토큰으로 서버에 "카카오 계정 해제" 요청
+
+        return Single<Bool>.create { (result) -> Disposable in
+            NetworkService.delete(endpoint: .connectWithKakao(accessToken: accessToken), as: String?.self)
+                .subscribe(onNext: { response in
+                    if response.0.statusCode == 204 {
                         result(.success(true))
                     } else {
                         result(.success(false))
