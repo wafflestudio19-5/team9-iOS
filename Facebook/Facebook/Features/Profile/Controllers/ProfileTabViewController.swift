@@ -221,6 +221,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
+        print(self.userId)
+        
         // 이게 최선인가?
         postDataViewModel.dataList.bind { [weak self] _ in
             self?.createSection()
@@ -283,17 +285,17 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .ProfileImageSection(title: "메인 프로필", items: [
                 .MainProfileItem(profileImageUrl: userProfile.profile_image ?? "" ,
                                  coverImageUrl: userProfile.cover_image ?? "",
-                                 name: userProfile.username ?? "username",
-                                 selfIntro: userProfile.self_intro ?? "",
+                                 name: userProfile.username,
+                                 selfIntro: userProfile.self_intro,
                                  buttonText: (userId == CurrentUser.shared.profile?.id) ? "프로필 편집" : "친구 추가")
             ])
         ]
 
-        let companyItems = userProfile.company?.map({ company in
+        let companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
         }) ?? []
         
-        let universityItems = userProfile.university?.map({ university in
+        let universityItems = userProfile.university.map({ university in
             SectionItem.UniversityItem(university: university)
         }) ?? []
         

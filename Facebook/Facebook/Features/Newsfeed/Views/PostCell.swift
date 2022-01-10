@@ -89,7 +89,7 @@ class PostCell: UITableViewCell {
     private func setLayout() {
         contentView.addSubview(postHeader)
         NSLayoutConstraint.activate([
-            postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
+            postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin - 3),
             postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
             postHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
             postHeader.heightAnchor.constraint(equalToConstant: .profileImageSize),

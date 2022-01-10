@@ -175,13 +175,13 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     func createSection() {
         guard let userProfile = userProfile else { return }
         
-        var companyItems = userProfile.company?.map({ company in
+        var companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
-        }) ?? []
+        })
         
-        var universityItems = userProfile.university?.map({ university in
+        var universityItems = userProfile.university.map({ university in
             SectionItem.UniversityItem(university: university)
-        }) ?? []
+        })
         
         if companyItems.count == 0 {
             companyItems = [ .SimpleInformationItem(style: .style2,
@@ -203,8 +203,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                 .ImageItem(style: .coverImage, imageUrl: userProfile.cover_image ?? "")
             ]),
             .SelfIntroSection(title: "소개", items: [
-                .LabelItem(style: .style1,
-                           labelText: (userProfile.self_intro != nil && userProfile.self_intro != "") ? userProfile.self_intro! : "회원님에 대해 설명해주세요...")
+                .LabelItem(style: .style1, labelText: (userProfile.self_intro != "" ? userProfile.self_intro : "회원님에 대해 설명해주세요..."))
             ]),
             .DetailInformationSection(title: "상세 정보", items: companyItems + universityItems),
             .EditProfileSection(title: "정보 수정", items: [

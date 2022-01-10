@@ -134,17 +134,17 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
     func createSection() {
         guard let userProfile = userProfile else { return }
         
-        let companyItems = userProfile.company?.map({ company in
+        let companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
-        }) ?? []
+        })
         
         let addCompanyButtonItem: [SectionItem] = [
             .AddInformationButtonItem(style: .company, buttonText: "직장 추가")
         ]
     
-        let universityItems = userProfile.university?.map({ university in
+        let universityItems = userProfile.university.map({ university in
             SectionItem.UniversityItem(university: university)
-        }) ?? []
+        })
         
         let addUniversityButtonItem: [SectionItem] = [
             .AddInformationButtonItem(style: .university, buttonText: "대학 추가"),

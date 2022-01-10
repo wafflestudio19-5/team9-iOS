@@ -182,13 +182,13 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     func createSection() {
         guard let userProfile = userProfile else { return }
 
-        var companyItems = userProfile.company?.map({ company in
+        var companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
-        }) ?? []
+        })
         
-        var universityItems = userProfile.university?.map({ university in
+        var universityItems = userProfile.university.map({ university in
             SectionItem.UniversityItem(university: university)
-        }) ?? []
+        })
         
         var sections: [MultipleSectionModel]
         if userId == CurrentUser.shared.profile?.id {
