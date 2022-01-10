@@ -7,15 +7,12 @@
 
 import RxSwift
 
-class AuthManager {
+struct AuthManager {
     
-    private let disposeBag = DisposeBag()
-    
-    static let shared = AuthManager()
-    private init() { }
+    static let disposeBag = DisposeBag()
     
     // 회원가입
-    func signup(user: NewUser) -> Single<Bool> {
+    static func signup(user: NewUser) -> Single<Bool> {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .createUser(newUser: NewUser.shared), as: AuthResponse.self)
                 .subscribe (onNext: { response in
@@ -27,13 +24,14 @@ class AuthManager {
                     result(.success(true))
                 }, onError: { _ in
                     result(.success(false))
-                }).disposed(by: self.disposeBag)
+                })
+                .disposed(by: disposeBag)
             return Disposables.create()
         }
     }
     
     // 로그인
-    func login(email: String, password: String) -> Single<Bool> {
+    static func login(email: String, password: String) -> Single<Bool> {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .login(email: email, password: password), as: AuthResponse.self)
                 .subscribe(onNext: { response in
@@ -44,7 +42,8 @@ class AuthManager {
                     result(.success(true))
                 }, onError: { _ in
                     result(.success(false))
-                }).disposed(by: self.disposeBag)
+                })
+                .disposed(by: disposeBag)
             return Disposables.create()
         }
     }
