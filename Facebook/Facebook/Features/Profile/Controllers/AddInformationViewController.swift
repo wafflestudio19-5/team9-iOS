@@ -41,7 +41,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             cell.initialSetup(cellStyle: .style4)
             cell.configureCell(image: image, information: information)
             
-            //값의 입력된 정보라면 textColor를 black으로
+            //입력된 정보라면 textColor를 black으로
             switch style {
             case .company:
                 if (self.companyInformation.name != nil && self.companyInformation.name != "") {
@@ -81,14 +81,21 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                             self.companyInformation.name = information
                             if self.companyInformation.is_active == nil {
                                 self.companyInformation.is_active = true
+                                self.createActiveSection()
+                            } else {
+                                (self.companyInformation.is_active ?? true) ?
+                                    self.createActiveSection() : self.createNotActiveSection()
                             }
                         case .university:
                             self.universityInformation.name = information
                             if self.universityInformation.is_active == nil {
                                 self.universityInformation.is_active = true
+                                self.createActiveSection()
+                            } else {
+                                (self.universityInformation.is_active ?? true) ?
+                                    self.createActiveSection() : self.createNotActiveSection()
                             }
                         }
-                        self.createActiveSection()
                     }).disposed(by: cell.disposeBag)
                 
                 self.push(viewController: selectInformationViewController)
@@ -98,11 +105,19 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 guard let self = self else { return }
                 switch style {
                 case .company:
-                    self.companyInformation = Company()
-                    self.createDefaultSection()
+                    self.companyInformation.name = nil
+                    if self.companyInformation.is_active == true {
+                        self.createActiveSection()
+                    } else {
+                        self.createNotActiveSection()
+                    }
                 case .university:
-                    self.universityInformation = University()
-                    self.createDefaultSection()
+                    self.universityInformation.name = nil
+                    if self.universityInformation.is_active == true {
+                        self.createActiveSection()
+                    } else {
+                        self.createNotActiveSection()
+                    }
                 default:
                     break
                 }
@@ -185,6 +200,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             cell.textView.rx.text
                 .orEmpty
                 .subscribe(onNext: { [weak self] detail in
+                    //기본 placeholder 일때는 반영 x 
                     if detail == "직업에 대해 설명해주세요(선택 사항)" { return }
                     self?.companyInformation.detail = detail
                 }).disposed(by: cell.disposeBag)
@@ -198,7 +214,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
             cell.dateBS.subscribe(onNext: { [weak self] date in
                 guard let self = self else { return }
-                if date == "" { return }
                 switch self.informationType {
                 case .company:
                     switch style {

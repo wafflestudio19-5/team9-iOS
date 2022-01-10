@@ -130,10 +130,10 @@ class DateSelectTableViewCell: UITableViewCell {
             
             yearTextField.text = String(dateInfo.split(separator: "-")[0])
             monthTextField.text = dateInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
-            dayTextField.text = String(dateInfo.split(separator: "-")[2])
+            dayTextField.text = String(dateInfo.split(separator: "-")[2]).trimmingCharacters(in: ["0"])
             selectedYear = String(dateInfo.split(separator: "-")[0])
             selectedMonth = dateInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
-            selectedDay = String(dateInfo.split(separator: "-")[2])
+            selectedDay = String(dateInfo.split(separator: "-")[2]).trimmingCharacters(in: ["0"])
             
             hideAddDateLabel()
             showYearTextField()
@@ -402,7 +402,7 @@ class DateSelectTableViewCell: UITableViewCell {
     }
     
     private func dateInformationPass() {
-        if !(selectedYear == "" || selectedMonth == "" || selectedDay == "") {
+        if (selectedYear != "" && selectedMonth != "" && selectedDay != "") {
             var month = selectedMonth.trimmingCharacters(in: ["월"])
             if month.count == 1 {
                 month = "0" + month
@@ -416,6 +416,8 @@ class DateSelectTableViewCell: UITableViewCell {
             let date = selectedYear + "-" + month + "-" + day
             
             dateBS.onNext(date)
+        } else {
+            dateBS.onNext("")
         }
     }
     
