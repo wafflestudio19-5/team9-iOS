@@ -5,12 +5,10 @@
 //  Created by 박신홍 on 2021/11/27.
 //
 
-import Foundation
 import Alamofire
 import RxAlamofire
 import RxSwift
 import UIKit
-
 
 struct NetworkService {
     private static let configuration = URLSessionConfiguration.af.default
@@ -89,11 +87,8 @@ struct JWTAdapter: RequestInterceptor {
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var urlRequest = urlRequest
-        if remove {
-            urlRequest.headers.remove(name: "Authorization")
-        } else {
-            urlRequest.headers.add(.authorization("JWT \(self.token)"))
-        }
+        if remove { urlRequest.headers.remove(name: "Authorization") }
+        else { urlRequest.headers.add(.authorization("JWT \(self.token)")) }
         completion(.success(urlRequest))
     }
 }
