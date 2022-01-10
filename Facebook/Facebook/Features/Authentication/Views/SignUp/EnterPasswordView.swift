@@ -11,7 +11,7 @@ class EnterPasswordView: BaseSignUpView {
 
     let passwordTextField = FacebookTextField(placeholderText: "새로운 비밀번호")
 
-    let nextButton = RectangularSlimButton(title: "가입하기", titleColor: .white, backgroundColor: FacebookColor.blue.color())
+    let nextButton = RectangularSlimButton(title: "가입하기", titleColor: .white, backgroundColor: .tintColors.blue)
     
     init() {
         super.init(title: "비밀번호 선택", instruction: "다른 사람이 추측할 수 없는 6자 이상의 고유한 비밀번호를 만드세요.")

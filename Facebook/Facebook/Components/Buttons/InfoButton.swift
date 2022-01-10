@@ -48,10 +48,10 @@ class InfoButton: UIButton {
         configurationUpdateHandler = { button in
             switch button.state {
             case [.selected, .highlighted]:
-                button.configuration?.baseForegroundColor = FacebookColor.blue.color()
+                button.configuration?.baseForegroundColor = .tintColors.blue
                 button.configuration?.baseBackgroundColor = darkGray
             case .selected:
-                button.configuration?.baseForegroundColor = FacebookColor.blue.color()
+                button.configuration?.baseForegroundColor = .tintColors.blue
                 button.configuration?.baseBackgroundColor = .clear
             case .highlighted:
                 button.configuration?.baseBackgroundColor = darkGray

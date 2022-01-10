@@ -64,11 +64,11 @@ class ButtonTableViewCell: UITableViewCell {
         
         switch self.cellStyle {
         case .style1:
-            button.backgroundColor = FacebookColor.mildBlue.color()
+            button.backgroundColor = .tintColors.mildBlue
             button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
             button.setTitleColor(.systemBlue, for: .normal)
         case .style2:
-            button.backgroundColor = FacebookColor.mildBlue.color()
+            button.backgroundColor = .tintColors.mildBlue
             if let buttonImage = UIImage(systemName: "person.text.rectangle") {
                 button.setImage(buttonImage, for: .normal)
                 button.tintColor = .systemBlue

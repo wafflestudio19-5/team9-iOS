@@ -25,7 +25,7 @@ class UploadProgressHeaderView: UIView {
     
     var progressView: UIProgressView = {
         let progressView = UIProgressView()
-        progressView.progressTintColor = FacebookColor.blue.color()
+        progressView.progressTintColor = .tintColors.blue
         progressView.translatesAutoresizingMaskIntoConstraints = false
         return progressView
     }()

@@ -86,7 +86,7 @@ class PostDetailView: UIView {
     var sendButton: UIButton = {
         var config = UIButton.Configuration.plain()
         config.image = UIImage(systemName: "paperplane.fill")
-        config.baseForegroundColor = FacebookColor.blue.color()
+        config.baseForegroundColor = .tintColors.blue
         
         let button = UIButton()
         button.configuration = config

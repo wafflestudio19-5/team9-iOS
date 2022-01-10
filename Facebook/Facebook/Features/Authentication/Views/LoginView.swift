@@ -11,11 +11,11 @@ class LoginView: UIView {
     
     let logoImage = UIImageView(image: UIImage(named: "WafflebookLogo"))
     
-    let loginButton = RectangularSlimButton(title: "로그인", titleColor: .systemGray3, backgroundColor: FacebookColor.blue.color())
+    let loginButton = RectangularSlimButton(title: "로그인", titleColor: .systemGray3, backgroundColor: .tintColors.blue)
     
     let kakaoLoginButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
     
-    let createAccountButton = RectangularSlimButton(title: "새 계정 만들기", titleColor: FacebookColor.blue.color(), backgroundColor: FacebookColor.mildBlue.color())
+    let createAccountButton = RectangularSlimButton(title: "새 계정 만들기", titleColor: .tintColors.blue, backgroundColor: .tintColors.mildBlue)
     
     let emailTextField = FacebookTextField(placeholderText: "이메일 주소")
     let passwordTextField = FacebookTextField(placeholderText: "비밀번호")

@@ -59,7 +59,6 @@
 		B82EC92F278BE20600750397 /* MenuTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC92E278BE20600750397 /* MenuTabViewController.swift */; };
 		B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA42754E53700513B77 /* KakaoAuthManager.swift */; };
 		B846BDA72754F35800513B77 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA62754F35800513B77 /* LoginView.swift */; };
-		B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA92754F5A900513B77 /* FacebookColor.swift */; };
 		B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */; };
 		B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAD275504AA00513B77 /* LoginViewController.swift */; };
 		B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAF2755119500513B77 /* FacebookTextField.swift */; };
@@ -202,7 +201,6 @@
 		B82EC92E278BE20600750397 /* MenuTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTabViewController.swift; sourceTree = "<group>"; };
 		B846BDA42754E53700513B77 /* KakaoAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthManager.swift; sourceTree = "<group>"; };
 		B846BDA62754F35800513B77 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		B846BDA92754F5A900513B77 /* FacebookColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookColor.swift; sourceTree = "<group>"; };
 		B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularSlimButton.swift; sourceTree = "<group>"; };
 		B846BDAD275504AA00513B77 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B846BDAF2755119500513B77 /* FacebookTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookTextField.swift; sourceTree = "<group>"; };
@@ -529,7 +527,6 @@
 		BE9C7CA327716E450089247F /* Colors */ = {
 			isa = PBXGroup;
 			children = (
-				B846BDA92754F5A900513B77 /* FacebookColor.swift */,
 				BE0D43682787235000E2162F /* UIColor+TintColors.swift */,
 				BE827A0E2772131000BD3566 /* UIColor+Grayscales.swift */,
 			);
@@ -1019,7 +1016,6 @@
 				7754B8712781D66400775D81 /* EditUserProfileViewController.swift in Sources */,
 				77ABC5DA2774A9B0000431E1 /* AddInformationViewController.swift in Sources */,
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
-				B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */,
 				7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */,
 				BE86BAE02784012F00948CAA /* CustomInputAccessoryView.swift in Sources */,
 				7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */,
