@@ -20,7 +20,7 @@ class MenuTabViewController: BaseTabViewController<MenuTabView> {
     private func bind() {
         tabView.logoutButton.rx.tapGesture().skip(1).bind { [weak self] _ in
             guard let self = self else { return }
-            self.actionSheet(title: "로그아웃하시겠어요?", action: ("로그아웃", destructive: true, action: self.logout()))
+            self.actionSheet(title: "로그아웃하시겠어요?", action: ("로그아웃", destructive: true, action: self.logout))
         }.disposed(by: disposeBag)
     }
 }
