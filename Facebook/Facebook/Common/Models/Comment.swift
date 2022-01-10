@@ -12,7 +12,7 @@ import UIKit
 struct Comment: Codable, Identifiable {
     let id: Int
     var post_id: Int?
-    let author: Author
+    let author: User
     let content: String
     let file: String?
     var likes: Int

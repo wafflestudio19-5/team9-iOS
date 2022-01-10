@@ -45,7 +45,7 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
     }
     
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: UserDefaultManager.cachedUser?.id ?? 0), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
                 
@@ -78,7 +78,7 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
                 let updateData = ["self_intro": self.addSelfIntroView.inputTextView.text]
                 
                 NetworkService
-                    .update(endpoint: .profile(id: UserDefaultManager.cachedUser?.id ?? 0, updateData: updateData))
+                    .update(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0, updateData: updateData))
                     .subscribe{ [weak self] _ in
                         self?.loadData()
                     }.disposed(by: self.disposeBag)

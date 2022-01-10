@@ -10,7 +10,7 @@ import RxSwift
 import RxRelay
 
 /// 자기 자신의 상태를 관리한다.
-struct UserDefaultManager {
+struct UserDefaultsManager {
     
     private static let userKey = "CurrentUser"
     private static let tokenKey = "Token"
@@ -35,10 +35,10 @@ struct UserDefaultManager {
         }
     }
     
-    static var cachedUser: Author? {
+    static var cachedUser: User? {
         get {
             let data = UserDefaults.standard.value(forKey: self.userKey) as? Data
-            return try? JSONDecoder().decode(Author.self, from: data!)
+            return try? JSONDecoder().decode(User.self, from: data!)
         }
         set {
             let currentUserData = try? JSONEncoder().encode(newValue)

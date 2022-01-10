@@ -121,7 +121,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.configureCell(buttonText: buttonText)
             
             cell.button.rx.tap.bind { [weak self] in
-                let detailProfileViewController = DetailProfileViewController(userId: UserDefaultManager.cachedUser?.id ?? 0)
+                let detailProfileViewController = DetailProfileViewController(userId: UserDefaultsManager.cachedUser?.id ?? 0)
                 self?.push(viewController: detailProfileViewController)
             }.disposed(by: cell.disposeBag)
             
@@ -153,7 +153,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
     }
     
     func loadData() {
-        NetworkService.get(endpoint: .profile(id: UserDefaultManager.cachedUser?.id ?? 0), as: UserProfile.self)
+        NetworkService.get(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0), as: UserProfile.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
                 
@@ -352,7 +352,7 @@ extension EditProfileViewController {
         let updateData = ["self_intro": ""]
         
         NetworkService
-            .update(endpoint: .profile(id: UserDefaultManager.cachedUser?.id ?? 0, updateData: updateData))
+            .update(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0, updateData: updateData))
             .subscribe{ [weak self] _ in
                 self?.loadData()
             }.disposed(by: disposeBag)
@@ -383,7 +383,7 @@ extension EditProfileViewController: PHPickerViewControllerDelegate {
                 
                 let uploadData = [self.imageType: imageData]  as [String : Any]
                 
-                NetworkService.update(endpoint: .profile(id: UserDefaultManager.cachedUser?.id ?? 0, updateData: uploadData)).subscribe { event in
+                NetworkService.update(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0, updateData: uploadData)).subscribe { event in
                     let request = event.element
                     let progress = request?.uploadProgress
                     

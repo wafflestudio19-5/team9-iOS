@@ -31,7 +31,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             
             cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro, buttonText: buttonText)
             
-            if (self.userId == UserDefaultManager.cachedUser?.id) {
+            if (self.userId == UserDefaultsManager.cachedUser?.id) {
                 if coverImageUrl != "" {
                     cell.coverImage.rx
                         .tapGesture()
@@ -163,7 +163,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     init(userId: Int? = nil) {
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
         if userId != nil { self.userId = userId! }
-        else if UserDefaultManager.cachedUser != nil { self.userId = UserDefaultManager.cachedUser!.id }
+        else if UserDefaultsManager.cachedUser != nil { self.userId = UserDefaultsManager.cachedUser!.id }
         else { self.userId = 0 }
 
         postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: self.userId))
@@ -177,7 +177,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if userId == UserDefaultManager.cachedUser?.id {
+        if userId == UserDefaultsManager.cachedUser?.id {
             super.setNavigationBarItems(withEditButton: true)
         }else {
             super.setNavigationBarItems(withEditButton: false)
@@ -287,7 +287,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                  coverImageUrl: userProfile.cover_image ?? "",
                                  name: userProfile.username,
                                  selfIntro: userProfile.self_intro,
-                                 buttonText: (userId == UserDefaultManager.cachedUser?.id) ? "프로필 편집" : "친구 추가")
+                                 buttonText: (userId == UserDefaultsManager.cachedUser?.id) ? "프로필 편집" : "친구 추가")
             ])
         ]
 
@@ -311,7 +311,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                                   information: "학교"),
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
-                                                  information: (userId == UserDefaultManager.cachedUser?.id)  ?
+                                                  information: (userId == UserDefaultsManager.cachedUser?.id)  ?
                                                   "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
                 SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
             ]
@@ -319,14 +319,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             otherItems = [
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
-                                                  information: (userId == UserDefaultManager.cachedUser?.id)  ?
+                                                  information: (userId == UserDefaultsManager.cachedUser?.id)  ?
                                                   "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
                 SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
             ]
         }
         
         //다른 사람 프로필일 경우 정보 수정 버튼 삭제
-        if (userId != UserDefaultManager.cachedUser?.id) {
+        if (userId != UserDefaultsManager.cachedUser?.id) {
             otherItems.removeLast()
         }
         
@@ -337,7 +337,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         
         let postItems = postDataViewModel.dataList.value.map({ post in
             SectionItem.PostItem(post: post)
-        }) ?? []
+        })
         
         let postSection: [MultipleSectionModel] = [
             .PostSection(title: "게시물",items: postItems)
@@ -361,7 +361,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             return label
         }()
         
-        if userId == UserDefaultManager.cachedUser?.id {
+        if userId == UserDefaultsManager.cachedUser?.id {
             let createHeaderView = CreatePostHeaderView()
             headerView.addSubview(label)
             headerView.addSubview(createHeaderView)
@@ -416,7 +416,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 2 {
-            if userId != UserDefaultManager.cachedUser?.id { return 40 }
+            if userId != UserDefaultsManager.cachedUser?.id { return 40 }
             else { return 100 }
         }
         

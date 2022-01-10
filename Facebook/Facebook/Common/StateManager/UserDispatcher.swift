@@ -24,14 +24,14 @@ class UserDispatcher: Dispatcher<UserProfile> {
     }
     
     func dispatch(authResponse: AuthResponse) {
-        UserDefaultManager.token = authResponse.token
-        UserDefaultManager.cachedUser = authResponse.user
-        UserDefaultManager.isLoggedIn = true
+        UserDefaultsManager.token = authResponse.token
+        UserDefaultsManager.cachedUser = authResponse.user
+        UserDefaultsManager.isLoggedIn = true
         NetworkService.registerToken(token: authResponse.token)
         asObservable.accept(UserProfile.getDummyProfile(from: authResponse.user))
     }
     
-    func dispatch(cachedUser: Author) {
+    func dispatch(cachedUser: User) {
         asObservable.accept(UserProfile.getDummyProfile(from: cachedUser))
     }
 }

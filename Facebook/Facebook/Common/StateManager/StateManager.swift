@@ -8,7 +8,7 @@
 import Foundation
 
 class StateManager {
-    static let of = StateManager()
+    static let of = StateManager()  // singleton instance
     
     let post = PostDispatcher()
     let user = UserDispatcher()

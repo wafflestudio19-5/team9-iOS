@@ -49,9 +49,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         
         window.rootViewController = {
-            if UserDefaultManager.isLoggedIn {
-                StateManager.of.user.dispatch(cachedUser: UserDefaultManager.cachedUser!)
-                NetworkService.registerToken(token: UserDefaultManager.token!)
+            if UserDefaultsManager.isLoggedIn {
+                StateManager.of.user.dispatch(cachedUser: UserDefaultsManager.cachedUser!)
+                NetworkService.registerToken(token: UserDefaultsManager.token!)
                 return RootTabBarController()
             }
             else { return UINavigationController(rootViewController: LoginViewController()) }
