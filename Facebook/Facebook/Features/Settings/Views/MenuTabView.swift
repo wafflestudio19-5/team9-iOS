@@ -16,6 +16,8 @@ class MenuTabView: UIView {
     
     let alertSpinner = AlertWithSpinner(message: "로그아웃 중입니다...")
     
+    let kakaoDisconnectButton = RectangularSlimButton(title: "카카오 계정 연결 끊기", titleColor: .black, backgroundColor: .systemYellow)
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
@@ -36,9 +38,17 @@ class MenuTabView: UIView {
     
     private func setLayoutForView() {
         self.addSubview(logoutButton)
+        self.addSubview(kakaoDisconnectButton)
         
         logoutButton.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(16)
+            make.top.left.equalTo(self.safeAreaLayoutGuide).offset(16)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+        }
+        
+        kakaoDisconnectButton.snp.makeConstraints { make in
+            make.top.equalTo(logoutButton.snp.bottom).offset(10.0)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
         }
     }
 }
