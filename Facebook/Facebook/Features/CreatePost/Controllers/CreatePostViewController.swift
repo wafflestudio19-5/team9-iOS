@@ -112,29 +112,13 @@ class CreatePostViewController: UIViewController {
                             DispatchQueue.main.async {
                                 newsfeedVC.headerViews.uploadProgressHeaderView.displayProgress(progress: progress)
                             }
-                            request?.responseString(completionHandler: {data in
-                                print(data)
-                                newsfeedVC.viewModel.refresh()
-                                newsfeedVC.viewModel.refreshComplete
-                                    .observe(on: MainScheduler.instance)
-                                    .bind { refreshComplete in
-                                        DispatchQueue.main.async {
-                                            newsfeedVC.headerViews.uploadProgressHeaderView.isHidden = true
-                                        }
-                                        callbackDisposeBag = DisposeBag()  // cancel all subscriptions inside button tap closure
-                                    }
-                                    .disposed(by: callbackDisposeBag)
-                            })
-                            
-                            // TODO: refresh 없이 포스트 업데이트하기
-//                            request?.responseDecodable(of: Post.self) { dataResponse in
-////                                print(dataResponse)
-////                                guard let post = dataResponse.value else { return }
-////                                print(post)
-//                                StateManager.of.post.dispatch(.init(data: post, operation: .insert(index: 0)))
-//                                newsfeedVC.headerViews.uploadProgressHeaderView.isHidden = true
-//                                callbackDisposeBag = DisposeBag()
-//                            }
+
+                            request?.responseDecodable(of: Post.self) { dataResponse in
+                                guard let post = dataResponse.value else { return }
+                                StateManager.of.post.dispatch(.init(data: post, operation: .insert(index: 0)))
+                                newsfeedVC.headerViews.uploadProgressHeaderView.isHidden = true
+                                callbackDisposeBag = DisposeBag()
+                            }
                         }
                         .disposed(by: callbackDisposeBag)
                 }
