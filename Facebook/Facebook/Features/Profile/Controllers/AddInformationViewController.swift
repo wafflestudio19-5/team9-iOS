@@ -210,9 +210,8 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DateSelectTableViewCell.reuseIdentifier, for: idxPath) as? DateSelectTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: style)
-            cell.configureCell(dateInfo: dateInfo)
             
-            cell.dateBS.subscribe(onNext: { [weak self] date in
+            cell.datePS.subscribe(onNext: { [weak self] date in
                 guard let self = self else { return }
                 switch self.informationType {
                 case .company:
@@ -231,6 +230,8 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     }
                 }
             }).disposed(by: cell.disposeBag)
+            
+            cell.configureCell(dateInfo: dateInfo)
             
             return cell
         default:

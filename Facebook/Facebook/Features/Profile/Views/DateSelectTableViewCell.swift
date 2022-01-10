@@ -42,7 +42,7 @@ class DateSelectTableViewCell: UITableViewCell {
     lazy var selectedMonth = ""
     lazy var selectedDay = ""
     
-    let dateBS = BehaviorSubject<String>(value: "")
+    let datePS = PublishSubject<String>()
     
     enum Style {
         case startDateStyle
@@ -415,9 +415,10 @@ class DateSelectTableViewCell: UITableViewCell {
             
             let date = selectedYear + "-" + month + "-" + day
             
-            dateBS.onNext(date)
+            datePS.onNext(date)
         } else {
-            dateBS.onNext("")
+            
+            datePS.onNext("")
         }
     }
     
