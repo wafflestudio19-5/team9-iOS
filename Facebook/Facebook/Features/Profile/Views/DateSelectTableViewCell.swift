@@ -115,6 +115,8 @@ class DateSelectTableViewCell: UITableViewCell {
             case .endDateStyle:
                 dateKindLabel.text = "종료 날짜"
                 
+                yearPickerView.selectRow(yearDataBR.value.count - 1, inComponent: 0, animated: false)
+                
                 showAddDateLabel()
                 hideYearTextField()
                 hideMonthTextField()

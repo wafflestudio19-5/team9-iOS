@@ -158,6 +158,7 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
             guard let self = self else { return }
             self.selectInformationView.searchHeaderView.searchTextField.text = ""
             self.selectedInformation.onNext("")
+            self.searchResultBR.accept([])
         }.disposed(by: disposeBag)
         
         searchResultBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
