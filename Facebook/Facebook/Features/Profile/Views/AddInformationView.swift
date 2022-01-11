@@ -29,9 +29,11 @@ class AddInformationView: UIView {
         return button
     }()
     
+    var bottomConstraint: NSLayoutConstraint?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .systemGray6
+        addInformationTableView.backgroundColor = .systemGray5
         setLayoutForView()
         configureTableView()
     }
@@ -59,12 +61,21 @@ class AddInformationView: UIView {
             saveButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 10),
             saveButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -10)
         ])
+
+        layoutIfNeeded()
+        
+        // createAccountButton의 하단 Constraint 설정
+        bottomConstraint = footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 15)
+        
+        guard let bottomConstraint = bottomConstraint else {
+            return
+        }
         
         self.addSubview(footerView)
         NSLayoutConstraint.activate([
             footerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
             footerView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
+            bottomConstraint
         ])
     }
     

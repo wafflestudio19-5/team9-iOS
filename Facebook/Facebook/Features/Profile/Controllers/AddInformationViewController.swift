@@ -209,6 +209,16 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     self?.companyInformation.detail = detail
                 }).disposed(by: cell.disposeBag)
             
+            // view의 아무 곳이나 누르면 textView 입력 상태 종료
+            self.view.rx.tapGesture(configuration: { _, delegate in
+                delegate.touchReceptionPolicy = .custom { _, shouldReceive in
+                    return !(shouldReceive.view is UIControl)
+                }
+            }).bind { [weak self] _ in
+                guard let self = self else { return }
+                cell.textView.endEditing(true)
+            }.disposed(by: self.disposeBag)
+            
             return cell
         case let .SelectDateItem(style, dateInfo):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DateSelectTableViewCell.reuseIdentifier, for: idxPath) as? DateSelectTableViewCell else { return UITableViewCell() }
@@ -361,9 +371,10 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 print(self.universityInformation)
             }
             
-           //self.saveData()
+           self.saveData()
         }.disposed(by: disposeBag)
         
+        //저장 버튼 활성화 구현
         let hasEnteredBoth = Observable.combineLatest(name, start_date, isActive, resultSelector: { (!$0.isEmpty && !$1.isEmpty && $2 ) })
         let hasEnteredAll = Observable.combineLatest(name, start_date, end_date, isActive,resultSelector: { !$0.isEmpty && !$1.isEmpty && !$2.isEmpty && !$3 })
         let isEnableButton: Observable<Bool>
@@ -388,6 +399,21 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 guard let self = self else { return }
                 self.addInformationView.saveButton.setTitleColor((result ? .white : .gray), for: .normal)
                 self.addInformationView.saveButton.backgroundColor = (result ? .systemBlue : .systemGray4)
+            }).disposed(by: disposeBag)
+        
+        // Keyboard의 높이에 따라 "새 계정 만들기" 버튼 위치 조정
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self = self else { return }
+                guard let bottomConstraint = self.addInformationView.bottomConstraint else { return }
+
+                if keyboardVisibleHeight == 0 {
+                    bottomConstraint.constant = 0
+                } else {
+                    let height = keyboardVisibleHeight - self.view.safeAreaInsets.bottom
+                    bottomConstraint.constant = -height
+                }
+                self.addInformationView.layoutIfNeeded()
             }).disposed(by: disposeBag)
     }
     
@@ -577,7 +603,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         headerView.backgroundColor = .white
         
         let sectionLabel = UILabel(frame: frame)
-        sectionLabel.text = "현재 재직 중"
+        sectionLabel.text = (informationType == .company) ? "현재 재직 중" : "현재 재학 중"
         sectionLabel.textColor = .black
         sectionLabel.font = UIFont.systemFont(ofSize: 18)
         
