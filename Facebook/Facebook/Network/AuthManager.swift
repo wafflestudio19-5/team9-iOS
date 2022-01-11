@@ -54,7 +54,7 @@ class AuthManager {
             NetworkService.get(endpoint: .logout(), as: String.self)
                 .subscribe(onNext: { response in
                     if response.0.statusCode == 200 {
-                        NetworkService.removeToken(token: CurrentUser.shared.getToken())
+                        NetworkService.removeToken()
                         result(.success(true))
                     }
                 }, onError: { _ in
