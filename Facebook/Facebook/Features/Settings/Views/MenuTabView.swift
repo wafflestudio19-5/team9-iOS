@@ -11,7 +11,7 @@ class MenuTabView: UIView {
     
     let largeTitleLabel = UILabel()
     
-    let logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: UIColor(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 1.0))
+    let logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: .grayscales.button)
 
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -24,5 +24,8 @@ extension UIColor {
         
         /// 이미지 가장자리에 적용하는 색상
         static var imageBorder = UIColor(named: "ImageBorder")!
+        
+        /// 회색 계열 버튼에 사용되는 회색
+        static var button = UIColor(red: 227.0/255.0, green: 228.0/255.0, blue: 235.0/255.0, alpha: 1.0)
     }
 }
