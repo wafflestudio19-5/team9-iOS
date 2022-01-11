@@ -163,8 +163,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     init(userId: Int? = nil) {
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
         if userId != nil { self.userId = userId! }
-        else if UserDefaultsManager.cachedUser != nil { self.userId = UserDefaultsManager.cachedUser!.id }
-        else { self.userId = 0 }
+        else { self.userId = UserDefaultsManager.cachedUser?.id ?? 0}
 
         postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: self.userId))
         
@@ -203,9 +202,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     return
                 }
                 
-                StateManager.of.user.profileDataSource.accept(response)
-                self.userProfile = response
-                self.createSection()
+                
+                if self.userId == StateManager.of.user.profile.id {
+                    StateManager.of.user.profileDataSource.accept(response)
+                } else {
+                    self.userProfile = response
+                    self.createSection()
+                }
         }.disposed(by: disposeBag)
     }
     
@@ -216,9 +219,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         
         StateManager.of.user
             .asObservable()
-            .bind { [weak self] profile in
-                print(profile)
+            .bind { [weak self] _ in
+                self?.createSection()
             }.disposed(by: disposeBag)
+        
+        StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
         
         // 이게 최선인가?
         postDataViewModel.dataList.bind { [weak self] _ in
@@ -257,8 +262,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             })
             .disposed(by: disposeBag)
         
-        StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
-        
         /// 테이블 맨 아래까지 스크롤할 때마다 `loadMore` 함수를 실행합니다.
         tableView.rx.didScroll.subscribe { [weak self] _ in
             guard let self = self else { return }
@@ -276,7 +279,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     //불러온 데이터에 따라 sectionModel 생성
     func createSection() {
-        guard let userProfile = userProfile else { return }
+        var userProfile: UserProfile
+        if userId == UserDefaultsManager.cachedUser?.id {
+            userProfile = StateManager.of.user.profile
+        } else {
+            userProfile = self.userProfile!
+        }
         
         let mainProfileSection: [MultipleSectionModel] = [
             .ProfileImageSection(title: "메인 프로필", items: [
@@ -460,9 +468,14 @@ extension ProfileTabViewController {
         
         NetworkService
             .update(endpoint: .profile(id: self.userId, updateData: updateData))
-            .subscribe{ [weak self] _ in
-                self?.loadData()
-            }.disposed(by: disposeBag)
+            .subscribe { event in
+                let request = event.element
+            
+                request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                    guard let userProfile = dataResponse.value else { return }
+                    StateManager.of.user.profileDataSource.accept(userProfile)
+                }
+            }.disposed(by: self.disposeBag)
     }
 }
 
@@ -496,7 +509,6 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                     request?.responseDecodable(of: UserProfile.self) { dataResponse in
                         guard let userProfile = dataResponse.value else { return }
                         StateManager.of.user.profileDataSource.accept(userProfile)
-                        self.loadData()
                     }
                 }.disposed(by: self.disposeBag)
 
