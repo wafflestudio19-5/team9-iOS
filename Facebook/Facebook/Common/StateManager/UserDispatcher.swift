@@ -23,8 +23,8 @@ class UserDispatcher: Dispatcher<UserProfile> {
         profileDataSource.value
     }
     
-    func asObservable() -> BehaviorRelay<UserProfile> {
-        return profileDataSource
+    func asObservable() -> Observable<UserProfile> {
+        return profileDataSource.asObservable()
     }
     
     func dispatch(authResponse: AuthResponse) {
