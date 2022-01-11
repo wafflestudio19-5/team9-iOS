@@ -31,6 +31,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         window.rootViewController = wrap ? UINavigationController(rootViewController: viewController) : viewController
+        
+        if animated {
+            let options: UIView.AnimationOptions = .transitionCrossDissolve
+            let duration: TimeInterval = 0.5
+
+            UIView.transition(with: window, duration: duration, options: options, animations: { }, completion: nil)
+        }
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

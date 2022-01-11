@@ -13,7 +13,9 @@ class MenuTabView: UIView {
     let largeTitleLabel = UILabel()
     
     let logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: .grayscales.button)
-
+    
+    let alertSpinner = AlertWithSpinner(message: "로그아웃 중입니다...")
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
@@ -39,5 +41,4 @@ class MenuTabView: UIView {
             make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(16)
         }
     }
-
 }
