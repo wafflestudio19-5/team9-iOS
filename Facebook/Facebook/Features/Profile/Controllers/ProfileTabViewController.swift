@@ -187,16 +187,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         bind()
     }
     
-    
-    /// viewWillAppear로 매번 로딩하는 것보다
-    /// RxSwift로 바인딩하는 방식이 바람직할 것 같습니다. (`StateManager` 사용)
-    override func viewWillAppear(_ animated: Bool) {
-        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
-//        if userProfile != nil {
-//            loadData()
-//        }
-    }
-    
     //유저 프로필 관련 데이터 불러오기
     func loadData() {
         NetworkService.get(endpoint: .profile(id: self.userId), as: UserProfile.self)
@@ -222,6 +212,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         print(self.userId)
+        
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] profile in
+                <#code#>
+            }.disposed(by: disposeBag)
         
         // 이게 최선인가?
         postDataViewModel.dataList.bind { [weak self] _ in
@@ -495,11 +491,12 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                 
                 NetworkService.update(endpoint: .profile(id: self.userId, updateData: uploadData)).subscribe { event in
                     let request = event.element
-                    let progress = request?.uploadProgress
-                    
-                    request?.responseString(completionHandler: { data in
+                
+                    request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                        guard let userProfile = dataResponse.value else { return }
+                        StateManager.of.user.profileDataSource.accept(userProfile)
                         self.loadData()
-                    })
+                    }
                 }.disposed(by: self.disposeBag)
 
             }
