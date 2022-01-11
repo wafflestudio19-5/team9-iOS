@@ -20,12 +20,14 @@ class CreatePostHeaderView: UIView {
     }
     
     private func bind() {
-        StateManager.of.user.asObservable.bind { [weak self] profile in
-            guard let urlString = profile.profile_image else { return }
-            self?.profileImage.setImage(from: URL(string: urlString))
-        }.disposed(by: disposeBag)
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] profile in
+                guard let urlString = profile.profile_image else { return }
+                self?.profileImage.setImage(from: URL(string: urlString))
+            }.disposed(by: disposeBag)
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

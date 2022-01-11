@@ -12,15 +12,19 @@ import RxRelay
 /// 자기 자신의 상태를 관리한다.
 class UserDispatcher: Dispatcher<UserProfile> {
     private let disposeBag = DisposeBag()
-    let asObservable = BehaviorRelay<UserProfile>(value: UserProfile.getDummyProfile())
+    let profileDataSource = BehaviorRelay<UserProfile>(value: UserProfile.getDummyProfile())
     
     override init() {
         super.init()
-        self.bind(with: asObservable).disposed(by: disposeBag)
+        self.bind(with: profileDataSource).disposed(by: disposeBag)
     }
     
     var profile: UserProfile {
-        asObservable.value
+        profileDataSource.value
+    }
+    
+    func asObservable() -> BehaviorRelay<UserProfile> {
+        return profileDataSource
     }
     
     func dispatch(authResponse: AuthResponse) {
@@ -28,10 +32,10 @@ class UserDispatcher: Dispatcher<UserProfile> {
         UserDefaultsManager.cachedUser = authResponse.user
         UserDefaultsManager.isLoggedIn = true
         NetworkService.registerToken(token: authResponse.token)
-        asObservable.accept(UserProfile.getDummyProfile(from: authResponse.user))
+        profileDataSource.accept(UserProfile.getDummyProfile(from: authResponse.user))
     }
     
     func dispatch(cachedUser: User) {
-        asObservable.accept(UserProfile.getDummyProfile(from: cachedUser))
+        profileDataSource.accept(UserProfile.getDummyProfile(from: cachedUser))
     }
 }
