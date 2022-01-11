@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class RectangularSlimButton: UIButton {
     
@@ -46,13 +47,12 @@ class RectangularSlimButton: UIButton {
     private func setLayoutForView() {
         self.addSubview(buttonLabel)
         
-        buttonLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.snp.makeConstraints { make in
+            make.height.equalTo(40)
+        }
         
-        NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 40.0),
-            
-            buttonLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            buttonLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-        ])
+        buttonLabel.snp.makeConstraints { make in
+            make.center.equalTo(self)
+        }
     }
 }

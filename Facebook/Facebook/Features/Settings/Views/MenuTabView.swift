@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class MenuTabView: UIView {
     
@@ -34,13 +35,9 @@ class MenuTabView: UIView {
     private func setLayoutForView() {
         self.addSubview(logoutButton)
         
-        logoutButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            logoutButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16.0),
-            logoutButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            logoutButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-        ])
+        logoutButton.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(16)
+        }
     }
 
 }
