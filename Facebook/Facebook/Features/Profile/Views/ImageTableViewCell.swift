@@ -25,7 +25,6 @@ class ImageTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
-        resetCell()
     }
     
     override func awakeFromNib() {
@@ -38,10 +37,6 @@ class ImageTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-    
-    func resetCell() {
-        self.removeConstraints(self.constraints)
     }
     
     func configureCell(cellStyle: Style, imageUrl: String){
