@@ -30,8 +30,8 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
         // Do any additional setup after loading the view.
         self.addSelfIntroView.inputTextView.becomeFirstResponder()
         setNavigationBarItems()
-        loadData()
-        bindView()
+        setTextView()
+        bind()
     }
     
     func setNavigationBarItems() {
@@ -44,34 +44,13 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
            navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    func loadData() {
-        NetworkService.get(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0), as: UserProfile.self)
-            .subscribe { [weak self] event in
-                guard let self = self else { return }
-                
-                if event.isCompleted {
-                    return
-                }
-                
-                guard let response = event.element?.1 else {
-                    print("데이터 로드 중 오류 발생")
-                    print(event)
-                    return
-                }
-                
-                self.userProfile = response
-                self.setTextView()
-        }.disposed(by: disposeBag)
-    }
-    
     func setTextView() {
-        guard let userProfile = userProfile else { return }
-        
-        addSelfIntroView.nameLabel.text = userProfile.username ?? "이름" 
-        addSelfIntroView.inputTextView.text = (userProfile.self_intro != nil && userProfile.self_intro != "") ? userProfile.self_intro : ""
+        addSelfIntroView.nameLabel.text = StateManager.of.user.profile.username
+        addSelfIntroView.inputTextView.text = (StateManager.of.user.profile.self_intro != "")
+                                                ? StateManager.of.user.profile.self_intro : ""
     }
     
-    func bindView() {
+    func bind() {
         addSelfIntroView.saveButton.rx.tap
             .bind{ [weak self] _ in
                 guard let self = self else { return }
@@ -79,8 +58,13 @@ class AddSelfIntroViewController<View: AddSelfIntroView>: UIViewController {
                 
                 NetworkService
                     .update(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0, updateData: updateData))
-                    .subscribe{ [weak self] _ in
-                        self?.loadData()
+                    .subscribe { event in
+                        let request = event.element
+                    
+                        request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                            guard let userProfile = dataResponse.value else { return }
+                            StateManager.of.user.profileDataSource.accept(userProfile)
+                        }
                     }.disposed(by: self.disposeBag)
                 
                 self.navigationController?.dismiss(animated: true, completion: nil)
