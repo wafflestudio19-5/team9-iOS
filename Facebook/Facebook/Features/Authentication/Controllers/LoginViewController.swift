@@ -11,7 +11,7 @@ import RxCocoa
 import RxKeyboard
 
 class LoginViewController<View: LoginView>: UIViewController {
-
+    
     private let disposeBag = DisposeBag()
     
     override func loadView() {
@@ -48,7 +48,7 @@ class LoginViewController<View: LoginView>: UIViewController {
         loginView.createAccountButton.rx.tap.bind { [weak self] _ in
             self?.push(viewController: EnterUsernameViewController())
         }.disposed(by: disposeBag)
-
+        
         loginView.emailTextField.rx.text.orEmpty
             .bind(to: email)
             .disposed(by: disposeBag)
@@ -72,13 +72,13 @@ class LoginViewController<View: LoginView>: UIViewController {
                 guard let self = self else { return }
                 self.loginView.loginButton.changeLabelTextColor(to: result ? .white : .systemGray3)
             }).disposed(by: disposeBag)
-
+        
         // Keyboard의 높이에 따라 "새 계정 만들기" 버튼 위치 조정
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
                 guard let bottomConstraint = self.loginView.bottomConstraint else { return }
-
+                
                 if keyboardVisibleHeight == 0 {
                     bottomConstraint.constant = -16.0
                 } else {
@@ -89,18 +89,15 @@ class LoginViewController<View: LoginView>: UIViewController {
             }).disposed(by: disposeBag)
         
         // view의 아무 곳이나 누르면 textfield 입력 상태 종료
-        view.rx.tapGesture(configuration: { _, delegate in
-            delegate.touchReceptionPolicy = .custom { _, shouldReceive in
-                return !(shouldReceive.view is UIControl)
-            }
-        }).bind { [weak self] _ in
-            guard let self = self else { return }
-            if self.loginView.emailTextField.isEditing {
-                self.loginView.emailTextField.endEditing(true)
-            } else if self.loginView.passwordTextField.isEditing {
-                self.loginView.passwordTextField.endEditing(true)
-            }
-        }.disposed(by: disposeBag)
+        view.rx.tapGesture(configuration: TapGestureConfigurations.cancelUIControlConfig)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                if self.loginView.emailTextField.isEditing {
+                    self.loginView.emailTextField.endEditing(true)
+                } else if self.loginView.passwordTextField.isEditing {
+                    self.loginView.passwordTextField.endEditing(true)
+                }
+            }.disposed(by: disposeBag)
     }
 }
 
