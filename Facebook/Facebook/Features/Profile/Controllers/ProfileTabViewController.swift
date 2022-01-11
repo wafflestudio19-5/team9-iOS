@@ -202,7 +202,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     print(event)
                     return
                 }
-            
+                
+                StateManager.of.user.profileDataSource.accept(response)
                 self.userProfile = response
                 self.createSection()
         }.disposed(by: disposeBag)
