@@ -42,7 +42,6 @@ class ImageTableViewCell: UITableViewCell {
     
     func resetCell() {
         self.removeConstraints(self.constraints)
-        imgView.removeConstraints(imgView.constraints)
     }
     
     func configureCell(cellStyle: Style, imageUrl: String){
@@ -52,20 +51,18 @@ class ImageTableViewCell: UITableViewCell {
         }else {
             switch self.cellStyle {
             case .profileImage:
-                NSLayoutConstraint.activate([
-                    imgView.heightAnchor.constraint(equalToConstant: 225),
-                    imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-                    imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
-                ])
+                imgView.snp.remakeConstraints { make in
+                    make.height.equalTo(225)
+                    make.leading.trailing.equalTo(self).inset(CGFloat.standardLeadingMargin)
+                }
                 imgView.layer.cornerRadius = 5
                 imgView.image = UIImage(systemName: "person.circle.fill")
                 imgView.contentMode = .center
             case .coverImage:
-                NSLayoutConstraint.activate([
-                    imgView.heightAnchor.constraint(equalToConstant: 225),
-                    imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-                    imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
-                ])
+                imgView.snp.remakeConstraints { make in
+                    make.height.equalTo(225)
+                    make.leading.trailing.equalTo(self).inset(CGFloat.standardLeadingMargin)
+                }
                 imgView.layer.cornerRadius = 5
                 imgView.image = UIImage(systemName: "photo")
                 imgView.contentMode = .center
@@ -87,19 +84,17 @@ extension ImageTableViewCell {
         
         switch cellStyle {
         case .profileImage:
-            NSLayoutConstraint.activate([
-                imgView.heightAnchor.constraint(equalToConstant: 175),
-                imgView.widthAnchor.constraint(equalToConstant: 175)
-            ])
+            imgView.snp.remakeConstraints { make in
+                make.height.width.equalTo(175)
+            }
             imgView.layer.cornerRadius = 175 / 2
             imgView.clipsToBounds = true
             imgView.contentMode = .scaleAspectFill
         case .coverImage:
-            NSLayoutConstraint.activate([
-                imgView.heightAnchor.constraint(equalToConstant: 225),
-                imgView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
-                imgView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
-            ])
+            imgView.snp.remakeConstraints { make in
+                make.height.equalTo(225)
+                make.leading.trailing.equalTo(self).inset(CGFloat.standardLeadingMargin)
+            }
             imgView.layer.cornerRadius = 5
             imgView.contentMode = .scaleAspectFill
         }
