@@ -14,13 +14,13 @@ class SubPostCell: PostCell {
     
     var singleImageView: UIImageView = {
         let view = UIImageView()
-        view.contentMode = .scaleAspectFill
+        view.contentMode = .scaleAspectFit
         return view
     }()
     
     override func configureCell(with subPost: Post) {
-        setImage(from: URL(string: subPost.file ?? ""))
         textContentLabel.text = subPost.content
+        setImage(from: URL(string: subPost.file ?? ""))
         
 //        singleImageView.snp.remakeConstraints { make in
 //            make.top.leading.trailing.bottom.equalTo(contentView)
@@ -35,19 +35,26 @@ class SubPostCell: PostCell {
 
     override func setLayout() {
         contentView.backgroundColor = .blue
-        contentView.autoresizingMask = [.flexibleHeight]
         
         contentView.addSubview(singleImageView)
         singleImageView.snp.makeConstraints { make in
-            make.edges.equalTo(contentView)
-//            make.width.equalTo(contentView)
-            
+            make.leading.trailing.top.equalTo(contentView)
+            make.height.equalTo(300)  // default estimated height
         }
-//        contentView.addSubview(textContentLabel)
-//        textContentLabel.snp.makeConstraints { make in
-//            make.leading.trailing.bottom.equalTo(contentView)
-//        }
+        
+        let divider = Divider()
+        contentView.addSubview(divider)
+        divider.snp.makeConstraints { make in
+            make.top.equalTo(singleImageView.snp.bottom)
+            make.leading.trailing.bottom.equalTo(contentView)
+            make.height.equalTo(5)
+        }
 
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        print("layoutSubviews")
     }
     
     func setImage(from url: URL?) {
@@ -56,45 +63,35 @@ class SubPostCell: PostCell {
         }
         
         let processor = DownsamplingImageProcessor(size: CGSize(width: 1000, height: 1000))
-        
-//        self.singleImageView.kf.setImage(
-//            with: url,
-//            placeholder: placeholderImage,
-//            options: [
-//                .processor(processor),
-//                .loadDiskFileSynchronously,
-//                .cacheOriginalImage,
-//                .transition(.fade(0.25)),
-//                .lowDataMode(.network(lowResolutionURL))
-//            ],
-//            progressBlock: { receivedSize, totalSize in
-//                // Progress updated
-//            },
-//            completionHandler: { result in
-//                // Done
-//            }
-//        )
-//
         KF.url(url)
           .setProcessor(processor)
           .loadDiskFileSynchronously()
           .cacheMemoryOnly()
           .fade(duration: 0.1)
           .onSuccess { result in
-              print("로딩 완료")
-//              self.layoutIfNeeded()
-//              self.singleImageView.invalidateIntrinsicContentSize()
-              self.singleImageView.snp.remakeConstraints { make in
-                  make.edges.equalTo(self.contentView)
-                  make.width.equalTo(self.contentView)
-                  make.height.equalTo(400)
-
+              print("height 업데이트")
+              self.singleImageView.snp.updateConstraints { make in
+                  make.height.equalTo(self.calcImageHeight(imageSize: result.image.size, viewWidth: self.frame.width))
               }
-              self.layoutIfNeeded()
-//              self.singleImageView.invalidateIntrinsicContentSize()
+              
+              var view = self.superview
+              while (view != nil && (view as? UITableView) == nil) {
+                view = view?.superview
+              }
+                      
+              if let tableView = view as? UITableView {
+                 tableView.beginUpdates()
+                 tableView.endUpdates()
+              }
           }
           .onFailure { error in print("로딩 실패", error)}
           .set(to: self.singleImageView)
     }
-
+    
+    func calcImageHeight(imageSize: CGSize, viewWidth: CGFloat) -> CGFloat {
+        let myImageWidth = imageSize.width
+        let myImageHeight = imageSize.height
+        let ratio = viewWidth / myImageWidth
+        return myImageHeight * ratio
+    }
 }
