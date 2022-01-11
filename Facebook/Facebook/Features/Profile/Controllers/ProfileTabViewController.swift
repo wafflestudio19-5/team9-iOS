@@ -216,7 +216,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         StateManager.of.user
             .asObservable()
             .bind { [weak self] profile in
-                <#code#>
+                print(profile)
             }.disposed(by: disposeBag)
         
         // 이게 최선인가?
