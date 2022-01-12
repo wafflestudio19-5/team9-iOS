@@ -642,6 +642,8 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     self.companyInformation.is_active = true
                     self.createActiveSection()
                 }
+                
+                print(self.companyInformation.is_active)
             case .university:
                 if self.universityInformation.is_active! {
                     sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
@@ -654,6 +656,8 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     self.universityInformation.is_active = true
                     self.createActiveSection()
                 }
+                
+                print(self.universityInformation.is_active)
             }
         }.disposed(by: disposeBag)
     
