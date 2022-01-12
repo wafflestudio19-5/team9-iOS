@@ -46,7 +46,8 @@ class SubPostCell: PostCell {
         contentView.addSubview(divider)
         divider.snp.makeConstraints { make in
             make.top.equalTo(singleImageView.snp.bottom)
-            make.leading.trailing.bottom.equalTo(contentView)
+            make.leading.trailing.equalTo(contentView)
+            make.bottom.equalTo(contentView).priority(.high)
             make.height.equalTo(5)
         }
 
@@ -73,16 +74,16 @@ class SubPostCell: PostCell {
               self.singleImageView.snp.updateConstraints { make in
                   make.height.equalTo(self.calcImageHeight(imageSize: result.image.size, viewWidth: self.frame.width))
               }
-              
-              var view = self.superview
-              while (view != nil && (view as? UITableView) == nil) {
-                view = view?.superview
-              }
-                      
-              if let tableView = view as? UITableView {
-                 tableView.beginUpdates()
-                 tableView.endUpdates()
-              }
+              self.layoutIfNeeded()
+//              var view = self.superview
+//              while (view != nil && (view as? UITableView) == nil) {
+//                view = view?.superview
+//              }
+//
+//              if let tableView = view as? UITableView {
+//                 tableView.beginUpdates()
+//                 tableView.endUpdates()
+//              }
           }
           .onFailure { error in print("로딩 실패", error)}
           .set(to: self.singleImageView)
