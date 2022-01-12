@@ -51,7 +51,11 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                     case .coverImage:
                         self.imageType = "cover_image"
                     }
-                    self.presentPicker()
+                    if imageUrl != "" {
+                        self.showAlertImageMenu()
+                    } else {
+                        self.presentPicker()
+                    }
                 }).disposed(by: cell.disposeBag)
             
             return cell
@@ -82,7 +86,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                     navigationController.modalPresentationStyle = .fullScreen
                     self.present(navigationController, animated: true, completion: nil)
                 } else {
-                    self.showAlertMenu()
+                    self.showAlertSelfIntroMenu()
                 }
             }).disposed(by: cell.disposeBag)
             
@@ -259,13 +263,21 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             sectionButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
                 self.imageType = "profile_image"
-                self.presentPicker()
+                if self.userProfile?.profile_image != nil {
+                    self.showAlertImageMenu()
+                } else {
+                    self.presentPicker()
+                }
             }.disposed(by: disposeBag)
         case 1:
             sectionButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
                 self.imageType = "cover_image"
-                self.presentPicker()
+                if self.userProfile?.cover_image != nil {
+                    self.showAlertImageMenu()
+                } else {
+                    self.presentPicker()
+                }
             }.disposed(by: disposeBag)
         case 2:
             sectionButton.rx.tap.bind { [weak self] in
@@ -276,7 +288,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                     navigationController.modalPresentationStyle = .fullScreen
                     self.present(navigationController, animated: true, completion: nil)
                 } else {
-                    self.showAlertMenu()
+                    self.showAlertSelfIntroMenu()
                 }
             }.disposed(by: disposeBag)
         case 3:
@@ -322,7 +334,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
 
 extension EditProfileViewController {
     //자기 소개가 이미 있을 때 자기 소개 관련 메뉴(alertsheet형식) present
-    func showAlertMenu() {
+    func showAlertSelfIntroMenu() {
         let alertMenu = UIAlertController(title: "자기 소개", message: "", preferredStyle: .actionSheet)
         
         let editSelfIntroAction = UIAlertAction(title: "소개 수정", style: .default, handler: { action in
@@ -357,6 +369,56 @@ extension EditProfileViewController {
             .subscribe{ [weak self] _ in
                 self?.loadData()
             }.disposed(by: disposeBag)
+    }
+    
+    func showAlertImageMenu() {
+        let alertMenu = UIAlertController(title: self.imageType == "profile_image" ?
+                                          "프로필 사진 수정" : "커버 사진 수정",
+                                          message: "",
+                                          preferredStyle: .actionSheet)
+        
+        let editSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
+                                                "프로필 사진 변경" : "커버 사진 변경",
+                                                style: .default,
+                                                handler: { action in
+                                                    self.presentPicker()
+                                                })
+        editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        editSelfIntroAction.setValue(UIImage(systemName: "photo.on.rectangle.angled")!, forKey: "image")
+        
+        let deleteSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
+                                                  "프로필 사진 삭제" : "커버 사진 삭제",
+                                                  style: .default,
+                                                  handler: { action in
+                                                      self.deleteImage()
+                                                  })
+        deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        
+        alertMenu.addAction(editSelfIntroAction)
+        alertMenu.addAction(deleteSelfIntroAction)
+        alertMenu.addAction(cancelAction)
+        
+        self.present(alertMenu, animated: true, completion: nil)
+    }
+    
+    func deleteImage() {
+        var updateData: [String: Bool]
+        
+        if self.imageType == "profile_image" {
+            updateData = ["profile_image": true, "cover_image": false]
+        } else {
+            updateData = ["profile_image": false, "cover_image": true]
+        }
+        
+        NetworkService.delete(endpoint: .image(id: CurrentUser.shared.profile?.id ?? 0, updateData: updateData), as: UserProfile.self)
+            .subscribe { event in
+                if event.isCompleted {
+                    self.loadData()
+                }
+            }.disposed(by: self.disposeBag)
     }
 }
 
