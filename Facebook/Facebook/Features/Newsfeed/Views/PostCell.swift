@@ -18,7 +18,6 @@ class PostCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        print("init frame", self.frame)
         self.frame.size.width = UIScreen.main.bounds.width  // important for initial layout
         setLayout()
     }
@@ -151,7 +150,7 @@ class PostCell: UITableViewCell {
     let buttonHorizontalStackView = InteractionButtonStackView()
     
     // 좋아요 수, 댓글 수 등 각종 통계가 보이는 스택 뷰
-    private lazy var statHorizontalStackView: UIStackView = {
+    lazy var statHorizontalStackView: UIStackView = {
         let stack = UIStackView()
         stack.distribution = .equalSpacing
         stack.axis = .horizontal

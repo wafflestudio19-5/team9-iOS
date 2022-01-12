@@ -8,12 +8,14 @@
 import UIKit
 import RxRelay
 import RxSwift
+import Kingfisher
 
 class SubPostsViewController: UIViewController {
     
     var post: Post
     private let disposeBag = DisposeBag()
-    var subpostsDataSource: BehaviorRelay<[Post]>
+    var subpostsDataSource = BehaviorRelay<[Post]>(value: [])
+    var isPrefetching = BehaviorRelay<Bool>(value: true)
     
     override func loadView() {
         view = SubPostsView(post: post)
@@ -30,7 +32,6 @@ class SubPostsViewController: UIViewController {
     
     init(post: Post) {
         self.post = post
-        self.subpostsDataSource = BehaviorRelay<[Post]>(value: Array(Array(repeating: post.subposts ?? [], count: 10000).joined()) ?? [])
         super.init(nibName: nil, bundle: nil)
         self.hidesBottomBarWhenPushed = true
         
@@ -58,16 +59,51 @@ class SubPostsViewController: UIViewController {
         }
         
         bind()
+        startPrefetching()
     }
     
     private func bind() {
         StateManager.of.post.bind(with: subpostsDataSource).disposed(by: disposeBag)
         
+        isPrefetching
+            .bind { [weak self] prefetching in
+                if !prefetching {
+                    self?.tableView.hideBottomSpinner()
+                } else {
+                    self?.tableView.showBottomSpinner()
+                }
+            }
+            .disposed(by: disposeBag)
+        
         subpostsDataSource
             .bind(to: tableView.rx.items(cellIdentifier: SubPostCell.reuseIdentifier, cellType: SubPostCell.self)) { row, post, cell in
                 cell.configureCell(with: post)
+                
+                // 좋아요 버튼 바인딩
+                cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
+                    cell.like()
+                    NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
+                        .bind { response in
+                            cell.like(syncWith: response.1)
+                        }
+                        .disposed(by: cell.refreshingBag)
+                }.disposed(by: cell.refreshingBag)
             }
             .disposed(by: disposeBag)
+    }
+    
+    private func startPrefetching() {
+        let urls = self.post.subposts?.map { $0.file }.compactMap { URL(string: $0 ?? "") }
+        guard let urls = urls else {
+            return
+        }
+        
+        let prefetcher = ImagePrefetcher(urls: urls, options: [.processor(KFProcessors.shared.downsampling), .diskCacheExpiration(.never)]) { skippedResources, failedResources, completedResources in
+            print("completed", completedResources.count)
+            self.isPrefetching.accept(false)
+            self.subpostsDataSource.accept(self.post.subposts ?? [])
+        }
+        prefetcher.start()
     }
     
     

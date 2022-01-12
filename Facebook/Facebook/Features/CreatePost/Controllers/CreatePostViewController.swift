@@ -112,6 +112,9 @@ class CreatePostViewController: UIViewController {
                             DispatchQueue.main.async {
                                 newsfeedVC.headerViews.uploadProgressHeaderView.displayProgress(progress: progress)
                             }
+//                            request?.responseString(completionHandler: { response in
+//                                print(response)
+//                            })
 
                             request?.responseDecodable(of: Post.self) { dataResponse in
                                 guard let post = dataResponse.value else { return }

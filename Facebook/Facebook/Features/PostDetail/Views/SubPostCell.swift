@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import SnapKit
 
 class SubPostCell: PostCell {
     
@@ -19,74 +20,62 @@ class SubPostCell: PostCell {
     }()
     
     override func configureCell(with subPost: Post) {
+        self.post = subPost
         textContentLabel.text = subPost.content
         setImage(from: URL(string: subPost.file ?? ""))
-        
-//        singleImageView.snp.remakeConstraints { make in
-//            make.top.leading.trailing.bottom.equalTo(contentView)
-//            make.width.equalTo(contentView)
-//            make.width.equalTo(contentView)
-//
-//        }
-        print("configurecell")
-//        print(self.frame)
     }
-
-
+    
     override func setLayout() {
-        contentView.backgroundColor = .blue
-        
         contentView.addSubview(singleImageView)
         singleImageView.snp.makeConstraints { make in
             make.leading.trailing.top.equalTo(contentView)
             make.height.equalTo(300)  // default estimated height
         }
         
-        let divider = Divider()
+        contentView.addSubview(textContentLabel)
+        textContentLabel.snp.makeConstraints { make in
+            make.top.equalTo(singleImageView.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.leading.trailing.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+        }
+        
+        contentView.addSubview(statHorizontalStackView)
+        statHorizontalStackView.snp.makeConstraints { make in
+            make.top.equalTo(textContentLabel.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.leading.trailing.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+        }
+        
+        contentView.addSubview(buttonHorizontalStackView)
+        buttonHorizontalStackView.snp.makeConstraints { make in
+            make.top.equalTo(statHorizontalStackView.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.leading.trailing.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+            make.height.equalTo(CGFloat.buttonGroupHeight)
+        }
+        
         contentView.addSubview(divider)
         divider.snp.makeConstraints { make in
-            make.top.equalTo(singleImageView.snp.bottom)
+            make.top.equalTo(buttonHorizontalStackView.snp.bottom)
             make.leading.trailing.equalTo(contentView)
             make.bottom.equalTo(contentView).priority(.high)
             make.height.equalTo(5)
         }
-
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        print("layoutSubviews")
     }
     
     func setImage(from url: URL?) {
         guard let url = url else {
             return
         }
-        
-        let processor = DownsamplingImageProcessor(size: CGSize(width: 1000, height: 1000))
         KF.url(url)
-          .setProcessor(processor)
-          .loadDiskFileSynchronously()
-          .cacheMemoryOnly()
-          .fade(duration: 0.1)
-          .onSuccess { result in
-              print("height 업데이트")
-              self.singleImageView.snp.updateConstraints { make in
-                  make.height.equalTo(self.calcImageHeight(imageSize: result.image.size, viewWidth: self.frame.width))
-              }
-              self.layoutIfNeeded()
-//              var view = self.superview
-//              while (view != nil && (view as? UITableView) == nil) {
-//                view = view?.superview
-//              }
-//
-//              if let tableView = view as? UITableView {
-//                 tableView.beginUpdates()
-//                 tableView.endUpdates()
-//              }
-          }
-          .onFailure { error in print("로딩 실패", error)}
-          .set(to: self.singleImageView)
+            .setProcessor(KFProcessors.shared.downsampling)
+            .loadDiskFileSynchronously()
+            .cacheMemoryOnly()
+            .onSuccess { result in
+                self.singleImageView.snp.updateConstraints { make in
+                    make.height.equalTo(self.calcImageHeight(imageSize: result.image.size, viewWidth: self.frame.width))
+                }
+                self.layoutIfNeeded()
+            }
+            .onFailure { error in print("로딩 실패", error)}
+            .set(to: self.singleImageView)
     }
     
     func calcImageHeight(imageSize: CGSize, viewWidth: CGFloat) -> CGFloat {

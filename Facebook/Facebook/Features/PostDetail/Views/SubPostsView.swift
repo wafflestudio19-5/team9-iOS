@@ -25,22 +25,25 @@ class SubPostsView: UIView {
     lazy var mainPostHeader: UIView = {
         let postCell = PostCell()
         postCell.configureCell(with: post)
+        postCell.contentView.backgroundColor = .systemBackground
         return postCell.contentView
     }()
     
     func setTableView() {
         self.addSubview(subpostsTableView)
-//        subpostsTableView.tableHeaderView = mainPostHeader
+        subpostsTableView.tableHeaderView = mainPostHeader
+        subpostsTableView.backgroundColor = .grayscales.newsfeedDivider
         subpostsTableView.register(SubPostCell.self, forCellReuseIdentifier: SubPostCell.reuseIdentifier)
         subpostsTableView.separatorStyle = .none
+        subpostsTableView.allowsSelection = false
         subpostsTableView.rowHeight = UITableView.automaticDimension
         subpostsTableView.estimatedRowHeight = 300
         subpostsTableView.snp.makeConstraints { make in
             make.edges.equalTo(0)
         }
-//        mainPostHeader.snp.makeConstraints { make in
-//            make.width.equalTo(subpostsTableView)
-//        }
+        mainPostHeader.snp.makeConstraints { make in
+            make.width.equalTo(subpostsTableView)
+        }
     }
 
 }
