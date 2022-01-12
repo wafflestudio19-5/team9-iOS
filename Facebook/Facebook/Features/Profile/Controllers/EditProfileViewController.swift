@@ -335,7 +335,7 @@ extension EditProfileViewController {
             
                 request?.responseDecodable(of: UserProfile.self) { dataResponse in
                     guard let userProfile = dataResponse.value else { return }
-                    StateManager.of.user.profileDataSource.accept(userProfile)
+                    StateManager.of.user.dispatch(profile: userProfile)
                 }
             }.disposed(by: self.disposeBag)
     }
@@ -372,7 +372,7 @@ extension EditProfileViewController: PHPickerViewControllerDelegate {
                     
                         request?.responseDecodable(of: UserProfile.self) { dataResponse in
                             guard let userProfile = dataResponse.value else { return }
-                            StateManager.of.user.profileDataSource.accept(userProfile)
+                            StateManager.of.user.dispatch(profile: userProfile)
                         }
                     }.disposed(by: self.disposeBag)
             }

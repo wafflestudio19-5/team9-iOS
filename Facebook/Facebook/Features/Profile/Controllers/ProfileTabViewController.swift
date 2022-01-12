@@ -204,7 +204,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 
                 
                 if self.userId == StateManager.of.user.profile.id {
-                    StateManager.of.user.profileDataSource.accept(response)
+                    StateManager.of.user.dispatch(profile: response)
                 } else {
                     self.userProfile = response
                     self.createSection()
@@ -473,7 +473,7 @@ extension ProfileTabViewController {
             
                 request?.responseDecodable(of: UserProfile.self) { dataResponse in
                     guard let userProfile = dataResponse.value else { return }
-                    StateManager.of.user.profileDataSource.accept(userProfile)
+                    StateManager.of.user.dispatch(profile: userProfile)
                 }
             }.disposed(by: self.disposeBag)
     }
@@ -508,7 +508,7 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                 
                     request?.responseDecodable(of: UserProfile.self) { dataResponse in
                         guard let userProfile = dataResponse.value else { return }
-                        StateManager.of.user.profileDataSource.accept(userProfile)
+                        StateManager.of.user.dispatch(profile: userProfile)
                     }
                 }.disposed(by: self.disposeBag)
 

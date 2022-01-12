@@ -118,7 +118,7 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
             
                 request?.responseDecodable(of: UserProfile.self) { dataResponse in
                     guard let userProfile = dataResponse.value else { return }
-                    StateManager.of.user.profileDataSource.accept(userProfile)
+                    StateManager.of.user.dispatch(profile: userProfile)
                     self.navigationController?.popViewController(animated: true)
                 }
             }.disposed(by: self.disposeBag)
