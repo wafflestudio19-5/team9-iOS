@@ -299,6 +299,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        setNavigationItem()
         bind()
     }
     
@@ -356,6 +357,23 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             }.disposed(by: disposeBag)
         }
     }
+    
+    private func setNavigationItem() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backAction))
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func backAction() {
+        if self.id != nil {
+            self.backAlert()
+        } else {
+            if self.name.value != "" {
+                self.backAlert()
+            } else {
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
 
     private func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -364,14 +382,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         
         addInformationView.saveButton.rx.tap.bind{ [weak self] in
             guard let self = self else { return }
-            switch self.informationType {
-            case .company:
-                print(self.companyInformation)
-            case .university:
-                print(self.universityInformation)
+            if self.name.value == "" {
+                self.deleteAlert()
+            } else {
+                self.saveData()
             }
-            
-           self.saveData()
         }.disposed(by: disposeBag)
         
         //저장 버튼 활성화 구현
@@ -642,8 +657,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     self.companyInformation.is_active = true
                     self.createActiveSection()
                 }
-                
-                print(self.companyInformation.is_active)
             case .university:
                 if self.universityInformation.is_active! {
                     sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
@@ -656,8 +669,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     self.universityInformation.is_active = true
                     self.createActiveSection()
                 }
-                
-                print(self.universityInformation.is_active)
             }
         }.disposed(by: disposeBag)
     
@@ -678,5 +689,29 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 5
+    }
+}
+
+extension AddInformationViewController {
+    private func deleteAlert() {
+        let alert = UIAlertController(title: "정보를 삭제하시겠어요?", message: "삭제하시겠어요?", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        let deleteAction = UIAlertAction(title: "삭제", style: .default) { (action) in
+            self.saveData()
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(deleteAction)
+        self.present(alert, animated: false, completion: nil)
+    }
+    
+    private func backAlert() {
+        let alert = UIAlertController(title: "이 페이지에서 나가시겠어요?", message: "이 페이지의 변경 사항이 아직\n저장되지 않았습니다.", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        let backAction = UIAlertAction(title: "이 페이지 나가기", style: .default) { (action) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(backAction)
+        self.present(alert, animated: false, completion: nil)
     }
 }
