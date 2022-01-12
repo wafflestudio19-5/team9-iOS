@@ -22,9 +22,10 @@ class SubPostsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    let postCell = PostCell()
+    
     lazy var mainPostHeader: UIView = {
-        let postCell = PostCell()
-        postCell.configureCell(with: post)
+        postCell.configureCell(with: post, showGrid: false)
         postCell.contentView.backgroundColor = .systemBackground
         return postCell.contentView
     }()

@@ -19,10 +19,16 @@ class SubPostCell: PostCell {
         return view
     }()
     
-    override func configureCell(with subPost: Post) {
+    func configureCell(with subPost: Post) {
         self.post = subPost
         textContentLabel.text = subPost.content
         setImage(from: URL(string: subPost.file ?? ""))
+        let isEmptyContent = subPost.content.isEmpty
+        textContentLabel.isHidden = isEmptyContent
+        statHorizontalStackView.snp.remakeConstraints { make in
+            make.top.equalTo(isEmptyContent ? singleImageView.snp.bottom : textContentLabel.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.leading.trailing.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+        }
     }
     
     override func setLayout() {

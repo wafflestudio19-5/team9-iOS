@@ -105,7 +105,7 @@ class CreatePostViewController: UIViewController {
                 
                 // load selected images as an array of data
                 self.pickerViewModel.loadMediaAsDataArray { array in
-                    NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "", files: array, subcontents: [String](repeating: "1", count: self.pickerViewModel.selectionCount.value)))
+                    NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "", files: array, subcontents: [String](repeating: "", count: self.pickerViewModel.selectionCount.value)))
                         .subscribe { event in
                             let request = event.element
                             let progress = request?.uploadProgress

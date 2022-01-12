@@ -8,6 +8,7 @@
 import UIKit
 import RxRelay
 import RxSwift
+import RxCocoa
 import Kingfisher
 
 class SubPostsViewController: UIViewController {
@@ -28,6 +29,10 @@ class SubPostsViewController: UIViewController {
     
     var tableView: UITableView {
         return subPostsView.subpostsTableView
+    }
+    
+    var mainPostCell: PostCell {
+        return subPostsView.postCell
     }
     
     init(post: Post) {
@@ -88,6 +93,27 @@ class SubPostsViewController: UIViewController {
                         }
                         .disposed(by: cell.refreshingBag)
                 }.disposed(by: cell.refreshingBag)
+            }
+            .disposed(by: disposeBag)
+        
+        /// Subpost에 변동이 생기면 `StateManager`에서 해당 post를 업데이트한다.
+        subpostsDataSource
+            .filter { $0.count != 0 }
+            .bind { subposts in
+                self.post.subposts = subposts
+                StateManager.of.post.dispatch(.init(data: self.post, operation: .edit))
+            }
+            .disposed(by: disposeBag)
+        
+        mainPostCell.likeButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.mainPostCell.like()
+                NetworkService.put(endpoint: .newsfeedLike(postId: self.post.id), as: LikeResponse.self)
+                    .bind { response in
+                        self.mainPostCell.like(syncWith: response.1)
+                    }
+                    .disposed(by: self.mainPostCell.refreshingBag)
             }
             .disposed(by: disposeBag)
     }

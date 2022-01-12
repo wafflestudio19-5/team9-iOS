@@ -102,7 +102,6 @@
 		BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4378278AE07E00E2162F /* StateManager.swift */; };
 		BE0D437B278AE0F100E2162F /* UserDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437A278AE0F100E2162F /* UserDispatcher.swift */; };
 		BE0D437D278AF1E500E2162F /* CommentDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */; };
-		BE0D437F278C357500E2162F /* AuthDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437E278C357500E2162F /* AuthDispatcher.swift */; };
 		BE0D4381278C5B4C00E2162F /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4380278C5B4C00E2162F /* UserDefaultsManager.swift */; };
 		BE0D4383278D498200E2162F /* SubPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4382278D498200E2162F /* SubPostsViewController.swift */; };
 		BE0D4386278D567100E2162F /* SubPostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4385278D567100E2162F /* SubPostsView.swift */; };
@@ -255,7 +254,6 @@
 		BE0D4378278AE07E00E2162F /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
 		BE0D437A278AE0F100E2162F /* UserDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDispatcher.swift; sourceTree = "<group>"; };
 		BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDispatcher.swift; sourceTree = "<group>"; };
-		BE0D437E278C357500E2162F /* AuthDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDispatcher.swift; sourceTree = "<group>"; };
 		BE0D4380278C5B4C00E2162F /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		BE0D4382278D498200E2162F /* SubPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostsViewController.swift; sourceTree = "<group>"; };
 		BE0D4385278D567100E2162F /* SubPostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostsView.swift; sourceTree = "<group>"; };
@@ -457,7 +455,6 @@
 				BE0D4375278ADFCE00E2162F /* PostDispatcher.swift */,
 				BE0D437A278AE0F100E2162F /* UserDispatcher.swift */,
 				BE0D4380278C5B4C00E2162F /* UserDefaultsManager.swift */,
-				BE0D437E278C357500E2162F /* AuthDispatcher.swift */,
 				BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */,
 			);
 			path = StateManager;
@@ -1129,7 +1126,6 @@
 				7754B865277DAE5300775D81 /* AddSelfIntroViewController.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
 				B85D67E6277ECA76002CCC04 /* CurrentUser.swift in Sources */,
-				BE0D437F278C357500E2162F /* AuthDispatcher.swift in Sources */,
 				BE0D43672786D29B00E2162F /* CommentPaginationViewModel.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
 				775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */,

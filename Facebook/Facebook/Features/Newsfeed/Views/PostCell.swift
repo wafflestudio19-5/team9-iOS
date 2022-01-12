@@ -64,10 +64,14 @@ class PostCell: UITableViewCell {
     
     // MARK: Setup
     
-    func configureCell(with newPost: Post) {
+    func configureCell(with newPost: Post, showGrid: Bool = true) {
         post = newPost
         textContentLabel.text = post.content
         postHeader.configure(with: post)
+        
+        if !showGrid {
+            return
+        }
         
         // CollectionView Layout
         let subpostUrls: [URL?] = post.subposts!.map {
