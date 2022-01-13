@@ -108,6 +108,8 @@
 		BE0D4388278D8D1700E2162F /* TapGestureConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4387278D8D1700E2162F /* TapGestureConfigurations.swift */; };
 		BE0D438A278DA7F500E2162F /* SubPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4389278DA7F500E2162F /* SubPostCell.swift */; };
 		BE0D438E278F105400E2162F /* KFProcessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D438D278F105400E2162F /* KFProcessors.swift */; };
+		BE0D439027903F0200E2162F /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D438F27903F0200E2162F /* SearchView.swift */; };
+		BE0D43942790422500E2162F /* SearchPaginationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D43932790422500E2162F /* SearchPaginationViewModel.swift */; };
 		BE1F75B12785895000E51A28 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B02785895000E51A28 /* Spinner.swift */; };
 		BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */; };
 		BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B42785D2C600E51A28 /* InfoButton.swift */; };
@@ -260,6 +262,8 @@
 		BE0D4387278D8D1700E2162F /* TapGestureConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureConfigurations.swift; sourceTree = "<group>"; };
 		BE0D4389278DA7F500E2162F /* SubPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostCell.swift; sourceTree = "<group>"; };
 		BE0D438D278F105400E2162F /* KFProcessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KFProcessors.swift; sourceTree = "<group>"; };
+		BE0D438F27903F0200E2162F /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		BE0D43932790422500E2162F /* SearchPaginationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPaginationViewModel.swift; sourceTree = "<group>"; };
 		BE1F75B02785895000E51A28 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+BottomSpinner.swift"; sourceTree = "<group>"; };
 		BE1F75B42785D2C600E51A28 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
@@ -458,6 +462,22 @@
 				BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */,
 			);
 			path = StateManager;
+			sourceTree = "<group>";
+		};
+		BE0D439127903F0600E2162F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				BE0D438F27903F0200E2162F /* SearchView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		BE0D43922790421400E2162F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				BE0D43932790422500E2162F /* SearchPaginationViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		BE64AF3627809F5400C25967 /* Headers */ = {
@@ -698,6 +718,8 @@
 		BE9C7CB52771731D0089247F /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				BE0D43922790421400E2162F /* ViewModels */,
+				BE0D439127903F0600E2162F /* Views */,
 				BE9C7CB7277173290089247F /* Controllers */,
 			);
 			path = Search;
@@ -1037,6 +1059,7 @@
 				771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */,
 				77547904275CE66A0065711C /* PostDetailViewController.swift in Sources */,
 				771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */,
+				BE0D43942790422500E2162F /* SearchPaginationViewModel.swift in Sources */,
 				7754B8752781DD9A00775D81 /* GenderSelectTableViewCell.swift in Sources */,
 				B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */,
 				7754B86D2781A0B900775D81 /* Endpoint+Profile.swift in Sources */,
@@ -1075,6 +1098,7 @@
 				B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */,
 				BEF254E5277AD28200FBAACB /* AuthorInfoHeaderView.swift in Sources */,
 				B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */,
+				BE0D439027903F0200E2162F /* SearchView.swift in Sources */,
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */,
 				BE0D4386278D567100E2162F /* SubPostsView.swift in Sources */,

@@ -11,4 +11,8 @@ extension Endpoint {
     static func login(email: String, password: String) -> Self {
         return Endpoint(path: "login/", parameters: ["email": email, "password": password])
     }
+    
+    static func search(query: String) -> Self {
+        return Endpoint(path: "search/", queryItems: [.init(name: "q", value: query)])
+    }
 }
