@@ -204,7 +204,6 @@ class DetailInformationTableViewCell: UITableViewCell {
             labelStackView.snp.remakeConstraints { make in
                 make.centerY.equalTo(contentView)
                 make.height.equalTo(20)
-                make.top.bottom.equalTo(contentView).inset(5)
                 make.leading.equalTo(informationImage.snp.trailing).inset(-15)
             }
             
