@@ -239,7 +239,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             sectionButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
                 self.imageType = "profile_image"
-                if self.userProfile?.profile_image != nil {
+                if StateManager.of.user.profile.profile_image != nil {
                     self.showAlertImageMenu()
                 } else {
                     self.presentPicker()
@@ -249,7 +249,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             sectionButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
                 self.imageType = "cover_image"
-                if self.userProfile?.cover_image != nil {
+                if StateManager.of.user.profile.cover_image != nil {
                     self.showAlertImageMenu()
                 } else {
                     self.presentPicker()
@@ -394,11 +394,19 @@ extension EditProfileViewController {
             updateData = ["profile_image": false, "cover_image": true]
         }
         
-        NetworkService.delete(endpoint: .image(id: CurrentUser.shared.profile?.id ?? 0, updateData: updateData), as: UserProfile.self)
+        NetworkService.delete(endpoint: .image(id: UserDefaultsManager.cachedUser?.id ?? 0, updateData: updateData), as: UserProfile.self)
             .subscribe { event in
                 if event.isCompleted {
-                    self.loadData()
+                    return
                 }
+            
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                StateManager.of.user.dispatch(profile: response)
             }.disposed(by: self.disposeBag)
     }
 }

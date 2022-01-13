@@ -535,8 +535,16 @@ extension ProfileTabViewController {
         NetworkService.delete(endpoint: .image(id: self.userId, updateData: updateData), as: UserProfile.self)
             .subscribe { event in
                 if event.isCompleted {
-                    self.loadData()
+                    return
                 }
+            
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                StateManager.of.user.dispatch(profile: response)
             }.disposed(by: self.disposeBag)
     }
 }
@@ -573,7 +581,6 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                         StateManager.of.user.dispatch(profile: userProfile)
                     }
                 }.disposed(by: self.disposeBag)
-
             }
         }
         
