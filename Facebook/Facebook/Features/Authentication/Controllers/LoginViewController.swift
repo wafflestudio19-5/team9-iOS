@@ -106,7 +106,7 @@ class LoginViewController<View: LoginView>: UIViewController {
 
 extension LoginViewController {
     private func kakaoLogin() {
-        KakaoAuthManager.shared.requestKakaoLogin(type: .login)
+        KakaoAuthManager.requestKakaoLogin(type: .login)
             .subscribe (onNext: { [weak self] success in
                 if success {
                     UserDefaults.standard.setValue(true, forKey: "didLogin")
@@ -118,7 +118,7 @@ extension LoginViewController {
     }
     
     private func login() {
-        AuthManager.shared.login(email: self.email.value, password: self.password.value)
+        AuthManager.login(email: self.email.value, password: self.password.value)
             .subscribe { [weak self] success in
                 switch success {
                 case .success(true):

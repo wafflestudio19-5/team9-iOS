@@ -53,8 +53,8 @@ class CommentCell: UITableViewCell {
     }
     
     func like(syncWith response: LikeResponse) {
-        comment?.likes = response.likes
-        comment?.is_liked = response.is_liked
+        guard let comment = comment else { return }
+        StateManager.of.comment.dispatch(comment, syncWith: response)
     }
     
     func configure(with comment: Comment) {

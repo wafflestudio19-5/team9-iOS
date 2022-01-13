@@ -42,7 +42,7 @@ extension Endpoint {
     static func company(company: Company) -> Self {
         if company.is_active! == true {
             return Endpoint(path: "user/company/",
-                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                            parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,
                                          "name": company.name ?? "",
                                          "role": company.role ?? "",
                                          "location": company.location ?? "" ,
@@ -50,7 +50,7 @@ extension Endpoint {
                                          "detail": company.detail ?? ""])
         } else {
             return Endpoint(path: "user/company/",
-                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                            parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,
                                          "name": company.name ?? "",
                                          "role": company.role ?? "",
                                          "location": company.location ?? "" ,
@@ -63,7 +63,7 @@ extension Endpoint {
     static func company(id: Int, company: Company) -> Self {
         if company.is_active! == true {
             return Endpoint(path: "user/company/\(id)/",
-                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                            parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,
                                          "name": company.name ?? "",
                                          "role": company.role ?? "",
                                          "location": company.location ?? "" ,
@@ -71,7 +71,7 @@ extension Endpoint {
                                          "detail": company.detail ?? ""])
         } else {
             return Endpoint(path: "user/company/\(id)/",
-                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                            parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,
                                          "name": company.name ?? "",
                                          "role": company.role ?? "",
                                          "location": company.location ?? "" ,
@@ -88,13 +88,13 @@ extension Endpoint {
     static func university(university: University) -> Self {
         if university.is_active! == true {
             return Endpoint(path: "user/university/",
-                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                            parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,
                                          "name": university.name ?? "",
                                          "major": university.major ?? "" ,
                                          "join_date": university.join_date ?? ""])
         } else {
             return Endpoint(path: "user/university/",
-                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                            parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,
                                          "name": university.name ?? "",
                                          "major": university.major ?? "" ,
                                          "join_date": university.join_date ?? "",
@@ -105,13 +105,13 @@ extension Endpoint {
     static func university(id: Int, university: University) -> Self {
         if university.is_active! == true {
             return Endpoint(path: "user/university/\(id)/",
-                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                            parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,
                                          "name": university.name ?? "",
                                          "major": university.major ?? "" ,
                                          "join_date": university.join_date ?? ""])
         } else {
             return Endpoint(path: "user/university/\(id)/",
-                            parameters: ["user": CurrentUser.shared.profile?.id ?? 0,
+                            parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,
                                          "name": university.name ?? "",
                                          "major": university.major ?? "" ,
                                          "join_date": university.join_date ?? "",

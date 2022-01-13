@@ -46,7 +46,7 @@ class KakaoLoginViewController<View: KakaoLoginView>: UIViewController {
 
 extension KakaoLoginViewController {
     private func requestKakaoLogin() {
-        KakaoAuthManager.shared.requestKakaoLogin(type: .connect)
+        KakaoAuthManager.requestKakaoLogin(type: .connect)
             .subscribe (onNext: { [weak self] success in
                 if success {
                     UserDefaults.standard.setValue(true, forKey: "didLogin")

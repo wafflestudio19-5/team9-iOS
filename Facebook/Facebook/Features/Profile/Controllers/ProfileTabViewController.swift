@@ -31,7 +31,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             
             cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro, buttonText: buttonText)
             
-            if (self.userId == CurrentUser.shared.profile?.id) {
+            if (self.userId == UserDefaultsManager.cachedUser?.id) {
                 if coverImageUrl != "" {
                     cell.coverImage.rx
                         .tapGesture()
@@ -175,8 +175,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     init(userId: Int? = nil) {
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
         if userId != nil { self.userId = userId! }
-        else if CurrentUser.shared.profile != nil { self.userId = CurrentUser.shared.profile!.id }
-        else { self.userId = 0 }
+        else { self.userId = UserDefaultsManager.cachedUser?.id ?? 0}
 
         postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: self.userId))
         
@@ -189,7 +188,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if userId == CurrentUser.shared.profile?.id {
+        if userId == UserDefaultsManager.cachedUser?.id {
             super.setNavigationBarItems(withEditButton: true)
         }else {
             super.setNavigationBarItems(withEditButton: false)
@@ -197,13 +196,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         
         loadData()
         bind()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
-        if userProfile != nil {
-            loadData()
-        }
     }
     
     //유저 프로필 관련 데이터 불러오기
@@ -221,14 +213,34 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     print(event)
                     return
                 }
-            
-                self.userProfile = response
-                self.createSection()
+                
+                
+                if self.userId == StateManager.of.user.profile.id {
+                    StateManager.of.user.dispatch(profile: response)
+                } else {
+                    self.userProfile = response
+                    self.createSection()
+                }
         }.disposed(by: disposeBag)
     }
     
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        
+        print(self.userId)
+        
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] _ in
+                self?.createSection()
+            }.disposed(by: disposeBag)
+        
+        StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
+        
+        // 이게 최선인가?
+        postDataViewModel.dataList.bind { [weak self] _ in
+            self?.createSection()
+        }.disposed(by: disposeBag)
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
         postDataViewModel.isLoading
@@ -279,25 +291,30 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     //불러온 데이터에 따라 sectionModel 생성
     func createSection() {
-        guard let userProfile = userProfile else { return }
+        var userProfile: UserProfile
+        if userId == UserDefaultsManager.cachedUser?.id {
+            userProfile = StateManager.of.user.profile
+        } else {
+            userProfile = self.userProfile!
+        }
         
         let mainProfileSection: [MultipleSectionModel] = [
             .ProfileImageSection(title: "메인 프로필", items: [
                 .MainProfileItem(profileImageUrl: userProfile.profile_image ?? "" ,
                                  coverImageUrl: userProfile.cover_image ?? "",
-                                 name: userProfile.username ?? "username",
-                                 selfIntro: userProfile.self_intro ?? "",
-                                 buttonText: (userId == CurrentUser.shared.profile?.id) ? "프로필 편집" : "친구 추가")
+                                 name: userProfile.username,
+                                 selfIntro: userProfile.self_intro,
+                                 buttonText: (userId == UserDefaultsManager.cachedUser?.id) ? "프로필 편집" : "친구 추가")
             ])
         ]
 
-        let companyItems = userProfile.company?.map({ company in
+        let companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
-        }) ?? []
+        })
         
-        let universityItems = userProfile.university?.map({ university in
+        let universityItems = userProfile.university.map({ university in
             SectionItem.UniversityItem(university: university)
-        }) ?? []
+        })
         
         var otherItems: [SectionItem]
         
@@ -311,7 +328,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                                   information: "학교"),
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
-                                                  information: (userId == CurrentUser.shared.profile?.id)  ?
+                                                  information: (userId == UserDefaultsManager.cachedUser?.id)  ?
                                                   "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
                 SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
             ]
@@ -319,14 +336,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             otherItems = [
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
-                                                  information: (userId == CurrentUser.shared.profile?.id)  ?
+                                                  information: (userId == UserDefaultsManager.cachedUser?.id)  ?
                                                   "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
                 SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
             ]
         }
         
         //다른 사람 프로필일 경우 정보 수정 버튼 삭제
-        if (userId != CurrentUser.shared.profile?.id) {
+        if (userId != UserDefaultsManager.cachedUser?.id) {
             otherItems.removeLast()
         }
         
@@ -337,7 +354,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         
         let postItems = postDataViewModel.dataList.value.map({ post in
             SectionItem.PostItem(post: post)
-        }) ?? []
+        })
         
         let postSection: [MultipleSectionModel] = [
             .PostSection(title: "게시물",items: postItems)
@@ -361,7 +378,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             return label
         }()
         
-        if userId == CurrentUser.shared.profile?.id {
+        if userId == UserDefaultsManager.cachedUser?.id {
             let createHeaderView = CreatePostHeaderView()
             headerView.addSubview(label)
             headerView.addSubview(createHeaderView)
@@ -416,7 +433,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 2 {
-            if userId != CurrentUser.shared.profile?.id { return 40 }
+            if userId != UserDefaultsManager.cachedUser?.id { return 40 }
             else { return 100 }
         }
         
@@ -463,9 +480,14 @@ extension ProfileTabViewController {
         
         NetworkService
             .update(endpoint: .profile(id: self.userId, updateData: updateData))
-            .subscribe{ [weak self] _ in
-                self?.loadData()
-            }.disposed(by: disposeBag)
+            .subscribe { event in
+                let request = event.element
+            
+                request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                    guard let userProfile = dataResponse.value else { return }
+                    StateManager.of.user.dispatch(profile: userProfile)
+                }
+            }.disposed(by: self.disposeBag)
     }
     
     func showAlertImageMenu() {
@@ -545,11 +567,11 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                 
                 NetworkService.update(endpoint: .profile(id: self.userId, updateData: uploadData)).subscribe { event in
                     let request = event.element
-                    let progress = request?.uploadProgress
-                    
-                    request?.responseString(completionHandler: { data in
-                        self.loadData()
-                    })
+                
+                    request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                        guard let userProfile = dataResponse.value else { return }
+                        StateManager.of.user.dispatch(profile: userProfile)
+                    }
                 }.disposed(by: self.disposeBag)
 
             }
