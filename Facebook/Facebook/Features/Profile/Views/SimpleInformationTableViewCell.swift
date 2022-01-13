@@ -28,6 +28,7 @@ class SimpleInformationTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.frame.size.width = UIScreen.main.bounds.width // important for initial layout
     }
     
     required init?(coder: NSCoder) {
@@ -96,60 +97,57 @@ class SimpleInformationTableViewCell: UITableViewCell {
     private func setLayout() {
         switch self.cellStyle {
         case .style1, .style2:
-            addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(informationImage)
             informationImage.snp.remakeConstraints { make in
                 make.height.width.equalTo(20)
-                make.centerY.equalTo(self)
-                make.top.bottom.equalTo(self).inset(CGFloat.standardTopMargin)
-                make.leading.equalTo(self).inset(CGFloat.standardLeadingMargin)
+                make.centerY.equalTo(contentView)
+                make.top.bottom.equalTo(contentView).inset(10)
+                make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
             }
             
-            addSubview(informationLabel)
-            informationLabel.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(informationLabel)
             informationLabel.snp.remakeConstraints { make in
-                make.centerY.equalTo(self)
+                make.centerY.equalTo(contentView)
                 make.leading.equalTo(informationImage.snp.trailing).inset(CGFloat.standardTrailingMargin)
             }
         case .style3:
-            addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(informationImage)
             informationImage.snp.remakeConstraints { make in
                 make.height.width.equalTo(35)
-                make.centerY.equalTo(self)
-                make.top.bottom.equalTo(self).inset(CGFloat.standardTopMargin)
-                make.leading.equalTo(self).inset(CGFloat.standardLeadingMargin)
+                make.centerY.equalTo(contentView)
+                make.top.bottom.equalTo(contentView).inset(10)
+                make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
             }
             
-            addSubview(informationLabel)
-            informationLabel.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(informationLabel)
             informationLabel.snp.remakeConstraints { make in
-                make.centerY.equalTo(self)
+                make.centerY.equalTo(contentView)
                 make.leading.equalTo(informationImage.snp.trailing).inset(CGFloat.standardTrailingMargin)
             }
         case .style4:
-            self.contentView.addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            informationImage.snp.remakeConstraints { make in
-                make.height.width.equalTo(35)
-                make.centerY.equalTo(self)
-                make.top.bottom.equalTo(self).inset(CGFloat.standardTopMargin)
-                make.leading.equalTo(self).inset(CGFloat.standardLeadingMargin)
+            contentView.snp.makeConstraints { make in
+                make.height.equalTo(55)
             }
             
-            self.contentView.addSubview(informationLabel)
-            informationLabel.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(informationImage)
+            informationImage.snp.remakeConstraints { make in
+                make.height.width.equalTo(35)
+                make.centerY.equalTo(contentView)
+                make.top.bottom.equalTo(contentView).inset(10)
+                make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+            }
+            
+            contentView.addSubview(informationLabel)
             informationLabel.snp.remakeConstraints { make in
-                make.centerY.equalTo(self)
+                make.centerY.equalTo(contentView)
                 make.leading.equalTo(informationImage.snp.trailing).inset(CGFloat.standardTrailingMargin)
             }
             
-            self.contentView.addSubview(deleteButton)
-            deleteButton.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview(deleteButton)
             deleteButton.snp.remakeConstraints { make in
                 make.height.width.equalTo(35)
-                make.centerY.equalTo(self)
-                make.trailing.equalTo(self).inset(CGFloat.standardLeadingMargin)
+                make.centerY.equalTo(contentView)
+                make.trailing.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
             }
             deleteButton.isHidden = true
         }
