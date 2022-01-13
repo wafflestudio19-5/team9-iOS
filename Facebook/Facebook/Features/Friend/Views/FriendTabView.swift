@@ -22,11 +22,15 @@ class FriendTabView: UIView {
     }
     
     private func setLayoutForView() {
-        
+        self.addSubview(friendTableView)
+        friendTableView.snp.makeConstraints { make in
+            make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
     }
     
     private func configureTableView() {
-        
+        friendTableView.allowsSelection = false
+        friendTableView.delaysContentTouches = false
     }
 
 }

@@ -12,6 +12,7 @@
 		771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 771DF59F27707DD900B69351 /* ImageTableViewCell.xib */; };
 		772FBF012790057C003556EC /* FriendTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF002790057C003556EC /* FriendTabView.swift */; };
 		772FBF0327900595003556EC /* FriendTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0227900595003556EC /* FriendTabViewController.swift */; };
+		772FBF0527900A4F003556EC /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0427900A4F003556EC /* FriendCell.swift */; };
 		774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */; };
 		774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */; };
 		7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */; };
@@ -161,6 +162,7 @@
 		771DF59F27707DD900B69351 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
 		772FBF002790057C003556EC /* FriendTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabView.swift; sourceTree = "<group>"; };
 		772FBF0227900595003556EC /* FriendTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabViewController.swift; sourceTree = "<group>"; };
+		772FBF0427900A4F003556EC /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileTableViewCell.swift; sourceTree = "<group>"; };
 		774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInformationTableViewCell.swift; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 			isa = PBXGroup;
 			children = (
 				772FBF002790057C003556EC /* FriendTabView.swift */,
+				772FBF0427900A4F003556EC /* FriendCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1078,6 +1081,7 @@
 				B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */,
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
 				BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */,
+				772FBF0527900A4F003556EC /* FriendCell.swift in Sources */,
 				BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */,
 				B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */,
 				77ABC5D82774A998000431E1 /* AddInformationView.swift in Sources */,
