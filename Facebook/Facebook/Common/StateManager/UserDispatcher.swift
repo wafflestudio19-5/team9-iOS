@@ -43,12 +43,14 @@ class UserDispatcher: Dispatcher<UserProfile> {
         profileDataSource.accept(UserProfile.getDummyProfile(from: cachedUser))
     }
     
+    //직장 정보 추가
     func dispatch(company: Company) {
         var profile = profile
         profile.company.append(company)
         profileDataSource.accept(profile)
     }
     
+    //직장 정보 수정
     func dispatch(companyId: Int, company: Company) {
         var profile = profile
         let index = profile.company.firstIndex(where: { $0.id == companyId })
@@ -58,6 +60,7 @@ class UserDispatcher: Dispatcher<UserProfile> {
         }
     }
     
+    //직장 정보 삭제
     func dispatch(companyId: Int) {
         var profile = profile
         let index = profile.company.firstIndex(where: { $0.id == companyId })
@@ -66,13 +69,15 @@ class UserDispatcher: Dispatcher<UserProfile> {
             profileDataSource.accept(profile)
         }
     }
-    
+
+    //학력 정보 추가
     func dispatch(university: University) {
         var profile = profile
         profile.university.append(university)
         profileDataSource.accept(profile)
     }
     
+    //학력 정보 수정
     func dispatch(universityId: Int, university: University) {
         var profile = profile
         let index = profile.university.firstIndex(where: { $0.id == universityId })
@@ -82,6 +87,7 @@ class UserDispatcher: Dispatcher<UserProfile> {
         }
     }
     
+    //학력 정보 삭제
     func dispatch(universityId: Int) {
         var profile = profile
         let index = profile.university.firstIndex(where: { $0.id == universityId })
