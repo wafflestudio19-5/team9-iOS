@@ -47,6 +47,13 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         return newsfeedTabViewController
     }()
     
+    lazy var friendNavController: UINavigationController = {
+        let friendTabViewController = UINavigationController(rootViewController: FriendTabViewController())
+        let friendTabViewIcon = UITabBarItem(title: "친구", image: UIImage(systemName: "person.2"), selectedImage: UIImage(systemName: "person.2.fill"))
+        friendTabViewController.tabBarItem = friendTabViewIcon
+        return friendTabViewController
+    }()
+    
     lazy var profileNavController: UINavigationController = {
         let profileTabViewController = UINavigationController(rootViewController: ProfileTabViewController())
         let profileTabViewIcon = UITabBarItem(title: "프로필", image: UIImage(systemName: "person.crop.circle"), selectedImage: UIImage(systemName: "person.crop.circle.fill"))

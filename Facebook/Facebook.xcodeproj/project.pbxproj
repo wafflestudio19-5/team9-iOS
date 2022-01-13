@@ -10,6 +10,8 @@
 		4C1F3D1EBBA69784AF1CB7FC /* Pods_Facebook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74F8DC55374F2CDB24937D2A /* Pods_Facebook.framework */; };
 		771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771DF59E27707DD900B69351 /* ImageTableViewCell.swift */; };
 		771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 771DF59F27707DD900B69351 /* ImageTableViewCell.xib */; };
+		772FBF012790057C003556EC /* FriendTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF002790057C003556EC /* FriendTabView.swift */; };
+		772FBF0327900595003556EC /* FriendTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0227900595003556EC /* FriendTabViewController.swift */; };
 		774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */; };
 		774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */; };
 		7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */; };
@@ -157,6 +159,8 @@
 		74F8DC55374F2CDB24937D2A /* Pods_Facebook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Facebook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		771DF59E27707DD900B69351 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		771DF59F27707DD900B69351 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
+		772FBF002790057C003556EC /* FriendTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabView.swift; sourceTree = "<group>"; };
+		772FBF0227900595003556EC /* FriendTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabViewController.swift; sourceTree = "<group>"; };
 		774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileTableViewCell.swift; sourceTree = "<group>"; };
 		774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInformationTableViewCell.swift; sourceTree = "<group>"; };
@@ -348,6 +352,31 @@
 				7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		772FBEFC27900525003556EC /* Friend */ = {
+			isa = PBXGroup;
+			children = (
+				772FBEFE27900540003556EC /* Controllers */,
+				772FBEFF27900547003556EC /* Views */,
+			);
+			path = Friend;
+			sourceTree = "<group>";
+		};
+		772FBEFE27900540003556EC /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				772FBF0227900595003556EC /* FriendTabViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		772FBEFF27900547003556EC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				772FBF002790057C003556EC /* FriendTabView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		7754B868277F33ED00775D81 /* Models */ = {
@@ -555,6 +584,7 @@
 		BE9C7CA62771700C0089247F /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				772FBEFC27900525003556EC /* Friend */,
 				BE9C7CB9277200760089247F /* CreatePost */,
 				BE9C7CB8277200480089247F /* PostDetail */,
 				BE9C7CB52771731D0089247F /* Search */,
@@ -1043,6 +1073,7 @@
 				BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */,
 				B85D67F027840F16002CCC04 /* AuthManager.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
+				772FBF012790057C003556EC /* FriendTabView.swift in Sources */,
 				B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */,
 				B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */,
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
@@ -1055,6 +1086,7 @@
 				BE64AF33277FE99D00C25967 /* ItemProvider+LoadFile.swift in Sources */,
 				BE86BADE2783F45B00948CAA /* FlexibleTextView.swift in Sources */,
 				BE86BAE42784183600948CAA /* UITableView+DynamicHeader.swift in Sources */,
+				772FBF0327900595003556EC /* FriendTabViewController.swift in Sources */,
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
 				BE64AF3A27827FAE00C25967 /* ResponsiveTableView.swift in Sources */,
 				B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */,
