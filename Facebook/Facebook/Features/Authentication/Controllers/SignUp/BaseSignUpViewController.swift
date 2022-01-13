@@ -25,7 +25,7 @@ class BaseSignUpViewController<View: UIView>: UIViewController {
     }
 
     func registerUser() {
-        AuthManager.shared.signup(user: NewUser.shared)
+        AuthManager.signup(user: NewUser.shared)
             .subscribe { [weak self] success in
                 switch success {
                 case .success(true): self?.changeRootViewController(to: KakaoLoginViewController(), wrap: true)

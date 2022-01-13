@@ -214,11 +214,10 @@ extension PostDetailViewController {
 // MARK: Handle Comments
 
 extension PostDetailViewController {
-    
-    
-    
-    
     func bindTableView(){
+        
+        /// 댓글 상태 바인딩
+        StateManager.of.comment.bind(postId: self.post.id, with: commentViewModel.dataList).disposed(by: disposeBag)
         
         /// 댓글 데이터 테이블뷰 바인딩
         commentViewModel.dataList
@@ -304,14 +303,13 @@ extension PostDetailViewController {
                 NetworkService.upload(endpoint: .comment(postId: self.post.id, to: parentId, content: self.keyboardTextView.text))
                     .subscribe(onNext: { data in
                         data.responseDecodable(of: Comment.self) { dataResponse in
-                            guard let comment = dataResponse.value else { return }
+                            guard var comment = dataResponse.value else { return }
                             let indexPath = self.commentViewModel.findInsertionIndexPath(of: comment)
-                            self.commentViewModel.insert(comment, at: indexPath)
+                            comment.post_id = self.post.id  // to be deprecated
+                            StateManager.of.post.dispatch(self.post, commentCount: self.post.comments + 1)
+                            StateManager.of.comment.dispatch(.init(data: comment, operation: .insert(index: indexPath.row)))
                             self.commentTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
                             
-                            var commentIncrementedPost = self.post
-                            commentIncrementedPost.comments += 1
-                            self.postView.postContentHeaderView.postUpdated.accept(commentIncrementedPost)
                         }
                     }, onError: { error in
                         print(error)

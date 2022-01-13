@@ -92,59 +92,28 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
         }
     }
     
-    var userProfile: UserProfile?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.title = "상세 정보 수정"
-        loadData()
-        bindTableView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
-        if userProfile != nil {
-            loadData()
-        }
-    }
-    
-    func loadData() {
-        NetworkService.get(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0), as: UserProfile.self)
-            .subscribe { [weak self] event in
-                guard let self = self else { return }
-            
-                if event.isCompleted {
-                    return
-                }
-            
-                guard let response = event.element?.1 else {
-                    print("데이터 로드 중 오류 발생")
-                    print(event)
-                    return
-                }
-            
-                self.userProfile = response
-                
-                self.createSection()
-                
-        }.disposed(by: disposeBag)
+        createSection()
+        bind()
     }
     
     func createSection() {
-        guard let userProfile = userProfile else { return }
+        let userProfile = StateManager.of.user.profile
         
-        let companyItems = userProfile.company?.map({ company in
+        let companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
-        }) ?? []
+        })
         
         let addCompanyButtonItem: [SectionItem] = [
             .AddInformationButtonItem(style: .company, buttonText: "직장 추가")
         ]
     
-        let universityItems = userProfile.university?.map({ university in
+        let universityItems = userProfile.university.map({ university in
             SectionItem.UniversityItem(university: university)
-        }) ?? []
+        })
         
         let addUniversityButtonItem: [SectionItem] = [
             .AddInformationButtonItem(style: .university, buttonText: "대학 추가"),
@@ -158,8 +127,14 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
         sectionsBR.accept(sections)
     }
 
-    func bindTableView() {
+    func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] _ in
+                self?.createSection()
+            }.disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
