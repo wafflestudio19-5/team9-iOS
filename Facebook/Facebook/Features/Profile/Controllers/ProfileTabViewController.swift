@@ -182,9 +182,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         }else {
             super.setNavigationBarItems(withEditButton: false)
         }
-        
         loadData()
         bind()
+        self.navigationItem.backButtonTitle = ""
+        view.backgroundColor = .systemBackground
     }
     
     
@@ -215,13 +216,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             
                 self.userProfile = response
                 self.createSection()
+                self.title = response.username
         }.disposed(by: disposeBag)
     }
     
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
-        
-        print(self.userId)
         
         // 이게 최선인가?
         postDataViewModel.dataList.bind { [weak self] _ in

@@ -28,5 +28,6 @@ class SearchView: UIView {
         }
         tableView.register(SearchResultCell.self, forCellReuseIdentifier: SearchResultCell.reuseIdentifier)
         tableView.separatorStyle = .none
+        tableView.keyboardDismissMode = .interactive
     }
 }

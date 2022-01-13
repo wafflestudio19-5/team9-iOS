@@ -8,12 +8,14 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxKeyboard
 
 class SearchViewController: UIViewController {
     var hiddenTF = UITextField()
     private let searchBar = UISearchBar()
     private let disposeBag = DisposeBag()
     private let viewModel = SearchPaginationViewModel(endpoint: .search(query: "1"))
+    var didLoad = false
     
     override func loadView() {
         view = SearchView()
@@ -32,11 +34,13 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white  // 이거 없으면 애니메이션 글리치 생김
         setNavigationBarItems()
+        bind()
+        bindKeyboardHeight()
+        tableView.delegate = self
+        
         hiddenTF.isHidden = true
         view.addSubview(hiddenTF)
         hiddenTF.becomeFirstResponder()
-        bind()
-        tableView.delegate = self
     }
     
     private func setNavigationBarItems() {
@@ -46,7 +50,24 @@ class SearchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        searchBar.becomeFirstResponder()
+        if !didLoad {
+            searchBar.becomeFirstResponder()
+        }
+        didLoad = true
+    }
+    
+    private func bindKeyboardHeight() {
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self = self else { return }
+                self.view.setNeedsLayout()
+                UIView.animate(withDuration: 0) {
+                    self.tableView.contentInset.bottom = keyboardVisibleHeight - self.view.safeAreaInsets.bottom
+                    self.tableView.verticalScrollIndicatorInsets.bottom = self.tableView.contentInset.bottom
+                    self.view.layoutIfNeeded()
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     private func bind() {
@@ -76,5 +97,12 @@ class SearchViewController: UIViewController {
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 55
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        searchBar.resignFirstResponder()
+        let userId = viewModel.dataList.value[indexPath.row].id
+        self.push(viewController: ProfileTabViewController(userId: userId))
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

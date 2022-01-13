@@ -57,7 +57,7 @@ class SearchResultCell: UITableViewCell {
         if let count = user.mutual_friends?.count, count > 0 {
             friendTexts.append("함께 아는 친구 \(count)명")
         }
-        return "친구"
+        return friendTexts.joined(separator: " · ")
     }
     
     func configure(with user: User) {
