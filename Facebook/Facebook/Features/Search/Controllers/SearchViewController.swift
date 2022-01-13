@@ -8,30 +8,25 @@
 import UIKit
 
 class SearchViewController: UIViewController {
-
+    var hiddenTF = UITextField()
     let searchBar = UISearchBar()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setNavigationBarItems()
-        // Do any additional setup after loading the view.
         self.view.backgroundColor = .white  // 이거 없으면 애니메이션 글리치 생김
-    }
-    
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIView.setAnimationsEnabled(false)
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIView.setAnimationsEnabled(true)
+        setNavigationBarItems()
+        hiddenTF.isHidden = true
+        view.addSubview(hiddenTF)
+        hiddenTF.becomeFirstResponder()
     }
     
     func setNavigationBarItems() {
         searchBar.placeholder = "Facebook 검색"
         self.navigationItem.titleView = searchBar
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchBar.becomeFirstResponder()
+    }
 }
