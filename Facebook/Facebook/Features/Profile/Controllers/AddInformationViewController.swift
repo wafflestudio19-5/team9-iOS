@@ -437,34 +437,58 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             switch self.informationType {
             case .company:
                 if (self.companyInformation.name == nil || self.companyInformation.name == "")  {
-                    NetworkService.delete(endpoint: .company(id: id)).subscribe(onNext: { [weak self] _ in
-                        self?.navigationController?.popViewController(animated: true)
+                    NetworkService.delete(endpoint: .company(id: id)).subscribe(onNext: { [weak self] event in
+                        guard let self = self else { return }
+                        StateManager.of.user.dispatch(companyId: id)
+                        self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 } else {
-                    NetworkService.put(endpoint: .company(id: id, company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] _ in
-                        self?.navigationController?.popViewController(animated: true)
+                    NetworkService.put(endpoint: .company(id: id, company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] event in
+                        guard let self = self else { return }
+                        
+                        let response = event.1
+                        
+                        StateManager.of.user.dispatch(companyId: id, company: response)
+                        self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 }
             case .university:
                 if (self.universityInformation.name == nil || self.universityInformation.name == "") {
-                    NetworkService.delete(endpoint: .university(id: id)).subscribe(onNext: { [weak self] _ in
-                        self?.navigationController?.popViewController(animated: true)
+                    NetworkService.delete(endpoint: .university(id: id)).subscribe(onNext: { [weak self] event in
+                        guard let self = self else { return }
+                        StateManager.of.user.dispatch(universityId: id)
+                        self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 } else {
-                    NetworkService.put(endpoint: .university(id: id, university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] _ in
-                        self?.navigationController?.popViewController(animated: true)
+                    NetworkService.put(endpoint: .university(id: id, university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] event in
+                        guard let self = self else { return }
+                        
+                        let response = event.1
+                        
+                        StateManager.of.user.dispatch(universityId: id, university: response)
+                        self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 }
             }
         } else {
             switch self.informationType {
             case .company:
-                NetworkService.post(endpoint: .company(company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] _ in
-                    self?.navigationController?.popViewController(animated: true)
+                NetworkService.post(endpoint: .company(company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] event in
+                    guard let self = self else { return }
+                    
+                    let response = event.1
+                    
+                    StateManager.of.user.dispatch(company: response)
+                    self.navigationController?.popViewController(animated: true)
                 }).disposed(by: self.disposeBag)
             case .university:
-                NetworkService.post(endpoint: .university(university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] _ in
-                    self?.navigationController?.popViewController(animated: true)
+                NetworkService.post(endpoint: .university(university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] event in
+                    guard let self = self else { return }
+                    
+                    let response = event.1
+                    
+                    StateManager.of.user.dispatch(university: response)
+                    self.navigationController?.popViewController(animated: true)
                 }).disposed(by: self.disposeBag)
             }
         }

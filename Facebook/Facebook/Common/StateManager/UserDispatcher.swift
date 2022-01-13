@@ -42,4 +42,52 @@ class UserDispatcher: Dispatcher<UserProfile> {
     func dispatch(cachedUser: User) {
         profileDataSource.accept(UserProfile.getDummyProfile(from: cachedUser))
     }
+    
+    func dispatch(company: Company) {
+        var profile = profile
+        profile.company.append(company)
+        profileDataSource.accept(profile)
+    }
+    
+    func dispatch(companyId: Int, company: Company) {
+        var profile = profile
+        let index = profile.company.firstIndex(where: { $0.id == companyId })
+        if let index = index {
+            profile.company[index] = company
+            profileDataSource.accept(profile)
+        }
+    }
+    
+    func dispatch(companyId: Int) {
+        var profile = profile
+        let index = profile.company.firstIndex(where: { $0.id == companyId })
+        if let index = index {
+            profile.company.remove(at: index)
+            profileDataSource.accept(profile)
+        }
+    }
+    
+    func dispatch(university: University) {
+        var profile = profile
+        profile.university.append(university)
+        profileDataSource.accept(profile)
+    }
+    
+    func dispatch(universityId: Int, university: University) {
+        var profile = profile
+        let index = profile.university.firstIndex(where: { $0.id == universityId })
+        if let index = index {
+            profile.university[index] = university
+            profileDataSource.accept(profile)
+        }
+    }
+    
+    func dispatch(universityId: Int) {
+        var profile = profile
+        let index = profile.university.firstIndex(where: { $0.id == universityId })
+        if let index = index {
+            profile.university.remove(at: index)
+            profileDataSource.accept(profile)
+        }
+    }
 }
