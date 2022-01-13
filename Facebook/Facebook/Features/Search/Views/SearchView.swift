@@ -14,6 +14,7 @@ class SearchView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setTableView()
     }
 
     required init?(coder: NSCoder) {
@@ -22,6 +23,10 @@ class SearchView: UIView {
     
     private func setTableView() {
         self.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
+        tableView.register(SearchResultCell.self, forCellReuseIdentifier: SearchResultCell.reuseIdentifier)
+        tableView.separatorStyle = .none
     }
-    
 }

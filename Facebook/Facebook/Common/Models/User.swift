@@ -12,4 +12,12 @@ struct User: Codable, Identifiable {
     let email: String
     let username: String
     let profile_image: String?
+    let is_friend: Bool?
+    let mutual_friends: FriendInfo?
+}
+
+struct FriendInfo: Codable {
+    let count: Int
+//    let example
+    
 }

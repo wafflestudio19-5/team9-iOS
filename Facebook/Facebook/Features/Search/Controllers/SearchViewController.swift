@@ -24,6 +24,10 @@ class SearchViewController: UIViewController {
         return view
     }
     
+    var tableView: UITableView {
+        return searchView.tableView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white  // 이거 없으면 애니메이션 글리치 생김
@@ -32,6 +36,7 @@ class SearchViewController: UIViewController {
         view.addSubview(hiddenTF)
         hiddenTF.becomeFirstResponder()
         bind()
+        tableView.delegate = self
     }
     
     private func setNavigationBarItems() {
@@ -60,9 +65,16 @@ class SearchViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.dataList
-            .bind { data in
-                print(data)
+            .bind(to: tableView.rx.items(cellIdentifier: SearchResultCell.reuseIdentifier, cellType: SearchResultCell.self)) { row, data, cell in
+                cell.configure(with: data)
             }
             .disposed(by: disposeBag)
+    }
+}
+
+
+extension SearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 55
     }
 }
