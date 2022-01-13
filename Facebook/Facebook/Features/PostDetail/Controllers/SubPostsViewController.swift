@@ -99,6 +99,7 @@ class SubPostsViewController: UIViewController {
         /// Subpost에 변동이 생기면 `StateManager`에서 해당 post를 업데이트한다.
         subpostsDataSource
             .filter { $0.count != 0 }
+            .observe(on: MainScheduler.asyncInstance)  // suppresses error caused by cyclic dependency
             .bind { subposts in
                 self.post.subposts = subposts
                 StateManager.of.post.dispatch(.init(data: self.post, operation: .edit))
