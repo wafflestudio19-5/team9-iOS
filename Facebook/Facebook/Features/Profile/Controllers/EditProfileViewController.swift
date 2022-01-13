@@ -125,7 +125,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.configureCell(buttonText: buttonText)
             
             cell.button.rx.tap.bind { [weak self] in
-                let detailProfileViewController = DetailProfileViewController(userId: CurrentUser.shared.profile?.id ?? 0)
+                let detailProfileViewController = DetailProfileViewController(userId: UserDefaultsManager.cachedUser?.id ?? 0)
                 self?.push(viewController: detailProfileViewController)
             }.disposed(by: cell.disposeBag)
             
@@ -136,8 +136,6 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         }
     }
     
-    var userProfile: UserProfile?
-    
     private var imageType = "profile_image"
     
     override func viewDidLoad() {
@@ -145,47 +143,20 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         
         // Do any additional setup after loading the view.
         self.title = "프로필 편집"
-        loadData()
-        bindTableView()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
-        if userProfile != nil {
-            loadData()
-        }
-    }
-    
-    func loadData() {
-        NetworkService.get(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0), as: UserProfile.self)
-            .subscribe { [weak self] event in
-                guard let self = self else { return }
-                
-                if event.isCompleted {
-                    return
-                }
-                
-                guard let response = event.element?.1 else {
-                    print("데이터 로드 중 오류 발생")
-                    print(event)
-                    return
-                }
-                
-                self.userProfile = response
-                self.createSection()
-        }.disposed(by: disposeBag)
+        createSection()
+        bind()
     }
     
     func createSection() {
-        guard let userProfile = userProfile else { return }
+        let userProfile = StateManager.of.user.profile
         
-        var companyItems = userProfile.company?.map({ company in
+        var companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
-        }) ?? []
+        })
         
-        var universityItems = userProfile.university?.map({ university in
+        var universityItems = userProfile.university.map({ university in
             SectionItem.UniversityItem(university: university)
-        }) ?? []
+        })
         
         if companyItems.count == 0 {
             companyItems = [ .SimpleInformationItem(style: .style2,
@@ -207,8 +178,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
                 .ImageItem(style: .coverImage, imageUrl: userProfile.cover_image ?? "")
             ]),
             .SelfIntroSection(title: "소개", items: [
-                .LabelItem(style: .style1,
-                           labelText: (userProfile.self_intro != nil && userProfile.self_intro != "") ? userProfile.self_intro! : "회원님에 대해 설명해주세요...")
+                .LabelItem(style: .style1, labelText: (userProfile.self_intro != "" ? userProfile.self_intro : "회원님에 대해 설명해주세요..."))
             ]),
             .DetailInformationSection(title: "상세 정보", items: companyItems + universityItems),
             .EditProfileSection(title: "정보 수정", items: [
@@ -219,8 +189,14 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         sectionsBR.accept(sections)
     }
     
-    func bindTableView() {
+    func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] _ in
+                self?.createSection()
+            }.disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
     }
@@ -282,7 +258,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
         case 2:
             sectionButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
-                if (self.userProfile?.self_intro == nil || self.userProfile?.self_intro == "") {
+                if (StateManager.of.user.profile.self_intro == "") {
                     let addSelfIntroViewController = AddSelfIntroViewController()
                     let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
                     navigationController.modalPresentationStyle = .fullScreen
@@ -365,10 +341,15 @@ extension EditProfileViewController {
         let updateData = ["self_intro": ""]
         
         NetworkService
-            .update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: updateData))
-            .subscribe{ [weak self] _ in
-                self?.loadData()
-            }.disposed(by: disposeBag)
+            .update(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0, updateData: updateData))
+            .subscribe { event in
+                let request = event.element
+            
+                request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                    guard let userProfile = dataResponse.value else { return }
+                    StateManager.of.user.dispatch(profile: userProfile)
+                }
+            }.disposed(by: self.disposeBag)
     }
     
     func showAlertImageMenu() {
@@ -446,14 +427,16 @@ extension EditProfileViewController: PHPickerViewControllerDelegate {
                 
                 let uploadData = [self.imageType: imageData]  as [String : Any]
                 
-                NetworkService.update(endpoint: .profile(id: CurrentUser.shared.profile?.id ?? 0, updateData: uploadData)).subscribe { event in
-                    let request = event.element
-                    let progress = request?.uploadProgress
+                NetworkService
+                    .update(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0, updateData: uploadData))
+                    .subscribe { event in
+                        let request = event.element
                     
-                    request?.responseString(completionHandler: { data in
-                        self.loadData()
-                    })
-                }.disposed(by: self.disposeBag)
+                        request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                            guard let userProfile = dataResponse.value else { return }
+                            StateManager.of.user.dispatch(profile: userProfile)
+                        }
+                    }.disposed(by: self.disposeBag)
             }
         }
         dismiss(animated: true, completion: nil)

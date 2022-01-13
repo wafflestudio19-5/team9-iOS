@@ -41,7 +41,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             cell.initialSetup(cellStyle: style)
             cell.configureCell(image: image, information: information)
             
-            if self.userId == CurrentUser.shared.profile?.id {
+            if self.userId == UserDefaultsManager.cachedUser?.id {
                 /* cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                     guard let informationType = informationType else { return }
                     
@@ -78,7 +78,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                    privacyBound: "전체 공개")
             }
             
-            if self.userId == CurrentUser.shared.profile?.id {
+            if self.userId == UserDefaultsManager.cachedUser?.id {
                 cell.editButton.rx.tap.bind { [weak self] in
                     let addInformationViewController = AddInformationViewController(informationType: .company, id: company.id ?? nil)
                     self?.push(viewController: addInformationViewController)
@@ -107,7 +107,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                    privacyBound: "전체 공개")
             }
             
-            if self.userId == CurrentUser.shared.profile?.id {
+            if self.userId == UserDefaultsManager.cachedUser?.id {
                 cell.editButton.rx.tap.bind { [weak self] in
                     let addInformationViewController = AddInformationViewController(informationType: .university, id: university.id ?? nil)
                     self?.push(viewController: addInformationViewController)
@@ -148,15 +148,8 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
 
         // Do any additional setup after loading the view.
         self.title = "정보"
-        loadData()
+        if userId != UserDefaultsManager.cachedUser?.id { loadData() }
         bind()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
-        if userProfile != nil {
-            loadData()
-        }
     }
     
     func loadData() {
@@ -180,18 +173,23 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
     
     func createSection() {
-        guard let userProfile = userProfile else { return }
+        var userProfile: UserProfile
+        if userId == UserDefaultsManager.cachedUser?.id {
+            userProfile = StateManager.of.user.profile
+        } else {
+            userProfile = self.userProfile!
+        }
 
-        var companyItems = userProfile.company?.map({ company in
+        var companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
-        }) ?? []
+        })
         
-        var universityItems = userProfile.university?.map({ university in
+        var universityItems = userProfile.university.map({ university in
             SectionItem.UniversityItem(university: university)
-        }) ?? []
+        })
         
         var sections: [MultipleSectionModel]
-        if userId == CurrentUser.shared.profile?.id {
+        if userId == UserDefaultsManager.cachedUser?.id {
             sections = [
                 .DetailInformationSection(title: "직장", items: [
                     .SimpleInformationItem(style: .style3,
@@ -275,6 +273,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] _ in
+                self?.createSection()
+            }.disposed(by: disposeBag)
+        
         /// 새로고침 제스쳐
         detailProfileView.refreshControl.rx.controlEvent(.valueChanged)
             .subscribe(onNext: { [weak self] in
@@ -304,7 +308,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15)
         ])
         
-        if userId == CurrentUser.shared.profile?.id {
+        if userId == UserDefaultsManager.cachedUser?.id {
             if section == 2 || section == 3 {
                 let sectionButton = UIButton(type: .system)
                 sectionButton.setTitle("수정", for: .normal)

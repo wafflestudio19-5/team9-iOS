@@ -21,6 +21,7 @@ struct NetworkService {
     }
     
     static func registerToken(token: String) {
+        print(token)
         self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [JWTAdapter(token: token)]))
     }
     
