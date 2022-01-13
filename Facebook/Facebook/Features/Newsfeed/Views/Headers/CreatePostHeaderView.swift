@@ -23,8 +23,7 @@ class CreatePostHeaderView: UIView {
         StateManager.of.user
             .asObservable()
             .bind { [weak self] profile in
-                guard let urlString = profile.profile_image else { return }
-                self?.profileImage.setImage(from: URL(string: urlString))
+                self?.profileImage.setImage(from: URL(string: profile.profile_image ?? ""))
             }.disposed(by: disposeBag)
     }
     
