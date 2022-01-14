@@ -56,10 +56,8 @@ class AddInformationView: UIView {
             make.height.equalTo(50)
             make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
-        
-        layoutIfNeeded()
         // createAccountButton의 하단 Constraint 설정
-        bottomConstraint = footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 15)
+        bottomConstraint = footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         guard let bottomConstraint = bottomConstraint else {
             return
         }
@@ -69,6 +67,7 @@ class AddInformationView: UIView {
     private func configureTableView() {
         addInformationTableView.separatorStyle = .singleLine
         addInformationTableView.backgroundColor = .systemGray5
+        addInformationTableView.tableHeaderView = UIView(frame: .zero)
         addInformationTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         addInformationTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)
         addInformationTableView.register(TextViewTableViewCell.self, forCellReuseIdentifier: TextViewTableViewCell.reuseIdentifier)

@@ -24,6 +24,7 @@ class LabelTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.frame.size.width = UIScreen.main.bounds.width // important for initial layout
     }
     
     required init?(coder: NSCoder) {

@@ -95,6 +95,7 @@ class SimpleInformationTableViewCell: UITableViewCell {
     }
     
     private func setLayout() {
+        
         switch self.cellStyle {
         case .style1, .style2:
             contentView.addSubview(informationImage)
@@ -125,10 +126,6 @@ class SimpleInformationTableViewCell: UITableViewCell {
                 make.leading.equalTo(informationImage.snp.trailing).inset(CGFloat.standardTrailingMargin)
             }
         case .style4:
-            contentView.snp.makeConstraints { make in
-                make.height.equalTo(55)
-            }
-            
             contentView.addSubview(informationImage)
             informationImage.snp.remakeConstraints { make in
                 make.height.width.equalTo(35)
