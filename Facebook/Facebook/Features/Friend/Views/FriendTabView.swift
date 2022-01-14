@@ -29,6 +29,7 @@ class FriendTabView: UIView {
     }
     
     private func configureTableView() {
+        friendTableView.register(FriendRequestCell.self, forCellReuseIdentifier: FriendRequestCell.reuseIdentifier)
         friendTableView.allowsSelection = false
         friendTableView.delaysContentTouches = false
     }

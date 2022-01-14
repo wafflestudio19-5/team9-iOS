@@ -13,6 +13,7 @@
 		772FBF012790057C003556EC /* FriendTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF002790057C003556EC /* FriendTabView.swift */; };
 		772FBF0327900595003556EC /* FriendTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0227900595003556EC /* FriendTabViewController.swift */; };
 		772FBF0527900A4F003556EC /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0427900A4F003556EC /* FriendCell.swift */; };
+		772FBF0727911C0A003556EC /* FriendRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0627911C0A003556EC /* FriendRequestCell.swift */; };
 		774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */; };
 		774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */; };
 		7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */; };
@@ -163,6 +164,7 @@
 		772FBF002790057C003556EC /* FriendTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabView.swift; sourceTree = "<group>"; };
 		772FBF0227900595003556EC /* FriendTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabViewController.swift; sourceTree = "<group>"; };
 		772FBF0427900A4F003556EC /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
+		772FBF0627911C0A003556EC /* FriendRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestCell.swift; sourceTree = "<group>"; };
 		774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileTableViewCell.swift; sourceTree = "<group>"; };
 		774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInformationTableViewCell.swift; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 			children = (
 				772FBF002790057C003556EC /* FriendTabView.swift */,
 				772FBF0427900A4F003556EC /* FriendCell.swift */,
+				772FBF0627911C0A003556EC /* FriendRequestCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1089,6 +1092,7 @@
 				B86195092761AFAE00957BBC /* ContentSizeFitViews.swift in Sources */,
 				BE64AF33277FE99D00C25967 /* ItemProvider+LoadFile.swift in Sources */,
 				BE86BADE2783F45B00948CAA /* FlexibleTextView.swift in Sources */,
+				772FBF0727911C0A003556EC /* FriendRequestCell.swift in Sources */,
 				BE86BAE42784183600948CAA /* UITableView+DynamicHeader.swift in Sources */,
 				772FBF0327900595003556EC /* FriendTabViewController.swift in Sources */,
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,

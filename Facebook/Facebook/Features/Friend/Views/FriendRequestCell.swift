@@ -1,18 +1,18 @@
 //
-//  FriendCell.swift
+//  FriendRequestCell.swift
 //  Facebook
 //
-//  Created by 김우성 on 2022/01/13.
+//  Created by 김우성 on 2022/01/14.
 //
 
 import UIKit
 import RxSwift
 
-class FriendCell: UITableViewCell {
-    
+class FriendRequestCell: UITableViewCell {
+
     var refreshingBag = DisposeBag()
     var permanentBag = DisposeBag()
-    static let reuseIdentifier = "FriendCell"
+    static let reuseIdentifier = "FriendRequestCell"
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -32,38 +32,52 @@ class FriendCell: UITableViewCell {
     private func setLayout() {
         contentView.addSubview(profileImage)
         profileImage.snp.remakeConstraints { make in
-            make.height.width.equalTo(50)
+            make.height.width.equalTo(80)
             make.centerY.equalToSuperview()
             make.top.bottom.equalToSuperview().inset(10)
             make.leading.equalToSuperview().inset(CGFloat.standardLeadingMargin)
         }
-        profileImage.layer.cornerRadius = 25
+        profileImage.layer.cornerRadius = 40
         
         contentView.addSubview(verticalStackView)
         verticalStackView.snp.remakeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(profileImage.snp.trailing).offset(15)
-        }
-        
-        verticalStackView.addArrangedSubview(nameLabel)
-        
-        contentView.addSubview(menuButton)
-        menuButton.snp.remakeConstraints { make in
-            make.height.width.equalTo(30)
-            make.centerY.equalToSuperview()
+            make.leading.equalTo(profileImage.snp.trailing).offset(10)
             make.trailing.equalToSuperview().inset(15)
         }
+    
+        horizontalStackView.addArrangedSubview(acceptButton)
+        horizontalStackView.addArrangedSubview(deleteButton)
+        verticalStackView.addArrangedSubview(nameLabel)
+        verticalStackView.addArrangedSubview(horizontalStackView)
     }
 
     private let profileImage = UIImageView()
     private let verticalStackView = UIStackView()
     private let nameLabel = UILabel()
-    private let withFriendLabel = UILabel()
+    private let horizontalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        
+        return stackView
+    }()
     
-    private let menuButton: UIButton = {
+    private let acceptButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
-        button.tintColor = .black
+        button.setTitle("확인", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 5
+    
+        return button
+    }()
+    
+    private let deleteButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("삭제", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .systemGray5
+        button.layer.cornerRadius = 5
     
         return button
     }()

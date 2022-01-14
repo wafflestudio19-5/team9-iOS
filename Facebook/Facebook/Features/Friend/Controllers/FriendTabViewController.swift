@@ -17,5 +17,10 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        bind()
+    }
+    
+    func bind() {
+        
     }
 }
