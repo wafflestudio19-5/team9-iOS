@@ -82,6 +82,16 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                         self.presentPicker()
                     }).disposed(by: cell.disposeBag)
             } else {
+                cell.editProfileButton.rx
+                    .tap
+                    .bind { [weak self] in
+                        guard let self = self else { return }
+                        NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
+                            .subscribe { event in
+                                print(event)
+                            }.disposed(by: self.disposeBag)
+                    }.disposed(by: cell.disposeBag)
+                
                 cell.coverLabel.isHidden = true
                 cell.coverImageButton.isHidden = true
             }

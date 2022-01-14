@@ -14,6 +14,10 @@
 		772FBF0327900595003556EC /* FriendTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0227900595003556EC /* FriendTabViewController.swift */; };
 		772FBF0527900A4F003556EC /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0427900A4F003556EC /* FriendCell.swift */; };
 		772FBF0727911C0A003556EC /* FriendRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0627911C0A003556EC /* FriendRequestCell.swift */; };
+		772FBF09279125AB003556EC /* Endpoint+Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF08279125AB003556EC /* Endpoint+Friend.swift */; };
+		772FBF0B279128FC003556EC /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0A279128FC003556EC /* Friend.swift */; };
+		772FBF0D279130E8003556EC /* ShowFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0C279130E8003556EC /* ShowFriendView.swift */; };
+		772FBF0F279130FE003556EC /* ShowFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0E279130FE003556EC /* ShowFriendViewController.swift */; };
 		774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */; };
 		774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */; };
 		7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */; };
@@ -165,6 +169,10 @@
 		772FBF0227900595003556EC /* FriendTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabViewController.swift; sourceTree = "<group>"; };
 		772FBF0427900A4F003556EC /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
 		772FBF0627911C0A003556EC /* FriendRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestCell.swift; sourceTree = "<group>"; };
+		772FBF08279125AB003556EC /* Endpoint+Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Friend.swift"; sourceTree = "<group>"; };
+		772FBF0A279128FC003556EC /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		772FBF0C279130E8003556EC /* ShowFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowFriendView.swift; sourceTree = "<group>"; };
+		772FBF0E279130FE003556EC /* ShowFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowFriendViewController.swift; sourceTree = "<group>"; };
 		774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileTableViewCell.swift; sourceTree = "<group>"; };
 		774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInformationTableViewCell.swift; sourceTree = "<group>"; };
@@ -361,6 +369,7 @@
 		772FBEFC27900525003556EC /* Friend */ = {
 			isa = PBXGroup;
 			children = (
+				772FBF10279132F5003556EC /* ViewModels */,
 				772FBEFE27900540003556EC /* Controllers */,
 				772FBEFF27900547003556EC /* Views */,
 			);
@@ -371,6 +380,7 @@
 			isa = PBXGroup;
 			children = (
 				772FBF0227900595003556EC /* FriendTabViewController.swift */,
+				772FBF0E279130FE003556EC /* ShowFriendViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -379,10 +389,18 @@
 			isa = PBXGroup;
 			children = (
 				772FBF002790057C003556EC /* FriendTabView.swift */,
+				772FBF0C279130E8003556EC /* ShowFriendView.swift */,
 				772FBF0427900A4F003556EC /* FriendCell.swift */,
 				772FBF0627911C0A003556EC /* FriendRequestCell.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		772FBF10279132F5003556EC /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		7754B868277F33ED00775D81 /* Models */ = {
@@ -867,6 +885,7 @@
 				BEFFFAA6276B126D009CBF25 /* Post.swift */,
 				BE9C7C9E276EC6EC0089247F /* User.swift */,
 				7754B869277F357F00775D81 /* UserProfile.swift */,
+				772FBF0A279128FC003556EC /* Friend.swift */,
 				BE86BAD827830FC100948CAA /* Comment.swift */,
 				B85D67DF2775AC03002CCC04 /* NewUser.swift */,
 				B85D67E5277ECA74002CCC04 /* CurrentUser.swift */,
@@ -883,6 +902,7 @@
 				B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */,
 				B82EC9232788414400750397 /* Endpoint+Kakao.swift */,
 				7754B86C2781A0B900775D81 /* Endpoint+Profile.swift */,
+				772FBF08279125AB003556EC /* Endpoint+Friend.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -1024,6 +1044,7 @@
 				BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */,
 				7754B8732781D7BC00775D81 /* BirthSelectTableViewCell.swift in Sources */,
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
+				772FBF0D279130E8003556EC /* ShowFriendView.swift in Sources */,
 				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
@@ -1048,6 +1069,7 @@
 				B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				BE64AF3527809F3E00C25967 /* UploadProgressHeaderView.swift in Sources */,
+				772FBF0F279130FE003556EC /* ShowFriendViewController.swift in Sources */,
 				B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */,
 				B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */,
 				B846BDA72754F35800513B77 /* LoginView.swift in Sources */,
@@ -1117,6 +1139,7 @@
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
 				77ABC5D42774A906000431E1 /* EditDetailInformationView.swift in Sources */,
 				B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */,
+				772FBF09279125AB003556EC /* Endpoint+Friend.swift in Sources */,
 				BEF254F4277B0DC500FBAACB /* PostDetailHeaderView.swift in Sources */,
 				BE86BAD927830FC100948CAA /* Comment.swift in Sources */,
 				BE827A0F2772131000BD3566 /* UIColor+Grayscales.swift in Sources */,
@@ -1136,6 +1159,7 @@
 				7754B87727829C4700775D81 /* EditUsernameTableViewCell.swift in Sources */,
 				77ABC5D62774A944000431E1 /* EditDetailInformationViewController.swift in Sources */,
 				BEFFFAAD276B1BA2009CBF25 /* Endpoint+Newsfeed.swift in Sources */,
+				772FBF0B279128FC003556EC /* Friend.swift in Sources */,
 				B8A7F8342767507000F659D2 /* LabelWithPadding.swift in Sources */,
 				B86194F4275DC49100957BBC /* EnterBirthdateViewController.swift in Sources */,
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
