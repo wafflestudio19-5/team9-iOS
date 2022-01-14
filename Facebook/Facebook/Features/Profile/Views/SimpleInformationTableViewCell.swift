@@ -28,6 +28,7 @@ class SimpleInformationTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.frame.size.width = UIScreen.main.bounds.width // important for initial layout
     }
     
     required init?(coder: NSCoder) {
@@ -94,70 +95,57 @@ class SimpleInformationTableViewCell: UITableViewCell {
     }
     
     private func setLayout() {
+        
         switch self.cellStyle {
         case .style1, .style2:
-            addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 20),
-                informationImage.widthAnchor.constraint(equalToConstant: 20),
-                informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
-            ])
+            contentView.addSubview(informationImage)
+            informationImage.snp.remakeConstraints { make in
+                make.height.width.equalTo(20)
+                make.centerY.equalTo(contentView)
+                make.top.bottom.equalTo(contentView).inset(10)
+                make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+            }
             
-            addSubview(informationLabel)
-            informationLabel.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
-            ])
+            contentView.addSubview(informationLabel)
+            informationLabel.snp.remakeConstraints { make in
+                make.centerY.equalTo(contentView)
+                make.leading.equalTo(informationImage.snp.trailing).inset(CGFloat.standardTrailingMargin)
+            }
         case .style3:
-            addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 35),
-                informationImage.widthAnchor.constraint(equalToConstant: 35),
-                informationImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-                informationImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-                informationImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
-            ])
+            contentView.addSubview(informationImage)
+            informationImage.snp.remakeConstraints { make in
+                make.height.width.equalTo(35)
+                make.centerY.equalTo(contentView)
+                make.top.bottom.equalTo(contentView).inset(10)
+                make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+            }
             
-            addSubview(informationLabel)
-            informationLabel.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 20)
-            ])
+            contentView.addSubview(informationLabel)
+            informationLabel.snp.remakeConstraints { make in
+                make.centerY.equalTo(contentView)
+                make.leading.equalTo(informationImage.snp.trailing).inset(CGFloat.standardTrailingMargin)
+            }
         case .style4:
-            self.contentView.addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 35),
-                informationImage.widthAnchor.constraint(equalToConstant: 35),
-                informationImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-                informationImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
-                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
-            ])
+            contentView.addSubview(informationImage)
+            informationImage.snp.remakeConstraints { make in
+                make.height.width.equalTo(35)
+                make.centerY.equalTo(contentView)
+                make.top.bottom.equalTo(contentView).inset(10)
+                make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+            }
             
-            self.contentView.addSubview(informationLabel)
-            informationLabel.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationLabel.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                informationLabel.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 20)
-            ])
+            contentView.addSubview(informationLabel)
+            informationLabel.snp.remakeConstraints { make in
+                make.centerY.equalTo(contentView)
+                make.leading.equalTo(informationImage.snp.trailing).inset(CGFloat.standardTrailingMargin)
+            }
             
-            self.contentView.addSubview(deleteButton)
-            deleteButton.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                deleteButton.heightAnchor.constraint(equalToConstant: 20),
-                deleteButton.widthAnchor.constraint(equalToConstant: 20),
-                deleteButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                deleteButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -15)
-            ])
+            contentView.addSubview(deleteButton)
+            deleteButton.snp.remakeConstraints { make in
+                make.height.width.equalTo(35)
+                make.centerY.equalTo(contentView)
+                make.trailing.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+            }
             deleteButton.isHidden = true
         }
     }

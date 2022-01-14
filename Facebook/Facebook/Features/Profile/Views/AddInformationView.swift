@@ -10,10 +10,10 @@ import UIKit
 class AddInformationView: UIView {
 
     let addInformationTableView = UITableView(frame: .zero, style: .grouped)
+    
     let footerView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
-        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
@@ -24,7 +24,6 @@ class AddInformationView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 5
-        button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
     }()
@@ -33,7 +32,6 @@ class AddInformationView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        addInformationTableView.backgroundColor = .systemGray5
         setLayoutForView()
         configureTableView()
     }
@@ -44,44 +42,32 @@ class AddInformationView: UIView {
     
     private func setLayoutForView() {
         self.addSubview(addInformationTableView)
-        addInformationTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            addInformationTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            addInformationTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            addInformationTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            addInformationTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
-        ])
-        
-        footerView.frame = CGRect(x: 0, y: 0, width: addInformationTableView.frame.width, height: 50)
+        addInformationTableView.snp.makeConstraints { make in
+            make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
         
         footerView.addSubview(saveButton)
-        NSLayoutConstraint.activate([
-            saveButton.topAnchor.constraint(equalTo: footerView.topAnchor, constant: 10),
-            saveButton.bottomAnchor.constraint(equalTo: footerView.bottomAnchor, constant: -10),
-            saveButton.leadingAnchor.constraint(equalTo: footerView.leadingAnchor, constant: 10),
-            saveButton.trailingAnchor.constraint(equalTo: footerView.trailingAnchor, constant: -10)
-        ])
+        saveButton.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(10)
+        }
 
-        layoutIfNeeded()
-        
+        self.addSubview(footerView)
+        footerView.snp.makeConstraints { make in
+            make.height.equalTo(50)
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+        }
         // createAccountButton의 하단 Constraint 설정
-        bottomConstraint = footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: 15)
-        
+        bottomConstraint = footerView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         guard let bottomConstraint = bottomConstraint else {
             return
         }
-        
-        self.addSubview(footerView)
-        NSLayoutConstraint.activate([
-            footerView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            footerView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor),
-            bottomConstraint
-        ])
+        bottomConstraint.isActive = true
     }
     
     private func configureTableView() {
-        addInformationTableView.tableHeaderView = UIView(frame: .zero)
         addInformationTableView.separatorStyle = .singleLine
+        addInformationTableView.backgroundColor = .systemGray5
+        addInformationTableView.tableHeaderView = UIView(frame: .zero)
         addInformationTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         addInformationTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)
         addInformationTableView.register(TextViewTableViewCell.self, forCellReuseIdentifier: TextViewTableViewCell.reuseIdentifier)

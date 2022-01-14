@@ -50,28 +50,25 @@ class EditDetailInformationView: UIView {
     private func setLayoutforView() {
         self.addSubview(editDetailInformationTableView)
         
-        editDetailInformationTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            editDetailInformationTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            editDetailInformationTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            editDetailInformationTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            editDetailInformationTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
-        ])
+        editDetailInformationTableView.snp.makeConstraints { make in
+            make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
         
-        headerView.frame = CGRect(x: 0, y: 0, width: editDetailInformationTableView.frame.width, height: 70)
+        headerView.frame = CGRect(x: 0, y: 0, width: editDetailInformationTableView.frame.width, height: 75)
+        headerView.heightAnchor.constraint(equalToConstant: 75).isActive = true
         
         headerView.addSubview(titleLabel)
         headerView.addSubview(subTitleLabel)
-        NSLayoutConstraint.activate([
-            headerView.heightAnchor.constraint(equalToConstant: 70),
-            titleLabel.heightAnchor.constraint(equalToConstant: 20),
-            titleLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 15),
-            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
-            subTitleLabel.heightAnchor.constraint(equalToConstant: 20),
-            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            subTitleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
-            subTitleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -15)
-        ])
+        titleLabel.snp.makeConstraints { make in
+            make.height.equalTo(20)
+            make.top.leading.equalTo(headerView).inset(15)
+        }
+        subTitleLabel.snp.makeConstraints { make in
+            make.height.equalTo(20)
+            make.top.equalTo(titleLabel.snp.bottom).inset(-5)
+            make.leading.equalTo(headerView).inset(15)
+            make.bottom.equalTo(headerView).inset(15)
+        }
     }
     
     private func configureTableView() {

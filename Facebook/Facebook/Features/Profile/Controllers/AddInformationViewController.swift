@@ -430,6 +430,37 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 }
                 self.addInformationView.layoutIfNeeded()
             }).disposed(by: disposeBag)
+        
+        sectionSwitch.rx.tap.bind { [weak self]  in
+            guard let self = self else { return }
+            switch self.informationType {
+            case .company:
+                if self.companyInformation.is_active! {
+                    self.sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
+                    self.sectionSwitch.tintColor = .gray
+                    self.companyInformation.is_active = false
+                    self.createNotActiveSection()
+                } else {
+                    self.sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+                    self.sectionSwitch.tintColor = .systemBlue
+                    self.companyInformation.is_active = true
+                    self.createActiveSection()
+                }
+            case .university:
+                if self.universityInformation.is_active! {
+                    self.sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
+                    self.sectionSwitch.tintColor = .gray
+                    self.universityInformation.is_active = false
+                    self.createNotActiveSection()
+                } else {
+                    self.sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+                    self.sectionSwitch.tintColor = .systemBlue
+                    self.universityInformation.is_active = true
+                    self.createActiveSection()
+                }
+            }
+        }.disposed(by: disposeBag)
+    
     }
     
     private func saveData() {
@@ -632,9 +663,15 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         }
     }
     
+    let sectionSwitch: UIButton = {
+        let sectionSwitch = UIButton()
+        sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+        sectionSwitch.tintColor = .systemBlue
+        return sectionSwitch
+    }()
+    
     //UITableView의 custom header적용
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    
         if section == 0 { return UIView() }
         
         let frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 42)
@@ -645,11 +682,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         sectionLabel.text = (informationType == .company) ? "현재 재직 중" : "현재 재학 중"
         sectionLabel.textColor = .black
         sectionLabel.font = UIFont.systemFont(ofSize: 18)
-        
-        let sectionSwitch = UIButton()
-        //sectionSwitch.onTintColor = .systemBlue
-        sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-        sectionSwitch.tintColor = .systemBlue
         
         headerView.addSubview(sectionLabel)
         headerView.addSubview(sectionSwitch)
@@ -666,36 +698,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             sectionSwitch.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
         ])
         
-        sectionSwitch.rx.tap.bind { [weak self]  in
-            guard let self = self else { return }
-            switch self.informationType {
-            case .company:
-                if self.companyInformation.is_active! {
-                    sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
-                    sectionSwitch.tintColor = .gray
-                    self.companyInformation.is_active = false
-                    self.createNotActiveSection()
-                } else {
-                    sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-                    sectionSwitch.tintColor = .systemBlue
-                    self.companyInformation.is_active = true
-                    self.createActiveSection()
-                }
-            case .university:
-                if self.universityInformation.is_active! {
-                    sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
-                    sectionSwitch.tintColor = .gray
-                    self.universityInformation.is_active = false
-                    self.createNotActiveSection()
-                } else {
-                    sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-                    sectionSwitch.tintColor = .systemBlue
-                    self.universityInformation.is_active = true
-                    self.createActiveSection()
-                }
-            }
-        }.disposed(by: disposeBag)
-    
         return headerView
     }
     
