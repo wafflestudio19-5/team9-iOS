@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import Kingfisher
 
 class FriendRequestCell: UITableViewCell {
 
@@ -29,15 +30,24 @@ class FriendRequestCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureCell(with friend: User) {
+        nameLabel.text = friend.username
+        if let imageUrl = friend.profile_image {
+            loadProfileImage(from: URL(string: imageUrl))
+        } else {
+            profileImage.image = UIImage(systemName: "person.crop.circle.fill")
+            profileImage.tintColor = .systemGray5
+        }
+    }
+    
     private func setLayout() {
         contentView.addSubview(profileImage)
         profileImage.snp.remakeConstraints { make in
-            make.height.width.equalTo(80)
+            make.height.width.equalTo(100)
             make.centerY.equalToSuperview()
             make.top.bottom.equalToSuperview().inset(10)
             make.leading.equalToSuperview().inset(CGFloat.standardLeadingMargin)
         }
-        profileImage.layer.cornerRadius = 40
         
         contentView.addSubview(verticalStackView)
         verticalStackView.snp.remakeConstraints { make in
@@ -52,12 +62,30 @@ class FriendRequestCell: UITableViewCell {
         verticalStackView.addArrangedSubview(horizontalStackView)
     }
 
-    private let profileImage = UIImageView()
-    private let verticalStackView = UIStackView()
+    private let profileImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 50
+        imageView.clipsToBounds = true
+        
+        return imageView
+    }()
+    
+    private let verticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 10
+        
+        return stackView
+    }()
+    
     private let nameLabel = UILabel()
+    
     private let horizontalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
         
         return stackView
     }()
@@ -81,4 +109,17 @@ class FriendRequestCell: UITableViewCell {
     
         return button
     }()
+}
+
+extension FriendRequestCell {
+    func loadProfileImage(from url: URL?) {
+        guard let url = url else { return }
+        
+        KF.url(url)
+            .loadDiskFileSynchronously()
+            .cacheMemoryOnly()
+            .fade(duration: 0.1)
+            .onFailure { error in print("프로필 이미지 로딩 실패", error)}
+            .set(to: self.profileImage)
+    }
 }

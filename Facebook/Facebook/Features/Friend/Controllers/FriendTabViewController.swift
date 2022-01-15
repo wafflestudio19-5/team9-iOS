@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+
 
 class FriendTabViewController: BaseTabViewController<FriendTabView> {
 
     var tableView: UITableView {
         tabView.friendTableView
     }
+    
+    let friendRequestViewModel = PaginationViewModel<FriendRequestCreate>(endpoint: .friendRequest())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +26,12 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
     }
     
     func bind() {
-        
+        friendRequestViewModel.dataList
+            .observe(on: MainScheduler.instance)
+            .bind(to: tableView.rx.items(cellIdentifier: FriendRequestCell.reuseIdentifier, cellType: FriendRequestCell.self)) { [weak self] row, requestFriend, cell in
+                guard let self = self else { return }
+                cell.configureCell(with: requestFriend.sender_profile)
+            }
+            .disposed(by: disposeBag)
     }
 }

@@ -33,6 +33,7 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     private func setTabBarController() {
         let controllers = [newsfeedNavController,
+                           friendNavController,
                            profileNavController,
                            notificationNavController]
         

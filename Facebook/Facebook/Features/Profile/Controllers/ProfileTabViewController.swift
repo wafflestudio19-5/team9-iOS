@@ -156,6 +156,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             
             cell.configureCell(with: friendsData)
             
+            cell.showFriendButton.rx.tap.bind { [weak self] in
+                guard let self = self else { return }
+                let showFriendViewController = ShowFriendViewController(userId: self.userId)
+                self.push(viewController: showFriendViewController)
+            }.disposed(by: cell.refreshingBag)
+            
             return cell
         case let .PostItem(post):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
@@ -221,7 +227,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 }
                 
                 
-                if self.userId == StateManager.of.user.profile.id {
+                if self.userId == UserDefaultsManager.cachedUser?.id {
                     StateManager.of.user.dispatch(profile: response)
                     self.loadFriendData()
                 } else {
@@ -255,15 +261,15 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
-        print(self.userId)
-        
-        StateManager.of.user
-            .asObservable()
-            .bind { [weak self] _ in
-                self?.createSection()
-            }.disposed(by: disposeBag)
-        
-        StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
+        if self.userId == UserDefaultsManager.cachedUser?.id {
+            StateManager.of.user
+                .asObservable()
+                .bind { [weak self] _ in
+                    self?.createSection()
+                }.disposed(by: disposeBag)
+            
+            StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
+        }
         
         // 이게 최선인가?
         postDataViewModel.dataList.bind { [weak self] _ in
@@ -322,8 +328,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         var userProfile: UserProfile
         if userId == UserDefaultsManager.cachedUser?.id {
             userProfile = StateManager.of.user.profile
-        } else {
+        } else if self.userProfile != nil {
             userProfile = self.userProfile!
+        } else {
+            return
         }
         
         let mainProfileSection: [MultipleSectionModel] = [
@@ -375,7 +383,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                       items: (companyItems+universityItems+otherItems))
         ]
         
-        guard let friendsData = friendsData else { return }
+        let friendsData = friendsData ?? []
         let friendSection: [MultipleSectionModel] = [
             .FriendSection(title: "친구", items: [.FriendGridItem(friendsData: friendsData)])
         ]

@@ -14,6 +14,7 @@ class ShowFriendView: UIView {
     let headerView = UIView()
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        searchBar.searchTextField.backgroundColor = .systemGray5
         searchBar.placeholder = "친구 검색"
         
         return searchBar
@@ -30,20 +31,28 @@ class ShowFriendView: UIView {
     }
     
     private func setLayoutForView() {
-        self.addSubview(showFriendTableView)
-        showFriendTableView.snp.makeConstraints { make in
-            make.edges.equalTo(self.safeAreaLayoutGuide)
-        }
-        
+        headerView.frame = CGRect(x: 0, y: 0, width: showFriendTableView.frame.width, height: 70)
         headerView.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
+            make.height.equalTo(50)
             make.top.bottom.equalToSuperview().inset(10)
             make.leading.trailing.equalToSuperview().inset(15)
+        }
+        
+        self.addSubview(headerView)
+        headerView.snp.makeConstraints { make in
+            make.height.equalTo(70)
+            make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
+        }
+        
+        self.addSubview(showFriendTableView)
+        showFriendTableView.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom)
+            make.bottom.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
     }
     
     private func configureTableView() {
-        showFriendTableView.tableHeaderView = headerView
         showFriendTableView.register(FriendCell.self, forCellReuseIdentifier: FriendCell.reuseIdentifier)
         showFriendTableView.refreshControl = refreshControl
         showFriendTableView.allowsSelection = false

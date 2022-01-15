@@ -12,6 +12,10 @@ extension Endpoint {
         return Endpoint(path: "user/\(id)/friend/", parameters: ["limit": 20])
     }
     
+    static func friendRequest(cursor: String? = nil) -> Self {
+        return Endpoint(path: "friend/request/", cursor: cursor)
+    }
+    
     static func friendRequest(id: Int) -> Self {
         return Endpoint(path: "friend/request/\(id)/")
     }

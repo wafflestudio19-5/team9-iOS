@@ -35,7 +35,7 @@ class FriendCollectionTableViewCell: UITableViewCell {
                 cell.configureCell(with: data)
             }
             .disposed(by: refreshingBag)
-        
+
         layoutIfNeeded()
     }
     
