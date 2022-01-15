@@ -18,6 +18,9 @@
 		772FBF0B279128FC003556EC /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0A279128FC003556EC /* Friend.swift */; };
 		772FBF0D279130E8003556EC /* ShowFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0C279130E8003556EC /* ShowFriendView.swift */; };
 		772FBF0F279130FE003556EC /* ShowFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0E279130FE003556EC /* ShowFriendViewController.swift */; };
+		772FBF122792831C003556EC /* FriendGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF112792831C003556EC /* FriendGridCell.swift */; };
+		772FBF1527928369003556EC /* FriendGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF1427928369003556EC /* FriendGridCollectionView.swift */; };
+		772FBF1727929553003556EC /* FriendCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF1627929553003556EC /* FriendCollectionTableViewCell.swift */; };
 		774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */; };
 		774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */; };
 		7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */; };
@@ -173,6 +176,9 @@
 		772FBF0A279128FC003556EC /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		772FBF0C279130E8003556EC /* ShowFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowFriendView.swift; sourceTree = "<group>"; };
 		772FBF0E279130FE003556EC /* ShowFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowFriendViewController.swift; sourceTree = "<group>"; };
+		772FBF112792831C003556EC /* FriendGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendGridCell.swift; sourceTree = "<group>"; };
+		772FBF1427928369003556EC /* FriendGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendGridCollectionView.swift; sourceTree = "<group>"; };
+		772FBF1627929553003556EC /* FriendCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileTableViewCell.swift; sourceTree = "<group>"; };
 		774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInformationTableViewCell.swift; sourceTree = "<group>"; };
@@ -677,6 +683,9 @@
 				7754B8722781D7BC00775D81 /* BirthSelectTableViewCell.swift */,
 				7754B87627829C4700775D81 /* EditUsernameTableViewCell.swift */,
 				7754B8742781DD9A00775D81 /* GenderSelectTableViewCell.swift */,
+				772FBF1627929553003556EC /* FriendCollectionTableViewCell.swift */,
+				772FBF1427928369003556EC /* FriendGridCollectionView.swift */,
+				772FBF112792831C003556EC /* FriendGridCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1064,6 +1073,7 @@
 				77B635422768B2C100C41EB3 /* DetailProfileView.swift in Sources */,
 				BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */,
 				BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */,
+				772FBF122792831C003556EC /* FriendGridCell.swift in Sources */,
 				7754B8842782C27D00775D81 /* PhotoPopUpViewController.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */,
@@ -1088,6 +1098,7 @@
 				77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				BEF254EE277B062800FBAACB /* PostContentLabel.swift in Sources */,
+				772FBF1527928369003556EC /* FriendGridCollectionView.swift in Sources */,
 				771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */,
 				77547904275CE66A0065711C /* PostDetailViewController.swift in Sources */,
 				771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */,
@@ -1120,6 +1131,7 @@
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
 				BE64AF3A27827FAE00C25967 /* ResponsiveTableView.swift in Sources */,
 				B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */,
+				772FBF1727929553003556EC /* FriendCollectionTableViewCell.swift in Sources */,
 				7754B863277DAE2F00775D81 /* AddSelfIntroView.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
 				7754B861277D68D200775D81 /* DetailInformationTableViewCell.swift in Sources */,

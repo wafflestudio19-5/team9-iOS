@@ -9,7 +9,7 @@ import Foundation
 
 
 struct PaginatedResponse<DataModel: Codable>: Codable {
-    let count: String?
+    let count: Int?
     let next: String?
     let previous: String?
     let results: [DataModel]

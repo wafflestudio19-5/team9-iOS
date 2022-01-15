@@ -81,6 +81,7 @@ class PostCell: UITableViewCell {
                 cell.displayMedia(from: data)
             }
             .disposed(by: refreshingBag)
+        
         self.layoutIfNeeded()
     }
     

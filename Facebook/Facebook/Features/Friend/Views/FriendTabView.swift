@@ -10,6 +10,7 @@ import UIKit
 class FriendTabView: UIView {
 
     let friendTableView = UITableView()
+    let refreshControl = UIRefreshControl()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -30,6 +31,7 @@ class FriendTabView: UIView {
     
     private func configureTableView() {
         friendTableView.register(FriendRequestCell.self, forCellReuseIdentifier: FriendRequestCell.reuseIdentifier)
+        friendTableView.refreshControl = refreshControl
         friendTableView.allowsSelection = false
         friendTableView.delaysContentTouches = false
     }

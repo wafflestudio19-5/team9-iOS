@@ -151,6 +151,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             }).disposed(by: cell.disposeBag)
             
             return cell
+        case let .FriendGridItem(friendsData):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: FriendCollectionTableViewCell.reuseIdentifier, for: idxPath) as? FriendCollectionTableViewCell else { return UITableViewCell() }
+            
+            cell.configureCell(with: friendsData)
+            
+            return cell
         case let .PostItem(post):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
             self.configure(cell: cell, with: post)
@@ -165,6 +171,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
     
     var userProfile: UserProfile?
+    var friendsData: [User]?
     let postDataViewModel: PaginationViewModel<Post>
     
     private var userId: Int
@@ -215,11 +222,32 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 
                 if self.userId == StateManager.of.user.profile.id {
                     StateManager.of.user.dispatch(profile: response)
+                    self.loadFriendData()
                 } else {
                     self.userProfile = response
                     self.createSection()
                 }
-        }.disposed(by: disposeBag)
+            }.disposed(by: disposeBag)
+    }
+    
+    func loadFriendData() {
+        NetworkService.get(endpoint: .friend(id: self.userId), as: PaginatedResponse<User>.self)
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
+
+                if event.isCompleted {
+                    return
+                }
+
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+
+                self.friendsData = response.results
+                self.createSection()
+            }.disposed(by: disposeBag)
     }
     
     func bind() {
@@ -350,6 +378,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                                       items: (companyItems+universityItems+otherItems))
         ]
         
+        guard let friendsData = friendsData else { return }
+        
+        let friendSection: [MultipleSectionModel] = [
+            .FriendSection(title: "친구", items: [.FriendGridItem(friendsData: friendsData)])
+        ]
+        
         let postItems = postDataViewModel.dataList.value.map({ post in
             SectionItem.PostItem(post: post)
         })
@@ -358,12 +392,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .PostSection(title: "게시물",items: postItems)
         ]
         
-        sectionsBR.accept(mainProfileSection + detailSection + postSection)
+        sectionsBR.accept(mainProfileSection + detailSection + friendSection + postSection)
     }
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section != 2 { return UIView() }
+        if section != 3 { return UIView() }
         
         let headerView = UIView()
         
@@ -430,7 +464,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 2 {
+        if section == 3 {
             if userId != UserDefaultsManager.cachedUser?.id { return 40 }
             else { return 100 }
         }

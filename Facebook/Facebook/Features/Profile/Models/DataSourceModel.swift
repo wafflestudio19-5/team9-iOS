@@ -15,6 +15,7 @@ enum MultipleSectionModel {
     case SelfIntroSection(title: String, items: [SectionItem])
     case DetailInformationSection(title: String, items: [SectionItem])
     case EditProfileSection(title: String, items: [SectionItem])
+    case FriendSection(title: String, items: [SectionItem])
     case PostSection(title: String, items: [SectionItem])
 }
 
@@ -47,6 +48,7 @@ enum SectionItem {
     case BirthSelectItem(style: BirthSelectTableViewCell.Style, birthInfo: String)
     case EditUsernameItem(username: String)
     case GenderSelectItem(style: GenderSelectTableViewCell.Style, selectedGender: String)
+    case FriendGridItem(friendsData: [User])
 }
 
 extension MultipleSectionModel: SectionModelType {
@@ -63,6 +65,8 @@ extension MultipleSectionModel: SectionModelType {
         case .DetailInformationSection(title: _, items: let items):
             return items.map { $0 }
         case .EditProfileSection(title: _, items: let items):
+            return items.map { $0 }
+        case .FriendSection(title: _, items: let items):
             return items.map { $0 }
         case .PostSection(title: _, items: let items):
             return items.map { $0 }
@@ -81,6 +85,8 @@ extension MultipleSectionModel: SectionModelType {
             self = .DetailInformationSection(title: title, items: items)
         case let .EditProfileSection(title: title, items: _):
             self = .EditProfileSection(title: title, items: items)
+        case let .FriendSection(title: title, items: items):
+            self = .FriendSection(title: title, items: items)
         case let .PostSection(title: title, items: _):
             self = .PostSection(title: title, items: items)
         }
@@ -99,6 +105,8 @@ extension MultipleSectionModel {
         case .DetailInformationSection(title: let title, items: _):
             return title
         case .EditProfileSection(title: let title, items: _):
+            return title
+        case .FriendSection(title: let title, items: _):
             return title
         case .PostSection(title: let title, items: _):
             return title

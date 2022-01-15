@@ -10,6 +10,7 @@ import UIKit
 class ShowFriendView: UIView {
     
     let showFriendTableView = UITableView()
+    let refreshControl = UIRefreshControl()
     let headerView = UIView()
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
@@ -44,6 +45,7 @@ class ShowFriendView: UIView {
     private func configureTableView() {
         showFriendTableView.tableHeaderView = headerView
         showFriendTableView.register(FriendCell.self, forCellReuseIdentifier: FriendCell.reuseIdentifier)
+        showFriendTableView.refreshControl = refreshControl
         showFriendTableView.allowsSelection = false
         showFriendTableView.delaysContentTouches = false
     }

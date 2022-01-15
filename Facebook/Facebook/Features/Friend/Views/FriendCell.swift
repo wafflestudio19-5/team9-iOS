@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import Kingfisher
 
 class FriendCell: UITableViewCell {
     
@@ -27,6 +28,16 @@ class FriendCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configureCell(with friend: User) {
+        nameLabel.text = friend.username
+        if let imageUrl = friend.profile_image {
+            loadProfileImage(from: URL(string: imageUrl))
+        } else {
+            profileImage.image = UIImage(systemName: "person.crop.circle.fill")
+            profileImage.tintColor = .systemGray5
+        }
     }
     
     private func setLayout() {
@@ -60,11 +71,24 @@ class FriendCell: UITableViewCell {
     private let nameLabel = UILabel()
     private let withFriendLabel = UILabel()
     
-    private let menuButton: UIButton = {
+    let menuButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         button.tintColor = .black
     
         return button
     }()
+}
+
+extension FriendCell {
+    func loadProfileImage(from url: URL?) {
+        guard let url = url else { return }
+        
+        KF.url(url)
+            .loadDiskFileSynchronously()
+            .cacheMemoryOnly()
+            .fade(duration: 0.1)
+            .onFailure { error in print("프로필 이미지 로딩 실패", error)}
+            .set(to: self.profileImage)
+    }
 }
