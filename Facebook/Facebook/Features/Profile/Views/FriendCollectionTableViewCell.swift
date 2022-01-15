@@ -47,7 +47,7 @@ class FriendCollectionTableViewCell: UITableViewCell {
         
         contentView.addSubview(showFriendButton)
         showFriendButton.snp.remakeConstraints { make in
-            make.height.equalTo(40)
+            make.height.equalTo(35)
             make.top.equalTo(friendGridCollectionView.snp.bottom)
             make.bottom.leading.trailing.equalToSuperview().inset(15)
         }
@@ -59,7 +59,7 @@ class FriendCollectionTableViewCell: UITableViewCell {
         let button = UIButton()
         button.setTitle("모든 친구 보기", for: .normal)
         button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .medium)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = .systemGray5
         button.layer.cornerRadius = 5
         

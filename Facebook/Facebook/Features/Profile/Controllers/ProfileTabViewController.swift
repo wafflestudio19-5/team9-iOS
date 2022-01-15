@@ -171,6 +171,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     let sectionsBR: BehaviorRelay<[MultipleSectionModel]> = BehaviorRelay(value: [])
     
     var userProfile: UserProfile?
+    var friendsNumber: Int?
     var friendsData: [User]?
     let postDataViewModel: PaginationViewModel<Post>
     
@@ -245,6 +246,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     return
                 }
 
+                self.friendsNumber = response.count
                 self.friendsData = response.results
                 self.createSection()
             }.disposed(by: disposeBag)
@@ -337,13 +339,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         let companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
         })
-        
         let universityItems = userProfile.university.map({ university in
             SectionItem.UniversityItem(university: university)
         })
-        
         var otherItems: [SectionItem]
-        
         if companyItems.count == 0 && universityItems.count == 0 {
             otherItems = [
                 SectionItem.SimpleInformationItem(style: .style1,
@@ -367,19 +366,16 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
             ]
         }
-        
         //다른 사람 프로필일 경우 정보 수정 버튼 삭제
         if (userId != UserDefaultsManager.cachedUser?.id) {
             otherItems.removeLast()
         }
-        
         let detailSection: [MultipleSectionModel] = [
             .DetailInformationSection(title: "상세 정보",
                                       items: (companyItems+universityItems+otherItems))
         ]
         
         guard let friendsData = friendsData else { return }
-        
         let friendSection: [MultipleSectionModel] = [
             .FriendSection(title: "친구", items: [.FriendGridItem(friendsData: friendsData)])
         ]
@@ -387,7 +383,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         let postItems = postDataViewModel.dataList.value.map({ post in
             SectionItem.PostItem(post: post)
         })
-        
         let postSection: [MultipleSectionModel] = [
             .PostSection(title: "게시물",items: postItems)
         ]
@@ -397,48 +392,88 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section != 3 { return UIView() }
+        if section != 2 && section != 3 { return UIView() }
         
         let headerView = UIView()
         
-        let label: UILabel = {
+        let titleLabel: UILabel = {
             let label = UILabel()
             label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
-            label.text = "게시물"
-            label.translatesAutoresizingMaskIntoConstraints = false
+            label.text = dataSource[section].title
             
             return label
         }()
         
-        if userId == UserDefaultsManager.cachedUser?.id {
-            let createHeaderView = CreatePostHeaderView()
-            headerView.addSubview(label)
-            headerView.addSubview(createHeaderView)
-            NSLayoutConstraint.activate([
-                label.heightAnchor.constraint(equalToConstant: 20),
-                label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
-                label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
-                createHeaderView.topAnchor.constraint(equalTo: label.bottomAnchor),
-                createHeaderView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-                createHeaderView.leadingAnchor.constraint(equalTo: headerView.leadingAnchor),
-                createHeaderView.trailingAnchor.constraint(equalTo: headerView.trailingAnchor)
-            ])
+        switch section {
+        case 2:
+            let friendsNumberLabel: UILabel = {
+                let label = UILabel()
+                label.font = UIFont.systemFont(ofSize: 18)
+                label.text = "친구 " + String(self.friendsNumber ?? 0) + "명"
+                label.textColor = .gray
+                
+                return label
+            }()
             
-            createHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
-                guard let self = self else { return }
-                let createPostViewController = CreatePostViewController()
-                let navigationController = UINavigationController(rootViewController: createPostViewController)
-                navigationController.modalPresentationStyle = .fullScreen
-                self.present(navigationController, animated: true, completion: nil)
-            }.disposed(by: disposeBag)
-        } else {
-            headerView.addSubview(label)
-            NSLayoutConstraint.activate([
-                label.heightAnchor.constraint(equalToConstant: 20),
-                label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 10),
-                label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
-                label.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -10)
-            ])
+            let sectionButton: UIButton = {
+                let button = UIButton()
+                button.setTitle("친구 찾기", for: .normal)
+                button.setTitleColor(UIColor.systemBlue, for: .normal)
+                button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+                
+                return button
+            }()
+            
+            headerView.addSubview(titleLabel)
+            headerView.addSubview(friendsNumberLabel)
+            headerView.addSubview(sectionButton)
+            titleLabel.snp.makeConstraints { make in
+                make.height.equalTo(20)
+                make.top.equalToSuperview().inset(10)
+                make.leading.equalToSuperview().inset(15)
+            }
+            friendsNumberLabel.snp.makeConstraints { make in
+                make.height.equalTo(20)
+                make.top.equalTo(titleLabel.snp.bottom).offset(5)
+                make.leading.equalToSuperview().inset(15)
+                make.bottom.equalToSuperview().inset(5)
+            }
+            sectionButton.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.trailing.equalToSuperview().inset(15)
+            }
+        case 3:
+            if userId == UserDefaultsManager.cachedUser?.id {
+                let createHeaderView = CreatePostHeaderView()
+                headerView.addSubview(titleLabel)
+                headerView.addSubview(createHeaderView)
+                titleLabel.snp.makeConstraints { make in
+                    make.height.equalTo(20)
+                    make.top.equalToSuperview().inset(10)
+                    make.leading.equalToSuperview().inset(15)
+                }
+                createHeaderView.snp.makeConstraints { make in
+                    make.top.equalTo(titleLabel.snp.bottom)
+                    make.bottom.leading.trailing.equalToSuperview()
+                }
+                
+                createHeaderView.createPostButton.rx.tap.bind { [weak self] _ in
+                    guard let self = self else { return }
+                    let createPostViewController = CreatePostViewController()
+                    let navigationController = UINavigationController(rootViewController: createPostViewController)
+                    navigationController.modalPresentationStyle = .fullScreen
+                    self.present(navigationController, animated: true, completion: nil)
+                }.disposed(by: disposeBag)
+            } else {
+                headerView.addSubview(titleLabel)
+                titleLabel.snp.makeConstraints { make in
+                    make.height.equalTo(20)
+                    make.top.bottom.equalToSuperview().inset(10)
+                    make.leading.equalToSuperview().inset(15)
+                }
+            }
+        default:
+            break
         }
         
         headerView.backgroundColor = .white
@@ -464,12 +499,15 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 3 {
+        switch section {
+        case 2:
+            return 60
+        case 3:
             if userId != UserDefaultsManager.cachedUser?.id { return 40 }
             else { return 100 }
+        default:
+            return 0
         }
-        
-        return 0
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
