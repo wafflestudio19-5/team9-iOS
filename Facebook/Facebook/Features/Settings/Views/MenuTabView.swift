@@ -12,7 +12,7 @@ class MenuTabView: UIView {
     
     let largeTitleLabel = UILabel()
     
-    let logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: .grayscales.button)
+    let logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
     
     let alertSpinner = AlertWithSpinner(message: "로그아웃 중입니다...")
     

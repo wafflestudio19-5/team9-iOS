@@ -10,49 +10,59 @@ import SnapKit
 
 class RectangularSlimButton: UIButton {
     
-    private let buttonLabel = UILabel()
-    private var buttonWidth: CGFloat = 0.0
+    private var background: UIColor
+    private var highlight: UIColor
+    private var needsIndicator: Bool
     
-    init(title: String, titleColor: UIColor, backgroundColor: UIColor) {
+    init(title: String, titleColor: UIColor, backgroundColor: UIColor, highlightColor: UIColor = .tintColors.blue, needsIndicator: Bool = false) {
+        self.background = backgroundColor
+        self.highlight = highlightColor
+        self.needsIndicator = needsIndicator
         super.init(frame: CGRect.zero)
         
-        setButtonLabel(as: title)
-        setButtonBackgroundColor(as: backgroundColor)
-        setButtonTextColor(as: titleColor)
+        self.configuration = .plain()
+        setButtonStyle()
+        setButtonLabel(as: title, color: titleColor)
         setLayoutForView()
-        self.layer.cornerRadius = 6.0
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func changeLabelTextColor(to color: UIColor) {
-        buttonLabel.textColor = color
+    override func updateConfiguration() {
+        switch self.state {
+        case .highlighted:
+            backgroundColor = highlight
+            if needsIndicator {
+                configuration?.showsActivityIndicator = true
+            }
+        default:
+            backgroundColor = background
+        }
     }
     
-    private func setButtonLabel(as text: String) {
-        buttonLabel.text = text
-        buttonLabel.font = .systemFont(ofSize: 16.0, weight: .semibold)
+    func stopActivityIndicator() {
+        configuration?.showsActivityIndicator = false
     }
     
-    private func setButtonBackgroundColor(as color: UIColor) {
-        self.backgroundColor = color
+    private func setButtonStyle() {
+        self.layer.cornerRadius = 6.0
+        configuration?.imagePlacement = .trailing
+        configuration?.imagePadding = 10.0
     }
     
-    private func setButtonTextColor(as color: UIColor) {
-        self.buttonLabel.textColor = color
+    private func setButtonLabel(as text: String, color: UIColor) {
+        var container = AttributeContainer()
+        container.font = .systemFont(ofSize: 16.0, weight: .semibold)
+        configuration?.title = text
+        configuration?.baseForegroundColor = color
+        configuration?.attributedTitle = AttributedString(text, attributes: container)
     }
     
     private func setLayoutForView() {
-        self.addSubview(buttonLabel)
-        
         self.snp.makeConstraints { make in
             make.height.equalTo(40)
-        }
-        
-        buttonLabel.snp.makeConstraints { make in
-            make.center.equalTo(self)
         }
     }
 }

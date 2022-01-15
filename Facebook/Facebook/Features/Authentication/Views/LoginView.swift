@@ -11,7 +11,7 @@ class LoginView: UIView {
     
     let logoImage = UIImageView(image: UIImage(named: "WafflebookLogo"))
     
-    let loginButton = RectangularSlimButton(title: "로그인", titleColor: .systemGray3, backgroundColor: .tintColors.blue)
+    let loginButton = RectangularSlimButton(title: "로그인", titleColor: .white, backgroundColor: .tintColors.blue, needsIndicator: true)
     
     let kakaoLoginButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
     
