@@ -40,7 +40,7 @@ class MenuTabViewController: BaseTabViewController<MenuTabView> {
 extension MenuTabViewController {
     private func logout() {
         isTryingLogout.accept(true)
-        AuthManager.shared.logout()
+        AuthManager.logout()
             .delay(RxTimeInterval.milliseconds(1200), scheduler: MainScheduler.instance)
             .subscribe { [weak self] success in
                 guard let self = self else { return }

@@ -42,7 +42,7 @@ struct AuthManager {
     }
     
     // 로그아웃
-    func logout() -> Single<Bool> {
+    static func logout() -> Single<Bool> {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.get(endpoint: .logout(), as: String.self)
                 .subscribe(onNext: { response in
@@ -52,7 +52,7 @@ struct AuthManager {
                     }
                 }, onError: { _ in
                     result(.success(false))
-                }).disposed(by: self.disposeBag)
+                }).disposed(by: disposeBag)
             return Disposables.create()
         }
     }
