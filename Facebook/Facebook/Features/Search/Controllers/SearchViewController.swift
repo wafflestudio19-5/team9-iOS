@@ -14,7 +14,7 @@ class SearchViewController: UIViewController {
     var hiddenTF = UITextField()
     private let searchBar = UISearchBar()
     private let disposeBag = DisposeBag()
-    private let viewModel = SearchPaginationViewModel(endpoint: .search(query: "1"))
+    private let viewModel = SearchPaginationViewModel(endpoint: .search(query: ""))
     var didLoad = false
     
     override func loadView() {
