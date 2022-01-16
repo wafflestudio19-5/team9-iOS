@@ -69,13 +69,8 @@ class LoginViewController<View: LoginView>: UIViewController {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                guard let bottomConstraint = self.loginView.bottomConstraint else { return }
-
-                if keyboardVisibleHeight == 0 {
-                    bottomConstraint.constant = -16.0
-                } else {
-                    let height = keyboardVisibleHeight - self.view.safeAreaInsets.bottom
-                    bottomConstraint.constant = -height - 16.0
+                self.loginView.createAccountButton.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardVisibleHeight + (keyboardVisibleHeight == 0 ? -16.0 : 16.0))
                 }
                 self.loginView.layoutIfNeeded()
             }).disposed(by: disposeBag)

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class LoginView: UIView {
     
@@ -61,52 +62,44 @@ class LoginView: UIView {
         self.addSubview(createAccountButton)
         self.addSubview(orLabel)
         
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        kakaoLoginButton.translatesAutoresizingMaskIntoConstraints = false
-        emailTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        createAccountButton.translatesAutoresizingMaskIntoConstraints = false
-        orLabel.translatesAutoresizingMaskIntoConstraints = false
-        logoImage.translatesAutoresizingMaskIntoConstraints = false
-        
-        // FacebookTextField 및 RectangularSlimButton의 UITemporaryLayoutHeight와의 충돌 방지
-        layoutIfNeeded()
-        
-        // createAccountButton의 하단 Constraint 설정
-        bottomConstraint = createAccountButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
-        
-        guard let bottomConstraint = bottomConstraint else {
-            return
+        logoImage.snp.makeConstraints { make in
+            make.width.height.equalTo(36.0)
         }
         
-        NSLayoutConstraint.activate([
-            
-            logoImage.widthAnchor.constraint(equalToConstant: 36.0),
-            logoImage.heightAnchor.constraint(equalToConstant: 36.0),
-            
-            emailTextField.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16.0),
-            emailTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            emailTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 4.0),
-            passwordTextField.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            passwordTextField.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            
-            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 12.0),
-            loginButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            loginButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            
-            kakaoLoginButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 10.0),
-            kakaoLoginButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            kakaoLoginButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            kakaoLoginButton.heightAnchor.constraint(equalTo: kakaoLoginButton.widthAnchor, multiplier: 0.15),
-            
-            orLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            orLabel.bottomAnchor.constraint(equalTo: createAccountButton.topAnchor, constant: -16.0),
-            
-            createAccountButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 16.0),
-            createAccountButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -16.0),
-            bottomConstraint,
-        ])
+        emailTextField.snp.makeConstraints { make in
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(16.0)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+        }
+        
+        passwordTextField.snp.makeConstraints { make in
+            make.top.equalTo(emailTextField.snp.bottom).offset(4.0)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+        }
+        
+        loginButton.snp.makeConstraints { make in
+            make.top.equalTo(passwordTextField.snp.bottom).offset(12.0)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+        }
+        
+        kakaoLoginButton.snp.makeConstraints { make in
+            make.top.equalTo(loginButton.snp.bottom).offset(10.0)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+            make.height.equalTo(kakaoLoginButton.snp.width).multipliedBy(0.15)
+        }
+        
+        orLabel.snp.makeConstraints { make in
+            make.centerX.equalTo(self.safeAreaLayoutGuide)
+            make.bottom.equalTo(createAccountButton.snp.top).offset(-16.0)
+        }
+        
+        createAccountButton.snp.makeConstraints { make in
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom)
+        }
     }
 }
