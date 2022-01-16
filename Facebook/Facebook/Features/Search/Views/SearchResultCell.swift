@@ -25,7 +25,7 @@ class SearchResultCell: UITableViewCell {
     private func setLayout() {
         contentView.addSubview(profileImage)
         profileImage.snp.makeConstraints { make in
-            make.centerY.equalTo(contentView)
+            make.top.bottom.equalTo(contentView).inset(8)
             make.width.height.equalTo(CGFloat.profileImageSize)
             make.leading.equalTo(contentView).offset(CGFloat.standardLeadingMargin)
         }
