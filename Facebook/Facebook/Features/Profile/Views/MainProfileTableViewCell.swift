@@ -40,7 +40,14 @@ class MainProfileTableViewCell: UITableViewCell {
     func configureCell(profileImageUrl: String, coverImageUrl: String, name: String, selfIntro: String, buttonText: String) {
         nameLabel.text = name
         selfIntroLabel.text = selfIntro
+        
         editProfileButton.setTitle(buttonText, for: .normal)
+        if buttonText == "프로필 편집" {
+            editProfileButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+        } else {
+            editProfileButton.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
+        }
+        
         
         if profileImageUrl != "" {
             loadProfileImage(from: URL(string: profileImageUrl))
