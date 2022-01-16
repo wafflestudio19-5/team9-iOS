@@ -60,12 +60,10 @@ class SearchViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                self.view.setNeedsLayout()
-                UIView.animate(withDuration: 0) {
-                    self.tableView.contentInset.bottom = keyboardVisibleHeight == 0 ? 0 : keyboardVisibleHeight - self.view.safeAreaInsets.bottom
-                    self.tableView.verticalScrollIndicatorInsets.bottom = self.tableView.contentInset.bottom
-                    self.view.layoutIfNeeded()
+                self.tableView.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-keyboardVisibleHeight + self.view.safeAreaInsets.bottom)
                 }
+                self.view.layoutIfNeeded()
             })
             .disposed(by: disposeBag)
     }
