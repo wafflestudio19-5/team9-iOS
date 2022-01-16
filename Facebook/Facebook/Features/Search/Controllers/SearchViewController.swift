@@ -62,7 +62,7 @@ class SearchViewController: UIViewController {
                 guard let self = self else { return }
                 self.view.setNeedsLayout()
                 UIView.animate(withDuration: 0) {
-                    self.tableView.contentInset.bottom = keyboardVisibleHeight - self.view.safeAreaInsets.bottom
+                    self.tableView.contentInset.bottom = keyboardVisibleHeight == 0 ? 0 : keyboardVisibleHeight - self.view.safeAreaInsets.bottom
                     self.tableView.verticalScrollIndicatorInsets.bottom = self.tableView.contentInset.bottom
                     self.view.layoutIfNeeded()
                 }
