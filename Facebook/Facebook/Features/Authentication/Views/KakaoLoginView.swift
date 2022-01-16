@@ -10,7 +10,7 @@ import UIKit
 class KakaoLoginView: UIView {
 
     let instructionLabel = UILabel()
-    let skipButton = RectangularSlimButton(title: "건너뛰기", titleColor: .black, backgroundColor: UIColor(red: 230.0/255.0, green: 230.0/255.0, blue: 230.0/255.0, alpha: 1.0))
+    let skipButton = RectangularSlimButton(title: "건너뛰기", titleColor: .black, backgroundColor: .grayscales.button)
     let kakaoLoginButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
     
     let backgroundImage = UIImageView(image: UIImage(named: "KakaoBackgroundIllust"))

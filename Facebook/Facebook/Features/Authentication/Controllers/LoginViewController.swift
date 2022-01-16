@@ -64,26 +64,13 @@ class LoginViewController<View: LoginView>: UIViewController {
         hasEnteredBoth
             .bind(to: self.loginView.loginButton.rx.isEnabled)
             .disposed(by: disposeBag)
-        
-        // 두 개의 textfield가 비어있지 않을 경우에는 loginButton label 흰색, 그렇지 않을 경우에는 회색
-        hasEnteredBoth
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] result in
-                guard let self = self else { return }
-                self.loginView.loginButton.changeLabelTextColor(to: result ? .white : .systemGray3)
-            }).disposed(by: disposeBag)
 
         // Keyboard의 높이에 따라 "새 계정 만들기" 버튼 위치 조정
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                guard let bottomConstraint = self.loginView.bottomConstraint else { return }
-
-                if keyboardVisibleHeight == 0 {
-                    bottomConstraint.constant = -16.0
-                } else {
-                    let height = keyboardVisibleHeight - self.view.safeAreaInsets.bottom
-                    bottomConstraint.constant = -height - 16.0
+                self.loginView.createAccountButton.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardVisibleHeight + (keyboardVisibleHeight == 0 ? -16.0 : 16.0))
                 }
                 self.loginView.layoutIfNeeded()
             }).disposed(by: disposeBag)
@@ -126,6 +113,7 @@ extension LoginViewController {
                     self?.changeRootViewController(to: RootTabBarController())
                 default: self?.alert(title: "잘못된 이메일", message: "입력한 이메일이 계정에 포함된 이메일이 아닌 것 같습니다. 이메일 주소를 확인하고 다시 시도해주세요.", action: "확인")
                 }
+                self?.loginView.loginButton.stopActivityIndicator()
             }.disposed(by: disposeBag)
     }
 }

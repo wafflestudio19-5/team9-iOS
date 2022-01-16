@@ -5,9 +5,7 @@
 //  Created by 김우성 on 2022/01/02.
 //
 
-import Foundation
 import Alamofire
-import simd
 
 extension Endpoint {
     static func profile(id: Int) -> Self {

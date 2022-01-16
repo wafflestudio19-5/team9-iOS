@@ -11,4 +11,8 @@ extension Endpoint {
     static func login(email: String, password: String) -> Self {
         return Endpoint(path: "login/", parameters: ["email": email, "password": password])
     }
+    
+    static func logout() -> Self {
+        return Endpoint(path: "logout/")
+    }
 }

@@ -47,7 +47,7 @@ class GenderTableViewCell: UITableViewCell {
     }
     
     private func setStyleForView() {
-        self.tintColor = FacebookColor.blue.color()
+        self.tintColor = .tintColors.blue
         self.selectionStyle = .none
         
         titleLabel.font = .systemFont(ofSize: 14.0, weight: .regular)

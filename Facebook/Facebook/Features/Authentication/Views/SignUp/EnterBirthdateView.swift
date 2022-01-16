@@ -19,7 +19,7 @@ class EnterBirthdateView: BaseSignUpView {
     
     let ageLabel = UILabel()
 
-    let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: FacebookColor.blue.color())
+    let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: .tintColors.blue)
     
     init() {
         super.init(title: "생일을 알려주세요", instruction: "생년월일을 선택하세요. 나중에 언제든지 비공개로 변경할 수 있습니다.")
@@ -51,7 +51,7 @@ class EnterBirthdateView: BaseSignUpView {
         birthDatePicker.backgroundColor = .white
 
         birthDateTextField.inputView = birthDatePicker
-        birthDateTextField.textColor = FacebookColor.blue.color()
+        birthDateTextField.textColor = .tintColors.blue
         
         ageLabel.font = .systemFont(ofSize: 14.0)
         ageLabel.textAlignment = .center
