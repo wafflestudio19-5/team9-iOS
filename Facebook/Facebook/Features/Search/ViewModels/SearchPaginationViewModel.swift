@@ -20,19 +20,25 @@ class SearchPaginationViewModel: PaginationViewModel<User> {
         self.dataList.accept([])
     }
     
-    override func preprocessBeforeAccept(oldData: [User] = [], results: [User]) -> [User] {
-        guard let query = query else {
-            return []
-        }
-        
-        if query.isEmpty {
-            return []
-        }
-        
-        if !query.isEmpty && self.dataList.value.count > 0 && results.count == 0 {
-            return self.dataList.value
-        }
-        
-        return results
-    }
+//    override func preprocessBeforeAccept(oldData: [User] = [], results: [User]) -> [User] {
+//        guard let query = query else {
+//            return []
+//        }
+//
+//        if query.isEmpty {
+//            return []
+//        }
+//        
+//        print(query.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted))
+//        /// 영문 또는 숫자로만 이루어진 검색어는 아래 로직 적용하지 않음
+//        if query.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) == nil {
+//            return results
+//        }
+//
+//        if self.dataList.value.count > 0 && results.count == 0 {
+//            return self.dataList.value
+//        }
+//
+//        return results
+//    }
 }
