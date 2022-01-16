@@ -16,8 +16,17 @@ class CreatePostHeaderView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayout()
+        bind()
     }
-
+    
+    private func bind() {
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] profile in
+                self?.profileImage.setImage(from: URL(string: profile.profile_image ?? ""))
+            }.disposed(by: disposeBag)
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -52,9 +61,6 @@ class CreatePostHeaderView: UIView {
     
     private var profileImage: ProfileImageView = {
         let imageView = ProfileImageView()
-        if let string = CurrentUser.shared.profile?.profile_image {
-            imageView.setImage(from: URL(string: string))
-        }
         return imageView
     }()
     

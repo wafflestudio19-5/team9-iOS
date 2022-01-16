@@ -57,8 +57,11 @@ class BirthSelectTableViewCell: UITableViewCell {
     }
     
     override func prepareForReuse() {
-          super.prepareForReuse()
-          disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
+        super.prepareForReuse()
+        disposeBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
+        for view in self.contentView.subviews{
+            view.removeFromSuperview()
+        }
     }
     
     override func awakeFromNib() {

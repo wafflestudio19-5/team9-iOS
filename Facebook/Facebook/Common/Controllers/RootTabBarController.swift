@@ -20,6 +20,15 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.navigationItem.backButtonTitle = ""
         
         setTabBarController()
+        
+        // trigger `viewDidLoad` for all child viewControllers
+        for viewController in self.viewControllers ?? [] {
+            if let navigationVC = viewController as? UINavigationController, let rootVC = navigationVC.viewControllers.first {
+                let _ = rootVC.view
+            } else {
+                let _ = viewController.view
+            }
+        }
     }
     
     private func setTabBarController() {
