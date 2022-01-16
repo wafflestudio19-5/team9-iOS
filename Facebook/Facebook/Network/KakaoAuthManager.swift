@@ -148,4 +148,22 @@ struct KakaoAuthManager {
             return Disposables.create()
         }
     }
+    
+    private func disconnectKakaoAccount(accessToken: String) -> Single<Bool> {
+        // 카카오 access token과 유저의 JWT 토큰으로 서버에 "카카오 계정 해제" 요청
+
+        return Single<Bool>.create { (result) -> Disposable in
+            NetworkService.delete(endpoint: .connectWithKakao(accessToken: accessToken), as: String?.self)
+                .subscribe(onNext: { response in
+                    if response.0.statusCode == 204 {
+                        result(.success(true))
+                    } else {
+                        result(.success(false))
+                    }
+                }, onError: { error in
+                    result(.failure(error))
+                }).disposed(by: self.disposeBag)
+            return Disposables.create()
+        }
+    }
 }
