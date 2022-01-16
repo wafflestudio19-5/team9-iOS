@@ -66,7 +66,7 @@ extension MenuTabViewController {
     }
     
     private func disconnect() {
-        KakaoAuthManager.shared.requestKakaoLogin(type: .disconnect)
+        KakaoAuthManager.requestKakaoLogin(type: .disconnect)
             .delay(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] success in
                 switch success {
