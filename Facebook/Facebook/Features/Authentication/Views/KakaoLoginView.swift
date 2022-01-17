@@ -51,22 +51,26 @@ class KakaoLoginView: UIView {
         
         instructionLabel.snp.makeConstraints { make in
             make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(48)
-            make.left.right.equalTo(self.safeAreaLayoutGuide).inset(36)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(36)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-36).priority(999)
         }
         
         backgroundImage.snp.makeConstraints { make in
             make.centerY.equalTo(self).offset(40)
-            make.left.right.equalTo(self.safeAreaLayoutGuide).inset(32)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(32)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-32).priority(999)
         }
         
         skipButton.snp.makeConstraints { make in
             make.bottom.equalTo(kakaoLoginButton.snp.top).offset(-10)
-            make.left.right.equalTo(self.safeAreaLayoutGuide).inset(20)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(20)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20).priority(999)
         }
         
         kakaoLoginButton.snp.makeConstraints { make in
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-16)
-            make.left.right.equalTo(self.safeAreaLayoutGuide).inset(20)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(20)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20).priority(999)
             make.height.equalTo(kakaoLoginButton.snp.width).multipliedBy(0.15)
         }
     }
