@@ -16,6 +16,7 @@ class MenuTabView: UIView {
     
     let alertSpinner = AlertWithSpinner(message: "로그아웃 중입니다...")
     
+    let kakaoConnectButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
     let kakaoDisconnectButton = RectangularSlimButton(title: "카카오 계정 연결 끊기", titleColor: .black, backgroundColor: .systemYellow)
 
     override init(frame: CGRect) {
@@ -34,21 +35,31 @@ class MenuTabView: UIView {
         largeTitleLabel.text = "메뉴"
         largeTitleLabel.font = .systemFont(ofSize: 24.0, weight: .semibold)
         largeTitleLabel.textColor = .label
+        
+        kakaoConnectButton.contentMode = .scaleAspectFit
     }
     
     private func setLayoutForView() {
         self.addSubview(logoutButton)
         self.addSubview(kakaoDisconnectButton)
+        self.addSubview(kakaoConnectButton)
         
         logoutButton.snp.makeConstraints { make in
             make.top.left.equalTo(self.safeAreaLayoutGuide).offset(16)
             make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
         }
+        
         kakaoDisconnectButton.snp.makeConstraints { make in
             make.top.equalTo(logoutButton.snp.bottom).offset(10.0)
-            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
             make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
         }
         
+        kakaoConnectButton.snp.makeConstraints { make in
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-16.0)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+            make.height.equalTo(kakaoConnectButton.snp.width).multipliedBy(0.15)
+        }
     }
 }
