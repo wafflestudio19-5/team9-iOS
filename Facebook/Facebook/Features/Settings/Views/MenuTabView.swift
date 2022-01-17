@@ -17,7 +17,7 @@ class MenuTabView: UIView {
     let alertSpinner = AlertWithSpinner(message: "로그아웃 중입니다...")
     
     let kakaoConnectButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
-    let kakaoDisconnectButton = RectangularSlimButton(title: "카카오 계정 연결 끊기", titleColor: .black, backgroundColor: .systemYellow)
+    let kakaoDisconnectButton = RectangularSlimButton(title: "카카오 계정 연결 끊기", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
