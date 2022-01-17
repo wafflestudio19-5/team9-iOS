@@ -11,6 +11,7 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView> 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: tabView.largeTitleLabel)
     }
     
 }

@@ -6,13 +6,17 @@
 //
 
 import UIKit
+import SnapKit
 
 class NotificationTabView: UIView {
+    
+    let largeTitleLabel = UILabel()
     
     let notificationTableView = UITableView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setStyleForView()
         setLayoutForView()
     }
     
@@ -20,15 +24,17 @@ class NotificationTabView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setStyleForView() {
+        largeTitleLabel.text = "알림"
+        largeTitleLabel.font = .systemFont(ofSize: 24.0, weight: .semibold)
+        largeTitleLabel.textColor = .black
+    }
+    
     private func setLayoutForView() {
         self.addSubview(notificationTableView)
         
-        notificationTableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            notificationTableView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            notificationTableView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
-            notificationTableView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor),
-            notificationTableView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor)
-        ])
+        notificationTableView.snp.makeConstraints { make in
+            make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
     }
 }
