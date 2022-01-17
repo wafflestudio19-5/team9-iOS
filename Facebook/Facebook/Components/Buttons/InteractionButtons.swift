@@ -67,10 +67,10 @@ class LikeButton: InteractionButton {
         configurationUpdateHandler = { button in
             switch button.state {
             case [.selected, .highlighted]:
-                button.configuration?.baseForegroundColor = FacebookColor.blue.color()
+                button.configuration?.baseForegroundColor = .tintColors.blue
             case .selected:
                 button.configuration?.image = UIImage(systemName: self.filledSymbolName, withConfiguration: UIImage.SymbolConfiguration(pointSize: 13, weight: .semibold))
-                button.configuration?.baseForegroundColor = FacebookColor.blue.color()
+                button.configuration?.baseForegroundColor = .tintColors.blue
             case .highlighted:
                 button.configuration?.baseForegroundColor = .grayscales.label
             case .normal:

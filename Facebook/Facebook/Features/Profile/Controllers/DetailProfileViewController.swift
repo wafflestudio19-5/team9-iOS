@@ -148,15 +148,8 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
 
         // Do any additional setup after loading the view.
         self.title = "정보"
-        loadData()
+        if userId != UserDefaultsManager.cachedUser?.id { loadData() }
         bind()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
-        if userProfile != nil {
-            loadData()
-        }
     }
     
     func loadData() {
@@ -180,7 +173,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
     
     func createSection() {
-        guard let userProfile = userProfile else { return }
+        var userProfile: UserProfile
+        if userId == UserDefaultsManager.cachedUser?.id {
+            userProfile = StateManager.of.user.profile
+        } else {
+            userProfile = self.userProfile!
+        }
 
         var companyItems = userProfile.company.map({ company in
             SectionItem.CompanyItem(company: company)
@@ -274,6 +272,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
+        
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] _ in
+                self?.createSection()
+            }.disposed(by: disposeBag)
         
         /// 새로고침 제스쳐
         detailProfileView.refreshControl.rx.controlEvent(.valueChanged)

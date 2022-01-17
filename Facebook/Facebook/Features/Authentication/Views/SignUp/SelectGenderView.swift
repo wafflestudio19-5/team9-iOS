@@ -11,7 +11,7 @@ class SelectGenderView: BaseSignUpView {
     
     let genderTableView = ContentSizeFitTableView()
     
-    let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: FacebookColor.blue.color())
+    let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: .tintColors.blue)
     
     init() {
         super.init(title: "성별을 알려주세요", instruction: "나중에 프로필에서 회원님의 성별을 볼 수 있는 사람을 변경할 수 있습니다.")

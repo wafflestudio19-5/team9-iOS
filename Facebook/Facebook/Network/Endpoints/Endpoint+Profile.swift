@@ -5,9 +5,7 @@
 //  Created by 김우성 on 2022/01/02.
 //
 
-import Foundation
 import Alamofire
-import simd
 
 extension Endpoint {
     static func profile(id: Int) -> Self {
@@ -29,6 +27,11 @@ extension Endpoint {
         
         return Endpoint(path: "user/\(id)/profile/", multipartFormDataBuilder: multipartFormDataBuilder)
     }
+    
+    static func image(id: Int, updateData: [String : Bool]) -> Self {
+        return Endpoint(path: "user/\(id)/image/", parameters: updateData)
+    }
+    
     
     static func company(id: Int) -> Self {
         return Endpoint(path: "user/company/\(id)/")
@@ -113,5 +116,4 @@ extension Endpoint {
                                          "graduate_date": university.graduate_date ?? ""])
         }
     }
-    
 }

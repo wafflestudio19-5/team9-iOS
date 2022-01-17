@@ -50,18 +50,18 @@
 		77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */; };
 		77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728A2776021600482CE7 /* SearchHeaderView.swift */; };
 		77FE728D2777512000482CE7 /* DateSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */; };
+		B821C061279487D7000BA22D /* Endpoint+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = B821C060279487D7000BA22D /* Endpoint+Account.swift */; };
 		B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */; };
 		B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91F2787F93F00750397 /* KakaoLoginView.swift */; };
-		B82EC9242788414400750397 /* Endpoint+Kakao.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC9232788414400750397 /* Endpoint+Kakao.swift */; };
+		B82EC92D278BE1EB00750397 /* MenuTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC92C278BE1EB00750397 /* MenuTabView.swift */; };
+		B82EC92F278BE20600750397 /* MenuTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC92E278BE20600750397 /* MenuTabViewController.swift */; };
 		B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA42754E53700513B77 /* KakaoAuthManager.swift */; };
 		B846BDA72754F35800513B77 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA62754F35800513B77 /* LoginView.swift */; };
-		B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDA92754F5A900513B77 /* FacebookColor.swift */; };
 		B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */; };
 		B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAD275504AA00513B77 /* LoginViewController.swift */; };
 		B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDAF2755119500513B77 /* FacebookTextField.swift */; };
 		B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B846BDB32759250400513B77 /* BaseSignUpView.swift */; };
 		B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67DF2775AC03002CCC04 /* NewUser.swift */; };
-		B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */; };
 		B85D67E4277C964F002CCC04 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E3277C964F002CCC04 /* AuthResponse.swift */; };
 		B85D67E6277ECA76002CCC04 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67E5277ECA74002CCC04 /* CurrentUser.swift */; };
 		B85D67F027840F16002CCC04 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B85D67EF27840F16002CCC04 /* AuthManager.swift */; };
@@ -131,7 +131,6 @@
 		BE86BAE02784012F00948CAA /* CustomInputAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BADF2784012F00948CAA /* CustomInputAccessoryView.swift */; };
 		BE86BAE42784183600948CAA /* UITableView+DynamicHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE86BAE32784183600948CAA /* UITableView+DynamicHeader.swift */; };
 		BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */; };
-		BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C91276CDF230089247F /* Endpoint+User.swift */; };
 		BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C95276DB3C30089247F /* PostCell.swift */; };
 		BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */; };
 		BE9C7C9F276EC6EC0089247F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9C7C9E276EC6EC0089247F /* User.swift */; };
@@ -200,18 +199,18 @@
 		77FE728A2776021600482CE7 /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
 		77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectTableViewCell.swift; sourceTree = "<group>"; };
 		AF0AA20D3E5E391258D676CE /* Pods-Facebook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.release.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.release.xcconfig"; sourceTree = "<group>"; };
+		B821C060279487D7000BA22D /* Endpoint+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Account.swift"; sourceTree = "<group>"; };
 		B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		B82EC91F2787F93F00750397 /* KakaoLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginView.swift; sourceTree = "<group>"; };
-		B82EC9232788414400750397 /* Endpoint+Kakao.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Kakao.swift"; sourceTree = "<group>"; };
+		B82EC92C278BE1EB00750397 /* MenuTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTabView.swift; sourceTree = "<group>"; };
+		B82EC92E278BE20600750397 /* MenuTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuTabViewController.swift; sourceTree = "<group>"; };
 		B846BDA42754E53700513B77 /* KakaoAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoAuthManager.swift; sourceTree = "<group>"; };
 		B846BDA62754F35800513B77 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		B846BDA92754F5A900513B77 /* FacebookColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookColor.swift; sourceTree = "<group>"; };
 		B846BDAB2754FEFB00513B77 /* RectangularSlimButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangularSlimButton.swift; sourceTree = "<group>"; };
 		B846BDAD275504AA00513B77 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		B846BDAF2755119500513B77 /* FacebookTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookTextField.swift; sourceTree = "<group>"; };
 		B846BDB32759250400513B77 /* BaseSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSignUpView.swift; sourceTree = "<group>"; };
 		B85D67DF2775AC03002CCC04 /* NewUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewUser.swift; sourceTree = "<group>"; };
-		B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+NewUser.swift"; sourceTree = "<group>"; };
 		B85D67E3277C964F002CCC04 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 		B85D67E5277ECA74002CCC04 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		B85D67EF27840F16002CCC04 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -283,7 +282,6 @@
 		BE86BADF2784012F00948CAA /* CustomInputAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInputAccessoryView.swift; sourceTree = "<group>"; };
 		BE86BAE32784183600948CAA /* UITableView+DynamicHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+DynamicHeader.swift"; sourceTree = "<group>"; };
 		BE9C7C8F276C71DB0089247F /* InteractionButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractionButtons.swift; sourceTree = "<group>"; };
-		BE9C7C91276CDF230089247F /* Endpoint+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+User.swift"; sourceTree = "<group>"; };
 		BE9C7C95276DB3C30089247F /* PostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		BE9C7C9C276E413B0089247F /* URL+QueryParameters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+QueryParameters.swift"; sourceTree = "<group>"; };
 		BE9C7C9E276EC6EC0089247F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -360,6 +358,31 @@
 				775F150E27730BA000C9872F /* DataSourceModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B82EC929278BE12400750397 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				B82EC92B278BE1D300750397 /* Controllers */,
+				B82EC92A278BE1CC00750397 /* Views */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		B82EC92A278BE1CC00750397 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B82EC92C278BE1EB00750397 /* MenuTabView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B82EC92B278BE1D300750397 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B82EC92E278BE20600750397 /* MenuTabViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		B846BDA82754F59100513B77 /* Components */ = {
@@ -530,7 +553,6 @@
 		BE9C7CA327716E450089247F /* Colors */ = {
 			isa = PBXGroup;
 			children = (
-				B846BDA92754F5A900513B77 /* FacebookColor.swift */,
 				BE0D43682787235000E2162F /* UIColor+TintColors.swift */,
 				BE827A0E2772131000BD3566 /* UIColor+Grayscales.swift */,
 			);
@@ -565,6 +587,7 @@
 				BE9C7CAE277171320089247F /* Notification */,
 				BE9C7CA7277170160089247F /* Newsfeed */,
 				77266B582786EF820034DE6E /* Profile */,
+				B82EC929278BE12400750397 /* Settings */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -849,10 +872,8 @@
 			children = (
 				BEA834AD275123FD00D6EC95 /* Endpoint.swift */,
 				BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */,
-				BE9C7C91276CDF230089247F /* Endpoint+User.swift */,
-				B85D67E1277C9283002CCC04 /* Endpoint+NewUser.swift */,
-				B82EC9232788414400750397 /* Endpoint+Kakao.swift */,
 				7754B86C2781A0B900775D81 /* Endpoint+Profile.swift */,
+				B821C060279487D7000BA22D /* Endpoint+Account.swift */,
 			);
 			path = Endpoints;
 			sourceTree = "<group>";
@@ -988,7 +1009,6 @@
 				BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */,
 				7754B8822782C25800775D81 /* PhotoPopUpView.swift in Sources */,
 				77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */,
-				B82EC9242788414400750397 /* Endpoint+Kakao.swift in Sources */,
 				BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */,
 				7754B8732781D7BC00775D81 /* BirthSelectTableViewCell.swift in Sources */,
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
@@ -996,7 +1016,6 @@
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
 				B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
-				BE9C7C92276CDF230089247F /* Endpoint+User.swift in Sources */,
 				B85D67E4277C964F002CCC04 /* AuthResponse.swift in Sources */,
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */,
@@ -1023,7 +1042,6 @@
 				7754B8712781D66400775D81 /* EditUserProfileViewController.swift in Sources */,
 				77ABC5DA2774A9B0000431E1 /* AddInformationViewController.swift in Sources */,
 				B897A926274E61D800FB67D3 /* NotificationTabView.swift in Sources */,
-				B846BDAA2754F5A900513B77 /* FacebookColor.swift in Sources */,
 				7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */,
 				BE86BAE02784012F00948CAA /* CustomInputAccessoryView.swift in Sources */,
 				7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */,
@@ -1045,10 +1063,10 @@
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
 				BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */,
 				BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */,
+				B82EC92F278BE20600750397 /* MenuTabViewController.swift in Sources */,
 				B85D67F027840F16002CCC04 /* AuthManager.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
 				B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */,
-				B85D67E2277C9283002CCC04 /* Endpoint+NewUser.swift in Sources */,
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
 				BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */,
 				BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */,
@@ -1094,6 +1112,7 @@
 				BE0D4388278D8D1700E2162F /* TapGestureConfigurations.swift in Sources */,
 				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
 				BEF254EC277ADBE800FBAACB /* InteractionButtonStackView.swift in Sources */,
+				B82EC92D278BE1EB00750397 /* MenuTabView.swift in Sources */,
 				7754B86F2781D63900775D81 /* EditUserProfileView.swift in Sources */,
 				77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */,
 				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
@@ -1118,6 +1137,7 @@
 				BE0D437D278AF1E500E2162F /* CommentDispatcher.swift in Sources */,
 				B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */,
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
+				B821C061279487D7000BA22D /* Endpoint+Account.swift in Sources */,
 				BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */,
 				BEF254E3277AD0EA00FBAACB /* ProfileImageView.swift in Sources */,
 				B846BDAE275504AA00513B77 /* LoginViewController.swift in Sources */,

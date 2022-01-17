@@ -40,4 +40,20 @@ struct AuthManager {
             return Disposables.create()
         }
     }
+    
+    // 로그아웃
+    static func logout() -> Single<Bool> {
+        return Single<Bool>.create { (result) -> Disposable in
+            NetworkService.get(endpoint: .logout(), as: String.self)
+                .subscribe(onNext: { response in
+                    if response.0.statusCode == 200 {
+                        NetworkService.removeToken()
+                        result(.success(true))
+                    }
+                }, onError: { _ in
+                    result(.success(false))
+                }).disposed(by: disposeBag)
+            return Disposables.create()
+        }
+    }
 }

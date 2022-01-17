@@ -129,8 +129,6 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
         }
     }
     
-    var userProfile: UserProfile?
-    
     var selectedYear = ""
     var selectedMonth = ""
     var selectedDay = ""
@@ -140,34 +138,12 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        loadData()
+        createSection()
         bind()
     }
     
-    func loadData() {
-        NetworkService.get(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0), as: UserProfile.self)
-            .subscribe { [weak self] event in
-                guard let self = self else { return }
-            
-                if event.isCompleted {
-                    return
-                }
-            
-                guard let response = event.element?.1 else {
-                    print("데이터 로드 중 오류 발생")
-                    print(event)
-                    return
-                }
-            
-                self.userProfile = response
-                
-                self.createSection()
-                
-        }.disposed(by: disposeBag)
-    }
-    
     func createSection() {
-        guard let userProfile = userProfile else { return }
+        let userProfile = StateManager.of.user.profile
         
         selectedGender = userProfile.gender
         
@@ -190,6 +166,12 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
 
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
+        
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] _ in
+                self?.createSection()
+            }.disposed(by: disposeBag)
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
@@ -216,12 +198,14 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
                 //프로필 편집
                 NetworkService
                     .update(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0, updateData: updateData))
-                    .subscribe { [weak self] _ in
-                        guard let self = self else { return }
-                        let VCcount = self.navigationController?.viewControllers.count
-                        guard let detailProfileVC = self.navigationController?.viewControllers[VCcount! - 2] as? DetailProfileViewController else { return }
-                        detailProfileVC.loadData()
-                        self.navigationController?.popViewController(animated: true)
+                    .subscribe { event in
+                        let request = event.element
+                    
+                        request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                            guard let userProfile = dataResponse.value else { return }
+                            StateManager.of.user.dispatch(profile: userProfile)
+                            self.navigationController?.popViewController(animated: true)
+                        }
                     }.disposed(by: self.disposeBag)
             }
         }.disposed(by: disposeBag)
