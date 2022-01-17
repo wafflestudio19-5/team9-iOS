@@ -30,7 +30,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
             
             cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro, buttonText: buttonText)
-            self.bindMainCellAction(cell: cell, coverImageUrl: coverImageUrl, selfIntro: selfIntro)
+            self.bindMainCellAction(cell: cell, profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, selfIntro: selfIntro)
             
             return cell
         case let .SimpleInformationItem(style, informationType,image, information):
@@ -603,70 +603,82 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
 
 
 extension ProfileTabViewController {
-    func bindMainCellAction(cell: MainProfileTableViewCell, coverImageUrl: String, selfIntro: String) {
+    func bindMainCellAction(cell: MainProfileTableViewCell, profileImageUrl: String, coverImageUrl: String, selfIntro: String) {
         if (self.userId == UserDefaultsManager.cachedUser?.id) {
-            if coverImageUrl != "" {
-                cell.coverImage.rx
-                    .tapGesture()
-                    .when(.recognized)
-                    .subscribe(onNext: { [weak self] _ in
-                        guard let self = self else { return }
-                        self.imageType = "cover_image"
-                        self.presentPicker()
-                    }).disposed(by: cell.disposeBag)
-            } else {
-                cell.coverImageButton.rx
-                    .tap
-                    .bind { [weak self] in
-                        guard let self = self else { return }
-                        self.imageType = "cover_image"
-                        self.presentPicker()
-                    }.disposed(by: cell.disposeBag)
-            }
-            
-            
-            cell.selfIntroLabel.rx
-                .tapGesture()
-                .when(.recognized)
-                .subscribe(onNext: { [weak self] _ in
-                    if selfIntro == "" {
-                        let addSelfIntroViewController = AddSelfIntroViewController()
-                        let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
-                        navigationController.modalPresentationStyle = .fullScreen
-                        self?.present(navigationController, animated: true, completion: nil)
+                        if coverImageUrl != "" {
+                            cell.coverImage.rx
+                                .tapGesture()
+                                .when(.recognized)
+                                .subscribe(onNext: { [weak self] _ in
+                                    guard let self = self else { return }
+                                    self.imageType = "cover_image"
+                                    if coverImageUrl != "" {
+                                        self.showAlertImageMenu()
+                                    } else {
+                                        self.presentPicker()
+                                    }
+                                }).disposed(by: cell.disposeBag)
+                            cell.coverLabel.isHidden = true
+                            cell.coverImageButton.isHidden = true
+                        } else {
+                            cell.coverImageButton.rx
+                                .tap
+                                .bind { [weak self] in
+                                    guard let self = self else { return }
+                                    self.imageType = "cover_image"
+                                    self.presentPicker()
+                                }.disposed(by: cell.disposeBag)
+                            cell.coverLabel.isHidden = false
+                            cell.coverImageButton.isHidden = false
+                        }
+                        
+                        
+                        cell.selfIntroLabel.rx
+                            .tapGesture()
+                            .when(.recognized)
+                            .subscribe(onNext: { [weak self] _ in
+                                if selfIntro == "" {
+                                    let addSelfIntroViewController = AddSelfIntroViewController()
+                                    let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+                                    navigationController.modalPresentationStyle = .fullScreen
+                                    self?.present(navigationController, animated: true, completion: nil)
+                                } else {
+                                    self?.showAlertSelfIntroMenu()
+                                }
+                            }).disposed(by: cell.disposeBag)
+                        
+                        cell.editProfileButton.rx
+                            .tap
+                            .bind { [weak self] in
+                                let editProfileViewController = EditProfileViewController()
+                                self?.push(viewController: editProfileViewController)
+                            }.disposed(by: cell.disposeBag)
+                        
+                        cell.profileImage.rx
+                            .tapGesture()
+                            .when(.recognized)
+                            .subscribe(onNext: { [weak self] _ in
+                                guard let self = self else { return }
+                                self.imageType = "profile_image"
+                                if profileImageUrl != "" {
+                                    self.showAlertImageMenu()
+                                } else {
+                                    self.presentPicker()
+                                }
+                            }).disposed(by: cell.disposeBag)
                     } else {
-                        self?.showAlertMenu()
+                        cell.editProfileButton.rx
+                            .tap
+                            .bind { [weak self] in
+                                guard let self = self else { return }
+                                NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
+                                    .subscribe { event in
+                                        print(event)
+                                    }.disposed(by: self.disposeBag)
+                            }.disposed(by: cell.disposeBag)
+                        
+                        cell.coverLabel.isHidden = true
+                        cell.coverImageButton.isHidden = true
                     }
-                }).disposed(by: cell.disposeBag)
-            
-            cell.editProfileButton.rx
-                .tap
-                .bind { [weak self] in
-                    let editProfileViewController = EditProfileViewController()
-                    self?.push(viewController: editProfileViewController)
-                }.disposed(by: cell.disposeBag)
-            
-            cell.profileImage.rx
-                .tapGesture()
-                .when(.recognized)
-                .subscribe(onNext: { [weak self] _ in
-                    guard let self = self else { return }
-                    self.imageType = "profile_image"
-                    self.presentPicker()
-                }).disposed(by: cell.disposeBag)
-        } else {
-            cell.editProfileButton.rx
-                .tap
-                .bind { [weak self] in
-                    guard let self = self else { return }
-                    NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
-                        .subscribe { event in
-                            print(event)
-                        }.disposed(by: self.disposeBag)
-                }.disposed(by: cell.disposeBag)
-            
-            cell.coverLabel.isHidden = true
-            cell.coverImageButton.isHidden = true
-        }
     }
 }
