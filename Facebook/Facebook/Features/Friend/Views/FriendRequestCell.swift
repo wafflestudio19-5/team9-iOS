@@ -61,6 +61,13 @@ class FriendRequestCell: UITableViewCell {
         verticalStackView.addArrangedSubview(nameLabel)
         verticalStackView.addArrangedSubview(horizontalStackView)
     }
+    
+    func updateState(isAccepted: Bool) {
+        stateLabel.text = isAccepted ? "요청 수락함" : "요청 삭제됨"
+        verticalStackView.removeArrangedSubview(horizontalStackView)
+        horizontalStackView.removeFromSuperview()
+        verticalStackView.addArrangedSubview(stateLabel)
+    }
 
     private let profileImage: UIImageView = {
         let imageView = UIImageView()
@@ -79,7 +86,12 @@ class FriendRequestCell: UITableViewCell {
         return stackView
     }()
     
-    private let nameLabel = UILabel()
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        
+        return label
+    }()
     
     private let horizontalStackView: UIStackView = {
         let stackView = UIStackView()
@@ -90,7 +102,7 @@ class FriendRequestCell: UITableViewCell {
         return stackView
     }()
     
-    private let acceptButton: UIButton = {
+    let acceptButton: UIButton = {
         let button = UIButton()
         button.setTitle("확인", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -100,7 +112,7 @@ class FriendRequestCell: UITableViewCell {
         return button
     }()
     
-    private let deleteButton: UIButton = {
+    let deleteButton: UIButton = {
         let button = UIButton()
         button.setTitle("삭제", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -108,6 +120,14 @@ class FriendRequestCell: UITableViewCell {
         button.layer.cornerRadius = 5
     
         return button
+    }()
+    
+    private let stateLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .gray
+        
+        return label
     }()
 }
 

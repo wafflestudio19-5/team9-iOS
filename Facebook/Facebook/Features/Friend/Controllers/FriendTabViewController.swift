@@ -31,6 +31,28 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
             .bind(to: tableView.rx.items(cellIdentifier: FriendRequestCell.reuseIdentifier, cellType: FriendRequestCell.self)) { [weak self] row, requestFriend, cell in
                 guard let self = self else { return }
                 cell.configureCell(with: requestFriend.sender_profile)
+                
+                cell.acceptButton.rx.tap
+                    .bind { [weak self] _ in
+                        guard let self = self else { return }
+                        NetworkService.put(endpoint: .friendRequest(id: requestFriend.sender))
+                            .subscribe { event in
+                                if event.isCompleted {
+                                    cell.updateState(isAccepted: true)
+                                }
+                            }.disposed(by: self.disposeBag)
+                    }.disposed(by: cell.refreshingBag)
+                
+                cell.deleteButton.rx.tap
+                    .bind { [weak self] _ in
+                        guard let self = self else { return }
+                        NetworkService.delete(endpoint: .friendRequest(id: requestFriend.sender))
+                            .subscribe { event in
+                                if event.isCompleted {
+                                    cell.updateState(isAccepted: false)
+                                }
+                            }.disposed(by: self.disposeBag)
+                    }.disposed(by: cell.refreshingBag)
             }
             .disposed(by: disposeBag)
         
@@ -38,6 +60,46 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
             .bind { [weak self] _ in
                 let showFriendViewController = ShowFriendViewController(userId: StateManager.of.user.profile.id)
                 self?.push(viewController: showFriendViewController)
+            }
+            .disposed(by: disposeBag)
+        
+        friendRequestViewModel.isLoading
+            .asDriver()
+            .drive(onNext: { [weak self] isLoading in
+                if isLoading {
+                    self?.tableView.showBottomSpinner()
+                } else {
+                    self?.tableView.hideBottomSpinner()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        /// 새로고침 제스쳐가 인식될 때마다 `refresh` 함수를 실행합니다.
+        tabView.refreshControl.rx.controlEvent(.valueChanged)
+            .subscribe(onNext: { [weak self] in
+                self?.friendRequestViewModel.refresh()
+            })
+            .disposed(by: disposeBag)
+        
+        /// 새로고침이 완료될 때마다 `refreshControl`의 애니메이션을 중단시킵니다.
+        friendRequestViewModel.refreshComplete
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext : { [weak self] refreshComplete in
+                if refreshComplete {
+                    self?.tabView.refreshControl.endRefreshing()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        /// 테이블 맨 아래까지 스크롤할 때마다 `loadMore` 함수를 실행합니다.
+        tableView.rx.didScroll
+            .subscribe { [weak self] _ in
+                guard let self = self else { return }
+                let offSetY = self.tableView.contentOffset.y
+                let contentHeight = self.tableView.contentSize.height
+                if offSetY > (contentHeight - self.tableView.frame.size.height - 100) {
+                    self.friendRequestViewModel.loadMore()
+                }
             }
             .disposed(by: disposeBag)
     }
