@@ -43,7 +43,7 @@ class FriendCell: UITableViewCell {
     private func setLayout() {
         contentView.addSubview(profileImage)
         profileImage.snp.remakeConstraints { make in
-            make.height.width.equalTo(50)
+            make.height.width.equalTo(50).priority(999)
             make.centerY.equalToSuperview()
             make.top.bottom.equalToSuperview().inset(10)
             make.leading.equalToSuperview().inset(CGFloat.standardLeadingMargin)

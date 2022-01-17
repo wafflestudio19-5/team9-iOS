@@ -11,6 +11,23 @@ class FriendTabView: UIView {
 
     let friendTableView = UITableView()
     let refreshControl = UIRefreshControl()
+    let headerView = UIView()
+    let showFriendButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 17.5
+        button.backgroundColor = .systemGray4
+        button.setTitle("내 친구", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        
+        return button
+    }()
+    let divider: UIView = {
+        let view = UIView()
+        view.backgroundColor = .gray
+        
+        return view
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,9 +44,25 @@ class FriendTabView: UIView {
         friendTableView.snp.makeConstraints { make in
             make.edges.equalTo(self.safeAreaLayoutGuide)
         }
+        
+        headerView.frame = CGRect(x: 0, y: 0, width: friendTableView.frame.width, height: 55)
+        headerView.addSubview(showFriendButton)
+        showFriendButton.snp.makeConstraints { make in
+            make.height.equalTo(35)
+            make.width.equalTo(70)
+            make.centerY.equalToSuperview()
+            make.left.equalToSuperview().inset(15)
+        }
+        headerView.addSubview(divider)
+        divider.snp.makeConstraints { make in
+            make.height.equalTo(0.5)
+            make.bottom.equalToSuperview()
+            make.left.right.equalToSuperview().inset(15)
+        }
     }
     
     private func configureTableView() {
+        friendTableView.tableHeaderView = headerView
         friendTableView.register(FriendRequestCell.self, forCellReuseIdentifier: FriendRequestCell.reuseIdentifier)
         friendTableView.refreshControl = refreshControl
         friendTableView.allowsSelection = false
