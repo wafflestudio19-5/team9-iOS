@@ -593,11 +593,8 @@ extension ProfileTabViewController {
                 .subscribe { [weak self] event in
                     guard let self = self else { return }
                     if event.isCompleted {
-                        print("친구 끊기 완료")
-                    }
-                
-                    if event.error != nil {
-                        self.alert(title: "친구 삭제 중 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                        self.isFriend = false
+                        self.createSection()
                     }
                 }.disposed(by: self.disposeBag)
         }
@@ -727,8 +724,17 @@ extension ProfileTabViewController {
                     .bind { [weak self] in
                         guard let self = self else { return }
                         NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
-                            .subscribe { event in
-                                print(event)
+                            .subscribe { [weak self] event in
+                                guard let self = self else { return }
+                                
+                                if event.isCompleted {
+                                    return 
+                                }
+                                
+                                guard let response = event.element?.1 else {
+                                    self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                                    return
+                                }
                             }.disposed(by: self.disposeBag)
                     }.disposed(by: cell.disposeBag)
             }
