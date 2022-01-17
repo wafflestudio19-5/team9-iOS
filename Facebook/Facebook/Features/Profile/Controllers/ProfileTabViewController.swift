@@ -180,7 +180,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     }
     
     func loadFriendData() {
-        NetworkService.get(endpoint: .friend(id: self.userId), as: PaginatedResponse<User>.self)
+        NetworkService.get(endpoint: .friend(id: self.userId, limit: 6), as: PaginatedResponse<User>.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
 

@@ -8,8 +8,8 @@
 import Foundation
 
 extension Endpoint {
-    static func friend(id: Int) -> Self {
-        return Endpoint(path: "user/\(id)/friend/", parameters: ["limit": 20])
+    static func friend(id: Int, limit: Int) -> Self {
+        return Endpoint(path: "user/\(id)/friend/", parameters: ["limit": limit])
     }
     
     static func friend(friendId: Int) -> Self {

@@ -29,7 +29,7 @@ class FriendCollectionTableViewCell: UITableViewCell {
     }
     
     func configureCell(with friendsData: [User]) {
-        Observable.just(friendsData.prefix(6))
+        Observable.just(friendsData)
             .observe(on: MainScheduler.instance)
             .bind(to: friendGridCollectionView.rx.items(cellIdentifier: FriendGridCell.reuseIdentifier, cellType: FriendGridCell.self)) { row, data, cell in
                 cell.configureCell(with: data)

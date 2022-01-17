@@ -31,7 +31,7 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
     
     init(userId: Int) {
         self.userId = userId
-        friendViewModel = PaginationViewModel<User>(endpoint: .friend(id: self.userId))
+        friendViewModel = PaginationViewModel<User>(endpoint: .friend(id: self.userId, limit: 20))
         super.init(nibName: nil, bundle: nil)
     }
     
