@@ -7,17 +7,19 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class NotificationTabView: UIView {
     
     let largeTitleLabel = UILabel()
     
-    let notificationTableView = UITableView()
+    let notificationTableView = ResponsiveTableView(frame: .zero, style: .grouped)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setStyleForView()
         setLayoutForView()
+        configureTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -36,5 +38,30 @@ class NotificationTabView: UIView {
         notificationTableView.snp.makeConstraints { make in
             make.edges.equalTo(self.safeAreaLayoutGuide)
         }
+    }
+    
+    private func configureTableView() {
+        notificationTableView.separatorStyle = .none
+        notificationTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.reuseIdentifier)
+    }
+}
+
+
+struct NotificationViewRepresentable: UIViewRepresentable {
+    func makeUIView(context: Context) -> some UIView {
+        let view = NotificationTabView()
+        return view
+    }
+    
+    func updateUIView(_ uiView: UIViewType, context: Context) {}
+}
+
+struct NotificationViewPreview: PreviewProvider {
+    static var previews: some View {
+        VStack{
+            Spacer()
+            NotificationViewRepresentable()
+            Spacer()
+        }.preferredColorScheme(.light).previewDevice("iPhone 12 Pro").background(.white)
     }
 }
