@@ -55,7 +55,6 @@ class ShowFriendView: UIView {
     private func configureTableView() {
         showFriendTableView.register(FriendCell.self, forCellReuseIdentifier: FriendCell.reuseIdentifier)
         showFriendTableView.refreshControl = refreshControl
-        showFriendTableView.allowsSelection = false
         showFriendTableView.delaysContentTouches = false
     }
 

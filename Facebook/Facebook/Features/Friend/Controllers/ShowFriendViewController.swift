@@ -58,9 +58,23 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        tableView.rx.itemSelected
+            .subscribe(onNext: { [weak self] idxPath in
+                self?.tableView.deselectRow(at: idxPath, animated: true)
+            }).disposed(by: disposeBag)
+        
         tableView.rx.modelSelected(User.self)
             .subscribe(onNext: { [weak self] friend in
-                print(friend)
+                let profileTabVC = ProfileTabViewController(userId: friend.id)
+                self?.push(viewController: profileTabVC)
+            }).disposed(by: disposeBag)
+        
+        showFriendView.searchBar.rx.text.orEmpty
+            .debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] text in
+                guard let self = self else { return }
+                //self.friendViewModel.dataList.accept(self.friendViewModel.dataList.value.filter { $0.username.contains(text) })
             }).disposed(by: disposeBag)
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.

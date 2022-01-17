@@ -33,5 +33,12 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
                 cell.configureCell(with: requestFriend.sender_profile)
             }
             .disposed(by: disposeBag)
+        
+        tabView.showFriendButton.rx.tap
+            .bind { [weak self] _ in
+                let showFriendViewController = ShowFriendViewController(userId: StateManager.of.user.profile.id)
+                self?.push(viewController: showFriendViewController)
+            }
+            .disposed(by: disposeBag)
     }
 }
