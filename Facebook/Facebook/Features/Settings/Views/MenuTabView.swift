@@ -44,16 +44,11 @@ class MenuTabView: UIView {
             make.top.left.equalTo(self.safeAreaLayoutGuide).offset(16)
             make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
         }
-        
         kakaoDisconnectButton.snp.makeConstraints { make in
             make.top.equalTo(logoutButton.snp.bottom).offset(10.0)
-            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
             make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
         }
         
-        kakaoDisconnectButton.snp.makeConstraints { make in
-            make.top.equalTo(logoutButton.snp.bottom).offset(10)
-            make.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(16)
-        }
     }
 }
