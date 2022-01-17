@@ -44,7 +44,7 @@ struct NetworkService {
     }
     
     static func delete(endpoint: Endpoint) -> Observable<Any> {
-        return session.rx.json(.delete, endpoint.url)
+        return session.rx.json(.delete, endpoint.url, parameters: endpoint.parameters, encoding: JSONEncoding.default)
     }
     
     /*

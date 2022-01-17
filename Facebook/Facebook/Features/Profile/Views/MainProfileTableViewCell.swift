@@ -37,28 +37,29 @@ class MainProfileTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configureCell(profileImageUrl: String, coverImageUrl: String, name: String, selfIntro: String, buttonText: String) {
+    func configureCell(profileImageUrl: String, coverImageUrl: String, name: String, selfIntro: String) {
         nameLabel.text = name
         selfIntroLabel.text = selfIntro
         
-        editProfileButton.setTitle(buttonText, for: .normal)
-        if buttonText == "프로필 편집" {
+        if profileImageUrl != "" { loadProfileImage(from: URL(string: profileImageUrl)) }
+        else { profileImage.image = UIImage(systemName: "person.fill") }
+        
+        if coverImageUrl != "" { loadCoverImage(from: URL(string: coverImageUrl)) }
+        else { coverImage.image = UIImage() }
+    }
+    
+    func configureEditButton(isMe: Bool, isFriend: Bool) {
+        if isMe {
+            editProfileButton.setTitle("프로필 편집", for: .normal)
             editProfileButton.setImage(UIImage(systemName: "pencil"), for: .normal)
         } else {
-            editProfileButton.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
-        }
-        
-        
-        if profileImageUrl != "" {
-            loadProfileImage(from: URL(string: profileImageUrl))
-        } else {
-            profileImage.image = UIImage(systemName: "person.fill")
-        }
-        
-        if coverImageUrl != "" {
-            loadCoverImage(from: URL(string: coverImageUrl))
-        } else {
-            coverImage.image = UIImage()
+            if isFriend {
+                editProfileButton.setTitle("친구", for: .normal)
+                editProfileButton.setImage(UIImage(systemName: "person.fill.checkmark"), for: .normal)
+            } else {
+                editProfileButton.setTitle("친구 추가", for: .normal)
+                editProfileButton.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
+            }
         }
     }
     

@@ -26,10 +26,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<MultipleSectionModel>.ConfigureCell = { [weak self] dataSource, tableView, idxPath, _ in
         guard let self = self else { return UITableViewCell() }
         switch dataSource[idxPath] {
-        case let .MainProfileItem(profileImageUrl, coverImageUrl, name, selfIntro, buttonText):
+        case let .MainProfileItem(profileImageUrl, coverImageUrl, name, selfIntro):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
             
-            cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro, buttonText: buttonText)
+            cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro)
+            cell.configureEditButton(isMe: self.userId == UserDefaultsManager.cachedUser?.id, isFriend: self.isFriend)
             self.bindMainCellAction(cell: cell, profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, selfIntro: selfIntro)
             
             return cell
@@ -117,12 +118,18 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     let postDataViewModel: PaginationViewModel<Post>
     
     private var userId: Int
-    private var imageType = "profile_image"
+    private lazy var imageType = "profile_image"
+    private var isFriend = false
     
-    init(userId: Int? = nil) {
+    init(userId: Int? = nil, isFriend: Bool = false) {
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
-        if userId != nil { self.userId = userId! }
-        else { self.userId = UserDefaultsManager.cachedUser?.id ?? 0}
+        if userId != nil {
+            self.userId = userId!
+            self.isFriend = isFriend
+        }
+        else {
+            self.userId = UserDefaultsManager.cachedUser?.id ?? 0
+        }
 
         postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: self.userId))
         
@@ -274,8 +281,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 .MainProfileItem(profileImageUrl: userProfile.profile_image ?? "" ,
                                  coverImageUrl: userProfile.cover_image ?? "",
                                  name: userProfile.username,
-                                 selfIntro: userProfile.self_intro,
-                                 buttonText: (userId == UserDefaultsManager.cachedUser?.id) ? "프로필 편집" : "친구 추가")
+                                 selfIntro: userProfile.self_intro)
             ])
         ]
 
@@ -560,6 +566,44 @@ extension ProfileTabViewController {
                 StateManager.of.user.dispatch(profile: response)
             }.disposed(by: self.disposeBag)
     }
+    
+    func showAlertFriendMenu() {
+        let alertMenu = UIAlertController(title: "친구 관리", message: "", preferredStyle: .actionSheet)
+        
+        let deleteFriendAction = UIAlertAction(title: "친구 끊기", style: .default, handler: { action in
+            self.deleleFriend()
+        })
+        deleteFriendAction.setValue(0, forKey: "titleTextAlignment")
+        deleteFriendAction.setValue(UIImage(systemName: "person.fill.xmark")!, forKey: "image")
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        
+        alertMenu.addAction(deleteFriendAction)
+        alertMenu.addAction(cancelAction)
+        
+        self.present(alertMenu, animated: true, completion: nil)
+    }
+    
+    func deleleFriend() {
+        let alert = UIAlertController(title: (userProfile?.username ?? "이 친구") + "님을 친구에서 삭제하시겠어요?", message: "",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        let deleteAction = UIAlertAction(title: "확인", style: .default) { action in
+            NetworkService.delete(endpoint: .friend(friendId: self.userId))
+                .subscribe { [weak self] event in
+                    guard let self = self else { return }
+                    if event.isCompleted {
+                        print("친구 끊기 완료")
+                    }
+                
+                    if event.error != nil {
+                        self.alert(title: "친구 삭제 중 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                    }
+                }.disposed(by: self.disposeBag)
+        }
+        alert.addAction(deleteAction)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension ProfileTabViewController: PHPickerViewControllerDelegate {
@@ -605,80 +649,92 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
 extension ProfileTabViewController {
     func bindMainCellAction(cell: MainProfileTableViewCell, profileImageUrl: String, coverImageUrl: String, selfIntro: String) {
         if (self.userId == UserDefaultsManager.cachedUser?.id) {
+            //커버 이미지
+            if coverImageUrl != "" {
+                cell.coverImage.rx
+                    .tapGesture()
+                    .when(.recognized)
+                    .subscribe(onNext: { [weak self] _ in
+                        guard let self = self else { return }
+                        self.imageType = "cover_image"
                         if coverImageUrl != "" {
-                            cell.coverImage.rx
-                                .tapGesture()
-                                .when(.recognized)
-                                .subscribe(onNext: { [weak self] _ in
-                                    guard let self = self else { return }
-                                    self.imageType = "cover_image"
-                                    if coverImageUrl != "" {
-                                        self.showAlertImageMenu()
-                                    } else {
-                                        self.presentPicker()
-                                    }
-                                }).disposed(by: cell.disposeBag)
-                            cell.coverLabel.isHidden = true
-                            cell.coverImageButton.isHidden = true
+                            self.showAlertImageMenu()
                         } else {
-                            cell.coverImageButton.rx
-                                .tap
-                                .bind { [weak self] in
-                                    guard let self = self else { return }
-                                    self.imageType = "cover_image"
-                                    self.presentPicker()
-                                }.disposed(by: cell.disposeBag)
-                            cell.coverLabel.isHidden = false
-                            cell.coverImageButton.isHidden = false
+                            self.presentPicker()
                         }
-                        
-                        
-                        cell.selfIntroLabel.rx
-                            .tapGesture()
-                            .when(.recognized)
-                            .subscribe(onNext: { [weak self] _ in
-                                if selfIntro == "" {
-                                    let addSelfIntroViewController = AddSelfIntroViewController()
-                                    let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
-                                    navigationController.modalPresentationStyle = .fullScreen
-                                    self?.present(navigationController, animated: true, completion: nil)
-                                } else {
-                                    self?.showAlertSelfIntroMenu()
-                                }
-                            }).disposed(by: cell.disposeBag)
-                        
-                        cell.editProfileButton.rx
-                            .tap
-                            .bind { [weak self] in
-                                let editProfileViewController = EditProfileViewController()
-                                self?.push(viewController: editProfileViewController)
-                            }.disposed(by: cell.disposeBag)
-                        
-                        cell.profileImage.rx
-                            .tapGesture()
-                            .when(.recognized)
-                            .subscribe(onNext: { [weak self] _ in
-                                guard let self = self else { return }
-                                self.imageType = "profile_image"
-                                if profileImageUrl != "" {
-                                    self.showAlertImageMenu()
-                                } else {
-                                    self.presentPicker()
-                                }
-                            }).disposed(by: cell.disposeBag)
+                    }).disposed(by: cell.disposeBag)
+                cell.coverLabel.isHidden = true
+                cell.coverImageButton.isHidden = true
+            } else {
+                cell.coverImageButton.rx
+                    .tap
+                    .bind { [weak self] in
+                        guard let self = self else { return }
+                        self.imageType = "cover_image"
+                        self.presentPicker()
+                    }.disposed(by: cell.disposeBag)
+                cell.coverLabel.isHidden = false
+                cell.coverImageButton.isHidden = false
+            }
+            
+            //프로필 이미지
+            cell.profileImage.rx
+                .tapGesture()
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    self.imageType = "profile_image"
+                    if profileImageUrl != "" {
+                        self.showAlertImageMenu()
                     } else {
-                        cell.editProfileButton.rx
-                            .tap
-                            .bind { [weak self] in
-                                guard let self = self else { return }
-                                NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
-                                    .subscribe { event in
-                                        print(event)
-                                    }.disposed(by: self.disposeBag)
-                            }.disposed(by: cell.disposeBag)
-                        
-                        cell.coverLabel.isHidden = true
-                        cell.coverImageButton.isHidden = true
+                        self.presentPicker()
                     }
+                }).disposed(by: cell.disposeBag)
+            
+            //자기소개 관련 동작
+            cell.selfIntroLabel.rx
+                .tapGesture()
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    if selfIntro == "" {
+                        let addSelfIntroViewController = AddSelfIntroViewController()
+                        let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+                        navigationController.modalPresentationStyle = .fullScreen
+                        self?.present(navigationController, animated: true, completion: nil)
+                    } else {
+                        self?.showAlertSelfIntroMenu()
+                    }
+                }).disposed(by: cell.disposeBag)
+            
+            //프로필 수정 버튼
+            cell.editProfileButton.rx
+                .tap
+                .bind { [weak self] in
+                    let editProfileViewController = EditProfileViewController()
+                    self?.push(viewController: editProfileViewController)
+                }.disposed(by: cell.disposeBag)
+        } else {
+            if isFriend {
+                cell.editProfileButton.rx
+                    .tap
+                    .bind { [weak self] in
+                        guard let self = self else { return }
+                        self.showAlertFriendMenu()
+                    }.disposed(by: cell.disposeBag)
+            } else {
+                cell.editProfileButton.rx
+                    .tap
+                    .bind { [weak self] in
+                        guard let self = self else { return }
+                        NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
+                            .subscribe { event in
+                                print(event)
+                            }.disposed(by: self.disposeBag)
+                    }.disposed(by: cell.disposeBag)
+            }
+            
+            cell.coverLabel.isHidden = true
+            cell.coverImageButton.isHidden = true
+        }
     }
 }
