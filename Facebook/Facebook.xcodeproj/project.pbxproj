@@ -32,8 +32,6 @@
 		7754B8842782C27D00775D81 /* PhotoPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */; };
 		775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */; };
 		775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150E27730BA000C9872F /* DataSourceModel.swift */; };
-		7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77799318274FD8E4007A3898 /* PostTableViewCell.swift */; };
-		7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 77799319274FD8E4007A3898 /* PostTableViewCell.xib */; };
 		7779931D2750843C007A3898 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7779931C2750843B007A3898 /* SearchViewController.swift */; };
 		777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777993232750D280007A3898 /* NotificationTableViewCell.swift */; };
 		777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 777993242750D280007A3898 /* NotificationTableViewCell.xib */; };
@@ -104,8 +102,12 @@
 		BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4378278AE07E00E2162F /* StateManager.swift */; };
 		BE0D437B278AE0F100E2162F /* UserDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437A278AE0F100E2162F /* UserDispatcher.swift */; };
 		BE0D437D278AF1E500E2162F /* CommentDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */; };
-		BE0D437F278C357500E2162F /* AuthDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D437E278C357500E2162F /* AuthDispatcher.swift */; };
 		BE0D4381278C5B4C00E2162F /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4380278C5B4C00E2162F /* UserDefaultsManager.swift */; };
+		BE0D4383278D498200E2162F /* SubPostsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4382278D498200E2162F /* SubPostsViewController.swift */; };
+		BE0D4386278D567100E2162F /* SubPostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4385278D567100E2162F /* SubPostsView.swift */; };
+		BE0D4388278D8D1700E2162F /* TapGestureConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4387278D8D1700E2162F /* TapGestureConfigurations.swift */; };
+		BE0D438A278DA7F500E2162F /* SubPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4389278DA7F500E2162F /* SubPostCell.swift */; };
+		BE0D438E278F105400E2162F /* KFProcessors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D438D278F105400E2162F /* KFProcessors.swift */; };
 		BE1F75B12785895000E51A28 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B02785895000E51A28 /* Spinner.swift */; };
 		BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */; };
 		BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B42785D2C600E51A28 /* InfoButton.swift */; };
@@ -178,8 +180,6 @@
 		7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPopUpViewController.swift; sourceTree = "<group>"; };
 		775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		775F150E27730BA000C9872F /* DataSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceModel.swift; sourceTree = "<group>"; };
-		77799318274FD8E4007A3898 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
-		77799319274FD8E4007A3898 /* PostTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostTableViewCell.xib; sourceTree = "<group>"; };
 		7779931C2750843B007A3898 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		777993232750D280007A3898 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		777993242750D280007A3898 /* NotificationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationTableViewCell.xib; sourceTree = "<group>"; };
@@ -253,8 +253,12 @@
 		BE0D4378278AE07E00E2162F /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
 		BE0D437A278AE0F100E2162F /* UserDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDispatcher.swift; sourceTree = "<group>"; };
 		BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDispatcher.swift; sourceTree = "<group>"; };
-		BE0D437E278C357500E2162F /* AuthDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDispatcher.swift; sourceTree = "<group>"; };
 		BE0D4380278C5B4C00E2162F /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		BE0D4382278D498200E2162F /* SubPostsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostsViewController.swift; sourceTree = "<group>"; };
+		BE0D4385278D567100E2162F /* SubPostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostsView.swift; sourceTree = "<group>"; };
+		BE0D4387278D8D1700E2162F /* TapGestureConfigurations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureConfigurations.swift; sourceTree = "<group>"; };
+		BE0D4389278DA7F500E2162F /* SubPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostCell.swift; sourceTree = "<group>"; };
+		BE0D438D278F105400E2162F /* KFProcessors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KFProcessors.swift; sourceTree = "<group>"; };
 		BE1F75B02785895000E51A28 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+BottomSpinner.swift"; sourceTree = "<group>"; };
 		BE1F75B42785D2C600E51A28 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
@@ -474,7 +478,6 @@
 				BE0D4375278ADFCE00E2162F /* PostDispatcher.swift */,
 				BE0D437A278AE0F100E2162F /* UserDispatcher.swift */,
 				BE0D4380278C5B4C00E2162F /* UserDefaultsManager.swift */,
-				BE0D437E278C357500E2162F /* AuthDispatcher.swift */,
 				BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */,
 			);
 			path = StateManager;
@@ -771,6 +774,7 @@
 			isa = PBXGroup;
 			children = (
 				77547903275CE66A0065711C /* PostDetailViewController.swift */,
+				BE0D4382278D498200E2162F /* SubPostsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -779,9 +783,9 @@
 			isa = PBXGroup;
 			children = (
 				77AC749A275CEDAD00F10BD5 /* PostDetailView.swift */,
+				BE0D4385278D567100E2162F /* SubPostsView.swift */,
+				BE0D4389278DA7F500E2162F /* SubPostCell.swift */,
 				BEF254F3277B0DC500FBAACB /* PostDetailHeaderView.swift */,
-				77799318274FD8E4007A3898 /* PostTableViewCell.swift */,
-				77799319274FD8E4007A3898 /* PostTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -807,6 +811,8 @@
 				BEF254F5277B49F000FBAACB /* SwiftUIRepresentable.swift */,
 				BE0D4372278ADEC200E2162F /* StateManager */,
 				BE0D436A2787631400E2162F /* HapticManager.swift */,
+				BE0D4387278D8D1700E2162F /* TapGestureConfigurations.swift */,
+				BE0D438D278F105400E2162F /* KFProcessors.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -943,10 +949,8 @@
 				BE827A1727722B9400BD3566 /* CreatePostTableViewCell.xib in Resources */,
 				771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */,
 				777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */,
-				7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */,
 				771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */,
 				777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */,
-				7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */,
 				B897A90A274E303700FB67D3 /* LaunchScreen.storyboard in Resources */,
 				774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */,
 				B897A907274E303700FB67D3 /* Assets.xcassets in Resources */,
@@ -1008,7 +1012,6 @@
 				BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */,
 				7754B8732781D7BC00775D81 /* BirthSelectTableViewCell.swift in Sources */,
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
-				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
 				B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */,
@@ -1017,6 +1020,7 @@
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */,
 				B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */,
+				BE0D4383278D498200E2162F /* SubPostsViewController.swift in Sources */,
 				B85D67F22784B5A5002CCC04 /* CommentCell.swift in Sources */,
 				BE0D436B2787631400E2162F /* HapticManager.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
@@ -1075,6 +1079,7 @@
 				BE86BAE42784183600948CAA /* UITableView+DynamicHeader.swift in Sources */,
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
 				BE64AF3A27827FAE00C25967 /* ResponsiveTableView.swift in Sources */,
+				BE0D438A278DA7F500E2162F /* SubPostCell.swift in Sources */,
 				B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */,
 				7754B863277DAE2F00775D81 /* AddSelfIntroView.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
@@ -1090,6 +1095,7 @@
 				B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */,
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */,
+				BE0D4386278D567100E2162F /* SubPostsView.swift in Sources */,
 				BE7FD9F9277CCFDA00C3FF8E /* ImageGridCell.swift in Sources */,
 				BE7D1DF9277DC63800E080E3 /* NSLayoutConstraints+Activate.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
@@ -1101,7 +1107,9 @@
 				BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */,
 				BE0D43692787235000E2162F /* UIColor+TintColors.swift in Sources */,
 				B897A922274E612B00FB67D3 /* NewsfeedTabView.swift in Sources */,
+				BE0D438E278F105400E2162F /* KFProcessors.swift in Sources */,
 				BE0D4381278C5B4C00E2162F /* UserDefaultsManager.swift in Sources */,
+				BE0D4388278D8D1700E2162F /* TapGestureConfigurations.swift in Sources */,
 				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
 				BEF254EC277ADBE800FBAACB /* InteractionButtonStackView.swift in Sources */,
 				B82EC92D278BE1EB00750397 /* MenuTabView.swift in Sources */,
@@ -1138,7 +1146,6 @@
 				7754B865277DAE5300775D81 /* AddSelfIntroViewController.swift in Sources */,
 				B8619507276198B400957BBC /* GenderTableViewCell.swift in Sources */,
 				B85D67E6277ECA76002CCC04 /* CurrentUser.swift in Sources */,
-				BE0D437F278C357500E2162F /* AuthDispatcher.swift in Sources */,
 				BE0D43672786D29B00E2162F /* CommentPaginationViewModel.swift in Sources */,
 				B897A900274E303600FB67D3 /* SceneDelegate.swift in Sources */,
 				775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */,

@@ -57,9 +57,8 @@ class ProfileImageView: UIView {
         imageView.snp.remakeConstraints { make in
             make.edges.equalTo(0)
         }
-        let processor = DownsamplingImageProcessor(size: CGSize(width: 400, height: 400))
         KF.url(url)
-          .setProcessor(processor)
+          .setProcessor(KFProcessors.shared.downsampling)
           .loadDiskFileSynchronously()
           .cacheMemoryOnly()
           .fade(duration: 0.1)

@@ -62,12 +62,9 @@ extension ImageGridCell {
         guard let url = url else {
             return
         }
-        
-        
 
-        let processor = DownsamplingImageProcessor(size: CGSize(width: 400, height: 200))
         KF.url(url)
-          .setProcessor(processor)
+          .setProcessor(KFProcessors.shared.downsampling)
           .loadDiskFileSynchronously()
           .cacheMemoryOnly()
           .fade(duration: 0.1)

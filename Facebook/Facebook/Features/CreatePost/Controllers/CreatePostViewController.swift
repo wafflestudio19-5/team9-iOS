@@ -64,8 +64,11 @@ class CreatePostViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
+                let toolbarHeight = self.createPostView.keyboardAccessory.frame.height
+                self.view.setNeedsLayout()
                 UIView.animate(withDuration: 0) {
-                    self.createPostView.scrollViewBottomConstraint?.constant = -1 * (keyboardVisibleHeight)
+                    self.createPostView.scrollView.contentInset.bottom = keyboardVisibleHeight == 0 ? 0 : keyboardVisibleHeight - self.view.safeAreaInsets.bottom
+                    self.createPostView.scrollView.verticalScrollIndicatorInsets.bottom = self.createPostView.scrollView.contentInset.bottom
                     self.view.layoutIfNeeded()
                 }
             })
@@ -105,13 +108,16 @@ class CreatePostViewController: UIViewController {
                 
                 // load selected images as an array of data
                 self.pickerViewModel.loadMediaAsDataArray { array in
-                    NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "", files: array, subcontents: [String](repeating: "1", count: self.pickerViewModel.selectionCount.value)))
+                    NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "", files: array, subcontents: [String](repeating: "", count: self.pickerViewModel.selectionCount.value)))
                         .subscribe { event in
                             let request = event.element
                             let progress = request?.uploadProgress
                             DispatchQueue.main.async {
                                 newsfeedVC.headerViews.uploadProgressHeaderView.displayProgress(progress: progress)
                             }
+//                            request?.responseString(completionHandler: { response in
+//                                print(response)
+//                            })
 
                             request?.responseDecodable(of: Post.self) { dataResponse in
                                 guard let post = dataResponse.value else { return }
