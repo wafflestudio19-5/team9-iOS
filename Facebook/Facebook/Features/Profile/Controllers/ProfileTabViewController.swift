@@ -461,7 +461,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
 
 extension ProfileTabViewController {
     //자기 소개가 이미 있을 때 자기 소개 관련 메뉴(alertsheet형식) present
-    func showAlertMenu() {
+    func showAlertSelfIntroMenu() {
         let alertMenu = UIAlertController(title: "자기 소개", message: "", preferredStyle: .actionSheet)
         
         let editSelfIntroAction = UIAlertAction(title: "소개 수정", style: .default, handler: { action in
@@ -502,6 +502,64 @@ extension ProfileTabViewController {
                 }
             }.disposed(by: self.disposeBag)
     }
+    
+    func showAlertImageMenu() {
+        let alertMenu = UIAlertController(title: self.imageType == "profile_image" ?
+                                          "프로필 사진 수정" : "커버 사진 수정",
+                                          message: "",
+                                          preferredStyle: .actionSheet)
+        
+        let editSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
+                                                "프로필 사진 변경" : "커버 사진 변경",
+                                                style: .default,
+                                                handler: { action in
+                                                    self.presentPicker()
+                                                })
+        editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        editSelfIntroAction.setValue(UIImage(systemName: "photo.on.rectangle.angled")!, forKey: "image")
+        
+        let deleteSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
+                                                  "프로필 사진 삭제" : "커버 사진 삭제",
+                                                  style: .default,
+                                                  handler: { action in
+                                                      self.deleteImage()
+                                                  })
+        deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        
+        alertMenu.addAction(editSelfIntroAction)
+        alertMenu.addAction(deleteSelfIntroAction)
+        alertMenu.addAction(cancelAction)
+        
+        self.present(alertMenu, animated: true, completion: nil)
+    }
+    
+    func deleteImage() {
+        var updateData: [String: Bool]
+        
+        if self.imageType == "profile_image" {
+            updateData = ["profile_image": true, "cover_image": false]
+        } else {
+            updateData = ["profile_image": false, "cover_image": true]
+        }
+        
+        NetworkService.delete(endpoint: .image(id: self.userId, updateData: updateData), as: UserProfile.self)
+            .subscribe { event in
+                if event.isCompleted {
+                    return
+                }
+            
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                StateManager.of.user.dispatch(profile: response)
+            }.disposed(by: self.disposeBag)
+    }
 }
 
 extension ProfileTabViewController: PHPickerViewControllerDelegate {
@@ -536,7 +594,6 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                         StateManager.of.user.dispatch(profile: userProfile)
                     }
                 }.disposed(by: self.disposeBag)
-
             }
         }
         
