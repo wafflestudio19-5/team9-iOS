@@ -76,8 +76,8 @@ extension MenuTabViewController {
             .delay(RxTimeInterval.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] success in
                 switch success {
-                case success: self?.alert(title: "성공", message: "카카오 계정 연결이 해제되었습니다.", action: "확인")
-                default: self?.alert(title: "카카오 계정 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                case true: self?.alert(title: "성공", message: "카카오 계정 연결이 해제되었습니다.", action: "확인")
+                case false: self?.alert(title: "실패", message: "연결된 카카오 계정이 없습니다.", action: "확인")
                 }
             }).disposed(by: disposeBag)
     }
@@ -85,10 +85,9 @@ extension MenuTabViewController {
     private func connect() {
         KakaoAuthManager.requestKakaoLogin(type: .connect)
             .subscribe (onNext: { [weak self] success in
-                if success {
-                    self?.alert(title: "카카오 연동 성공", message: "연동이 완료되었습니다.", action: "확인")
-                } else {
-                    self?.alert(title: "카카오 연동 실패", message: "이미 등록된 계정입니다.", action: "확인")
+                switch success {
+                case true: self?.alert(title: "성공", message: "카카오 계정 연결이 완료되었습니다.", action: "확인")
+                case false: self?.alert(title: "실패", message: "이미 연결된 계정입니다.", action: "확인")
                 }
             }).disposed(by: disposeBag)
     }
