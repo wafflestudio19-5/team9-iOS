@@ -16,7 +16,7 @@ class MenuTabView: UIView {
     
     let alertSpinner = AlertWithSpinner(message: "로그아웃 중입니다...")
     
-    let kakaoConnectButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
+    let kakaoConnectButton = RectangularSlimButton(title: "카카오 계정 연결하기", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
     let kakaoDisconnectButton = RectangularSlimButton(title: "카카오 계정 연결 끊기", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
 
     override init(frame: CGRect) {
@@ -35,8 +35,6 @@ class MenuTabView: UIView {
         largeTitleLabel.text = "메뉴"
         largeTitleLabel.font = .systemFont(ofSize: 24.0, weight: .semibold)
         largeTitleLabel.textColor = .label
-        
-        kakaoConnectButton.contentMode = .scaleAspectFit
     }
     
     private func setLayoutForView() {
@@ -59,7 +57,6 @@ class MenuTabView: UIView {
             make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-16.0)
             make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
             make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
-            make.height.equalTo(kakaoConnectButton.snp.width).multipliedBy(0.15)
         }
     }
 }
