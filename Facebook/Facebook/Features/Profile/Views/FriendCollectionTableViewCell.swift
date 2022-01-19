@@ -53,7 +53,7 @@ class FriendCollectionTableViewCell: UITableViewCell {
         }
     }
     
-    private let friendGridCollectionView = FriendGridCollectionView()
+    let friendGridCollectionView = FriendGridCollectionView()
     
     let showFriendButton: UIButton = {
         let button = UIButton()

@@ -30,7 +30,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
             
             cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro)
-            cell.configureEditButton(isMe: self.userId == UserDefaultsManager.cachedUser?.id, isFriend: self.isFriend)
+            cell.configureEditButton(isMe: self.userId == UserDefaultsManager.cachedUser?.id, isFriend: self.isFriend, isMutual: self.isMutual)
             self.bindMainCellAction(cell: cell, profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, selfIntro: selfIntro)
             
             return cell
@@ -98,6 +98,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 self.push(viewController: showFriendViewController)
             }.disposed(by: cell.refreshingBag)
             
+            cell.friendGridCollectionView.rx.modelSelected(User.self)
+                .subscribe (onNext: { [weak self] friend in
+                    print(friend.id)
+                    let profileTabVC = ProfileTabViewController(userId: friend.id, isFriend: true)
+                    self?.push(viewController: profileTabVC)
+                }).disposed(by: cell.refreshingBag)
+            
             return cell
         case let .PostItem(post):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
@@ -120,12 +127,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     private var userId: Int
     private lazy var imageType = "profile_image"
     private var isFriend = false
+    private var isMutual = false
     
-    init(userId: Int? = nil, isFriend: Bool = false) {
+    init(userId: Int? = nil, isFriend: Bool = false, isMutual: Bool = false) {
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
         if userId != nil {
             self.userId = userId!
             self.isFriend = isFriend
+            self.isMutual = isMutual
         }
         else {
             self.userId = UserDefaultsManager.cachedUser?.id ?? 0
@@ -646,6 +655,7 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
 extension ProfileTabViewController {
     func bindMainCellAction(cell: MainProfileTableViewCell, profileImageUrl: String, coverImageUrl: String, selfIntro: String) {
         if (self.userId == UserDefaultsManager.cachedUser?.id) {
+            //자기 자신의 프로필을 볼 때
             //커버 이미지
             if coverImageUrl != "" {
                 cell.coverImage.rx
@@ -711,13 +721,25 @@ extension ProfileTabViewController {
                     self?.push(viewController: editProfileViewController)
                 }.disposed(by: cell.disposeBag)
         } else {
+            //다른 사람의 프로필을 볼 때
             if isFriend {
-                cell.editProfileButton.rx
-                    .tap
-                    .bind { [weak self] in
-                        guard let self = self else { return }
-                        self.showAlertFriendMenu()
-                    }.disposed(by: cell.disposeBag)
+                if isMutual {
+                    cell.editProfileButton.rx
+                        .tap
+                        .bind { [weak self] in
+                            guard let self = self else { return }
+                            self.showAlertFriendMenu()
+                        }.disposed(by: cell.disposeBag)
+                } else {
+                    cell.editProfileButton.rx
+                        .tap
+                        .bind { [weak self] in
+                            guard let self = self else { return }
+                            NetworkService.delete(endpoint: .friendRequest(id: self.userId))
+                                .subscribe()
+                                .disposed(by: self.disposeBag)
+                        }.disposed(by: cell.disposeBag)
+                }
             } else {
                 cell.editProfileButton.rx
                     .tap
