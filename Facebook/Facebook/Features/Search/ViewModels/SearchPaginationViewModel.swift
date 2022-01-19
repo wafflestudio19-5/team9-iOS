@@ -10,6 +10,7 @@ import Foundation
 class SearchPaginationViewModel: PaginationViewModel<User> {
     
     var query: String?
+    override var loadOnInit: Bool { false }
     
     func setQuery(_ query: String) {
         self.query = query
