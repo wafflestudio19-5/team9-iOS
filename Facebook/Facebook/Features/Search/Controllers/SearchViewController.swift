@@ -13,7 +13,7 @@ import RxKeyboard
 class SearchViewController: UIViewController {
     private let searchBar = UISearchBar()
     private let disposeBag = DisposeBag()
-    private let viewModel = SearchPaginationViewModel(endpoint: .search(query: ""))
+    private let viewModel = SearchPaginationViewModel(endpoint: .search(query: "$"))
     
     override func loadView() {
         view = SearchView()
