@@ -41,8 +41,6 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
         }
     }
     
-    var userProfile: UserProfile?
-    
     private let firstName = BehaviorRelay<String>(value: "")
     private let lastName = BehaviorRelay<String>(value: "")
     
@@ -51,27 +49,7 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
 
         // Do any additional setup after loading the view.
         self.title = "이름 변경"
-        loadData()
         bindButton()
-    }
-    
-    func loadData() {
-        NetworkService.get(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0), as: UserProfile.self)
-            .subscribe { [weak self] event in
-                guard let self = self else { return }
-            
-                if event.isCompleted {
-                    return
-                }
-            
-                guard let response = event.element?.1 else {
-                    print("데이터 로드 중 오류 발생")
-                    print(event)
-                    return
-                }
-            
-                self.userProfile = response
-        }.disposed(by: disposeBag)
     }
     
     func bindButton() {
@@ -108,17 +86,13 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
 
                 if !isFirstNameEmpty && !isLastNameEmpty {
                     if let password = self.editUserProfileView.passwordTextField.text {
-                        NetworkService.post(endpoint: .login(email: CurrentUser.shared.profile!.email, password: password), as: AuthResponse.self)
-                            .subscribe { [weak self] event in
-                                guard let self = self else { return }
-                                
-                                guard let response = event.element?.1 else {
-                                    self.editUserProfileView.setAlertLabelText(as: Validation.passwordError.message()) 
-                                    return
-                                }
-                                
-                                self.saveName()
-                            }.disposed(by: self.disposeBag)
+                        NetworkService.post(endpoint: .login(email: StateManager.of.user.profile.email, password: password), as: AuthResponse.self)
+                            .subscribe(onNext: { [weak self] _ in
+                                self?.saveName()
+                            }, onError: { [weak self] _ in
+                                self?.editUserProfileView.setAlertLabelText(as: Validation.passwordError.message())
+                            })
+                            .disposed(by: self.disposeBag)
                     }
                 } else {
                     self.editUserProfileView.setAlertLabelText(as: isFirstNameEmpty && isLastNameEmpty ? Validation.emptyBoth.message()
@@ -139,8 +113,14 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
 
         NetworkService
             .update(endpoint: .profile(id: UserDefaultsManager.cachedUser?.id ?? 0, updateData: updateData))
-            .subscribe { [weak self] _ in
-                self?.navigationController?.popViewController(animated: true)
+            .subscribe { event in
+                let request = event.element
+            
+                request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                    guard let userProfile = dataResponse.value else { return }
+                    StateManager.of.user.dispatch(profile: userProfile)
+                    self.navigationController?.popViewController(animated: true)
+                }
             }.disposed(by: self.disposeBag)
     }
 }

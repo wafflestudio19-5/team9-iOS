@@ -5,9 +5,7 @@
 //  Created by 박신홍 on 2022/01/01.
 //
 
-import Foundation
 import UIKit
-
 
 class UploadProgressHeaderView: UIView {
     override init(frame: CGRect) {
@@ -25,7 +23,7 @@ class UploadProgressHeaderView: UIView {
     
     var progressView: UIProgressView = {
         let progressView = UIProgressView()
-        progressView.progressTintColor = FacebookColor.blue.color()
+        progressView.progressTintColor = .tintColors.blue
         progressView.translatesAutoresizingMaskIntoConstraints = false
         return progressView
     }()

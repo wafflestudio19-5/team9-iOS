@@ -14,7 +14,7 @@ class EnterUsernameView: BaseSignUpView {
     
     let horizontalStackForTextFields = UIStackView()
     
-    let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: FacebookColor.blue.color())
+    let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: .tintColors.blue)
     
     init() {
         super.init(title: "이름이 무엇인가요?", instruction: "실명을 입력하세요.")

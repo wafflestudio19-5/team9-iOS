@@ -13,7 +13,6 @@ class CreatePostView: UIView {
     let placeholder = "무슨 생각을 하고 계신가요?"
     let imageGridCollectionView = ImageGridCollectionView()
     private let disposeBag = DisposeBag()
-    var scrollViewBottomConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,7 +33,6 @@ class CreatePostView: UIView {
     /// `stackView`에는 `authorHeader`, `contentTextView`, `imageGridCollectionView`가 포함된다.
     
     private func setLayoutForView() {
-        let scrollView = UIScrollView()
         scrollView.keyboardDismissMode = .interactive
         
         let scrollViewStack = UIStackView()
@@ -57,6 +55,8 @@ class CreatePostView: UIView {
     }
     
     // MARK: UI Components
+    
+    let scrollView = UIScrollView()
     
     lazy var keyboardAccessory: UIView = {
         let divider = Divider()

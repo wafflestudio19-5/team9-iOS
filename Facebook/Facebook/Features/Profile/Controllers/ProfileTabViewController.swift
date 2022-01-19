@@ -39,8 +39,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                         .subscribe(onNext: { [weak self] _ in
                             guard let self = self else { return }
                             self.imageType = "cover_image"
-                            self.presentPicker()
+                            if coverImageUrl != "" {
+                                self.showAlertImageMenu()
+                            } else {
+                                self.presentPicker()
+                            }
                         }).disposed(by: cell.disposeBag)
+                    cell.coverLabel.isHidden = true
+                    cell.coverImageButton.isHidden = true
                 } else {
                     cell.coverImageButton.rx
                         .tap
@@ -49,6 +55,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                             self.imageType = "cover_image"
                             self.presentPicker()
                         }.disposed(by: cell.disposeBag)
+                    cell.coverLabel.isHidden = false
+                    cell.coverImageButton.isHidden = false
                 }
                 
                 
@@ -62,7 +70,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                             navigationController.modalPresentationStyle = .fullScreen
                             self?.present(navigationController, animated: true, completion: nil)
                         } else {
-                            self?.showAlertMenu()
+                            self?.showAlertSelfIntroMenu()
                         }
                     }).disposed(by: cell.disposeBag)
                 
@@ -79,7 +87,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     .subscribe(onNext: { [weak self] _ in
                         guard let self = self else { return }
                         self.imageType = "profile_image"
-                        self.presentPicker()
+                        if profileImageUrl != "" {
+                            self.showAlertImageMenu()
+                        } else {
+                            self.presentPicker()
+                        }
                     }).disposed(by: cell.disposeBag)
             } else {
                 cell.coverLabel.isHidden = true
@@ -163,8 +175,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     init(userId: Int? = nil) {
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
         if userId != nil { self.userId = userId! }
-        else if UserDefaultsManager.cachedUser != nil { self.userId = UserDefaultsManager.cachedUser!.id }
-        else { self.userId = 0 }
+        else { self.userId = UserDefaultsManager.cachedUser?.id ?? 0}
 
         postDataViewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: self.userId))
         
@@ -188,16 +199,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         view.backgroundColor = .systemBackground
     }
     
-    
-    /// viewWillAppear로 매번 로딩하는 것보다
-    /// RxSwift로 바인딩하는 방식이 바람직할 것 같습니다. (`StateManager` 사용)
-    override func viewWillAppear(_ animated: Bool) {
-        //제일 처음 로드되었을 때(userProfile == nil 일때)를 제외하고 화면이 보일 때 유저 프로필 데이터 리로드
-//        if userProfile != nil {
-//            loadData()
-//        }
-    }
-    
     //유저 프로필 관련 데이터 불러오기
     func loadData() {
         NetworkService.get(endpoint: .profile(id: self.userId), as: UserProfile.self)
@@ -213,17 +214,27 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     print(event)
                     return
                 }
-            
-                self.userProfile = response
-                self.createSection()
-                self.title = response.username
+                
+                if self.userId == StateManager.of.user.profile.id {
+                    StateManager.of.user.dispatch(profile: response)
+                } else {
+                    self.userProfile = response
+                    self.createSection()
+                }
         }.disposed(by: disposeBag)
     }
     
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
-        // 이게 최선인가?
+        StateManager.of.user
+            .asObservable()
+            .bind { [weak self] _ in
+                self?.createSection()
+            }.disposed(by: disposeBag)
+        
+        StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
+        
         postDataViewModel.dataList.bind { [weak self] _ in
             self?.createSection()
         }.disposed(by: disposeBag)
@@ -260,8 +271,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             })
             .disposed(by: disposeBag)
         
-        StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
-        
         /// 테이블 맨 아래까지 스크롤할 때마다 `loadMore` 함수를 실행합니다.
         tableView.rx.didScroll.subscribe { [weak self] _ in
             guard let self = self else { return }
@@ -279,7 +288,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     //불러온 데이터에 따라 sectionModel 생성
     func createSection() {
-        guard let userProfile = userProfile else { return }
+        var userProfile: UserProfile
+        if userId == UserDefaultsManager.cachedUser?.id {
+            userProfile = StateManager.of.user.profile
+        } else {
+            userProfile = self.userProfile!
+        }
         
         let mainProfileSection: [MultipleSectionModel] = [
             .ProfileImageSection(title: "메인 프로필", items: [
@@ -431,7 +445,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
 
 extension ProfileTabViewController {
     //자기 소개가 이미 있을 때 자기 소개 관련 메뉴(alertsheet형식) present
-    func showAlertMenu() {
+    func showAlertSelfIntroMenu() {
         let alertMenu = UIAlertController(title: "자기 소개", message: "", preferredStyle: .actionSheet)
         
         let editSelfIntroAction = UIAlertAction(title: "소개 수정", style: .default, handler: { action in
@@ -463,9 +477,72 @@ extension ProfileTabViewController {
         
         NetworkService
             .update(endpoint: .profile(id: self.userId, updateData: updateData))
-            .subscribe{ [weak self] _ in
-                self?.loadData()
-            }.disposed(by: disposeBag)
+            .subscribe { event in
+                let request = event.element
+            
+                request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                    guard let userProfile = dataResponse.value else { return }
+                    StateManager.of.user.dispatch(profile: userProfile)
+                }
+            }.disposed(by: self.disposeBag)
+    }
+    
+    func showAlertImageMenu() {
+        let alertMenu = UIAlertController(title: self.imageType == "profile_image" ?
+                                          "프로필 사진 수정" : "커버 사진 수정",
+                                          message: "",
+                                          preferredStyle: .actionSheet)
+        
+        let editSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
+                                                "프로필 사진 변경" : "커버 사진 변경",
+                                                style: .default,
+                                                handler: { action in
+                                                    self.presentPicker()
+                                                })
+        editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        editSelfIntroAction.setValue(UIImage(systemName: "photo.on.rectangle.angled")!, forKey: "image")
+        
+        let deleteSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
+                                                  "프로필 사진 삭제" : "커버 사진 삭제",
+                                                  style: .default,
+                                                  handler: { action in
+                                                      self.deleteImage()
+                                                  })
+        deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        
+        alertMenu.addAction(editSelfIntroAction)
+        alertMenu.addAction(deleteSelfIntroAction)
+        alertMenu.addAction(cancelAction)
+        
+        self.present(alertMenu, animated: true, completion: nil)
+    }
+    
+    func deleteImage() {
+        var updateData: [String: Bool]
+        
+        if self.imageType == "profile_image" {
+            updateData = ["profile_image": true, "cover_image": false]
+        } else {
+            updateData = ["profile_image": false, "cover_image": true]
+        }
+        
+        NetworkService.delete(endpoint: .image(id: self.userId, updateData: updateData), as: UserProfile.self)
+            .subscribe { event in
+                if event.isCompleted {
+                    return
+                }
+            
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                StateManager.of.user.dispatch(profile: response)
+            }.disposed(by: self.disposeBag)
     }
 }
 
@@ -495,13 +572,12 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                 
                 NetworkService.update(endpoint: .profile(id: self.userId, updateData: uploadData)).subscribe { event in
                     let request = event.element
-                    let progress = request?.uploadProgress
-                    
-                    request?.responseString(completionHandler: { data in
-                        self.loadData()
-                    })
+                
+                    request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                        guard let userProfile = dataResponse.value else { return }
+                        StateManager.of.user.dispatch(profile: userProfile)
+                    }
                 }.disposed(by: self.disposeBag)
-
             }
         }
         

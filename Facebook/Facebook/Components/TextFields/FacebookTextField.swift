@@ -5,7 +5,8 @@
 //  Created by 최유림 on 2021/11/29.
 //
 
-import RxSwift
+import UIKit
+import SnapKit
 
 class FacebookTextField: UITextField {
     
@@ -27,8 +28,8 @@ class FacebookTextField: UITextField {
     }
     
     private func setLayoutForView() {
-        NSLayoutConstraint.activate([
-            self.heightAnchor.constraint(equalToConstant: 42.0),
-        ])
+        self.snp.makeConstraints { make in
+            make.height.equalTo(42.0)
+        }
     }
 }
