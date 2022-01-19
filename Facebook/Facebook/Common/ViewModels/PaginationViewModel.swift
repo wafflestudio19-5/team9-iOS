@@ -39,6 +39,7 @@ class PaginationViewModel<DataModel: Codable> {
     let isRefreshing = BehaviorRelay<Bool>(value: false)
     let refreshComplete = PublishRelay<Bool>()
     let hasNextObservable = BehaviorRelay<Bool>(value: false)
+    var loadOnInit: Bool { true }
     
     private var isFetchingData: Bool {
         return isLoading.value || isRefreshing.value
@@ -47,7 +48,9 @@ class PaginationViewModel<DataModel: Codable> {
     init(endpoint: Endpoint) {
         self.endpoint = endpoint
         self.bind()
-        self.loadMore()
+        if loadOnInit {
+            self.loadMore()
+        }
     }
     
     func loadMore() {
