@@ -400,6 +400,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 make.centerY.equalToSuperview()
                 make.trailing.equalToSuperview().inset(15)
             }
+            sectionButton.rx.tap.bind { [weak self] in
+                guard let self = self else { return }
+                let showFriendViewController = ShowFriendViewController(userId: self.userId)
+                self.push(viewController: showFriendViewController)
+            }.disposed(by: self.disposeBag)
         case 3:
             if userId == UserDefaultsManager.cachedUser?.id {
                 let createHeaderView = CreatePostHeaderView()

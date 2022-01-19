@@ -66,7 +66,14 @@ class FriendCell: UITableViewCell {
         }
     }
 
-    private let profileImage = UIImageView()
+    private let profileImage: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        
+        return imageView
+    }()
+    
     private let verticalStackView = UIStackView()
     
     private let nameLabel: UILabel = {
