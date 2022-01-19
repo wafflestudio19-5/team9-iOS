@@ -26,6 +26,21 @@ struct AuthManager {
         }
     }
     
+    // 회원탈퇴
+    static func delete() -> Single<Bool> {
+        return Single<Bool>.create { (result) -> Disposable in
+            NetworkService.delete(endpoint: .deleteAccount())
+                .subscribe (onNext: { _ in
+                    // 회원탈퇴 이후의 작업
+                    result(.success(true))
+                }, onError: { _ in
+                    result(.success(false))
+                })
+                .disposed(by: disposeBag)
+            return Disposables.create()
+        }
+    }
+    
     // 로그인
     static func login(email: String, password: String) -> Single<Bool> {
         return Single<Bool>.create { (result) -> Disposable in
