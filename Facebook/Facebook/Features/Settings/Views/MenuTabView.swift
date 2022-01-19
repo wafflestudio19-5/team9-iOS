@@ -10,11 +10,23 @@ import SnapKit
 
 class MenuTabView: UIView {
     
+    enum WorkType {
+        case logout
+        case deletion
+        
+        func getMessage() -> String {
+            switch self {
+            case .logout: return "로그아웃 중입니다..."
+            case .deletion: return "회원탈퇴 중입니다..."
+            }
+        }
+    }
+    
     let largeTitleLabel = UILabel()
     
     let logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
     
-    let alertSpinner = AlertWithSpinner(message: "로그아웃 중입니다...")
+    let alertSpinner = AlertWithSpinner(message: "")
     
     let kakaoConnectButton = RectangularSlimButton(title: "카카오 계정 연결하기", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
     let kakaoDisconnectButton = RectangularSlimButton(title: "카카오 계정 연결 끊기", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
@@ -31,6 +43,10 @@ class MenuTabView: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func activateAlertSpinner(workType: WorkType, at viewController: UIViewController) {
+        alertSpinner.start(viewController: viewController, message: workType.getMessage())
     }
     
     private func setStyleForView() {

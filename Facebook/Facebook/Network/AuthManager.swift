@@ -31,7 +31,7 @@ struct AuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.delete(endpoint: .deleteAccount())
                 .subscribe (onNext: { _ in
-                    // 회원탈퇴 이후의 작업
+                    NetworkService.removeToken()
                     result(.success(true))
                 }, onError: { _ in
                     result(.success(false))

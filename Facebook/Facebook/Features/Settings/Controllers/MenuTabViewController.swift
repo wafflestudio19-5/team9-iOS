@@ -13,6 +13,7 @@ import RxCocoa
 class MenuTabViewController: BaseTabViewController<MenuTabView> {
 
     private let isProcessing = BehaviorRelay(value: false)
+    private var workType: MenuTabView.WorkType = .deletion
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,12 +32,12 @@ class MenuTabViewController: BaseTabViewController<MenuTabView> {
             self.actionSheet(title: "카카오 계정 연결 끊기", message: "연결되어 있는 카카오 계정 연결을 끊으시겠습니까? 회원 정보는 그대로 유지되지만, 카카오 계정을 이용한 간편 로그인 기능을 이용하실 수 없습니다.", action: ("연결 끊기", destructive: true, action: self.disconnect))
         }.disposed(by: disposeBag)
         
-        isProcessing.bind { [weak self] result in
+        isProcessing.bind { [weak self] processing in
             guard let self = self else { return }
-            if result {
-                self.tabView.alertSpinner.startSpinner(viewController: self)
+            if processing {
+                self.tabView.activateAlertSpinner(workType: self.workType, at: self)
             } else {
-                self.tabView.alertSpinner.stopSpinner()
+                self.tabView.alertSpinner.stop()
             }
         }.disposed(by: disposeBag)
         
@@ -60,6 +61,7 @@ class MenuTabViewController: BaseTabViewController<MenuTabView> {
 
 extension MenuTabViewController {
     private func logout() {
+        workType = .logout
         isProcessing.accept(true)
         AuthManager.logout()
             .delay(RxTimeInterval.milliseconds(1200), scheduler: MainScheduler.instance)
@@ -98,6 +100,7 @@ extension MenuTabViewController {
     }
     
     private func deleteAccount() {
+        workType = .deletion
         isProcessing.accept(true)
         AuthManager.delete()
             .delay(RxTimeInterval.milliseconds(1200), scheduler: MainScheduler.instance)
