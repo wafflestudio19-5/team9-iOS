@@ -27,11 +27,11 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
     let disposeBag = DisposeBag()
     
     private let userId: Int
-    private let friendViewModel: PaginationViewModel<User>
+    private let friendViewModel: FriendPaginationViewModel
     
     init(userId: Int) {
         self.userId = userId
-        friendViewModel = PaginationViewModel<User>(endpoint: .friend(id: self.userId, limit: 20))
+        friendViewModel = FriendPaginationViewModel(endpoint: .friend(id: self.userId, limit: 20))
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -73,9 +73,13 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
         showFriendView.searchBar.rx.text.orEmpty
             .debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
-            .subscribe(onNext: { [weak self] text in
+            .subscribe(onNext: { [weak self] key in
                 guard let self = self else { return }
-                //self.friendViewModel.dataList.accept(self.friendViewModel.dataList.value.filter { $0.username.contains(text) })
+                if key != "" {
+                    self.friendViewModel.searchFriend(key: key)
+                } else {
+                    self.friendViewModel.refresh()
+                }
             }).disposed(by: disposeBag)
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
