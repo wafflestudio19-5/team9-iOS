@@ -26,7 +26,6 @@ class FriendPaginationViewModel: PaginationViewModel<User> {
                 self.lastResponse = paginatedResponse
                 let results = paginatedResponse.results
                 let filteredResults = results.filter { $0.username.contains(key.trimmingCharacters(in: .whitespaces)) }
-                print(filteredResults)
                 self.dataList.accept(self.preprocessBeforeAccept(results: filteredResults))
             }, onError: { error in
                 print(error)

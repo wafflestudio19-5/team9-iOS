@@ -62,6 +62,7 @@ class FriendTabView: UIView {
     }
     
     private func configureTableView() {
+        friendTableView.backgroundView = EmptyBackgroundView(image: UIImage(systemName: "exclamationmark.bubble.fill") ?? UIImage(), title: "표시할 친구 요청 없음", message: "다른 사람들로부터 받은 친구 요청이 없습니다.")
         friendTableView.tableHeaderView = headerView
         friendTableView.register(FriendRequestCell.self, forCellReuseIdentifier: FriendRequestCell.reuseIdentifier)
         friendTableView.refreshControl = refreshControl

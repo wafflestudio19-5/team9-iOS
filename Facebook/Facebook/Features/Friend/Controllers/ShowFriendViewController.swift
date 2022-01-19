@@ -77,6 +77,7 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
                 guard let self = self else { return }
                 if key != "" {
                     self.friendViewModel.searchFriend(key: key)
+                    self.setTableViewBackground()
                 } else {
                     self.friendViewModel.refresh()
                 }
@@ -90,6 +91,7 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
                     self?.tableView.showBottomSpinner()
                 } else {
                     self?.tableView.hideBottomSpinner()
+                    self?.setTableViewBackground()
                 }
             })
             .disposed(by: disposeBag)
@@ -107,6 +109,7 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
             .drive(onNext : { [weak self] refreshComplete in
                 if refreshComplete {
                     self?.showFriendView.refreshControl.endRefreshing()
+                    self?.setTableViewBackground()
                 }
             })
             .disposed(by: disposeBag)
@@ -123,6 +126,15 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
             }
             .disposed(by: disposeBag)
     }
+    
+    func setTableViewBackground() {
+        if self.friendViewModel.dataList.value.count == 0 {
+            tableView.backgroundView?.isHidden = false
+        } else {
+            tableView.backgroundView?.isHidden = true
+        }
+    }
+    
 }
 
 extension ShowFriendViewController {

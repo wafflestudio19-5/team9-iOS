@@ -14,6 +14,7 @@ class ShowFriendView: UIView {
     let headerView = UIView()
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        searchBar.backgroundColor = .white
         searchBar.searchTextField.backgroundColor = .systemGray5
         searchBar.placeholder = "친구 검색"
         
@@ -31,6 +32,7 @@ class ShowFriendView: UIView {
     }
     
     private func setLayoutForView() {
+        headerView.backgroundColor = .white
         headerView.frame = CGRect(x: 0, y: 0, width: showFriendTableView.frame.width, height: 70)
         headerView.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
@@ -53,6 +55,7 @@ class ShowFriendView: UIView {
     }
     
     private func configureTableView() {
+        showFriendTableView.backgroundView = EmptyBackgroundView(image: UIImage(systemName: "person.fill.questionmark") ?? UIImage(), title: "표시할 친구 없음", message: "검색 결과가 없습니다.")
         showFriendTableView.register(FriendCell.self, forCellReuseIdentifier: FriendCell.reuseIdentifier)
         showFriendTableView.refreshControl = refreshControl
         showFriendTableView.delaysContentTouches = false

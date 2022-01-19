@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4C1F3D1EBBA69784AF1CB7FC /* Pods_Facebook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74F8DC55374F2CDB24937D2A /* Pods_Facebook.framework */; };
 		7706A6C02797B434007F5064 /* FriendPaginationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7706A6BF2797B433007F5064 /* FriendPaginationViewModel.swift */; };
+		7706A6C22797C636007F5064 /* EmptyBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7706A6C12797C636007F5064 /* EmptyBackgroundView.swift */; };
 		771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771DF59E27707DD900B69351 /* ImageTableViewCell.swift */; };
 		771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 771DF59F27707DD900B69351 /* ImageTableViewCell.xib */; };
 		772FBF012790057C003556EC /* FriendTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF002790057C003556EC /* FriendTabView.swift */; };
@@ -167,6 +168,7 @@
 		6359F47475B70FE61F708C89 /* Pods-Facebook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.debug.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.debug.xcconfig"; sourceTree = "<group>"; };
 		74F8DC55374F2CDB24937D2A /* Pods_Facebook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Facebook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7706A6BF2797B433007F5064 /* FriendPaginationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPaginationViewModel.swift; sourceTree = "<group>"; };
+		7706A6C12797C636007F5064 /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundView.swift; sourceTree = "<group>"; };
 		771DF59E27707DD900B69351 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		771DF59F27707DD900B69351 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
 		772FBF002790057C003556EC /* FriendTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabView.swift; sourceTree = "<group>"; };
@@ -398,6 +400,7 @@
 				772FBF0C279130E8003556EC /* ShowFriendView.swift */,
 				772FBF0427900A4F003556EC /* FriendCell.swift */,
 				772FBF0627911C0A003556EC /* FriendRequestCell.swift */,
+				7706A6C12797C636007F5064 /* EmptyBackgroundView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1087,6 +1090,7 @@
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */,
 				B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */,
+				7706A6C22797C636007F5064 /* EmptyBackgroundView.swift in Sources */,
 				B85D67F22784B5A5002CCC04 /* CommentCell.swift in Sources */,
 				BE0D436B2787631400E2162F /* HapticManager.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
