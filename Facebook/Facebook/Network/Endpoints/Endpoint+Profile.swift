@@ -116,4 +116,8 @@ extension Endpoint {
                                          "graduate_date": university.graduate_date ?? ""])
         }
     }
+    
+    static func search(query: String) -> Self {
+        return Endpoint(path: "search/", queryItems: [.init(name: "q", value: query)])
+    }
 }
