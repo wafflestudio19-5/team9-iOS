@@ -14,7 +14,7 @@ class PostCell: UITableViewCell {
     var refreshingBag = DisposeBag()
     /// cell의 라이프사이클 전반에 걸쳐 유지되는 `DisposeBag`.
     var permanentBag = DisposeBag()
-    static let reuseIdentifier = "PostCell"
+    class var reuseIdentifier: String { "PostCell" }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -64,10 +64,14 @@ class PostCell: UITableViewCell {
     
     // MARK: Setup
     
-    func configureCell(with newPost: Post) {
+    func configureCell(with newPost: Post, showGrid: Bool = true) {
         post = newPost
         textContentLabel.text = post.content
         postHeader.configure(with: post)
+        
+        if !showGrid {
+            return
+        }
         
         // CollectionView Layout
         let subpostUrls: [URL?] = post.subposts!.map {
@@ -87,7 +91,7 @@ class PostCell: UITableViewCell {
     
     // MARK: AutoLayout Constraints
     
-    private func setLayout() {
+    func setLayout() {
         contentView.addSubview(postHeader)
         NSLayoutConstraint.activate([
             postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin - 3),
@@ -142,7 +146,7 @@ class PostCell: UITableViewCell {
     // MARK: Initialize View Components
     
     // 이미지 그리드 뷰
-    private let imageGridCollectionView = ImageGridCollectionView()
+    let imageGridCollectionView = ImageGridCollectionView()
     
     // 포스트 헤더 (프로필 이미지, 작성자, 날짜, 각종 버튼이 들어가는 곳)
     let postHeader = AuthorInfoHeaderView()
@@ -151,7 +155,7 @@ class PostCell: UITableViewCell {
     let buttonHorizontalStackView = InteractionButtonStackView()
     
     // 좋아요 수, 댓글 수 등 각종 통계가 보이는 스택 뷰
-    private lazy var statHorizontalStackView: UIStackView = {
+    lazy var statHorizontalStackView: UIStackView = {
         let stack = UIStackView()
         stack.distribution = .equalSpacing
         stack.axis = .horizontal
@@ -179,10 +183,10 @@ class PostCell: UITableViewCell {
     let commentCountButton: InfoButton = InfoButton()
     
     // 본문 텍스트 라벨
-    private let textContentLabel = PostContentLabel()
+    let textContentLabel = PostContentLabel()
     
     // 피드와 피드 사이의 회색 리바이더
-    private let divider = Divider(color: .grayscales.newsfeedDivider)
+    let divider = Divider(color: .grayscales.newsfeedDivider)
 }
 
 /*

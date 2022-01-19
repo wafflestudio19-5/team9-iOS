@@ -156,9 +156,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         }else {
             super.setNavigationBarItems(withEditButton: false)
         }
-        
         loadData()
         bind()
+        self.navigationItem.backButtonTitle = ""
+        view.backgroundColor = .systemBackground
     }
     
     //유저 프로필 관련 데이터 불러오기

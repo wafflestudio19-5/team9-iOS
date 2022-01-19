@@ -149,6 +149,16 @@ extension UIViewController {
                 .disposed(by: cell.refreshingBag)
         }.disposed(by: cell.refreshingBag)
         
+        // 이미지 그리드 터치 제스쳐 등록
+        cell.imageGridCollectionView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+            .when(.recognized)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let subpostVC = SubPostsViewController(post: cell.post)
+                self.push(viewController: subpostVC)
+            }
+            .disposed(by: cell.refreshingBag)
+        
         // 댓글 버튼 터치 시 디테일 화면으로 이동
         cell.buttonHorizontalStackView.commentButton.rx.tap
             .observe(on: MainScheduler.instance)

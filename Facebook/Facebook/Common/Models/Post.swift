@@ -18,7 +18,7 @@ struct Post: Codable, Identifiable {
     let file: String?
     
     let mainpost: Int?
-    let subposts: [Post]?
+    var subposts: [Post]?
     
     static func getDummyPost() -> Self {
         return Post(id: -1, author: nil, content: "", likes: -1, is_liked: false, posted_at: nil, comments: -1, file: nil, mainpost: nil, subposts: nil)
