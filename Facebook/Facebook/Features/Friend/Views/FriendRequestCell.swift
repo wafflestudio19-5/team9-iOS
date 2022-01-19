@@ -93,6 +93,14 @@ class FriendRequestCell: UITableViewCell {
         return label
     }()
     
+    private let withfriendLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .gray
+        
+        return label
+    }()
+    
     private let horizontalStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal

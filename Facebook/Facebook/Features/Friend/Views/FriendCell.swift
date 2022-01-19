@@ -68,8 +68,21 @@ class FriendCell: UITableViewCell {
 
     private let profileImage = UIImageView()
     private let verticalStackView = UIStackView()
-    private let nameLabel = UILabel()
-    private let withFriendLabel = UILabel()
+    
+    private let nameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18, weight: .medium)
+        
+        return label
+    }()
+    
+    private let withfriendLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .gray
+        
+        return label
+    }()
     
     let menuButton: UIButton = {
         let button = UIButton()
