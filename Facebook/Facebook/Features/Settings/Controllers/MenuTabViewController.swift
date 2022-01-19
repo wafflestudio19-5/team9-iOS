@@ -70,7 +70,7 @@ extension MenuTabViewController {
                 self.isProcessing.accept(false)
                 switch success {
                 case .success(true):
-                    UserDefaults.standard.setValue(false, forKey: "didLogin")
+                    UserDefaultsManager.isLoggedIn = false
                     self.changeRootViewController(to: LoginViewController(), wrap: true)
                 default:
                     self.alert(title: "로그아웃 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
@@ -109,7 +109,7 @@ extension MenuTabViewController {
                 self.isProcessing.accept(false)
                 switch success {
                 case .success(true):
-                    UserDefaults.standard.setValue(false, forKey: "didLogin")
+                    UserDefaultsManager.isLoggedIn = false
                     self.changeRootViewController(to: LoginViewController(), wrap: true)
                 default:
                     self.alert(title: "회원탈퇴 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
