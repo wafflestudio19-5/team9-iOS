@@ -11,11 +11,9 @@ import RxCocoa
 import RxKeyboard
 
 class SearchViewController: UIViewController {
-    var hiddenTF = UITextField()
     private let searchBar = UISearchBar()
     private let disposeBag = DisposeBag()
     private let viewModel = SearchPaginationViewModel(endpoint: .search(query: ""))
-    var didLoad = false
     
     override func loadView() {
         view = SearchView()
@@ -37,10 +35,7 @@ class SearchViewController: UIViewController {
         bind()
         bindKeyboardHeight()
         tableView.delegate = self
-        
-        hiddenTF.isHidden = true
-        view.addSubview(hiddenTF)
-        hiddenTF.becomeFirstResponder()
+        searchBar.becomeFirstResponder()
     }
     
     private func setNavigationBarItems() {
@@ -50,10 +45,6 @@ class SearchViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if !didLoad {
-            searchBar.becomeFirstResponder()
-        }
-        didLoad = true
     }
     
     private func bindKeyboardHeight() {
