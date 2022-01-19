@@ -89,7 +89,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private lazy var leftChevronButton: UIButton = {
         var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(weight: .heavy))
+        config.image = UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold))
         config.imagePadding = 0
         config.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 8)
         

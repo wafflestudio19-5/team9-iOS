@@ -63,11 +63,7 @@ class CommentCell: UITableViewCell {
         contentLabel.text = comment.content
         createdLabel.text = comment.posted_at
         
-        if let urlString = comment.author.profile_image {
-            profileImage.setImage(from: URL(string: urlString))
-        } else {
-            profileImage.setImage(from: nil)
-        }
+        profileImage.setImage(from: comment.author.profile_image)
         
         profileImage.snp.updateConstraints { make in
             make.height.width.equalTo(comment.profileImageSize)

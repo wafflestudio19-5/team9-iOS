@@ -193,9 +193,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         }else {
             super.setNavigationBarItems(withEditButton: false)
         }
-        
         loadData()
         bind()
+        self.navigationItem.backButtonTitle = ""
+        view.backgroundColor = .systemBackground
     }
     
     //유저 프로필 관련 데이터 불러오기
@@ -214,7 +215,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     return
                 }
                 
-                
                 if self.userId == StateManager.of.user.profile.id {
                     StateManager.of.user.dispatch(profile: response)
                 } else {
@@ -227,8 +227,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
-        print(self.userId)
-        
         StateManager.of.user
             .asObservable()
             .bind { [weak self] _ in
@@ -237,7 +235,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         
         StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
         
-        // 이게 최선인가?
         postDataViewModel.dataList.bind { [weak self] _ in
             self?.createSection()
         }.disposed(by: disposeBag)

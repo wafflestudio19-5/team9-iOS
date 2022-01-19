@@ -24,7 +24,7 @@ class ProfileImageView: UIView {
         self.layer.cornerRadius = self.frame.width
         self.backgroundColor = .grayscales.bubbleFocused
         
-        setImage(from: nil)
+        setImage(from: nil as URL?)
     }
     
     override func layoutSubviews() {
@@ -43,6 +43,10 @@ class ProfileImageView: UIView {
     
     convenience init() {
         self.init(frame: .zero)
+    }
+    
+    func setImage(from string: String?) {
+        self.setImage(from: URL(string: string ?? ""))
     }
     
     func setImage(from url: URL?) {
