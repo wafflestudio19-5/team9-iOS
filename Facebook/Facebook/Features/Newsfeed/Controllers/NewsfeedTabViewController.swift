@@ -22,7 +22,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         tabView.mainTableHeaderView
     }
     
-    let viewModel = PaginationViewModel<Post>(endpoint: .newsfeed(userId: 41))
+    let viewModel = PaginationViewModel<Post>(endpoint: .newsfeed())
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -171,7 +171,7 @@ extension UIViewController {
         Observable.of(profileImageTapped, authorNameTapped)
             .merge()
             .bind { [weak self] _ in
-                let profileVC = ProfileTabViewController(userId: post.author?.id)
+                let profileVC = ProfileTabViewController(userId: post.author?.id, isFriend: true)
                 self?.push(viewController: profileVC)
             }
             .disposed(by: cell.refreshingBag)

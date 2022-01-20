@@ -156,59 +156,12 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         }else {
             super.setNavigationBarItems(withEditButton: false)
         }
-        loadData()
+        loadProfileData()
         bind()
         self.navigationItem.backButtonTitle = ""
         view.backgroundColor = .systemBackground
     }
     
-    //유저 프로필 관련 데이터 불러오기
-    func loadData() {
-        NetworkService.get(endpoint: .profile(id: self.userId), as: UserProfile.self)
-            .subscribe { [weak self] event in
-                guard let self = self else { return }
-            
-                if event.isCompleted {
-                    return
-                }
-            
-                guard let response = event.element?.1 else {
-                    print("데이터 로드 중 오류 발생")
-                    print(event)
-                    return
-                }
-                
-                
-                if self.userId == UserDefaultsManager.cachedUser?.id {
-                    StateManager.of.user.dispatch(profile: response)
-                    self.loadFriendData()
-                } else {
-                    self.userProfile = response
-                    self.createSection()
-                }
-            }.disposed(by: disposeBag)
-    }
-    
-    func loadFriendData() {
-        NetworkService.get(endpoint: .friend(id: self.userId, limit: 6), as: PaginatedResponse<User>.self)
-            .subscribe { [weak self] event in
-                guard let self = self else { return }
-
-                if event.isCompleted {
-                    return
-                }
-
-                guard let response = event.element?.1 else {
-                    print("데이터 로드 중 오류 발생")
-                    print(event)
-                    return
-                }
-
-                self.friendsNumber = response.count
-                self.friendsData = response.results
-                self.createSection()
-            }.disposed(by: disposeBag)
-    }
     
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -255,7 +208,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             .drive(onNext : { [weak self] refreshComplete in
                 if refreshComplete {
                     self?.tabView.refreshControl.endRefreshing()
-                    self?.loadData()
+                    self?.loadProfileData()
                 }
             })
             .disposed(by: disposeBag)
@@ -509,21 +462,6 @@ extension ProfileTabViewController {
         self.present(alertMenu, animated: true, completion: nil)
     }
     
-    func deleteSelfIntro() {
-        let updateData = ["self_intro": ""]
-        
-        NetworkService
-            .update(endpoint: .profile(id: self.userId, updateData: updateData))
-            .subscribe { event in
-                let request = event.element
-            
-                request?.responseDecodable(of: UserProfile.self) { dataResponse in
-                    guard let userProfile = dataResponse.value else { return }
-                    StateManager.of.user.dispatch(profile: userProfile)
-                }
-            }.disposed(by: self.disposeBag)
-    }
-    
     func showAlertImageMenu() {
         let alertMenu = UIAlertController(title: self.imageType == "profile_image" ?
                                           "프로필 사진 수정" : "커버 사진 수정",
@@ -557,31 +495,6 @@ extension ProfileTabViewController {
         self.present(alertMenu, animated: true, completion: nil)
     }
     
-    func deleteImage() {
-        var updateData: [String: Bool]
-        
-        if self.imageType == "profile_image" {
-            updateData = ["profile_image": true, "cover_image": false]
-        } else {
-            updateData = ["profile_image": false, "cover_image": true]
-        }
-        
-        NetworkService.delete(endpoint: .image(id: self.userId, updateData: updateData), as: UserProfile.self)
-            .subscribe { event in
-                if event.isCompleted {
-                    return
-                }
-            
-                guard let response = event.element?.1 else {
-                    print("데이터 로드 중 오류 발생")
-                    print(event)
-                    return
-                }
-                
-                StateManager.of.user.dispatch(profile: response)
-            }.disposed(by: self.disposeBag)
-    }
-    
     func showAlertFriendMenu() {
         let alertMenu = UIAlertController(title: "친구 관리", message: "", preferredStyle: .actionSheet)
         
@@ -597,24 +510,6 @@ extension ProfileTabViewController {
         alertMenu.addAction(cancelAction)
         
         self.present(alertMenu, animated: true, completion: nil)
-    }
-    
-    func deleleFriend() {
-        let alert = UIAlertController(title: (userProfile?.username ?? "이 친구") + "님을 친구에서 삭제하시겠어요?", message: "",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
-        let deleteAction = UIAlertAction(title: "확인", style: .default) { action in
-            NetworkService.delete(endpoint: .friend(friendId: self.userId))
-                .subscribe { [weak self] event in
-                    guard let self = self else { return }
-                    if event.isCompleted {
-                        self.isFriend = false
-                        self.createSection()
-                    }
-                }.disposed(by: self.disposeBag)
-        }
-        alert.addAction(deleteAction)
-        self.present(alert, animated: true, completion: nil)
     }
 }
 
@@ -729,46 +624,145 @@ extension ProfileTabViewController {
         } else {
             //다른 사람의 프로필을 볼 때
             if isFriend {
-                if isMutual {
-                    cell.editProfileButton.rx
-                        .tap
-                        .bind { [weak self] in
-                            guard let self = self else { return }
-                            self.showAlertFriendMenu()
-                        }.disposed(by: cell.disposeBag)
-                } else {
-                    cell.editProfileButton.rx
-                        .tap
-                        .bind { [weak self] in
-                            guard let self = self else { return }
-                            NetworkService.delete(endpoint: .friendRequest(id: self.userId))
-                                .subscribe()
-                                .disposed(by: self.disposeBag)
-                        }.disposed(by: cell.disposeBag)
-                }
-            } else {
                 cell.editProfileButton.rx
                     .tap
                     .bind { [weak self] in
                         guard let self = self else { return }
-                        NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
-                            .subscribe { [weak self] event in
-                                guard let self = self else { return }
-                                
-                                if event.isCompleted {
-                                    return 
-                                }
-                                
-                                guard let response = event.element?.1 else {
-                                    self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                                    return
-                                }
-                            }.disposed(by: self.disposeBag)
+                        self.showAlertFriendMenu()
+                    }.disposed(by: cell.disposeBag)
+            } else {
+                cell.editProfileButton.rx
+                    .tap
+                    .bind { [weak self] in
+                        self?.friendRequest()
                     }.disposed(by: cell.disposeBag)
             }
             
             cell.coverLabel.isHidden = true
             cell.coverImageButton.isHidden = true
         }
+    }
+}
+
+//네트워크 관련 extension
+extension ProfileTabViewController {
+    //유저 프로필 관련 데이터 불러오기
+    func loadProfileData() {
+        NetworkService.get(endpoint: .profile(id: self.userId), as: UserProfile.self)
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
+            
+                if event.isCompleted {
+                    return
+                }
+            
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                
+                if self.userId == UserDefaultsManager.cachedUser?.id {
+                    StateManager.of.user.dispatch(profile: response)
+                    self.loadFriendData()
+                } else {
+                    self.userProfile = response
+                    self.createSection()
+                }
+            }.disposed(by: disposeBag)
+    }
+    
+    func loadFriendData() {
+        NetworkService.get(endpoint: .friend(id: self.userId, limit: 6), as: PaginatedResponse<User>.self)
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
+
+                if event.isCompleted {
+                    return
+                }
+
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+
+                self.friendsNumber = response.count
+                self.friendsData = response.results
+                self.createSection()
+            }.disposed(by: disposeBag)
+    }
+    
+    //자기소개 삭제
+    func deleteSelfIntro() {
+        let updateData = ["self_intro": ""]
+        
+        NetworkService
+            .update(endpoint: .profile(id: self.userId, updateData: updateData))
+            .subscribe { event in
+                let request = event.element
+            
+                request?.responseDecodable(of: UserProfile.self) { dataResponse in
+                    guard let userProfile = dataResponse.value else { return }
+                    StateManager.of.user.dispatch(profile: userProfile)
+                }
+            }.disposed(by: self.disposeBag)
+    }
+    
+    //친구 삭제
+    func deleleFriend() {
+        let alert = UIAlertController(title: (userProfile?.username ?? "이 친구") + "님을 친구에서 삭제하시겠어요?", message: "",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        let deleteAction = UIAlertAction(title: "확인", style: .default) { action in
+            NetworkService.delete(endpoint: .friend(friendId: self.userId))
+                .subscribe { [weak self] event in
+                    guard let self = self else { return }
+                    if event.isCompleted {
+                        self.isFriend = false
+                        self.createSection()
+                    }
+                }.disposed(by: self.disposeBag)
+        }
+        alert.addAction(deleteAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    //프로필 관련 이미지 삭제
+    func deleteImage() {
+        var updateData: [String: Bool]
+        
+        if self.imageType == "profile_image" {
+            updateData = ["profile_image": true, "cover_image": false]
+        } else {
+            updateData = ["profile_image": false, "cover_image": true]
+        }
+        
+        NetworkService.delete(endpoint: .image(id: self.userId, updateData: updateData), as: UserProfile.self)
+            .subscribe { event in
+                if event.isCompleted {
+                    return
+                }
+            
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                StateManager.of.user.dispatch(profile: response)
+            }.disposed(by: self.disposeBag)
+    }
+    
+    //친구 요청
+    func friendRequest() {
+        NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
+            .subscribe { [weak self] event in
+                guard let response = event.element?.1 else {
+                    self?.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                    return
+                }
+            }.disposed(by: self.disposeBag)
     }
 }
