@@ -300,15 +300,17 @@ extension PostDetailViewController {
                         NetworkService.update(endpoint: .commentUpdate(postId: self.post.id, commentId: comment.id, content: cell.bubbleTextView.text))
                             .observe(on: MainScheduler.instance)
                             .bind { request in
-                                // TODO: 서버 응답(author) 바뀌면 responseDecodable 콜백 안으로 집어넣을 것
-                                self.isKeyboardToolbarHidden = false
-                                self.commentTableView.beginUpdates()
-                                cell.completeEditing()
-                                self.commentTableView.endUpdates()
-                                self.commentTableView.scrollToRow(at: .init(row: row, section: 0), at: .bottom, animated: true)
-                                cell.updateButton.hideIndicator()
+                                print(self.post.id, comment.id)
+                                print(request)
                                 request.responseDecodable(of: Comment.self) { response in
+                                    print(response)
                                     guard let comment = response.value else { return }
+                                    self.isKeyboardToolbarHidden = false
+                                    self.commentTableView.beginUpdates()
+                                    cell.completeEditing()
+                                    self.commentTableView.endUpdates()
+                                    self.commentTableView.scrollToRow(at: .init(row: row, section: 0), at: .bottom, animated: true)
+                                    cell.updateButton.hideIndicator()
                                     StateManager.of.comment.dispatch(.init(data: comment, operation: .edit))
                                 }
                             }

@@ -16,8 +16,8 @@ struct Comment: Codable, Identifiable {
     let content: String
     let file: String?
     var likes: Int
-    let children_count: Int
-    let children: [Comment]
+    let children_count: Int?
+    let children: [Comment]?
     var is_liked: Bool
     let depth: Int
     let parent: Int?

@@ -15,7 +15,7 @@ class CommentPaginationViewModel: PaginationViewModel<Comment> {
         
         func preorderTraversal(root: Comment) {
             flatten.append(root)
-            for child in root.children {
+            for child in root.children ?? [] {
                 preorderTraversal(root: child)
             }
         }
