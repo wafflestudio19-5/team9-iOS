@@ -96,6 +96,8 @@ extension MenuTabViewController {
                 case true: self?.alert(title: "성공", message: "카카오 계정 연결이 완료되었습니다.", action: "확인")
                 case false: self?.alert(title: "실패", message: "이미 연결된 계정입니다.", action: "확인")
                 }
+            }, onError: { error in
+                print("\n에러 발생\n")
             }).disposed(by: disposeBag)
     }
     

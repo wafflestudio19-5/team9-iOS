@@ -12,4 +12,5 @@ struct User: Codable, Identifiable {
     let email: String
     let username: String
     let profile_image: String?
+    var is_valid: Bool
 }

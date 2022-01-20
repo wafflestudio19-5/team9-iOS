@@ -30,7 +30,8 @@ struct AuthManager {
     static func delete() -> Single<Bool> {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.delete(endpoint: .deleteAccount())
-                .subscribe (onNext: { _ in
+                .subscribe (onNext: { response in
+                    print(response)
                     NetworkService.removeToken()
                     result(.success(true))
                 }, onError: { _ in
@@ -46,6 +47,7 @@ struct AuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .login(email: email, password: password), as: AuthResponse.self)
                 .subscribe(onNext: { response in
+                    print(response)
                     StateManager.of.user.dispatch(authResponse: response.1)
                     result(.success(true))
                 }, onError: { _ in
@@ -61,11 +63,13 @@ struct AuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.get(endpoint: .logout(), as: String.self)
                 .subscribe(onNext: { response in
+                    print(response)
                     if response.0.statusCode == 200 {
                         NetworkService.removeToken()
                         result(.success(true))
                     }
-                }, onError: { _ in
+                }, onError: { error in
+                    print(error)
                     result(.success(false))
                 }).disposed(by: disposeBag)
             return Disposables.create()
