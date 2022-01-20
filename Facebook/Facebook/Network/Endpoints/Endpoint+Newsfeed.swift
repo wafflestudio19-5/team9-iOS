@@ -59,4 +59,15 @@ extension Endpoint {
     static func commentLike(postId: Int, commentId: Int) -> Self {
         return Endpoint(path: "newsfeed/\(postId)/\(commentId)/like/")
     }
+    
+    static func commentUpdate(postId: Int, commentId: Int, content: String) -> Self {
+        let builder: (MultipartFormData) -> Void = { formData in
+            formData.append(content.data(using: .utf8)!, withName: "content")
+        }
+        return Endpoint(path: "newsfeed/\(postId)/\(commentId)/", multipartFormDataBuilder: builder)
+    }
+    
+    static func commentDelete(postId: Int, commentId: Int) -> Self {
+        return Endpoint(path: "newsfeed/\(postId)/\(commentId)/")
+    }
 }

@@ -33,6 +33,21 @@ class CommentDispatcher: Dispatcher<Comment> {
         dataSource.accept(dataList)
     }
     
+    override func _delete(dataSource: BehaviorRelay<[Comment]>, signal: Signal<Comment>) {
+        guard case .delete(let index) = signal.operation else { return }
+        guard let postId = postId else {
+            print("postId not found.")
+            return
+        }
+        if signal.data.post_id != postId {
+            return
+        }
+        var dataList = dataSource.value
+        dataList.remove(at: index)
+        dataSource.accept(dataList)
+    }
+    
+    
     func dispatch(_ comment: Comment, syncWith response: LikeResponse) {
         var comment = comment
         comment.likes = response.likes

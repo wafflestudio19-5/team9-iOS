@@ -155,6 +155,15 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: Keyboard Accessory Logics
     
     var toolbarButtonConstraint: NSLayoutConstraint?
+    var isKeyboardToolbarHidden = false {
+        didSet {
+            if isKeyboardToolbarHidden {
+                keyboardAccessory.isHidden = true
+            } else {
+                keyboardAccessory.isHidden = false
+            }
+        }
+    }
     private func setKeyboardToolbar() {
         postView.addSubview(keyboardAccessory)
         keyboardAccessory.snp.makeConstraints { make in
@@ -168,7 +177,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                let toolbarHeight = self.keyboardAccessory.frame.height
+                let toolbarHeight = self.isKeyboardToolbarHidden ? 0 : self.keyboardAccessory.frame.height
                 self.keyboardAccessory.snp.remakeConstraints { make in
                     make.left.right.equalTo(0)
                     make.bottom.equalTo(keyboardVisibleHeight == 0 ? self.view.safeAreaLayoutGuide.snp.bottom : self.view.snp.bottom).offset(-keyboardVisibleHeight)
@@ -273,6 +282,39 @@ extension PostDetailViewController {
                     }
                     .disposed(by: cell.disposeBag)
                 
+                cell.cancelButton.rx.tap
+                    .observe(on: MainScheduler.instance)
+                    .bind { [weak self] _ in
+                        guard let self = self else { return }
+                        self.isKeyboardToolbarHidden = false
+                        self.commentTableView.beginUpdates()
+                        cell.cancelEditing()
+                        self.commentTableView.endUpdates()
+                    }.disposed(by: cell.disposeBag)
+                
+                cell.updateButton.rx.tap
+                    .observe(on: MainScheduler.instance)
+                    .bind { [weak self] _ in
+                        guard let self = self else { return }
+                        cell.updateButton.showIndicator()
+                        NetworkService.update(endpoint: .commentUpdate(postId: self.post.id, commentId: comment.id, content: cell.bubbleTextView.text))
+                            .observe(on: MainScheduler.instance)
+                            .bind { request in
+                                // TODO: 서버 응답(author) 바뀌면 responseDecodable 콜백 안으로 집어넣을 것
+                                self.isKeyboardToolbarHidden = false
+                                self.commentTableView.beginUpdates()
+                                cell.completeEditing()
+                                self.commentTableView.endUpdates()
+                                self.commentTableView.scrollToRow(at: .init(row: row, section: 0), at: .bottom, animated: true)
+                                cell.updateButton.hideIndicator()
+                                request.responseDecodable(of: Comment.self) { response in
+                                    guard let comment = response.value else { return }
+                                    StateManager.of.comment.dispatch(.init(data: comment, operation: .edit))
+                                }
+                            }
+                            .disposed(by: cell.disposeBag)
+                    }.disposed(by: cell.disposeBag)
+                
             }
             .disposed(by: disposeBag)
         
@@ -315,7 +357,8 @@ extension PostDetailViewController {
                             guard var comment = dataResponse.value else { return }
                             let indexPath = self.commentViewModel.findInsertionIndexPath(of: comment)
                             comment.post_id = self.post.id  // to be deprecated
-                            StateManager.of.post.dispatch(self.post, commentCount: self.post.comments + 1)
+                            self.post.comments += 1
+                            StateManager.of.post.dispatch(self.post, commentCount: self.post.comments)
                             StateManager.of.comment.dispatch(.init(data: comment, operation: .insert(index: indexPath.row)))
                             self.commentTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
                             
@@ -358,7 +401,14 @@ extension PostDetailViewController {
         })
         
         if isMyComment {
-            sheet.addAction(UIAlertAction(title: "수정", style: .default, handler: nil))
+            sheet.addAction(UIAlertAction(title: "수정", style: .default, handler: { _ in
+                self.focusedItem = nil
+                self.isKeyboardToolbarHidden = true
+                self.commentTableView.beginUpdates()
+                cell.startEditing()
+                self.commentTableView.endUpdates()
+                self.commentTableView.scrollToRow(at: .init(row: row, section: 0), at: .bottom, animated: true)
+            }))
         }
         
         sheet.addAction(UIAlertAction(title: "복사", style: .default) { _ in
@@ -366,7 +416,21 @@ extension PostDetailViewController {
         })
         
         if isMyComment {
-            sheet.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: nil))
+            sheet.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
+                self.focusedItem = nil
+                NetworkService.delete(endpoint: .commentDelete(postId: self.post.id, commentId: comment.id))
+                    .bind { response in
+                        var comment = comment
+                        self.post.comments -= 1
+                        comment.post_id = self.post.id
+                        StateManager.of.post.dispatch(self.post, commentCount: self.post.comments)
+                        StateManager.of.comment.dispatch(.init(data: comment, operation: .delete(index: row)))
+                        if row > 0 {
+                            self.commentTableView.scrollToRow(at: .init(row: row - 1, section: 0), at: .bottom, animated: true)
+                        }
+                    }
+                    .disposed(by: self.disposeBag)
+            }))
         }
         
         sheet.addAction(UIAlertAction(title: "취소", style: .cancel))
