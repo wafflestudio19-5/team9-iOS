@@ -118,6 +118,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         bindTableView()
         bindLikeButton()
+        bindReply()
         bindCommentButton()
         setLeftBarButtonItems()
         setKeyboardToolbar()
@@ -220,11 +221,10 @@ extension PostDetailViewController {
     }
 }
 
-// MARK: Handle Comments
+// MARK: Binding
 
 extension PostDetailViewController {
     func bindTableView(){
-        
         /// 댓글 상태 바인딩
         StateManager.of.comment.bind(postId: self.post.id, with: commentViewModel.dataList).disposed(by: disposeBag)
         
@@ -343,7 +343,9 @@ extension PostDetailViewController {
         
         /// 댓글 전송 버튼의 활성화 여부를 바인딩합니다.
         keyboardTextView.isEmptyObservable.map({ !$0 }).bind(to: postView.sendButton.rx.isEnabled).disposed(by: disposeBag)
-        
+    }
+    
+    func bindReply() {
         /// 전송 버튼을 누르면 댓글을 등록합니다.
         postView.sendButton.rx.tap
             .bind { [weak self] _ in
