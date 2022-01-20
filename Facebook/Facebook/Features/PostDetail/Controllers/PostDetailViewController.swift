@@ -230,10 +230,13 @@ extension PostDetailViewController {
                     cell.focus()
                 }
                 
-                let b = cell.authorLabel.rx.tap.map{ return true }
-                let a = cell.profileImage.rx.tapGesture().when(.recognized).map{ _ in return true }
+                let authorTapped = cell.authorLabel.rx.tap.map{ return true }
+                let profileTapped = cell.profileImage.rx
+                    .tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                    .when(.recognized)
+                    .map{ _ in return true }
                 
-                Observable.of(a, b)
+                Observable.of(profileTapped, authorTapped)
                     .merge()
                     .bind { [weak self] _ in
                         let profileVC = ProfileTabViewController(userId: comment.author.id)
@@ -258,9 +261,15 @@ extension PostDetailViewController {
                 cell.replyButton.rx.tap
                     .bind { [weak self] _ in
                         guard let self = self else { return }
-                        self.postView.textView.becomeFirstResponder()
-                        self.commentTableView.scrollToRow(at: IndexPath(row: row, section: 0), at: .bottom, animated: true)
-                        self.focusedItem = .init(row: row, comment: comment, cell: cell)
+                        self.prepareCommentReply(row: row, comment: comment, cell: cell)
+                    }
+                    .disposed(by: cell.disposeBag)
+                
+                cell.bubbleView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                    .when(.recognized)
+                    .bind { [weak self] _ in
+                        guard let self = self else { return }
+                        self.presentCommentActionSheet(row: row, comment: comment, cell: cell)
                     }
                     .disposed(by: cell.disposeBag)
                 
@@ -281,7 +290,7 @@ extension PostDetailViewController {
         
         /// 이전 댓글 보기 버튼은 다음 데이터 유무에 따라 숨겨집니다.
         commentViewModel.hasNextObservable.map({!$0}).bind(to: postHeader.loadButtonHStack.rx.isHidden).disposed(by: disposeBag)
-
+        
         /// 이전 댓글 보기 버튼 바인딩
         postHeader.loadPreviousButton.rx.tap
             .bind { [weak self] in
@@ -331,4 +340,36 @@ extension PostDetailViewController {
             .disposed(by: disposeBag)
     }
     
+}
+
+extension PostDetailViewController {
+    func prepareCommentReply(row: Int, comment: Comment, cell: CommentCell) {
+        self.postView.textView.becomeFirstResponder()
+        self.commentTableView.scrollToRow(at: IndexPath(row: row, section: 0), at: .bottom, animated: true)
+        self.focusedItem = .init(row: row, comment: comment, cell: cell)
+    }
+    
+    func presentCommentActionSheet(row: Int, comment: Comment, cell: CommentCell) {
+        let isMyComment = comment.author.id == StateManager.of.user.profile.id
+        let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "답글 달기",
+                                      style: .default) { action in
+            self.prepareCommentReply(row: row, comment: comment, cell: cell)
+        })
+        
+        if isMyComment {
+            sheet.addAction(UIAlertAction(title: "수정", style: .default, handler: nil))
+        }
+        
+        sheet.addAction(UIAlertAction(title: "복사", style: .default) { _ in
+            UIPasteboard.general.string = cell.contentLabel.text
+        })
+        
+        if isMyComment {
+            sheet.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: nil))
+        }
+        
+        sheet.addAction(UIAlertAction(title: "취소", style: .cancel))
+        self.present(sheet, animated: true, completion: nil)
+    }
 }

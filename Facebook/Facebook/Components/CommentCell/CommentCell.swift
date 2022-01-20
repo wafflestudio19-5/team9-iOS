@@ -131,7 +131,7 @@ class CommentCell: UITableViewCell {
         return horizontalStackForButtons
     }()
     
-    private lazy var bubbleView: UIView = {
+    lazy var bubbleView: UIView = {
         let bubbleView = UIView()
         bubbleView.addSubview(authorLabel)
         bubbleView.addSubview(contentLabel)
@@ -160,7 +160,7 @@ class CommentCell: UITableViewCell {
         
     }()
     
-    private let contentLabel: UILabel = {
+    let contentLabel: UILabel = {
         let label = InfoLabel(color: .label, size: 16, weight: .regular)
         label.numberOfLines = 0
         label.lineBreakStrategy = .hangulWordPriority
