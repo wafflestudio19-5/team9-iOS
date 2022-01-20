@@ -20,14 +20,20 @@ class NotificationTableViewCell: UITableViewCell {
         label.font = .systemFont(ofSize: 14.0, weight: .regular)
         label.numberOfLines = 3
         label.lineBreakMode = .byCharWrapping
-        label.lineBreakStrategy = .pushOut
+        return label
+    }()
+    
+    lazy var subcontentLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12.0, weight: .regular)
+        label.textColor = .darkGray
         return label
     }()
     
     lazy var timeStampLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12.0, weight: .regular)
-        label.textColor = .gray
+        label.textColor = .darkGray
         return label
     }()
     
@@ -41,6 +47,14 @@ class NotificationTableViewCell: UITableViewCell {
         return stackView
     }()
     
+    lazy var horizontalStackForSubcontents: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 3.0
+        stackView.alignment = .leading
+        return stackView
+    }()
+    
     lazy var detailButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
@@ -48,9 +62,8 @@ class NotificationTableViewCell: UITableViewCell {
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: NotificationTableViewCell.reuseIdentifier)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.tintColor = .black
-        configure()
         setLayoutForView()
     }
     
@@ -63,23 +76,26 @@ class NotificationTableViewCell: UITableViewCell {
         disposeBag = DisposeBag()
     }
     
-    func configure() {
-        contentLabel.text = "IQUNIX에서 새로운 동영상을 게시했습니다: 'L80 Xmas Edition Wireless Mechanical Keyboar..."
-        timeStampLabel.text = "17시간"
+    func configure(content: String, timeStamp: String, subcontent: String = "") {
+        contentLabel.text = content
+        timeStampLabel.text = timeStamp
+        subcontentLabel.text = (subcontent.isEmpty ? "" : "· \"" + subcontent + "\"")
         
         profileImage.setImage(from: nil)
     }
     
     private func setLayoutForView() {
         contentView.addSubview(profileImage)
-        verticalStackForContents.addArrangedSubview(contentLabel)
-        verticalStackForContents.addArrangedSubview(timeStampLabel)
         contentView.addSubview(verticalStackForContents)
+        horizontalStackForSubcontents.addArrangedSubview(timeStampLabel)
+        horizontalStackForSubcontents.addArrangedSubview(subcontentLabel)
+        verticalStackForContents.addArrangedSubview(contentLabel)
+        verticalStackForContents.addArrangedSubview(horizontalStackForSubcontents)
         contentView.addSubview(detailButton)
         
         profileImage.snp.makeConstraints { make in
-            make.top.bottom.equalTo(contentView.safeAreaLayoutGuide).inset(17)
-            make.left.equalTo(contentView.snp.left).offset(16)
+            make.top.bottom.equalTo(contentView.safeAreaLayoutGuide).inset(8)
+            make.left.equalTo(contentView.snp.left).offset(15)
             make.height.width.equalTo(68)
         }
         
