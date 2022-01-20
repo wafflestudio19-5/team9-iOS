@@ -15,6 +15,7 @@ struct UserDefaultsManager {
     private static let userKey = "CurrentUser"
     private static let tokenKey = "Token"
     private static let isLoggedInKey = "isLoggedIn"
+    private static let timestampKey = "tokenTimestamp"
     
     static var isLoggedIn: Bool {
         get {
@@ -32,6 +33,15 @@ struct UserDefaultsManager {
         }
         set {
             UserDefaults.standard.setValue(newValue, forKey: tokenKey)
+        }
+    }
+    
+    static var tokenRegisterTimestamp: TimeInterval? {
+        get {
+            return UserDefaults.standard.value(forKey: timestampKey) as? TimeInterval
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: timestampKey)
         }
     }
     

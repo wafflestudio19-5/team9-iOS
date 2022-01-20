@@ -13,11 +13,10 @@ import UIKit
 struct NetworkService {
     private static let configuration = URLSessionConfiguration.af.default
     private static var session = Session(configuration: configuration)
-    private static var tokenRegisterTimestamp: TimeInterval?
     private static var disposeBag = DisposeBag()
     
     static var needRefreshToken: Bool {
-        guard let tokenRegisterTimestamp = tokenRegisterTimestamp else { return false}
+        guard let tokenRegisterTimestamp = UserDefaultsManager.tokenRegisterTimestamp else { return false}
         let current = NSDate().timeIntervalSince1970
         return (current - tokenRegisterTimestamp) > 60 * 60 * 24 * 2 // 이틀에 한번 씩 refresh
     }
@@ -27,7 +26,7 @@ struct NetworkService {
     }
     
     static func registerToken(token: String) {
-        tokenRegisterTimestamp = NSDate().timeIntervalSince1970
+        UserDefaultsManager.tokenRegisterTimestamp = NSDate().timeIntervalSince1970
         self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [JWTAdapter(token: token)]))
     }
     
