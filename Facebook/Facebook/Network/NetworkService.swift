@@ -41,12 +41,16 @@ struct NetworkService {
         }
         guard let token = UserDefaultsManager.token else { return }
         NetworkService.post(endpoint: .refreshToken(token: token), as: TokenResponse.self)
-            .bind { response in
+            .subscribe(onNext: { response in
                 let newToken = response.1.token
                 NetworkService.registerToken(token: newToken)
                 UserDefaultsManager.token = newToken
                 print("token refreshed:", newToken)
-            }
+            }, onError: { _ in
+                if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                    sceneDelegate.changeRootViewController(LoginViewController(), wrap: true)
+                }
+            })
             .disposed(by: disposeBag)
     }
     
