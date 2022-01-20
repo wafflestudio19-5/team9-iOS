@@ -759,8 +759,21 @@ extension ProfileTabViewController {
     func friendRequest() {
         NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
             .subscribe { [weak self] event in
-                guard let response = event.element?.1 else {
+                if event.isCompleted {
+                    return
+                }
+                
+                if event.element?.1 == nil {
                     self?.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                    return
+                }
+            }.disposed(by: self.disposeBag)
+    }
+    
+    func deleteFriendRequest() {
+        NetworkService.delete(endpoint: .friendRequest(id: self.userId))
+            .subscribe{ [weak self] event in
+                if event.isCompleted {
                     return
                 }
             }.disposed(by: self.disposeBag)

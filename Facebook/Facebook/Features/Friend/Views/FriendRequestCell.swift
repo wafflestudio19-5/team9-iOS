@@ -24,6 +24,9 @@ class FriendRequestCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.refreshingBag = DisposeBag()
+        verticalStackView.removeArrangedSubview(stateLabel)
+        stateLabel.removeFromSuperview()
+        verticalStackView.addArrangedSubview(horizontalStackView)
     }
     
     required init?(coder: NSCoder) {

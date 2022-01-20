@@ -47,9 +47,10 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
                     .bind { [weak self] _ in
                         guard let self = self else { return }
                         NetworkService.delete(endpoint: .friendRequest(id: requestFriend.sender))
-                            .subscribe { event in
+                            .subscribe { [weak self] event in
                                 if event.isCompleted {
                                     cell.updateState(isAccepted: false)
+                                    return
                                 }
                             }.disposed(by: self.disposeBag)
                     }.disposed(by: cell.refreshingBag)
