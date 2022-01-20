@@ -13,6 +13,20 @@ class NotificationTabView: UIView {
     
     let largeTitleLabel = UILabel()
     
+    lazy var newNotificationLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14.0, weight: .semibold)
+        label.text = "새로운 알림"
+        return label
+    }()
+    
+    lazy var oldNotificationLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14.0, weight: .semibold)
+        label.text = "이전 알림"
+        return label
+    }()
+    
     let notificationTableView = ResponsiveTableView(frame: .zero, style: .grouped)
     
     override init(frame: CGRect) {
@@ -43,6 +57,7 @@ class NotificationTabView: UIView {
     private func configureTableView() {
         notificationTableView.separatorStyle = .none
         notificationTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.reuseIdentifier)
+
     }
 }
 
