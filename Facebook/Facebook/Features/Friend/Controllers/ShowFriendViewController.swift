@@ -53,7 +53,10 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
                 cell.configureCell(with: friend)
                 
                 cell.menuButton.rx.tap.bind { [weak self] in
-                    self?.showAlertFriendMenu(friend: friend)
+                    //self?.showAlertFriendMenu(friend: friend)
+                    let bottomSheetVC = BottomSheetViewController()
+                    bottomSheetVC.modalPresentationStyle = .overFullScreen
+                    self?.present(bottomSheetVC, animated: false, completion: nil)
                 }.disposed(by: cell.refreshingBag)
             }
             .disposed(by: disposeBag)

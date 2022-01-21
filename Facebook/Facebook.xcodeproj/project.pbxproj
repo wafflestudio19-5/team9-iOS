@@ -48,6 +48,9 @@
 		7779931D2750843C007A3898 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7779931C2750843B007A3898 /* SearchViewController.swift */; };
 		777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777993232750D280007A3898 /* NotificationTableViewCell.swift */; };
 		777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 777993242750D280007A3898 /* NotificationTableViewCell.xib */; };
+		779775B0279ABFD400AEF7B4 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779775AF279ABFD400AEF7B4 /* BottomSheetView.swift */; };
+		779775B2279ABFE300AEF7B4 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779775B1279ABFE300AEF7B4 /* BottomSheetViewController.swift */; };
+		779775BA279AC1D000AEF7B4 /* BottomSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779775B9279AC1D000AEF7B4 /* BottomSheetCell.swift */; };
 		77ABC5D42774A906000431E1 /* EditDetailInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5D32774A906000431E1 /* EditDetailInformationView.swift */; };
 		77ABC5D62774A944000431E1 /* EditDetailInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */; };
 		77ABC5D82774A998000431E1 /* AddInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5D72774A998000431E1 /* AddInformationView.swift */; };
@@ -212,6 +215,9 @@
 		7779931C2750843B007A3898 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		777993232750D280007A3898 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		777993242750D280007A3898 /* NotificationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationTableViewCell.xib; sourceTree = "<group>"; };
+		779775AF279ABFD400AEF7B4 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
+		779775B1279ABFE300AEF7B4 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
+		779775B9279AC1D000AEF7B4 /* BottomSheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetCell.swift; sourceTree = "<group>"; };
 		77ABC5D32774A906000431E1 /* EditDetailInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailInformationView.swift; sourceTree = "<group>"; };
 		77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailInformationViewController.swift; sourceTree = "<group>"; };
 		77ABC5D72774A998000431E1 /* AddInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInformationView.swift; sourceTree = "<group>"; };
@@ -429,6 +435,15 @@
 				775F150E27730BA000C9872F /* DataSourceModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		779775AE279ABF8000AEF7B4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				779775AF279ABFD400AEF7B4 /* BottomSheetView.swift */,
+				779775B9279AC1D000AEF7B4 /* BottomSheetCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B82EC929278BE12400750397 /* Settings */ = {
@@ -806,6 +821,7 @@
 			children = (
 				B897A914274E372300FB67D3 /* RootTabBarController.swift */,
 				B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */,
+				779775B1279ABFE300AEF7B4 /* BottomSheetViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -899,6 +915,7 @@
 		BEBDA762276C28DA0004FFD7 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				779775AE279ABF8000AEF7B4 /* Views */,
 				BE9C7CB4277172CA0089247F /* Controllers */,
 				BEFFFAA5276B125E009CBF25 /* Models */,
 				BE9C7CA527716EC00089247F /* ViewModels */,
@@ -1109,7 +1126,6 @@
 				7754B8732781D7BC00775D81 /* BirthSelectTableViewCell.swift in Sources */,
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
 				772FBF0D279130E8003556EC /* ShowFriendView.swift in Sources */,
-				7779931A274FD8E4007A3898 /* PostTableViewCell.swift in Sources */,
 				7706A6C02797B434007F5064 /* FriendPaginationViewModel.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
@@ -1203,12 +1219,14 @@
 				BEF254E5277AD28200FBAACB /* AuthorInfoHeaderView.swift in Sources */,
 				B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */,
 				BE0D439027903F0200E2162F /* SearchView.swift in Sources */,
+				779775BA279AC1D000AEF7B4 /* BottomSheetCell.swift in Sources */,
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */,
 				BE0D4386278D567100E2162F /* SubPostsView.swift in Sources */,
 				BE7FD9F9277CCFDA00C3FF8E /* ImageGridCell.swift in Sources */,
 				BE7D1DF9277DC63800E080E3 /* NSLayoutConstraints+Activate.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
+				779775B2279ABFE300AEF7B4 /* BottomSheetViewController.swift in Sources */,
 				77ABC5D42774A906000431E1 /* EditDetailInformationView.swift in Sources */,
 				B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */,
 				772FBF09279125AB003556EC /* Endpoint+Friend.swift in Sources */,
@@ -1224,6 +1242,7 @@
 				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
 				BEF254EC277ADBE800FBAACB /* InteractionButtonStackView.swift in Sources */,
 				B82EC92D278BE1EB00750397 /* MenuTabView.swift in Sources */,
+				779775B0279ABFD400AEF7B4 /* BottomSheetView.swift in Sources */,
 				7754B86F2781D63900775D81 /* EditUserProfileView.swift in Sources */,
 				77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */,
 				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
