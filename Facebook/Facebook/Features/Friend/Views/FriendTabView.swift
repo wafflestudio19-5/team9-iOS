@@ -40,17 +40,12 @@ class FriendTabView: UIView {
     }
     
     private func setLayoutForView() {
-        self.addSubview(friendTableView)
-        friendTableView.snp.makeConstraints { make in
-            make.edges.equalTo(self.safeAreaLayoutGuide)
-        }
-        
-        headerView.frame = CGRect(x: 0, y: 0, width: friendTableView.frame.width, height: 55)
+        headerView.frame = CGRect(x: 0, y: 0, width: friendTableView.frame.width, height: 45)
         headerView.addSubview(showFriendButton)
         showFriendButton.snp.makeConstraints { make in
             make.height.equalTo(35)
             make.width.equalTo(70)
-            make.centerY.equalToSuperview()
+            make.top.equalToSuperview().inset(5)
             make.left.equalToSuperview().inset(15)
         }
         headerView.addSubview(divider)
@@ -59,11 +54,22 @@ class FriendTabView: UIView {
             make.bottom.equalToSuperview()
             make.left.right.equalToSuperview().inset(15)
         }
+        
+        self.addSubview(headerView)
+        headerView.snp.makeConstraints { make in
+            make.height.equalTo(55)
+            make.top.left.right.equalTo(self.safeAreaLayoutGuide)
+        }
+        
+        self.addSubview(friendTableView)
+        friendTableView.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom)
+            make.bottom.left.right.equalTo(self.safeAreaLayoutGuide)
+        }
     }
     
     private func configureTableView() {
         friendTableView.backgroundView = EmptyBackgroundView(image: UIImage(systemName: "exclamationmark.bubble.fill") ?? UIImage(), title: "표시할 친구 요청 없음", message: "다른 사람들로부터 받은 친구 요청이 없습니다.")
-        friendTableView.tableHeaderView = headerView
         friendTableView.register(FriendRequestCell.self, forCellReuseIdentifier: FriendRequestCell.reuseIdentifier)
         friendTableView.refreshControl = refreshControl
         friendTableView.delaysContentTouches = false

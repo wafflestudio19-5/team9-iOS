@@ -22,7 +22,15 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setNavigationBar()
         bind()
+    }
+    
+    func setNavigationBar() {
+        let titleLabel = UILabel()
+        titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+        titleLabel.text = "친구"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleLabel)
     }
     
     func bind() {

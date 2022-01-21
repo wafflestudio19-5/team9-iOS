@@ -15,13 +15,15 @@ class FriendGridCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 10
         imageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFill
         
         return imageView
     }()
     
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         
         return label
     }()
