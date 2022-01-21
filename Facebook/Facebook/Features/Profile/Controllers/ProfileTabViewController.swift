@@ -30,7 +30,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainProfileCell", for: idxPath) as? MainProfileTableViewCell else { return UITableViewCell() }
             
             cell.configureCell(profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, name: name, selfIntro: selfIntro)
-            cell.configureEditButton(isMe: self.userId == UserDefaultsManager.cachedUser?.id, isFriend: self.isFriend, isMutual: self.isMutual)
+            cell.configureEditButton(friendInfo: self.userProfile?.friend_info ?? "")
             self.bindMainCellAction(cell: cell, profileImageUrl: profileImageUrl, coverImageUrl: coverImageUrl, selfIntro: selfIntro)
             
             return cell
@@ -101,7 +101,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.friendGridCollectionView.rx.modelSelected(User.self)
                 .subscribe (onNext: { [weak self] friend in
                     print(friend.id)
-                    let profileTabVC = ProfileTabViewController(userId: friend.id, isFriend: true)
+                    let profileTabVC = ProfileTabViewController(userId: friend.id)
                     self?.push(viewController: profileTabVC)
                 }).disposed(by: cell.refreshingBag)
             
@@ -126,15 +126,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     
     private var userId: Int
     private lazy var imageType = "profile_image"
-    private var isFriend = false
-    private var isMutual = false
     
-    init(userId: Int? = nil, isFriend: Bool = false, isMutual: Bool = false) {
+    init(userId: Int? = nil) {
         //자신의 프로필을 보는지, 다른 사람의 프로필을 보는 것인지
         if userId != nil {
             self.userId = userId!
-            self.isFriend = isFriend
-            self.isMutual = isMutual
         }
         else {
             self.userId = UserDefaultsManager.cachedUser?.id ?? 0
@@ -613,34 +609,36 @@ extension ProfileTabViewController {
                         self?.showAlertSelfIntroMenu()
                     }
                 }).disposed(by: cell.disposeBag)
-            
-            //프로필 수정 버튼
-            cell.editProfileButton.rx
-                .tap
-                .bind { [weak self] in
-                    let editProfileViewController = EditProfileViewController()
-                    self?.push(viewController: editProfileViewController)
-                }.disposed(by: cell.disposeBag)
         } else {
-            //다른 사람의 프로필을 볼 때
-            if isFriend {
-                cell.editProfileButton.rx
-                    .tap
-                    .bind { [weak self] in
-                        guard let self = self else { return }
-                        self.showAlertFriendMenu()
-                    }.disposed(by: cell.disposeBag)
-            } else {
-                cell.editProfileButton.rx
-                    .tap
-                    .bind { [weak self] in
-                        self?.friendRequest()
-                    }.disposed(by: cell.disposeBag)
-            }
-            
             cell.coverLabel.isHidden = true
             cell.coverImageButton.isHidden = true
         }
+        
+        guard let friendInfo = userProfile?.friend_info else { return }
+        
+        //프로필 편집 버튼
+        cell.editProfileButton.rx
+            .tap
+            .bind { [weak self] in
+                guard let self = self else { return }
+                
+                switch friendInfo {
+                case "self":
+                    let editProfileViewController = EditProfileViewController()
+                    self.push(viewController: editProfileViewController)
+                case "friend":
+                    self.showAlertFriendMenu()
+                case "sent":
+                    self.deleteFriendRequest()
+                case "received":
+                    self.acceptFriendRequest()
+                case "nothing":
+                    self.friendRequest()
+                default:
+                    let editProfileViewController = EditProfileViewController()
+                    self.push(viewController: editProfileViewController)
+                }
+            }.disposed(by: cell.disposeBag)
     }
 }
 
@@ -720,7 +718,13 @@ extension ProfileTabViewController {
                 .subscribe { [weak self] event in
                     guard let self = self else { return }
                     if event.isCompleted {
-                        self.isFriend = false
+                        return
+                    }
+                    
+                    if !(event.element is NSNull) {
+                        self.alert(title: "친구 삭제 오류", message: "친구 삭제 중 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                    } else {
+                        self.userProfile?.friend_info = "nothing"
                         self.createSection()
                     }
                 }.disposed(by: self.disposeBag)
@@ -759,13 +763,35 @@ extension ProfileTabViewController {
     func friendRequest() {
         NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
             .subscribe { [weak self] event in
+                guard let self = self else { return }
+                
                 if event.isCompleted {
                     return
                 }
                 
                 if event.element?.1 == nil {
-                    self?.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                    self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                } else {
+                    self.userProfile?.friend_info = "sent"
+                    self.createSection()
+                }
+            }.disposed(by: self.disposeBag)
+    }
+    
+    func acceptFriendRequest() {
+        NetworkService.put(endpoint: .friendRequest(id: self.userId))
+            .subscribe { [weak self] event in
+                guard let self = self else { return }
+                
+                if event.isCompleted {
                     return
+                }
+                
+                if event.element as? String != "수락 완료되었습니다." {
+                    self.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                } else {
+                    self.userProfile?.friend_info = "friend"
+                    self.createSection()
                 }
             }.disposed(by: self.disposeBag)
     }
@@ -773,8 +799,17 @@ extension ProfileTabViewController {
     func deleteFriendRequest() {
         NetworkService.delete(endpoint: .friendRequest(id: self.userId))
             .subscribe{ [weak self] event in
+                guard let self = self else { return }
+                
                 if event.isCompleted {
                     return
+                }
+                
+                if !(event.element is NSNull) {
+                    self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                } else {
+                    self.userProfile?.friend_info = "nothing"
+                    self.createSection()
                 }
             }.disposed(by: self.disposeBag)
     }

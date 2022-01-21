@@ -171,7 +171,7 @@ extension UIViewController {
         Observable.of(profileImageTapped, authorNameTapped)
             .merge()
             .bind { [weak self] _ in
-                let profileVC = ProfileTabViewController(userId: post.author?.id, isFriend: true)
+                let profileVC = ProfileTabViewController(userId: post.author?.id)
                 self?.push(viewController: profileVC)
             }
             .disposed(by: cell.refreshingBag)

@@ -65,8 +65,7 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
         
         tableView.rx.modelSelected(User.self)
             .subscribe(onNext: { [weak self] friend in
-                print(friend.id)
-                let profileTabVC = ProfileTabViewController(userId: friend.id, isFriend: true)
+                let profileTabVC = ProfileTabViewController(userId: friend.id)
                 self?.push(viewController: profileTabVC)
             }).disposed(by: disposeBag)
         

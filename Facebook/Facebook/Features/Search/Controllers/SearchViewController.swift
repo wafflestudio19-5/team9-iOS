@@ -88,7 +88,7 @@ extension SearchViewController: UITableViewDelegate {
         searchBar.resignFirstResponder()
         let userId = viewModel.dataList.value[indexPath.row].id
         let isFriend = viewModel.dataList.value[indexPath.row].is_friend
-        self.push(viewController: ProfileTabViewController(userId: userId, isFriend: isFriend ?? false))
+        self.push(viewController: ProfileTabViewController(userId: userId))
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

@@ -66,7 +66,6 @@ class FriendTabView: UIView {
         friendTableView.tableHeaderView = headerView
         friendTableView.register(FriendRequestCell.self, forCellReuseIdentifier: FriendRequestCell.reuseIdentifier)
         friendTableView.refreshControl = refreshControl
-        friendTableView.allowsSelection = false
         friendTableView.delaysContentTouches = false
     }
 

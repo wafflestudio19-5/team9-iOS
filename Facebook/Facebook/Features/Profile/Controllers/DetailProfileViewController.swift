@@ -273,11 +273,13 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
         
-        StateManager.of.user
-            .asObservable()
-            .bind { [weak self] _ in
-                self?.createSection()
-            }.disposed(by: disposeBag)
+        if userId == UserDefaultsManager.cachedUser?.id {
+            StateManager.of.user
+                .asObservable()
+                .bind { [weak self] _ in
+                    self?.createSection()
+                }.disposed(by: disposeBag)
+        }
         
         /// 새로고침 제스쳐
         detailProfileView.refreshControl.rx.controlEvent(.valueChanged)

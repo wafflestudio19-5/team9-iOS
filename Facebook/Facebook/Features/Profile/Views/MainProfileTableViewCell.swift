@@ -48,35 +48,44 @@ class MainProfileTableViewCell: UITableViewCell {
         else { coverImage.image = UIImage() }
     }
     
-    func configureEditButton(isMe: Bool, isFriend: Bool, isMutual: Bool) {
-        if isMe {
+    func configureEditButton(friendInfo: String) {
+        switch friendInfo{
+        case "self":
             editProfileButton.setTitle("프로필 편집", for: .normal)
             editProfileButton.setTitleColor(.black, for: .normal)
             editProfileButton.setImage(UIImage(systemName: "pencil"), for: .normal)
             editProfileButton.tintColor = .black
             editProfileButton.backgroundColor = .systemGray4
-        } else {
-            if isFriend {
-                if isMutual {
-                    editProfileButton.setTitle("친구", for: .normal)
-                    editProfileButton.setTitleColor(.black, for: .normal)
-                    editProfileButton.setImage(UIImage(systemName: "person.fill.checkmark"), for: .normal)
-                    editProfileButton.tintColor = .black
-                    editProfileButton.backgroundColor = .systemGray4
-                } else {
-                    editProfileButton.setTitle("요청 취소", for: .normal)
-                    editProfileButton.setTitleColor(.white, for: .normal)
-                    editProfileButton.setImage(UIImage(systemName: "person.fill.badge.minus"), for: .normal)
-                    editProfileButton.tintColor = .white
-                    editProfileButton.backgroundColor = .systemBlue
-                }
-            } else {
-                editProfileButton.setTitle("친구 추가", for: .normal)
-                editProfileButton.setTitleColor(.white, for: .normal)
-                editProfileButton.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
-                editProfileButton.tintColor = .white
-                editProfileButton.backgroundColor = .systemBlue
-            }
+        case "friend":
+            editProfileButton.setTitle("친구", for: .normal)
+            editProfileButton.setTitleColor(.black, for: .normal)
+            editProfileButton.setImage(UIImage(systemName: "person.fill.checkmark"), for: .normal)
+            editProfileButton.tintColor = .black
+            editProfileButton.backgroundColor = .systemGray4
+        case "sent":
+            editProfileButton.setTitle("요청 취소", for: .normal)
+            editProfileButton.setTitleColor(.white, for: .normal)
+            editProfileButton.setImage(UIImage(systemName: "person.fill.badge.minus"), for: .normal)
+            editProfileButton.tintColor = .white
+            editProfileButton.backgroundColor = .systemBlue
+        case "received":
+            editProfileButton.setTitle("응답", for: .normal)
+            editProfileButton.setTitleColor(.white, for: .normal)
+            editProfileButton.setImage(UIImage(systemName: "person.fill.checkmark"), for: .normal)
+            editProfileButton.tintColor = .white
+            editProfileButton.backgroundColor = .systemBlue
+        case "nothing":
+            editProfileButton.setTitle("친구 추가", for: .normal)
+            editProfileButton.setTitleColor(.white, for: .normal)
+            editProfileButton.setImage(UIImage(systemName: "person.fill.badge.plus"), for: .normal)
+            editProfileButton.tintColor = .white
+            editProfileButton.backgroundColor = .systemBlue
+        default:
+            editProfileButton.setTitle("프로필 편집", for: .normal)
+            editProfileButton.setTitleColor(.black, for: .normal)
+            editProfileButton.setImage(UIImage(systemName: "pencil"), for: .normal)
+            editProfileButton.tintColor = .black
+            editProfileButton.backgroundColor = .systemGray4
         }
     }
     

@@ -57,6 +57,17 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
             }
             .disposed(by: disposeBag)
         
+        tableView.rx.itemSelected
+            .subscribe(onNext: { [weak self] idxPath in
+                self?.tableView.deselectRow(at: idxPath, animated: true)
+            }).disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(FriendRequestCreate.self)
+            .subscribe(onNext: { [weak self] friendRequest in
+                let profileTabVC = ProfileTabViewController(userId: friendRequest.sender)
+                self?.push(viewController: profileTabVC)
+            }).disposed(by: disposeBag)
+        
         tabView.showFriendButton.rx.tap
             .bind { [weak self] _ in
                 let showFriendViewController = ShowFriendViewController(userId: StateManager.of.user.profile.id)
