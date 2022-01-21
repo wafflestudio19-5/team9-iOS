@@ -145,3 +145,5 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
         }
     }
 }
+
+

@@ -53,7 +53,7 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
                 cell.configureCell(with: friend)
                 
                 cell.menuButton.rx.tap.bind { [weak self] in
-                    print("menu button Tap!")
+                    self?.showAlertFriendMenu(friend: friend)
                 }.disposed(by: cell.refreshingBag)
             }
             .disposed(by: disposeBag)
@@ -137,43 +137,51 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
 }
 
 extension ShowFriendViewController {
-    func showAlertFriendMenu() {
+    func showAlertFriendMenu(friend: User) {
         let alertMenu = UIAlertController(title: "친구 관리", message: "", preferredStyle: .actionSheet)
-        let showFriendsAction = UIAlertAction(title: "님의 친구 보기", style: .default) { action in
-            print("asdf")
+        let showFriendsAction = UIAlertAction(title: friend.username + "님의 친구 보기", style: .default) { action in
+            let showFriendVC = ShowFriendViewController(userId: friend.id)
+            self.push(viewController: showFriendVC)
         }
         showFriendsAction.setValue(0, forKey: "titleTextAlignment")
         showFriendsAction.setValue(UIImage(systemName: "person.3.fill"), forKey: "image")
         
         let deleteFriendAction = UIAlertAction(title: "친구 끊기", style: .default, handler: { action in
-            self.deleleFriend()
+            self.deleleFriend(name: friend.username)
         })
         deleteFriendAction.setValue(0, forKey: "titleTextAlignment")
         deleteFriendAction.setValue(UIImage(systemName: "person.fill.xmark")!, forKey: "image")
         
         let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
         
+        alertMenu.addAction(showFriendsAction)
         alertMenu.addAction(deleteFriendAction)
         alertMenu.addAction(cancelAction)
         
         self.present(alertMenu, animated: true, completion: nil)
     }
     
-    func deleleFriend() {
-//        let alert = UIAlertController(title: (userProfile?.username ?? "이 친구") + "님을 친구에서 삭제하시겠어요?", message: "",
-//                                      preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
-//        let deleteAction = UIAlertAction(title: "확인", style: .default) { action in
-//            NetworkService.delete(endpoint: .friend(friendId: self.userId))
-//                .subscribe { [weak self] event in
-//                    guard let self = self else { return }
-//                    if event.isCompleted {
-//                        self.isFriend = false
-//                        self.createSection()
-//                    }
-//                }.disposed(by: self.disposeBag)
-//        }
-//        alert.addAction(deleteAction)
-//        self.present(alert, animated: true, completion: nil)
+    func deleleFriend(name: String) {
+        let alert = UIAlertController(title: name + "님을 친구에서 삭제하시겠어요?", message: "",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        let deleteAction = UIAlertAction(title: "확인", style: .default) { action in
+            NetworkService.delete(endpoint: .friend(friendId: self.userId))
+                .subscribe { [weak self] event in
+                    guard let self = self else { return }
+                    
+                    if event.isCompleted {
+                        return
+                    }
+                    
+                    if !(event.element is NSNull) {
+                        self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                    } else {
+                        self.friendViewModel.refresh()
+                    }
+                }.disposed(by: self.disposeBag)
+        }
+        alert.addAction(deleteAction)
+        self.present(alert, animated: true, completion: nil)
     }
 }
