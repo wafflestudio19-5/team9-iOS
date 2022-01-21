@@ -36,8 +36,14 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
                     .bind { [weak self] _ in
                         guard let self = self else { return }
                         NetworkService.put(endpoint: .friendRequest(id: requestFriend.sender))
-                            .subscribe { event in
+                            .subscribe { [weak self] event in
                                 if event.isCompleted {
+                                    return
+                                }
+                                
+                                if event.element as? String != "수락 완료되었습니다." {
+                                    self?.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                                } else {
                                     cell.updateState(isAccepted: true)
                                 }
                             }.disposed(by: self.disposeBag)
@@ -49,8 +55,13 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
                         NetworkService.delete(endpoint: .friendRequest(id: requestFriend.sender))
                             .subscribe { [weak self] event in
                                 if event.isCompleted {
-                                    cell.updateState(isAccepted: false)
                                     return
+                                }
+                                
+                                if !(event.element is NSNull) {
+                                    self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                                } else {
+                                    cell.updateState(isAccepted: false)
                                 }
                             }.disposed(by: self.disposeBag)
                     }.disposed(by: cell.refreshingBag)
