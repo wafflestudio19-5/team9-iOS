@@ -117,7 +117,6 @@
 		BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B42785D2C600E51A28 /* InfoButton.swift */; };
 		BE50BFF7279BE9EC00876D10 /* PostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFF6279BE9EC00876D10 /* PostContentView.swift */; };
 		BE50BFF9279BF3A700876D10 /* SubPostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFF8279BF3A700876D10 /* SubPostContentView.swift */; };
-		BE50BFFB279C289500876D10 /* SharingPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFFA279C289500876D10 /* SharingPostView.swift */; };
 		BE50BFFD279C6B1D00876D10 /* SharedPostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFFC279C6B1D00876D10 /* SharedPostContentView.swift */; };
 		BE64AF33277FE99D00C25967 /* ItemProvider+LoadFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */; };
 		BE64AF3527809F3E00C25967 /* UploadProgressHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */; };
@@ -276,7 +275,6 @@
 		BE1F75B42785D2C600E51A28 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
 		BE50BFF6279BE9EC00876D10 /* PostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentView.swift; sourceTree = "<group>"; };
 		BE50BFF8279BF3A700876D10 /* SubPostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostContentView.swift; sourceTree = "<group>"; };
-		BE50BFFA279C289500876D10 /* SharingPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharingPostView.swift; sourceTree = "<group>"; };
 		BE50BFFC279C6B1D00876D10 /* SharedPostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPostContentView.swift; sourceTree = "<group>"; };
 		BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemProvider+LoadFile.swift"; sourceTree = "<group>"; };
 		BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressHeaderView.swift; sourceTree = "<group>"; };
@@ -803,7 +801,6 @@
 			children = (
 				77E12FA12769A97800B8F191 /* CreatePostView.swift */,
 				BE05C37D2799D5E5005471BD /* AuthorHeaderView.swift */,
-				BE50BFFA279C289500876D10 /* SharingPostView.swift */,
 				BE05C37F2799D75E005471BD /* ScopeButton.swift */,
 			);
 			path = Views;
@@ -1075,7 +1072,6 @@
 				BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */,
 				7754B8842782C27D00775D81 /* PhotoPopUpViewController.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
-				BE50BFFB279C289500876D10 /* SharingPostView.swift in Sources */,
 				B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				BE64AF3527809F3E00C25967 /* UploadProgressHeaderView.swift in Sources */,

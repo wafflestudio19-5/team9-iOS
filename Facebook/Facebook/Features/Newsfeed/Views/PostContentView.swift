@@ -158,7 +158,7 @@ class PostContentView: UIView {
     
     // MARK: Initialize View Components
     
-    lazy var sharedPostView = SharedPostContentView()
+    lazy var sharedPostView = SharedPostContentView(fullWidthImageGrid: true)
     
     // 이미지 그리드 뷰
     lazy var imageGridCollectionView = ImageGridCollectionView()

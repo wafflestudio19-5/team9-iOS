@@ -68,7 +68,6 @@ extension ImageGridCell {
           .loadDiskFileSynchronously()
           .cacheMemoryOnly()
           .fade(duration: 0.1)
-          .onFailure { error in print("로딩 실패", error)}
           .set(to: imageView)
     }
 }

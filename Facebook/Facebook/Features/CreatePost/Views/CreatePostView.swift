@@ -87,8 +87,8 @@ class CreatePostView: UIView {
     
     var createHeaderView = CreateHeaderView()
     let imageGridCollectionView = ImageGridCollectionView()
-    lazy var sharingPostView: SharingPostContentView = {
-        let view = SharingPostContentView()
+    lazy var sharingPostView: SharedPostContentView = {
+        let view = SharedPostContentView(fullWidthImageGrid: false)
         view.configure(with: postToShare!)
         return view
     }()

@@ -8,7 +8,18 @@
 import UIKit
 
 class SharedPostContentView: PostContentView {
-
+    
+    var fullWidthImageGrid: Bool
+    
+    init(fullWidthImageGrid: Bool) {
+        self.fullWidthImageGrid = fullWidthImageGrid
+        super.init(frame: .zero)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func setLayout() {
         let borderView = UIView()
         borderView.layer.borderColor = UIColor.grayscales.imageBorder.cgColor
@@ -33,12 +44,12 @@ class SharedPostContentView: PostContentView {
         }
         
         let imageGridInset: CGFloat = 10
-        imageGridCollectionView.maxWidth = self.frame.width
+        imageGridCollectionView.maxWidth = fullWidthImageGrid ? self.frame.width : self.frame.width - imageGridInset * 2
         self.addSubview(imageGridCollectionView)
         imageGridCollectionView.snp.makeConstraints { make in
             make.top.equalTo(textContentLabel.snp.bottom).offset(CGFloat.standardTopMargin)
             make.bottom.equalToSuperview().inset(imageGridInset).priority(.high)
-            make.leading.trailing.equalToSuperview().inset(-imageGridInset).priority(.high)
+            make.leading.trailing.equalToSuperview().inset(fullWidthImageGrid ? -imageGridInset : imageGridInset).priority(.high)
         }
         
     }

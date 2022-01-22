@@ -64,7 +64,6 @@ class SubPostContentView: PostContentView {
                 }
                 self.layoutIfNeeded()
             }
-            .onFailure { error in print("로딩 실패", error)}
             .set(to: self.singleImageView)
     }
     
