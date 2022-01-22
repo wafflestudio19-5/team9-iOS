@@ -32,7 +32,7 @@ class SharingPostContentView: PostContentView {
         self.addSubview(imageGridCollectionView)
         imageGridCollectionView.snp.makeConstraints { make in
             make.top.equalTo(textContentLabel.snp.bottom).offset(CGFloat.standardTopMargin)
-            make.leading.trailing.bottom.equalToSuperview().inset(imageGridInset)
+            make.leading.trailing.bottom.equalToSuperview().inset(imageGridInset).priority(.high)
         }
         
     }

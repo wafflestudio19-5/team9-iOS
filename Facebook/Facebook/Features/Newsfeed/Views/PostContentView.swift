@@ -21,10 +21,6 @@ class PostContentView: UIView {
         }
     }
     
-    var isSubPost: Bool {
-        return post.mainpost != nil
-    }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame.size.width = UIScreen.main.bounds.width  // important for initial layout
@@ -74,6 +70,30 @@ class PostContentView: UIView {
                 cell.displayMedia(from: data)
             }
             .disposed(by: disposeBag)
+        
+        imageGridCollectionView.snp.updateConstraints { make in
+            make.top.equalTo(textContentLabel.snp.bottom).offset(imageGridCollectionView.numberOfImages == 0 ? 0 : CGFloat.standardTopMargin)
+        }
+        
+        if let _ = self as? SharingPostContentView {
+            return  // prevent recursive loop
+        }
+        
+        if post.is_sharing ?? false {
+            sharedPostView.isHidden = false
+            sharedPostView.configure(with: post.postToShare)
+            sharedPostView.snp.remakeConstraints { make in
+                make.top.equalTo(imageGridCollectionView.snp.bottom).offset(CGFloat.standardTopMargin)
+                make.leading.trailing.equalTo(0).inset(10)
+            }
+        } else {
+            sharedPostView.isHidden = true
+            sharedPostView.snp.remakeConstraints { make in
+                make.top.equalTo(imageGridCollectionView.snp.bottom)
+                make.leading.trailing.equalTo(0).inset(10)
+                make.height.equalTo(0)
+            }
+        }
     }
     
     // MARK: AutoLayout Constraints
@@ -104,17 +124,21 @@ class PostContentView: UIView {
             make.leading.trailing.equalTo(self)
         }
         
+        self.addSubview(sharedPostView)
+        sharedPostView.snp.remakeConstraints { make in
+            make.top.equalTo(imageGridCollectionView.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.leading.trailing.equalTo(0).inset(10)
+        }
+        
         self.addSubview(statHorizontalStackView)
         statHorizontalStackView.snp.makeConstraints { make in
-            make.top.equalTo(imageGridCollectionView.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.top.equalTo(sharedPostView.snp.bottom).offset(CGFloat.standardTopMargin)
             make.leading.trailing.equalTo(self).inset(CGFloat.standardLeadingMargin)
             make.height.equalTo(20)
         }
     }
     
     func setLowerLayout() {
-        
-        
         self.addSubview(buttonHorizontalStackView)
         buttonHorizontalStackView.snp.makeConstraints { make in
             make.top.equalTo(statHorizontalStackView.snp.bottom).offset(CGFloat.standardTopMargin).priority(.high)
@@ -131,6 +155,8 @@ class PostContentView: UIView {
     }
     
     // MARK: Initialize View Components
+    
+    lazy var sharedPostView = SharingPostContentView()
     
     // 이미지 그리드 뷰
     lazy var imageGridCollectionView = ImageGridCollectionView()
