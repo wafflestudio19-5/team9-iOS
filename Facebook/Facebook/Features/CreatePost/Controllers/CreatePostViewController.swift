@@ -74,10 +74,14 @@ class CreatePostViewController: UIViewController {
     
     func bindNavigationBarButtonStyle() {
         // contentTextField의 내용 유무에 따라 버튼 활성화
-        createPostView.contentTextView.isEmptyObservable
-            .map { !$0 }
-            .bind(to:self.createPostView.postButton.rx.isEnabled)
-            .disposed(by: disposeBag)
+        let empty = createPostView.contentTextView.isEmptyObservable
+        let photoCount = pickerViewModel.selectionCount
+        Observable.combineLatest(empty, photoCount) { isEmpty, selectedCount in
+            return !isEmpty || selectedCount > 0
+        }
+        .bind(to: self.createPostView.postButton.rx.isEnabled)
+        .disposed(by: disposeBag)
+        
     }
     
     func bindPostButton() {
