@@ -91,13 +91,9 @@ class PostDetailHeaderView: UIStackView {
         authorHeaderView.configure(with: post)
         
         // TODO: duplicated lines
-        let subpostUrls: [URL?] = post.subposts!.map {
-            guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
-            return url
-        }
         imageGridCollectionView.numberOfImages = post.subposts!.count
         imageGridCollectionView.dataSource = nil
-        Observable.just(subpostUrls.prefix(5))
+        Observable.just(post.subpostUrls.prefix(5))
             .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
                 cell.displayMedia(from: data)
             }

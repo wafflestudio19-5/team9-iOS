@@ -25,6 +25,13 @@ struct Post: Codable, Identifiable {
     static func getDummyPost() -> Self {
         return Post(id: -1, author: nil, content: "", likes: -1, is_liked: false, posted_at: nil, comments: -1, file: nil, mainpost: nil, subposts: nil)
     }
+    
+    var subpostUrls: [URL?] {
+        return self.subposts?.map {
+            guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
+            return url
+        } ?? []
+    }
 }
 
 

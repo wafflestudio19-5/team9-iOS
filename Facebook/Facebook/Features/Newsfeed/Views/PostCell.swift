@@ -74,12 +74,8 @@ class PostCell: UITableViewCell {
         }
         
         // CollectionView Layout
-        let subpostUrls: [URL?] = post.subposts!.map {
-            guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
-            return url
-        }
         self.imageGridCollectionView.numberOfImages = post.subposts!.count
-        Observable.just(subpostUrls.prefix(5))
+        Observable.just(post.subpostUrls.prefix(5))
             .observe(on: MainScheduler.instance)
             .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
                 cell.displayMedia(from: data)
