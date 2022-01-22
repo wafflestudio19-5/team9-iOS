@@ -69,12 +69,36 @@ class FriendCell: UITableViewCell {
         verticalStackView.addArrangedSubview(mutualFriendsLabel)
         mutualFriendsLabel.isHidden = true
         
-        contentView.addSubview(menuButton)
-        menuButton.snp.remakeConstraints { make in
-            make.height.width.equalTo(30)
+        contentView.addSubview(button)
+        button.snp.remakeConstraints { make in
+            make.height.equalTo(30)
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(15)
         }
+    }
+    
+    private func setButtonStyle() {
+        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+        button.tintColor = .black
+        
+        button.layer.cornerRadius = 5
+        button.setTitle("친구 추가", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        button.backgroundColor = .systemBlue
+        
+        button.layer.cornerRadius = 5
+        button.setTitle("응답", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        button.backgroundColor = .systemBlue
+        
+        button.layer.cornerRadius = 5
+        button.setTitle("취소", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        button.backgroundColor = .systemGray4
+        
     }
 
     private let profileImage: UIImageView = {
@@ -108,7 +132,7 @@ class FriendCell: UITableViewCell {
         return label
     }()
     
-    let menuButton: UIButton = {
+    lazy var button: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         button.tintColor = .black
