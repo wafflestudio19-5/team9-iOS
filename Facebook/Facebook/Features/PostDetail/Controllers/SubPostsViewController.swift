@@ -67,6 +67,11 @@ class SubPostsViewController: UIViewController {
         startPrefetching()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.adjustHeaderHeight()
+    }
+    
     private func bind() {
         StateManager.of.post.bind(with: subpostsDataSource).disposed(by: disposeBag)
         
