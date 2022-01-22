@@ -75,7 +75,7 @@ class PostContentView: UIView {
             make.top.equalTo(textContentLabel.snp.bottom).offset(imageGridCollectionView.numberOfImages == 0 ? 0 : CGFloat.standardTopMargin)
         }
         
-        if let _ = self as? SharingPostContentView {
+        if let _ = self as? SharedPostContentView {
             return  // prevent recursive loop
         }
         
@@ -158,7 +158,7 @@ class PostContentView: UIView {
     
     // MARK: Initialize View Components
     
-    lazy var sharedPostView = SharingPostContentView()
+    lazy var sharedPostView = SharedPostContentView()
     
     // 이미지 그리드 뷰
     lazy var imageGridCollectionView = ImageGridCollectionView()
