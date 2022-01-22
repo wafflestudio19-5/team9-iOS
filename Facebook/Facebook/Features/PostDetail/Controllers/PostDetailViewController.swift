@@ -300,19 +300,18 @@ extension PostDetailViewController {
                         NetworkService.update(endpoint: .commentUpdate(postId: self.post.id, commentId: comment.id, content: cell.bubbleTextView.text))
                             .observe(on: MainScheduler.instance)
                             .bind { request in
-                                print(self.post.id, comment.id)
-                                print(request)
-                                request.responseDecodable(of: Comment.self) { response in
-                                    print(response)
-                                    guard let comment = response.value else { return }
-                                    self.isKeyboardToolbarHidden = false
-                                    self.commentTableView.beginUpdates()
-                                    cell.completeEditing()
-                                    self.commentTableView.endUpdates()
-                                    self.commentTableView.scrollToRow(at: .init(row: row, section: 0), at: .bottom, animated: true)
-                                    cell.updateButton.hideIndicator()
-                                    StateManager.of.comment.dispatch(.init(data: comment, operation: .edit))
-                                }
+                                // workaround
+                                var updatedComment = comment
+                                updatedComment.content = cell.bubbleTextView.text
+                                
+                                self.isKeyboardToolbarHidden = false
+                                self.commentTableView.beginUpdates()
+                                cell.completeEditing()
+                                self.commentTableView.endUpdates()
+                                self.commentTableView.scrollToRow(at: .init(row: row, section: 0), at: .bottom, animated: true)
+                                cell.updateButton.hideIndicator()
+                                
+                                StateManager.of.comment.dispatch(.init(data: updatedComment, operation: .edit))
                             }
                             .disposed(by: cell.disposeBag)
                     }.disposed(by: cell.disposeBag)

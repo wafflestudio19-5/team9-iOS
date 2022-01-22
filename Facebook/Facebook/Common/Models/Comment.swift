@@ -13,7 +13,7 @@ struct Comment: Codable, Identifiable {
     let id: Int
     var post_id: Int?
     let author: User
-    let content: String
+    var content: String
     let file: String?
     var likes: Int
     let children_count: Int?
