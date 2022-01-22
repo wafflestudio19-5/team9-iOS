@@ -90,7 +90,6 @@ class PostDetailHeaderView: UIStackView {
         contentLabel.text = post.content
         authorHeaderView.configure(with: post)
         
-        // TODO: duplicated lines
         imageGridCollectionView.numberOfImages = post.subposts!.count
         imageGridCollectionView.dataSource = nil
         Observable.just(post.subpostUrls.prefix(5))

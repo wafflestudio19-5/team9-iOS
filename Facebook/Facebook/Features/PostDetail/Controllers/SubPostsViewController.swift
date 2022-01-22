@@ -31,8 +31,8 @@ class SubPostsViewController: UIViewController {
         return subPostsView.subpostsTableView
     }
     
-    var mainPostCell: PostCell {
-        return subPostsView.postCell
+    var mainPostView: PostContentView {
+        return subPostsView.mainPostHeader
     }
     
     init(post: Post) {
@@ -82,14 +82,14 @@ class SubPostsViewController: UIViewController {
         
         subpostsDataSource
             .bind(to: tableView.rx.items(cellIdentifier: SubPostCell.reuseIdentifier, cellType: SubPostCell.self)) { row, post, cell in
-                cell.configureCell(with: post)
-                
+                cell.configure(with: post)
+
                 // 좋아요 버튼 바인딩
-                cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
-                    cell.like()
+                cell.postContentView.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
+                    cell.postContentView.like()
                     NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
                         .bind { response in
-                            cell.like(syncWith: response.1)
+                            cell.postContentView.like(syncWith: response.1)
                         }
                         .disposed(by: cell.refreshingBag)
                 }.disposed(by: cell.refreshingBag)
@@ -106,15 +106,15 @@ class SubPostsViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        mainPostCell.likeButton.rx.tap
+        mainPostView.likeButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                self.mainPostCell.like()
+                self.mainPostView.like()
                 NetworkService.put(endpoint: .newsfeedLike(postId: self.post.id), as: LikeResponse.self)
                     .bind { response in
-                        self.mainPostCell.like(syncWith: response.1)
+                        self.mainPostView.like(syncWith: response.1)
                     }
-                    .disposed(by: self.mainPostCell.refreshingBag)
+                    .disposed(by: self.disposeBag)
             }
             .disposed(by: disposeBag)
     }
@@ -126,7 +126,6 @@ class SubPostsViewController: UIViewController {
         }
         
         let prefetcher = ImagePrefetcher(urls: urls, options: [.processor(KFProcessors.shared.downsampling), .diskCacheExpiration(.never)]) { skippedResources, failedResources, completedResources in
-            print("completed", completedResources.count)
             self.isPrefetching.accept(false)
             self.subpostsDataSource.accept(self.post.subposts ?? [])
         }

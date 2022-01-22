@@ -130,44 +130,44 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
 }
 
 extension UIViewController {
-    func pushToDetailVC(cell: PostCell, asFirstResponder: Bool) {
-        let detailVC = PostDetailViewController(post: cell.post, asFirstResponder: asFirstResponder)
+    func pushToDetailVC(cell: PostCell<PostContentView>, asFirstResponder: Bool) {
+        let detailVC = PostDetailViewController(post: cell.postContentView.post, asFirstResponder: asFirstResponder)
         self.push(viewController: detailVC)
     }
     
     /// PostCell Configuration Logic
-    func configure(cell: PostCell, with post: Post) {
-        cell.configureCell(with: post)
+    func configure(cell: PostCell<PostContentView>, with post: Post) {
+        cell.configure(with: post)
         
         // 좋아요 버튼 바인딩
-        cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
-            cell.like()
+        cell.postContentView.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
+            cell.postContentView.like()
             NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
                 .bind { response in
-                    cell.like(syncWith: response.1)
+                    cell.postContentView.like(syncWith: response.1)
                 }
                 .disposed(by: cell.refreshingBag)
         }.disposed(by: cell.refreshingBag)
         
         // 이미지 그리드 터치 제스쳐 등록
-        cell.imageGridCollectionView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+        cell.postContentView.imageGridCollectionView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
             .when(.recognized)
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                let subpostVC = SubPostsViewController(post: cell.post)
+                let subpostVC = SubPostsViewController(post: cell.postContentView.post)
                 self.push(viewController: subpostVC)
             }
             .disposed(by: cell.refreshingBag)
         
         // 댓글 버튼 터치 시 디테일 화면으로 이동
-        cell.buttonHorizontalStackView.commentButton.rx.tap
+        cell.postContentView.buttonHorizontalStackView.commentButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
                 self?.pushToDetailVC(cell: cell, asFirstResponder: true)
             }.disposed(by: cell.refreshingBag)
         
-        let authorNameTapped = cell.postHeader.authorNameLabel.rx.tapGesture().when(.recognized)  // not working...
-        let profileImageTapped = cell.postHeader.profileImageView.rx.tapGesture().when(.recognized)
+        let authorNameTapped = cell.postContentView.postHeader.authorNameLabel.rx.tapGesture().when(.recognized)  // not working...
+        let profileImageTapped = cell.postContentView.postHeader.profileImageView.rx.tapGesture().when(.recognized)
         Observable.of(profileImageTapped, authorNameTapped)
             .merge()
             .bind { [weak self] _ in
@@ -177,7 +177,7 @@ extension UIViewController {
             .disposed(by: cell.refreshingBag)
         
         // 댓글 수 클릭시 디테일 화면으로 이동
-        cell.commentCountButton.rx.tap
+        cell.postContentView.commentCountButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
                 self?.pushToDetailVC(cell: cell, asFirstResponder: false)

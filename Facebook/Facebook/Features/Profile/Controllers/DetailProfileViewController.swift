@@ -120,7 +120,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         case let .PostItem(post):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
             
-            cell.configureCell(with: post)
+            cell.configure(with: post)
             return cell
         default:
             let cell = UITableViewCell()
