@@ -35,7 +35,7 @@ class BottomSheetView: UIView {
     
     let bottomSheetTableView = UITableView()
     
-    var contentViewHeightConstraint: NSLayoutConstraint!
+    var bottomSheetViewTopConstraint: NSLayoutConstraint!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,9 +54,8 @@ class BottomSheetView: UIView {
         }
         
         self.addSubview(contentView)
-        contentViewHeightConstraint = contentView.heightAnchor.constraint(equalToConstant: 0)
-        contentViewHeightConstraint.isActive = true
-        
+        bottomSheetViewTopConstraint = contentView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: UIScreen.main.bounds.height)
+        bottomSheetViewTopConstraint.isActive = true
         contentView.snp.makeConstraints { make in
             make.bottom.left.right.equalToSuperview()
         }

@@ -54,9 +54,11 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
                 
                 cell.menuButton.rx.tap.bind { [weak self] in
                     //self?.showAlertFriendMenu(friend: friend)
-                    let bottomSheetVC = BottomSheetViewController()
+                    guard let self = self else { return }
+                    let menuList = self.createMenuList(friend: friend)
+                    let bottomSheetVC = BottomSheetViewController(menuList: menuList)
                     bottomSheetVC.modalPresentationStyle = .overFullScreen
-                    self?.present(bottomSheetVC, animated: false, completion: nil)
+                    self.present(bottomSheetVC, animated: false, completion: nil)
                 }.disposed(by: cell.refreshingBag)
             }
             .disposed(by: disposeBag)
@@ -140,6 +142,23 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
 }
 
 extension ShowFriendViewController {
+    func createMenuList(friend: User) -> [Menu] {
+        let menuList = [ Menu(image: UIImage(systemName: "person.2.fill") ?? UIImage(),
+                              text: friend.username + "님의 친구 보기", action: {
+            let showFriendVC = ShowFriendViewController(userId: friend.id)
+            self.push(viewController: showFriendVC)
+        }),
+                         Menu(image: UIImage(systemName: "person.fill.xmark") ?? UIImage(),
+                              text: friend.username + "님과 친구 끊기", action: {
+            self.deleleFriend(friend: friend)
+        })]
+        
+        return menuList
+    }
+}
+
+
+extension ShowFriendViewController {
     func showAlertFriendMenu(friend: User) {
         let alertMenu = UIAlertController(title: "친구 관리", message: "", preferredStyle: .actionSheet)
         let showFriendsAction = UIAlertAction(title: friend.username + "님의 친구 보기", style: .default) { action in
@@ -150,7 +169,7 @@ extension ShowFriendViewController {
         showFriendsAction.setValue(UIImage(systemName: "person.3.fill"), forKey: "image")
         
         let deleteFriendAction = UIAlertAction(title: "친구 끊기", style: .default, handler: { action in
-            self.deleleFriend(name: friend.username)
+            self.deleleFriend(friend: friend)
         })
         deleteFriendAction.setValue(0, forKey: "titleTextAlignment")
         deleteFriendAction.setValue(UIImage(systemName: "person.fill.xmark")!, forKey: "image")
@@ -164,12 +183,12 @@ extension ShowFriendViewController {
         self.present(alertMenu, animated: true, completion: nil)
     }
     
-    func deleleFriend(name: String) {
-        let alert = UIAlertController(title: name + "님을 친구에서 삭제하시겠어요?", message: "",
+    func deleleFriend(friend: User) {
+        let alert = UIAlertController(title: friend.username + "님을 친구에서 삭제하시겠어요?", message: "",
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "취소", style: .cancel))
         let deleteAction = UIAlertAction(title: "확인", style: .default) { action in
-            NetworkService.delete(endpoint: .friend(friendId: self.userId))
+            NetworkService.delete(endpoint: .friend(friendId: friend.id))
                 .subscribe { [weak self] event in
                     guard let self = self else { return }
                     

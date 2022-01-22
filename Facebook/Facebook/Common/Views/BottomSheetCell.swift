@@ -13,38 +13,42 @@ class BottomSheetCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell() {
-        image.image = UIImage(systemName: "person.crop.circle.fill.badge.xmark")
-        label.text = "이 친구 차단"
+    func configureCell(image: UIImage, text: String) {
+        image.applyingSymbolConfiguration(UIImage.SymbolConfiguration(scale: .large))
+        imgView.image = image
+        label.text = text
     }
     
     private func setLayout() {
-        addSubview(image)
-        image.snp.remakeConstraints { make in
-            make.height.width.equalTo(30)
+        contentView.addSubview(imgView)
+        imgView.snp.remakeConstraints { make in
+            make.height.width.equalTo(40)
             make.centerY.equalToSuperview()
             make.left.equalToSuperview().inset(15)
-            make.top.bottom.equalToSuperview().inset(5)
+            make.top.bottom.equalToSuperview().inset(10)
         }
         
-        addSubview(label)
+        contentView.addSubview(label)
         label.snp.remakeConstraints { make in
             make.centerY.equalToSuperview()
-            make.left.equalTo(image.snp.right).offset(15)
+            make.left.equalTo(imgView.snp.right).offset(15)
         }
     }
     
-    let image: UIImageView = {
+    let imgView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .black
-        imageView.tintColor = .systemGray4
+        imageView.backgroundColor = .systemGray4
+        imageView.tintColor = .black
         imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 20
+        imageView.contentMode = .center
         
         return imageView
     }()
