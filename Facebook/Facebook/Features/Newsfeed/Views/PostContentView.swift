@@ -81,7 +81,7 @@ class PostContentView: UIView {
         
         if post.is_sharing ?? false {
             sharedPostView.isHidden = false
-            sharedPostView.configure(with: post.postToShare)
+            sharedPostView.configure(with: post.postToShare)  // recursive call!
             sharedPostView.snp.remakeConstraints { make in
                 make.top.equalTo(imageGridCollectionView.snp.bottom).offset(CGFloat.standardTopMargin)
                 make.leading.trailing.equalTo(0).inset(10)
@@ -120,14 +120,16 @@ class PostContentView: UIView {
         
         self.addSubview(imageGridCollectionView)
         imageGridCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(textContentLabel.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.top.equalTo(textContentLabel.snp.bottom)
             make.leading.trailing.equalTo(self)
         }
         
         self.addSubview(sharedPostView)
+        sharedPostView.isHidden = true
         sharedPostView.snp.remakeConstraints { make in
-            make.top.equalTo(imageGridCollectionView.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.top.equalTo(imageGridCollectionView.snp.bottom)
             make.leading.trailing.equalTo(0).inset(10)
+            make.height.equalTo(0)
         }
         
         self.addSubview(statHorizontalStackView)
