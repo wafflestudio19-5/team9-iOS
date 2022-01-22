@@ -171,53 +171,36 @@ class DateSelectTableViewCell: UITableViewCell {
     
     private func setLayout() {
         self.contentView.addSubview(dateKindLabel)
-        dateKindLabel.translatesAutoresizingMaskIntoConstraints = false
-            
-        NSLayoutConstraint.activate([
-            dateKindLabel.heightAnchor.constraint(equalToConstant: 15),
-            dateKindLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-            dateKindLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10)
-        ])
+        dateKindLabel.snp.remakeConstraints { make in
+            make.height.equalTo(15).priority(999)
+            make.top.left.equalToSuperview().inset(10)
+        }
         
         self.contentView.addSubview(addDateLabel)
-        addDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            addDateLabel.heightAnchor.constraint(equalToConstant: 25),
-            addDateLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            addDateLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
-        ])
+        addDateLabel.snp.remakeConstraints { make in
+            make.height.equalTo(25).priority(999)
+            make.bottom.left.equalToSuperview().inset(10)
+        }
         
         self.contentView.addSubview(yearTextField)
-        yearTextField.translatesAutoresizingMaskIntoConstraints = false
-            
-        NSLayoutConstraint.activate([
-            yearTextField.heightAnchor.constraint(equalToConstant: 25),
-            //yearTextField.widthAnchor.constraint(equalToConstant: 60),
-            yearTextField.topAnchor.constraint(equalTo: dateKindLabel.bottomAnchor, constant: 10),
-            yearTextField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            yearTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
-        ])
+        yearTextField.snp.remakeConstraints { make in
+            make.height.equalTo(25).priority(999)
+            make.top.bottom.left.equalToSuperview().inset(10)
+        }
         
         self.contentView.addSubview(monthTextField)
-        monthTextField.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            monthTextField.heightAnchor.constraint(equalToConstant: 25),
-            //monthTextField.widthAnchor.constraint(equalToConstant: 60),
-            monthTextField.leadingAnchor.constraint(equalTo: yearTextField.trailingAnchor, constant: 10),
-            monthTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
-        ])
+        monthTextField.snp.remakeConstraints { make in
+            make.height.equalTo(25).priority(999)
+            make.bottom.equalToSuperview().inset(10)
+            make.left.equalTo(yearTextField.snp.right).offset(10)
+        }
         
         self.contentView.addSubview(dayTextField)
-        dayTextField.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            dayTextField.heightAnchor.constraint(equalToConstant: 25),
-            //dayTextField.widthAnchor.constraint(equalToConstant: 60),
-            dayTextField.leadingAnchor.constraint(equalTo: monthTextField.trailingAnchor, constant: 10),
-            dayTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
-        ])
+        dayTextField.snp.remakeConstraints { make in
+            make.height.equalTo(25).priority(999)
+            make.bottom.equalToSuperview().inset(10)
+            make.left.equalTo(monthTextField.snp.right).offset(10)
+        }
     }
     
     //현재 날짜를 기준으로 PickerView의 데이터를 설정

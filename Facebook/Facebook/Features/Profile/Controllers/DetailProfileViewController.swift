@@ -217,9 +217,10 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                     .DetailInformationItem(style: .style2,
                                            image: UIImage(systemName: "gift.circle")!,
                                            information:
+                                            (userProfile.birth != "") ?
                                             String(userProfile.birth.split(separator: "-")[0]) + "년 " +
                                             String(userProfile.birth.split(separator: "-")[1]) + "월 " +
-                                            String(userProfile.birth.split(separator: "-")[2]) + "일 ",
+                                           String(userProfile.birth.split(separator: "-")[2]) + "일 " : "",
                                            description: "생일",
                                            privacyBound: "회원님의 친구의 친구")
                 ])

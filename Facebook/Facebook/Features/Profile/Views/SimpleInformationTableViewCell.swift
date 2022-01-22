@@ -114,7 +114,7 @@ class SimpleInformationTableViewCell: UITableViewCell {
         case .style3:
             contentView.addSubview(informationImage)
             informationImage.snp.remakeConstraints { make in
-                make.height.width.equalTo(35)
+                make.height.width.equalTo(35).priority(999)
                 make.centerY.equalTo(contentView)
                 make.top.bottom.equalTo(contentView).inset(10)
                 make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
@@ -128,7 +128,7 @@ class SimpleInformationTableViewCell: UITableViewCell {
         case .style4:
             contentView.addSubview(informationImage)
             informationImage.snp.remakeConstraints { make in
-                make.height.width.equalTo(35)
+                make.height.width.equalTo(35).priority(999)
                 make.centerY.equalTo(contentView)
                 make.top.bottom.equalTo(contentView).inset(10)
                 make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)

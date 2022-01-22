@@ -420,14 +420,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                guard let bottomConstraint = self.addInformationView.bottomConstraint else { return }
 
-                if keyboardVisibleHeight == 0 {
-                    bottomConstraint.constant = 0
-                } else {
-                    let height = keyboardVisibleHeight - self.view.safeAreaInsets.bottom
-                    bottomConstraint.constant = -height
+                self.addInformationView.footerView.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardVisibleHeight + (keyboardVisibleHeight == 0 ? 0 : 85 ))
                 }
+                
                 self.addInformationView.layoutIfNeeded()
             }).disposed(by: disposeBag)
         
