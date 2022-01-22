@@ -65,11 +65,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         tabView.mainTableHeaderView.createPostButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
-                guard let self = self else { return }
-                let createPostViewController = CreatePostViewController()
-                let navigationController = UINavigationController(rootViewController: createPostViewController)
-                navigationController.modalPresentationStyle = .fullScreen
-                self.present(navigationController, animated: true, completion: nil)
+                self?.presentCreatePostVC()
             }
             .disposed(by: disposeBag)
         
@@ -135,6 +131,13 @@ extension UIViewController {
         self.push(viewController: detailVC)
     }
     
+    func presentCreatePostVC(sharing post: Post? = nil) {
+        let createPostViewController = CreatePostViewController(sharing: post)
+        let navigationController = UINavigationController(rootViewController: createPostViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
     /// PostCell Configuration Logic
     func configure(cell: PostCell<PostContentView>, with post: Post) {
         cell.configure(with: post)
@@ -164,6 +167,12 @@ extension UIViewController {
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
                 self?.pushToDetailVC(cell: cell, asFirstResponder: true)
+            }.disposed(by: cell.refreshingBag)
+        
+        cell.postContentView.buttonHorizontalStackView.shareButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] _ in
+                self?.presentCreatePostVC(sharing: cell.postContentView.post)
             }.disposed(by: cell.refreshingBag)
         
         let authorNameTapped = cell.postContentView.postHeader.authorNameLabel.rx.tapGesture().when(.recognized)  // not working...

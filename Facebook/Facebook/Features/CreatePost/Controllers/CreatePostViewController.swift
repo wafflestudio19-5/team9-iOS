@@ -15,9 +15,15 @@ import RxKeyboard
 class CreatePostViewController: UIViewController {
     let disposeBag = DisposeBag()
     private let pickerViewModel = PHPickerViewModel()
+    private var postToShare: Post?
+    
+    convenience init(sharing post: Post?) {
+        self.init(nibName: nil, bundle: nil)
+        self.postToShare = post
+    }
     
     override func loadView() {
-        view = CreatePostView()
+        view = CreatePostView(sharing: postToShare)
     }
     
     var createPostView: CreatePostView {

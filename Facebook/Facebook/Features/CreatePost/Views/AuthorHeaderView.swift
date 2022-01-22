@@ -70,7 +70,7 @@ class CreateHeaderView: UIView {
     
     private var scopeMenues: [UIAction] {
         return Scope.allCases.map { scope in
-            return UIAction(title: scope.text, image: scope.getImage(fill: false), handler: { _ in
+            return UIAction(title: scope.text, image: scope.getImage(fill: false, color: .label), handler: { _ in
                 self.selectedScope = scope
             })
         }

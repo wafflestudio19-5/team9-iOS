@@ -29,8 +29,7 @@ class PostContentView: UIView {
         super.init(frame: frame)
         self.frame.size.width = UIScreen.main.bounds.width  // important for initial layout
         self.backgroundColor = .systemBackground
-        setUpperLayout()
-        setLowerLayout()
+        setLayout()
     }
     
     required init?(coder: NSCoder) {
@@ -78,6 +77,11 @@ class PostContentView: UIView {
     }
     
     // MARK: AutoLayout Constraints
+    
+    func setLayout() {
+        setUpperLayout()
+        setLowerLayout()
+    }
     
     func setUpperLayout() {
         self.addSubview(postHeader)
@@ -129,7 +133,7 @@ class PostContentView: UIView {
     // MARK: Initialize View Components
     
     // 이미지 그리드 뷰
-    let imageGridCollectionView = ImageGridCollectionView()
+    lazy var imageGridCollectionView = ImageGridCollectionView()
     
     // 포스트 헤더 (프로필 이미지, 작성자, 날짜, 각종 버튼이 들어가는 곳)
     let postHeader = AuthorInfoHeaderView()
