@@ -111,13 +111,14 @@ class CreatePostView: UIView {
         return button
     }()
     
-    let photosButton: UIButton = {
+    lazy var photosButton: UIButton = {
         var config = UIButton.Configuration.tinted()
         config.image = UIImage(systemName: "photo.on.rectangle.angled")
         config.cornerStyle = .capsule
         
         let button = UIButton()
         button.configuration = config
+        button.isEnabled = !isSharing
         return button
     }()
 }
