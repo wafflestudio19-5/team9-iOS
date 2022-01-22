@@ -17,7 +17,7 @@ class BottomSheetView: UIView {
     
     private let dragIndicatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemGray4
         view.layer.cornerRadius = 3
         
         return view
@@ -39,6 +39,7 @@ class BottomSheetView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        bottomSheetTableView.backgroundColor = .white
         setLayoutForView()
         configureTableView()
     }
@@ -62,15 +63,16 @@ class BottomSheetView: UIView {
          
         contentView.addSubview(bottomSheetTableView)
         bottomSheetTableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalToSuperview().inset(15)
+            make.bottom.left.right.equalToSuperview()
         }
         
-        self.addSubview(dragIndicatorView)
+        contentView.addSubview(dragIndicatorView)
         dragIndicatorView.snp.makeConstraints { make in
             make.width.equalTo(60)
             make.height.equalTo(dragIndicatorView.layer.cornerRadius * 2)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(contentView.snp.top).inset(-10)
+            make.top.equalToSuperview().inset(5)
         }
     }
     

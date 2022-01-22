@@ -46,7 +46,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     init(menuList: [Menu]) {
         super.init(nibName: nil, bundle: nil)
         self.menuBR.accept(menuList)
-        contentViewHeight = CGFloat(menuBR.value.count * 60 + 10)
+        contentViewHeight = CGFloat(menuBR.value.count * 60 + 15)
     }
     
     required init?(coder: NSCoder) {
@@ -81,7 +81,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     private func hideBottomSheet(afterAction: (() -> ())? = nil) {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
-        bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight + bottomPadding
+        bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
             self.bottomSheetView.dimmedView.alpha = 0.0
@@ -128,7 +128,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
                 let velocity = recognizer.velocity(in: self.view)
                 
                 //빠르게 아래로 스와이프 시 뷰 dismiss
-                if velocity.y > 1500 {
+                if velocity.y > 5000 {
                     self.hideBottomSheet()
                     return
                 }
@@ -150,11 +150,9 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
                         
                 let defaultPadding = safeAreaHeight - self.contentViewHeight
                         
-                let nearestValue = self.nearest(to: self.bottomSheetView.bottomSheetViewTopConstraint.constant, inValues: [self.bottomSheetPanMinTopConstant, defaultPadding, safeAreaHeight + bottomPadding])
+                let nearestValue = self.nearest(to: self.bottomSheetView.bottomSheetViewTopConstraint.constant, inValues: [defaultPadding, safeAreaHeight + bottomPadding])
                         
-                if nearestValue == self.bottomSheetPanMinTopConstant {
-                    self.showBottomSheet(atState: .expanded)
-                } else if nearestValue == defaultPadding {
+                if nearestValue == defaultPadding {
                     self.showBottomSheet(atState: .normal)
                 } else {
                     self.hideBottomSheet()
