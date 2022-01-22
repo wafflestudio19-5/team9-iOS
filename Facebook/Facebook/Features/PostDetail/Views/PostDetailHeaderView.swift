@@ -118,13 +118,8 @@ class PostDetailHeaderView: UIStackView {
         self.addArrangedSubview(loadButtonHStack)
         self.addArrangedSubview(spinner)
         
-        let stretchHorizontal = { (make: ConstraintMaker) -> Void in
-            make.leading.equalTo(CGFloat.standardLeadingMargin)
-            make.trailing.equalTo(CGFloat.standardTrailingMargin)
-        }
-        
         contentLabel.snp.makeConstraints { make in
-            stretchHorizontal(make)
+            make.leading.trailing.equalToSuperview().inset(CGFloat.standardLeadingMargin)
         }
         
         imageGridCollectionView.snp.makeConstraints { make in
@@ -132,17 +127,16 @@ class PostDetailHeaderView: UIStackView {
         }
         
         buttonStackView.snp.makeConstraints { make in
-            stretchHorizontal(make)
+            make.leading.trailing.equalToSuperview().inset(10)
             make.height.equalTo(CGFloat.buttonGroupHeight)
         }
         
         likeCountLabelWithIcon.snp.makeConstraints { make in
-            stretchHorizontal(make)
+            make.leading.trailing.equalToSuperview().inset(CGFloat.standardLeadingMargin)
         }
         
         loadButtonHStack.snp.makeConstraints { make in
-            make.leading.equalTo(10)
-            make.trailing.equalTo(-10)
+            make.leading.trailing.equalToSuperview().inset(10)
         }
         
         spinner.snp.makeConstraints { make in

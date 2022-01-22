@@ -92,54 +92,45 @@ class PostCell: UITableViewCell {
     
     func setLayout() {
         contentView.addSubview(postHeader)
-        NSLayoutConstraint.activate([
-            postHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin - 3),
-            postHeader.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
-            postHeader.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .standardTopMargin),
-            postHeader.heightAnchor.constraint(equalToConstant: .profileImageSize),
-        ])
+        postHeader.snp.makeConstraints { make in
+            make.leading.equalTo(contentView).offset(CGFloat.standardLeadingMargin - 3)
+            make.trailing.equalTo(contentView).offset(CGFloat.standardTrailingMargin)
+            make.top.equalTo(contentView).offset(CGFloat.standardTopMargin)
+            make.height.equalTo(CGFloat.profileImageSize)
+        }
         
         contentView.addSubview(textContentLabel)
-        NSLayoutConstraint.activate([
-            textContentLabel.topAnchor.constraint(equalTo: postHeader.bottomAnchor, constant: .standardTopMargin),
-            textContentLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
-            textContentLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
-        ])
+        textContentLabel.snp.makeConstraints { make in
+            make.top.equalTo(postHeader.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.leading.trailing.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+        }
         
         contentView.addSubview(imageGridCollectionView)
-        NSLayoutConstraint.activate([
-            imageGridCollectionView.topAnchor.constraint(equalTo: textContentLabel.bottomAnchor, constant: .standardTopMargin),
-            imageGridCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageGridCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-        ])
+        imageGridCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(textContentLabel.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.leading.trailing.equalTo(contentView)
+        }
         
         contentView.addSubview(statHorizontalStackView)
-        NSLayoutConstraint.activate([
-            statHorizontalStackView.topAnchor.constraint(equalTo: imageGridCollectionView.bottomAnchor, constant: .standardTopMargin),
-            statHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
-            statHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
-            statHorizontalStackView.heightAnchor.constraint(equalToConstant: 20)
-        ])
+        statHorizontalStackView.snp.makeConstraints { make in
+            make.top.equalTo(imageGridCollectionView.snp.bottom).offset(CGFloat.standardTopMargin)
+            make.leading.trailing.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+            make.height.equalTo(20)
+        }
         
         contentView.addSubview(buttonHorizontalStackView)
+        buttonHorizontalStackView.snp.makeConstraints { make in
+            make.top.equalTo(statHorizontalStackView.snp.bottom).offset(CGFloat.standardTopMargin).priority(.high)
+            make.leading.trailing.equalTo(contentView).inset(10)
+            make.height.equalTo(CGFloat.buttonGroupHeight)
+        }
+        
         contentView.addSubview(divider)
-        let top = buttonHorizontalStackView.topAnchor.constraint(equalTo: statHorizontalStackView.bottomAnchor, constant: .standardTopMargin)
-        top.priority = .defaultHigh
-        NSLayoutConstraint.activate([
-            top,
-            buttonHorizontalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .standardLeadingMargin),
-            buttonHorizontalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: .standardTrailingMargin),
-            buttonHorizontalStackView.heightAnchor.constraint(equalToConstant: .buttonGroupHeight)
-        ])
-        
-        
-        NSLayoutConstraint.activate([
-            divider.topAnchor.constraint(equalTo: buttonHorizontalStackView.bottomAnchor),
-            divider.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-            divider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 5),
-        ])
+        divider.snp.makeConstraints { make in
+            make.top.equalTo(buttonHorizontalStackView.snp.bottom)
+            make.bottom.leading.trailing.equalTo(contentView)
+            make.height.equalTo(5)
+        }
     }
     
     // MARK: Initialize View Components
