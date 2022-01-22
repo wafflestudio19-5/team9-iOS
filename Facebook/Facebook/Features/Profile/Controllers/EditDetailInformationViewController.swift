@@ -43,10 +43,6 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
                                description: "",
                                privacyBound: "")
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                cell.toggleIndicate()
-            }).disposed(by: cell.disposeBag)
-            
             cell.editButton.rx.tap.bind { [weak self] in
                 let addInformationViewController = AddInformationViewController(informationType: .company, id: company.id ?? nil)
                 self?.push(viewController: addInformationViewController)
@@ -62,10 +58,6 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
                                time: "",
                                description: "",
                                privacyBound: "")
-            
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                cell.toggleIndicate()
-            }).disposed(by: cell.disposeBag)
             
             cell.editButton.rx.tap.bind { [weak self] in
                 let addInformationViewController = AddInformationViewController(informationType: .university, id: university.id ?? nil)

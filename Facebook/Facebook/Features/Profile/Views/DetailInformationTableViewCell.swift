@@ -24,8 +24,6 @@ class DetailInformationTableViewCell: UITableViewCell {
     
     var cellStyle: Style = .style1
     
-    lazy var isIndicate = true
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.frame.size.width = UIScreen.main.bounds.width // important for initial layout
@@ -80,9 +78,7 @@ class DetailInformationTableViewCell: UITableViewCell {
         case .style4:
             informationImage.image = UIImage(systemName: "checkmark.square.fill")
             informationLabel.text = information
-            descriptionLabel.text = "소개에 표시되지 않으며 전체 공개가 유지됩니다"
             editButton.setImage(UIImage(systemName: "pencil.circle.fill"), for: .normal)
-            isIndicate = true
         }
     }
     
@@ -216,21 +212,6 @@ class DetailInformationTableViewCell: UITableViewCell {
                 make.centerY.equalTo(contentView)
                 make.trailing.equalTo(contentView).inset(15)
             }
-        }
-    }
-    
-    func toggleIndicate() {
-        if isIndicate {
-            informationImage.image = UIImage(systemName: "square")!
-            informationImage.tintColor = .darkGray
-            labelStackView.addArrangedSubview(descriptionLabel)
-            isIndicate = false
-        } else {
-            informationImage.image = UIImage(systemName: "checkmark.square.fill")!
-            informationImage.tintColor = .systemBlue
-            labelStackView.removeArrangedSubview(descriptionLabel)
-            descriptionLabel.removeFromSuperview()
-            isIndicate = true
         }
     }
 
