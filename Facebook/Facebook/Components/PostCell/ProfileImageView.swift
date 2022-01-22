@@ -24,7 +24,7 @@ class ProfileImageView: UIView {
         self.layer.cornerRadius = self.frame.width
         self.backgroundColor = .grayscales.bubbleFocused
         
-        setImage(from: nil)
+        setImage(from: nil as URL?)
     }
     
     override func layoutSubviews() {
@@ -45,6 +45,10 @@ class ProfileImageView: UIView {
         self.init(frame: .zero)
     }
     
+    func setImage(from string: String?) {
+        self.setImage(from: URL(string: string ?? ""))
+    }
+    
     func setImage(from url: URL?) {
         guard let url = url else {
             imageView.image = UIImage(systemName: "person.fill")
@@ -57,9 +61,8 @@ class ProfileImageView: UIView {
         imageView.snp.remakeConstraints { make in
             make.edges.equalTo(0)
         }
-        let processor = DownsamplingImageProcessor(size: CGSize(width: 400, height: 400))
         KF.url(url)
-          .setProcessor(processor)
+          .setProcessor(KFProcessors.shared.downsampling)
           .loadDiskFileSynchronously()
           .cacheMemoryOnly()
           .fade(duration: 0.1)

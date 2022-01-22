@@ -11,7 +11,7 @@ class EnterEmailView: BaseSignUpView {
 
     let emailTextField = FacebookTextField(placeholderText: "이메일 주소")
 
-    let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: FacebookColor.blue.color())
+    let nextButton = RectangularSlimButton(title: "다음", titleColor: .white, backgroundColor: .tintColors.blue)
     
     init() {
         super.init(title: "이메일 주소를 입력하세요", instruction: "회원님에게 연락할 수 있는 이메일 주소를 입력하세요. 나중에 프로필에서 이 정보를 숨길 수 있습니다.")

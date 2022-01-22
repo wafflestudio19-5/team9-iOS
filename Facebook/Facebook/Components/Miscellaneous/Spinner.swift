@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class Spinner: UIView {
 
@@ -21,5 +22,36 @@ class Spinner: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// 짧은 안내 메시지를 위한 spinner + 메시지 형태의 alert입니다
+struct AlertWithSpinner {
+    
+    private let alert: UIAlertController
+    private let spinner = UIActivityIndicatorView()
+    
+    init(message: String) {
+        alert = UIAlertController(title: nil,
+                                      message: message,
+                                      preferredStyle: .alert)
+        spinner.style = .medium
+        spinner.startAnimating()
+        spinner.hidesWhenStopped = true
+        alert.view.addSubview(spinner)
+        spinner.snp.makeConstraints { make in
+            make.centerY.equalTo(alert.view)
+            make.leading.equalTo(alert.view.safeAreaLayoutGuide).inset(25)
+        }
+    }
+    
+    func startSpinner(viewController: UIViewController) {
+        viewController.present(self.alert, animated: true)
+        spinner.startAnimating()
+    }
+    
+    func stopSpinner() {
+        spinner.stopAnimating()
+        alert.dismiss(animated: true)
     }
 }

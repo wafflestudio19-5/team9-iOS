@@ -14,7 +14,7 @@ class PaginationViewModel<DataModel: Codable> {
     /// 앱 내에서 Infinite Scrolling이 필요한 경우가 많을 것으로 예상되어, 해당 로직을 재사용할 수 있도록 `ViewModel`로 작성했습니다..
     
     private let disposeBag = DisposeBag()
-    private var endpoint: Endpoint
+    var endpoint: Endpoint
     
     private var lastResponse: PaginatedResponse<DataModel>?
     private var hasNext: Bool {
@@ -39,6 +39,7 @@ class PaginationViewModel<DataModel: Codable> {
     let isRefreshing = BehaviorRelay<Bool>(value: false)
     let refreshComplete = PublishRelay<Bool>()
     let hasNextObservable = BehaviorRelay<Bool>(value: false)
+    var loadOnInit: Bool { true }
     
     private var isFetchingData: Bool {
         return isLoading.value || isRefreshing.value
@@ -47,7 +48,9 @@ class PaginationViewModel<DataModel: Codable> {
     init(endpoint: Endpoint) {
         self.endpoint = endpoint
         self.bind()
-        self.loadMore()
+        if loadOnInit {
+            self.loadMore()
+        }
     }
     
     func loadMore() {

@@ -13,7 +13,6 @@ class CreatePostView: UIView {
     let placeholder = "무슨 생각을 하고 계신가요?"
     let imageGridCollectionView = ImageGridCollectionView()
     private let disposeBag = DisposeBag()
-    var scrollViewBottomConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,12 +33,9 @@ class CreatePostView: UIView {
     /// `stackView`에는 `authorHeader`, `contentTextView`, `imageGridCollectionView`가 포함된다.
     
     private func setLayoutForView() {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.keyboardDismissMode = .interactive
         
         let scrollViewStack = UIStackView()
-        scrollViewStack.translatesAutoresizingMaskIntoConstraints = false
         scrollViewStack.axis = .vertical
         scrollViewStack.addArrangedSubview(contentTextView)
         scrollViewStack.addArrangedSubview(imageGridCollectionView)
@@ -47,40 +43,39 @@ class CreatePostView: UIView {
         self.addSubview(scrollView)
         scrollView.addSubview(scrollViewStack)
         
-        scrollViewBottomConstraint = scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        scrollViewBottomConstraint?.priority = .defaultHigh
-        NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: self.topAnchor),
-            scrollViewBottomConstraint!,
-        ])
-        NSLayoutConstraint.activateFourWayConstraints(subview: scrollViewStack, containerView: scrollView)
-        NSLayoutConstraint.activate([
-            scrollViewStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
+        scrollView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(0)
+            make.bottom.equalTo(0).priority(.high)
+        }
+        
+        scrollViewStack.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView)
+            make.width.equalTo(scrollView)
+        }
     }
     
     // MARK: UI Components
+    
+    let scrollView = UIScrollView()
     
     lazy var keyboardAccessory: UIView = {
         let divider = Divider()
         let customInputView = CustomInputAccessoryView()
         customInputView.addSubview(photosButton)
         customInputView.addSubview(divider)
-        NSLayoutConstraint.activate([
-            photosButton.topAnchor.constraint(equalTo: customInputView.topAnchor, constant: 8),
-            photosButton.bottomAnchor.constraint(equalTo: customInputView.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            photosButton.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor, constant: .standardLeadingMargin),
-            photosButton.widthAnchor.constraint(equalToConstant: 50),
-            photosButton.heightAnchor.constraint(equalToConstant: 35),
-            
-            divider.leadingAnchor.constraint(equalTo: customInputView.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: customInputView.trailingAnchor),
-            divider.topAnchor.constraint(equalTo: customInputView.topAnchor),
-            divider.heightAnchor.constraint(equalToConstant: 1)
-            
-        ])
+        
+        photosButton.snp.makeConstraints { make in
+            make.width.equalTo(50)
+            make.height.equalTo(35)
+            make.top.bottom.equalTo(customInputView.safeAreaLayoutGuide).inset(8)
+            make.leading.equalTo(customInputView).inset(CGFloat.standardLeadingMargin)
+        }
+        
+        divider.snp.makeConstraints { make in
+            make.leading.trailing.top.equalTo(customInputView)
+            make.height.equalTo(1)
+        }
+
         return customInputView
     }()
     
@@ -108,7 +103,6 @@ class CreatePostView: UIView {
         config.cornerStyle = .capsule
         
         let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
         button.configuration = config
         return button
     }()

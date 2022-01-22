@@ -44,10 +44,14 @@ class MainProfileTableViewCell: UITableViewCell {
         
         if profileImageUrl != "" {
             loadProfileImage(from: URL(string: profileImageUrl))
+        } else {
+            profileImage.image = UIImage(systemName: "person.fill")
         }
         
         if coverImageUrl != "" {
             loadCoverImage(from: URL(string: coverImageUrl))
+        } else {
+            coverImage.image = UIImage()
         }
     }
     
@@ -91,10 +95,6 @@ extension MainProfileTableViewCell {
             .cacheMemoryOnly()
             .fade(duration: 0.1)
             .onFailure { error in print("커버 이미지 로딩 실패", error)}
-            .set(to: self.coverImage)
-        
-        coverLabel.isHidden = true
-        coverImageButton.isHidden = true
-        
+            .set(to: self.coverImage)        
     }
 }

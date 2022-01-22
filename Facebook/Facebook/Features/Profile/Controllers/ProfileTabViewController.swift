@@ -39,8 +39,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                         .subscribe(onNext: { [weak self] _ in
                             guard let self = self else { return }
                             self.imageType = "cover_image"
-                            self.presentPicker()
+                            if coverImageUrl != "" {
+                                self.showAlertImageMenu()
+                            } else {
+                                self.presentPicker()
+                            }
                         }).disposed(by: cell.disposeBag)
+                    cell.coverLabel.isHidden = true
+                    cell.coverImageButton.isHidden = true
                 } else {
                     cell.coverImageButton.rx
                         .tap
@@ -49,6 +55,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                             self.imageType = "cover_image"
                             self.presentPicker()
                         }.disposed(by: cell.disposeBag)
+                    cell.coverLabel.isHidden = false
+                    cell.coverImageButton.isHidden = false
                 }
                 
                 
@@ -62,7 +70,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                             navigationController.modalPresentationStyle = .fullScreen
                             self?.present(navigationController, animated: true, completion: nil)
                         } else {
-                            self?.showAlertMenu()
+                            self?.showAlertSelfIntroMenu()
                         }
                     }).disposed(by: cell.disposeBag)
                 
@@ -79,7 +87,11 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     .subscribe(onNext: { [weak self] _ in
                         guard let self = self else { return }
                         self.imageType = "profile_image"
-                        self.presentPicker()
+                        if profileImageUrl != "" {
+                            self.showAlertImageMenu()
+                        } else {
+                            self.presentPicker()
+                        }
                     }).disposed(by: cell.disposeBag)
             } else {
                 cell.coverLabel.isHidden = true
@@ -181,9 +193,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         }else {
             super.setNavigationBarItems(withEditButton: false)
         }
-        
         loadData()
         bind()
+        self.navigationItem.backButtonTitle = ""
+        view.backgroundColor = .systemBackground
     }
     
     //유저 프로필 관련 데이터 불러오기
@@ -202,7 +215,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     return
                 }
                 
-                
                 if self.userId == StateManager.of.user.profile.id {
                     StateManager.of.user.dispatch(profile: response)
                 } else {
@@ -215,8 +227,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
         
-        print(self.userId)
-        
         StateManager.of.user
             .asObservable()
             .bind { [weak self] _ in
@@ -225,7 +235,6 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         
         StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
         
-        // 이게 최선인가?
         postDataViewModel.dataList.bind { [weak self] _ in
             self?.createSection()
         }.disposed(by: disposeBag)
@@ -436,7 +445,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
 
 extension ProfileTabViewController {
     //자기 소개가 이미 있을 때 자기 소개 관련 메뉴(alertsheet형식) present
-    func showAlertMenu() {
+    func showAlertSelfIntroMenu() {
         let alertMenu = UIAlertController(title: "자기 소개", message: "", preferredStyle: .actionSheet)
         
         let editSelfIntroAction = UIAlertAction(title: "소개 수정", style: .default, handler: { action in
@@ -477,6 +486,64 @@ extension ProfileTabViewController {
                 }
             }.disposed(by: self.disposeBag)
     }
+    
+    func showAlertImageMenu() {
+        let alertMenu = UIAlertController(title: self.imageType == "profile_image" ?
+                                          "프로필 사진 수정" : "커버 사진 수정",
+                                          message: "",
+                                          preferredStyle: .actionSheet)
+        
+        let editSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
+                                                "프로필 사진 변경" : "커버 사진 변경",
+                                                style: .default,
+                                                handler: { action in
+                                                    self.presentPicker()
+                                                })
+        editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        editSelfIntroAction.setValue(UIImage(systemName: "photo.on.rectangle.angled")!, forKey: "image")
+        
+        let deleteSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
+                                                  "프로필 사진 삭제" : "커버 사진 삭제",
+                                                  style: .default,
+                                                  handler: { action in
+                                                      self.deleteImage()
+                                                  })
+        deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
+        deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
+        
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        
+        alertMenu.addAction(editSelfIntroAction)
+        alertMenu.addAction(deleteSelfIntroAction)
+        alertMenu.addAction(cancelAction)
+        
+        self.present(alertMenu, animated: true, completion: nil)
+    }
+    
+    func deleteImage() {
+        var updateData: [String: Bool]
+        
+        if self.imageType == "profile_image" {
+            updateData = ["profile_image": true, "cover_image": false]
+        } else {
+            updateData = ["profile_image": false, "cover_image": true]
+        }
+        
+        NetworkService.delete(endpoint: .image(id: self.userId, updateData: updateData), as: UserProfile.self)
+            .subscribe { event in
+                if event.isCompleted {
+                    return
+                }
+            
+                guard let response = event.element?.1 else {
+                    print("데이터 로드 중 오류 발생")
+                    print(event)
+                    return
+                }
+                
+                StateManager.of.user.dispatch(profile: response)
+            }.disposed(by: self.disposeBag)
+    }
 }
 
 extension ProfileTabViewController: PHPickerViewControllerDelegate {
@@ -511,7 +578,6 @@ extension ProfileTabViewController: PHPickerViewControllerDelegate {
                         StateManager.of.user.dispatch(profile: userProfile)
                     }
                 }.disposed(by: self.disposeBag)
-
             }
         }
         

@@ -34,7 +34,8 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
     private func setTabBarController() {
         let controllers = [newsfeedNavController,
                            profileNavController,
-                           notificationNavController]
+                           notificationNavController,
+                           menuNavController]
         
         self.viewControllers = controllers
         self.tabBar.backgroundColor = .systemBackground
@@ -59,5 +60,12 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         let notificationTabViewIcon = UITabBarItem(title: "알림", image: UIImage(systemName: "bell"), selectedImage: UIImage(systemName: "bell.fill"))
         notificationTabViewController.tabBarItem = notificationTabViewIcon
         return notificationTabViewController
+    }()
+    
+    lazy var menuNavController: UINavigationController = {
+        let menuTabViewController = UINavigationController(rootViewController: MenuTabViewController())
+        let menuTabViewIcon = UITabBarItem(title: "메뉴", image: UIImage(systemName: "line.3.horizontal"), selectedImage: UIImage(systemName: "line.3.horizontal", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)))
+        menuTabViewController.tabBarItem = menuTabViewIcon
+        return menuTabViewController
     }()
 }

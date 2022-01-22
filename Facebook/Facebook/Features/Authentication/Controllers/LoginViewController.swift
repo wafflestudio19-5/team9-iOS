@@ -11,7 +11,7 @@ import RxCocoa
 import RxKeyboard
 
 class LoginViewController<View: LoginView>: UIViewController {
-
+    
     private let disposeBag = DisposeBag()
     
     override func loadView() {
@@ -48,7 +48,7 @@ class LoginViewController<View: LoginView>: UIViewController {
         loginView.createAccountButton.rx.tap.bind { [weak self] _ in
             self?.push(viewController: EnterUsernameViewController())
         }.disposed(by: disposeBag)
-
+        
         loginView.emailTextField.rx.text.orEmpty
             .bind(to: email)
             .disposed(by: disposeBag)
@@ -64,43 +64,27 @@ class LoginViewController<View: LoginView>: UIViewController {
         hasEnteredBoth
             .bind(to: self.loginView.loginButton.rx.isEnabled)
             .disposed(by: disposeBag)
-        
-        // 두 개의 textfield가 비어있지 않을 경우에는 loginButton label 흰색, 그렇지 않을 경우에는 회색
-        hasEnteredBoth
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] result in
-                guard let self = self else { return }
-                self.loginView.loginButton.changeLabelTextColor(to: result ? .white : .systemGray3)
-            }).disposed(by: disposeBag)
 
         // Keyboard의 높이에 따라 "새 계정 만들기" 버튼 위치 조정
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                guard let bottomConstraint = self.loginView.bottomConstraint else { return }
-
-                if keyboardVisibleHeight == 0 {
-                    bottomConstraint.constant = -16.0
-                } else {
-                    let height = keyboardVisibleHeight - self.view.safeAreaInsets.bottom
-                    bottomConstraint.constant = -height - 16.0
+                self.loginView.createAccountButton.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardVisibleHeight + (keyboardVisibleHeight == 0 ? -16.0 : 16.0))
                 }
                 self.loginView.layoutIfNeeded()
             }).disposed(by: disposeBag)
         
         // view의 아무 곳이나 누르면 textfield 입력 상태 종료
-        view.rx.tapGesture(configuration: { _, delegate in
-            delegate.touchReceptionPolicy = .custom { _, shouldReceive in
-                return !(shouldReceive.view is UIControl)
-            }
-        }).bind { [weak self] _ in
-            guard let self = self else { return }
-            if self.loginView.emailTextField.isEditing {
-                self.loginView.emailTextField.endEditing(true)
-            } else if self.loginView.passwordTextField.isEditing {
-                self.loginView.passwordTextField.endEditing(true)
-            }
-        }.disposed(by: disposeBag)
+        view.rx.tapGesture(configuration: TapGestureConfigurations.cancelUIControlConfig)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                if self.loginView.emailTextField.isEditing {
+                    self.loginView.emailTextField.endEditing(true)
+                } else if self.loginView.passwordTextField.isEditing {
+                    self.loginView.passwordTextField.endEditing(true)
+                }
+            }.disposed(by: disposeBag)
     }
 }
 
@@ -126,6 +110,7 @@ extension LoginViewController {
                     self?.changeRootViewController(to: RootTabBarController())
                 default: self?.alert(title: "잘못된 이메일", message: "입력한 이메일이 계정에 포함된 이메일이 아닌 것 같습니다. 이메일 주소를 확인하고 다시 시도해주세요.", action: "확인")
                 }
+                self?.loginView.loginButton.stopActivityIndicator()
             }.disposed(by: disposeBag)
     }
 }
