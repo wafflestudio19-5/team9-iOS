@@ -78,7 +78,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         }, completion: nil)
     }
     
-    private func hideBottomSheet() {
+    private func hideBottomSheet(afterAction: (() -> ())? = nil) {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
         bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight + bottomPadding
@@ -89,6 +89,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         }) { _ in
             if self.presentingViewController != nil {
             self.dismiss(animated: false, completion: nil)
+            (afterAction ?? {})()
             }
         }
     }
@@ -107,8 +108,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         
         tableView.rx.modelSelected(Menu.self)
             .subscribe(onNext: { [weak self] menu in
-                self?.hideBottomSheet()
-                menu.action()
+                self?.hideBottomSheet(afterAction: menu.action)
             }).disposed(by: disposeBag)
         
         view.rx
