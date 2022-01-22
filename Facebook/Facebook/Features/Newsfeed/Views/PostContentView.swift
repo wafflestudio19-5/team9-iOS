@@ -58,7 +58,6 @@ class PostContentView: UIView {
     // MARK: Setup
     
     func configure(with newPost: Post, showGrid: Bool = true) {
-        print("config start MAIN", self.frame)
         post = newPost
         textContentLabel.text = post.content
         postHeader.configure(with: post)

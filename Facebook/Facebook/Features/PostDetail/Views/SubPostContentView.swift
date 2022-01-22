@@ -19,7 +19,6 @@ class SubPostContentView: PostContentView {
     }()
     
     func configure(with subPost: Post) {
-        print("config start SUB", self.frame)
         self.post = subPost
         textContentLabel.text = subPost.content
         setImage(from: URL(string: subPost.file ?? ""))
@@ -29,7 +28,6 @@ class SubPostContentView: PostContentView {
             make.top.equalTo(isEmptyContent ? singleImageView.snp.bottom : textContentLabel.snp.bottom).offset(CGFloat.standardTopMargin)
             make.leading.trailing.equalTo(self).inset(CGFloat.standardLeadingMargin)
         }
-        print("config end")
     }
     
     override func setUpperLayout() {
@@ -62,11 +60,9 @@ class SubPostContentView: PostContentView {
             .cacheMemoryOnly()
             .onSuccess { result in
                 self.singleImageView.snp.updateConstraints { make in
-                    print(self.frame)
                     make.height.equalTo(self.calcImageHeight(imageSize: result.image.size, viewWidth: self.frame.width))
                 }
                 self.layoutIfNeeded()
-                print("success")
             }
             .onFailure { error in print("로딩 실패", error)}
             .set(to: self.singleImageView)
