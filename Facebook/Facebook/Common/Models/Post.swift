@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Post: Codable, Identifiable {
     let id: Int
@@ -16,6 +17,7 @@ struct Post: Codable, Identifiable {
     let posted_at: String?
     var comments: Int
     let file: String?
+    var scope: Scope?
     
     let mainpost: Int?
     var subposts: [Post]?
@@ -25,14 +27,36 @@ struct Post: Codable, Identifiable {
     }
 }
 
-// To be deprecated
-//struct SubPost: Codable, Identifiable {
-//    let id: Int
-//    let content: String
-//    let likes: Int
-//    let posted_at: String?
-//    let comments: Int
-//    let file: String?
-//
-//    let mainpost: Int?
-//}
+
+enum Scope: Int, Codable, CaseIterable {
+    case all = 3
+    case friends = 2
+    case secret = 1
+    
+    var symbolName: String {
+        switch self {
+        case .all:
+            return "globe.asia.australia"
+        case .friends:
+            return "person.2"
+        case .secret:
+            return "lock"
+        }
+    }
+    
+    var text: String {
+        switch self {
+        case .all:
+            return "전체 공개"
+        case .friends:
+            return "친구만"
+        case .secret:
+            return "나만 보기"
+        }
+    }
+    
+    func getImage(fill: Bool, color: UIColor = .grayscales.label.withAlphaComponent(0.7), size: CGFloat = 10) -> UIImage {
+        let imageName = fill ? symbolName + ".fill" : symbolName
+        return UIImage(systemName: imageName)!.withTintColor(color, renderingMode: .alwaysOriginal).withConfiguration(UIImage.SymbolConfiguration(pointSize: size, weight: .regular))
+    }
+}

@@ -64,12 +64,9 @@ class CreatePostViewController: UIViewController {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                let toolbarHeight = self.createPostView.keyboardAccessory.frame.height
-                self.view.setNeedsLayout()
                 UIView.animate(withDuration: 0) {
                     self.createPostView.scrollView.contentInset.bottom = keyboardVisibleHeight == 0 ? 0 : keyboardVisibleHeight - self.view.safeAreaInsets.bottom
                     self.createPostView.scrollView.verticalScrollIndicatorInsets.bottom = self.createPostView.scrollView.contentInset.bottom
-                    self.view.layoutIfNeeded()
                 }
             })
             .disposed(by: disposeBag)
@@ -96,7 +93,7 @@ class CreatePostViewController: UIViewController {
                 
                 // dismiss current VC first
                 self.dismiss(animated: true, completion: nil)
-
+                
                 // show progress bar with initial value (1%)
                 let tempProgress = Progress()
                 tempProgress.totalUnitCount = 100
@@ -108,17 +105,17 @@ class CreatePostViewController: UIViewController {
                 
                 // load selected images as an array of data
                 self.pickerViewModel.loadMediaAsDataArray { array in
-                    NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "", files: array, subcontents: [String](repeating: "", count: self.pickerViewModel.selectionCount.value)))
+                    NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "",
+                                                              files: array,
+                                                              subcontents: [String](repeating: "", count: self.pickerViewModel.selectionCount.value),
+                                                              scope: self.createPostView.createHeaderView.selectedScope))
                         .subscribe { event in
                             let request = event.element
                             let progress = request?.uploadProgress
                             DispatchQueue.main.async {
                                 newsfeedVC.headerViews.uploadProgressHeaderView.displayProgress(progress: progress)
                             }
-//                            request?.responseString(completionHandler: { response in
-//                                print(response)
-//                            })
-
+                            
                             request?.responseDecodable(of: Post.self) { dataResponse in
                                 guard let post = dataResponse.value else { return }
                                 StateManager.of.post.dispatch(.init(data: post, operation: .insert(index: 0)))

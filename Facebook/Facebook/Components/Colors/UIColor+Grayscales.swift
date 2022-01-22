@@ -20,7 +20,7 @@ extension UIColor {
         static var bubbleFocused = UIColor.systemGray5
         
         /// dark gray 색상 대신 사용
-        static var label = UIColor.secondaryLabel.withAlphaComponent(0.85)
+        static var label = UIColor.secondaryLabel.withAlphaComponent(0.8)
         
         /// 이미지 가장자리에 적용하는 색상
         static var imageBorder = UIColor(named: "ImageBorder")!
