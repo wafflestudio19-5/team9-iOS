@@ -6,10 +6,24 @@
 //
 
 import UIKit
+import RxSwift
+
+enum Scope: Int {
+    case all = 3
+    case friends = 2
+    case secret = 1
+}
 
 class CreateHeaderView: UIView {
-
-    /// 피드 상단, 게시자의 프로필 이미지와 닉네임, 작성 시각 등이 표시되는 뷰
+    
+    /// 피드 상단, 게시자의 프로필 이미지와 공개 범위 버튼이 표시되는 뷰
+    
+    var selectedScope: Scope = .all {
+        didSet {
+            self.configureScopeButton()
+        }
+    }
+    var disposeBag = DisposeBag()
     
     init(imageWidth: CGFloat = .profileImageSize) {
         super.init(frame: .zero)
@@ -28,18 +42,17 @@ class CreateHeaderView: UIView {
         authorNameLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(labelStack)
         }
-
+        
         scopeButton.snp.makeConstraints { make in
             make.leading.bottom.equalTo(labelStack)
-            make.top.equalTo(authorNameLabel.snp.bottom)
+            make.top.equalTo(authorNameLabel.snp.bottom).offset(3)
         }
-        
-        self.bringSubviewToFront(labelStack)
         
         self.addSubview(labelStack)
         labelStack.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(profileImageView.snp.trailing).offset(5)
+            make.trailing.equalTo(0).offset(CGFloat.standardTrailingMargin)
         }
         
         configure()
@@ -52,14 +65,42 @@ class CreateHeaderView: UIView {
     func configure() {
         profileImageView.setImage(from: StateManager.of.user.profile.profile_image)
         authorNameLabel.text = StateManager.of.user.profile.username
-//        scopeButton.configurePublic()
+        configureScopeButton()
+        scopeButton.menu = scopeMenu
+        scopeButton.showsMenuAsPrimaryAction = true
     }
     
-    // Profile Image가 표시되는 뷰 (현재는 아이콘으로 구현)
-    let profileImageView = ProfileImageView()
+    func configureScopeButton() {
+        switch selectedScope {
+        case .all:
+            scopeButton.configurePublic()
+        case .friends:
+            scopeButton.configureFriendsOnly()
+        case .secret:
+            scopeButton.configurePrivate()
+        }
+    }
     
-    // 작성자 이름 라벨
-    let authorNameLabel: InfoLabel = InfoLabel(color: .label, size: 16, weight: .medium)
-    let scopeButton = RectangularSlimButton(title: "efwfew", titleColor: .blue, backgroundColor: .yellow)
+    let profileImageView = ProfileImageView()
+    let authorNameLabel: InfoLabel = InfoLabel(color: .label, size: 15, weight: .medium)
+    let scopeButton = ScopeButton(size: 12, weight: .regular)
+    
+    private var scopeMenues: [UIAction] {
+        return [
+            UIAction(title: "전체 공개", image: UIImage(systemName: "globe.asia.australia"), handler: { _ in
+                self.selectedScope = .all
+            }),
+            UIAction(title: "친구만", image: UIImage(systemName: "person.2"), handler: { _ in
+                self.selectedScope = .friends
+            }),
+            UIAction(title: "나만 보기", image: UIImage(systemName: "lock"), handler: { _ in
+                self.selectedScope = .secret
+            })
+        ]
+    }
+    
+    private var scopeMenu: UIMenu {
+        return UIMenu(title: "", image: nil, identifier: nil, options: [], children: scopeMenues)
+    }
 }
 

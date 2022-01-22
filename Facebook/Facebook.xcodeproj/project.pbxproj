@@ -118,7 +118,7 @@
 		BE64AF33277FE99D00C25967 /* ItemProvider+LoadFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */; };
 		BE64AF3527809F3E00C25967 /* UploadProgressHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */; };
 		BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF372780A34D00C25967 /* MainHeaderView.swift */; };
-		BE64AF3A27827FAE00C25967 /* ResponsiveTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3927827FAE00C25967 /* ResponsiveTableView.swift */; };
+		BE64AF3A27827FAE00C25967 /* ResponsiveViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3927827FAE00C25967 /* ResponsiveViews.swift */; };
 		BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */; };
 		BE7D1DF9277DC63800E080E3 /* NSLayoutConstraints+Activate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */; };
 		BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DFA277E089F00E080E3 /* Rx+Upload.swift */; };
@@ -273,7 +273,7 @@
 		BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemProvider+LoadFile.swift"; sourceTree = "<group>"; };
 		BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressHeaderView.swift; sourceTree = "<group>"; };
 		BE64AF372780A34D00C25967 /* MainHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
-		BE64AF3927827FAE00C25967 /* ResponsiveTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveTableView.swift; sourceTree = "<group>"; };
+		BE64AF3927827FAE00C25967 /* ResponsiveViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveViews.swift; sourceTree = "<group>"; };
 		BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerViewModel.swift; sourceTree = "<group>"; };
 		BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraints+Activate.swift"; sourceTree = "<group>"; };
 		BE7D1DFA277E089F00E080E3 /* Rx+Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Upload.swift"; sourceTree = "<group>"; };
@@ -859,7 +859,7 @@
 				B86195082761AFAE00957BBC /* ContentSizeFitViews.swift */,
 				BE1F75B02785895000E51A28 /* Spinner.swift */,
 				BEDA60852784658E0002A231 /* Divider.swift */,
-				BE64AF3927827FAE00C25967 /* ResponsiveTableView.swift */,
+				BE64AF3927827FAE00C25967 /* ResponsiveViews.swift */,
 			);
 			path = Miscellaneous;
 			sourceTree = "<group>";
@@ -1108,7 +1108,7 @@
 				BE86BADE2783F45B00948CAA /* FlexibleTextView.swift in Sources */,
 				BE86BAE42784183600948CAA /* UITableView+DynamicHeader.swift in Sources */,
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
-				BE64AF3A27827FAE00C25967 /* ResponsiveTableView.swift in Sources */,
+				BE64AF3A27827FAE00C25967 /* ResponsiveViews.swift in Sources */,
 				BE0D438A278DA7F500E2162F /* SubPostCell.swift in Sources */,
 				B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */,
 				7754B863277DAE2F00775D81 /* AddSelfIntroView.swift in Sources */,
@@ -1322,7 +1322,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = GB5CDMBZQB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Facebook/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1335,7 +1335,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.waffleteam9.Facebook;
+				PRODUCT_BUNDLE_IDENTIFIER = com.waffleteam9.Facebook.shp7724;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1351,7 +1351,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = GB5CDMBZQB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Facebook/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1364,7 +1364,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.waffleteam9.Facebook;
+				PRODUCT_BUNDLE_IDENTIFIER = com.waffleteam9.Facebook.shp7724;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

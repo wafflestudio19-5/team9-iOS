@@ -10,23 +10,29 @@ import UIKit
 class ScopeButton: InfoButton {
     
     private func getImage(name: String) -> UIImage {
-        return UIImage(systemName: name, withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .regular))!
+        return UIImage(systemName: name, withConfiguration: UIImage.SymbolConfiguration(pointSize: 10, weight: .regular))!
+    }
+    
+    private func baseConfigure(symbolName: String, text: String) {
+        configuration?.imagePadding = 5
+        configuration?.image = getImage(name: symbolName)
+        self.layer.cornerRadius = 5
+        self.clipsToBounds = true
+        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.grayscales.border.cgColor
+        self.text = text
     }
     
     func configurePublic() {
-        configuration?.image = getImage(name: "globe.asia.australia.fill")
-        configuration?.imagePadding = 5
-        self.text = "전체 공개"
+        baseConfigure(symbolName: "globe.asia.australia.fill", text: "전체 공개")
     }
+    
     func configureFriendsOnly() {
-        configuration?.image = getImage(name: "person.2.fill")
-        configuration?.imagePadding = 5
-        self.text = "친구만"
+        baseConfigure(symbolName: "person.2.fill", text: "친구만")
     }
+    
     func configurePrivate() {
-        configuration?.image = getImage(name: "lock.fill")
-        configuration?.imagePadding = 5
-        self.text = "나만 보기"
+        baseConfigure(symbolName: "lock.fill", text: "나만 보기")
     }
 
 }

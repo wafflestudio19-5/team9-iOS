@@ -57,7 +57,7 @@ class CreatePostView: UIView {
     
     // MARK: UI Components
     
-    let scrollView = UIScrollView()
+    let scrollView = ResponsiveScrollView()
     
     lazy var keyboardAccessory: UIView = {
         let divider = Divider()
