@@ -19,7 +19,7 @@ class CreatePostViewController: UIViewController {
     
     convenience init(sharing post: Post?) {
         self.init(nibName: nil, bundle: nil)
-        self.postToShare = post
+        self.postToShare = post?.postToShare
     }
     
     override func loadView() {
@@ -82,8 +82,8 @@ class CreatePostViewController: UIViewController {
         // contentTextField의 내용 유무에 따라 버튼 활성화
         let empty = createPostView.contentTextView.isEmptyObservable
         let photoCount = pickerViewModel.selectionCount
-        Observable.combineLatest(empty, photoCount) { isEmpty, selectedCount in
-            return !isEmpty || selectedCount > 0
+        Observable.combineLatest(empty, photoCount) { [weak self] isEmpty, selectedCount in
+            return !isEmpty || selectedCount > 0 || self?.postToShare != nil
         }
         .bind(to: self.createPostView.postButton.rx.isEnabled)
         .disposed(by: disposeBag)
@@ -103,6 +103,7 @@ class CreatePostViewController: UIViewController {
                 
                 // dismiss current VC first
                 self.dismiss(animated: true, completion: nil)
+                newsfeedVC.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .none, animated: true)
                 
                 // show progress bar with initial value (1%)
                 let tempProgress = Progress()
@@ -118,7 +119,9 @@ class CreatePostViewController: UIViewController {
                     NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "",
                                                               files: array,
                                                               subcontents: [String](repeating: "", count: self.pickerViewModel.selectionCount.value),
-                                                              scope: self.createPostView.createHeaderView.selectedScope))
+                                                              scope: self.createPostView.createHeaderView.selectedScope,
+                                                              sharing: self.postToShare?.id
+                                                             ))
                         .subscribe { event in
                             let request = event.element
                             let progress = request?.uploadProgress

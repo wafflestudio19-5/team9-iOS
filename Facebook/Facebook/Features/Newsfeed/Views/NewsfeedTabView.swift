@@ -38,5 +38,6 @@ class NewsfeedTabView: UIView {
         newsfeedTableView.allowsSelection = false
         newsfeedTableView.refreshControl = refreshControl
         newsfeedTableView.separatorStyle = .none
+        newsfeedTableView.showsVerticalScrollIndicator = false
     }
 }

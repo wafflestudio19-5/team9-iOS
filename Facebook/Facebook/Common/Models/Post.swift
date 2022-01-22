@@ -8,22 +8,36 @@
 import Foundation
 import UIKit
 
+
 struct Post: Codable, Identifiable {
     let id: Int
-    let author: User?
+    var author: User?
     var content: String
     var likes: Int
     var is_liked: Bool
-    let posted_at: String?
+    var posted_at: String?
     var comments: Int
-    let file: String?
+    var file: String?
     var scope: Scope?
     
     let mainpost: Int?
     var subposts: [Post]?
     
+    var shared_post: SharedPost?
+    var is_sharing: Bool?
+    var sharing_counts: Int?
+    
     static func getDummyPost() -> Self {
-        return Post(id: -1, author: nil, content: "", likes: -1, is_liked: false, posted_at: nil, comments: -1, file: nil, mainpost: nil, subposts: nil)
+        return Post(id: -1, content: "", likes: -1, is_liked: false, comments: -1, mainpost: nil)
+    }
+    
+    /// 이 `Post`를 공유하고자 할 때, `shared_post`가 존재하면 이 `Post`가 아닌 `shared_post`를 공유한다.
+    var postToShare: Post {
+        if let shared_post = shared_post {
+            return Post(id: shared_post.id, author: shared_post.author, content: shared_post.content, likes: -1, is_liked: false, posted_at: shared_post.posted_at, comments: -1, scope: shared_post.scope, mainpost: nil, subposts: shared_post.subposts)
+        } else {
+            return self
+        }
     }
     
     var subpostUrls: [URL?] {
@@ -34,6 +48,14 @@ struct Post: Codable, Identifiable {
     }
 }
 
+struct SharedPost: Codable, Identifiable {
+    let id: Int
+    var author: User
+    var content: String
+    var posted_at: String
+    var scope: Scope
+    var subposts: [Post]
+}
 
 enum Scope: Int, Codable, CaseIterable {
     case all = 3

@@ -18,13 +18,16 @@ extension Endpoint {
         return Endpoint(path: "user/\(userId)/newsfeed/", cursor: cursor)
     }
     
-    static func newsfeed(content: String, files: [Data] = [], subcontents: [String] = [], scope: Scope = .all) -> Self {
+    static func newsfeed(content: String, files: [Data] = [], subcontents: [String] = [], scope: Scope = .all, sharing postId: Int? = nil) -> Self {
         assert(files.count == subcontents.count, "파일 개수와 캡션의 개수는 일치해야합니다.")
         let filesCount = files.count
         let builder: (MultipartFormData) -> Void = { formData in
             // content를 추가
             formData.append(content.data(using: .utf8)!, withName: "content")
             formData.append(scope.rawValue.description.data(using: .utf8)!, withName: "scope")
+            if let shareId = postId {
+                formData.append(shareId.description.data(using: .utf8)!, withName: "shared_post")
+            }
             
             // subcontents의 내용을 추가
             for subcontent in subcontents {
