@@ -21,9 +21,25 @@ class FriendGridCell: UICollectionViewCell {
         return imageView
     }()
     
+    private let verticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 3
+        
+        return stackView
+    }()
+    
     let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        
+        return label
+    }()
+    
+    private let mutualFriendsLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 11)
+        label.textColor = .gray
         
         return label
     }()
@@ -34,13 +50,26 @@ class FriendGridCell: UICollectionViewCell {
         setStyle()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        mutualFriendsLabel.isHidden = true
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureCell(with friendData: User) {
+    func configureCell(with friendData: User, isMe: Bool) {
         nameLabel.text = friendData.username
         displayMedia(from: URL(string: friendData.profile_image ?? ""))
+        
+        if !isMe {
+            verticalStackView.snp.updateConstraints { make in
+                make.height.equalTo(35)
+            }
+            mutualFriendsLabel.isHidden = false
+            mutualFriendsLabel.text = (friendData.mutual_friends != nil) ? "함께 아는 친구 \(friendData.mutual_friends?.count ?? 0)명" : "   "
+        }
     }
     
     private func setLayout() {
@@ -49,12 +78,17 @@ class FriendGridCell: UICollectionViewCell {
             make.top.leading.trailing.equalToSuperview()
         }
         
-        contentView.addSubview(nameLabel)
-        nameLabel.snp.remakeConstraints { make in
+        contentView.addSubview(verticalStackView)
+        verticalStackView.snp.remakeConstraints { make in
             make.height.equalTo(20)
-            make.top.equalTo(profileImage.snp.bottom).offset(10)
-            make.bottom.leading.equalToSuperview().inset(10)
+            make.top.equalTo(profileImage.snp.bottom).offset(5)
+            make.bottom.equalToSuperview().inset(5)
+            make.left.right.equalToSuperview().inset(10)
         }
+        
+        verticalStackView.addArrangedSubview(nameLabel)
+        verticalStackView.addArrangedSubview(mutualFriendsLabel)
+        mutualFriendsLabel.isHidden = true
     }
     
     private func setStyle() {

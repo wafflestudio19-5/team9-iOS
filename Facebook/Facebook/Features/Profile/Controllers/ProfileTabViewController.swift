@@ -90,7 +90,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         case let .FriendGridItem(friendsData):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: FriendCollectionTableViewCell.reuseIdentifier, for: idxPath) as? FriendCollectionTableViewCell else { return UITableViewCell() }
             
-            cell.configureCell(with: friendsData)
+            cell.configureCell(with: friendsData, friendInfo: self.userProfile?.friend_info ?? "self")
             
             cell.showFriendButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }

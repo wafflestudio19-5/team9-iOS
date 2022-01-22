@@ -24,6 +24,7 @@ class FriendCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.refreshingBag = DisposeBag()
+        mutualFriendsLabel.isHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -37,6 +38,14 @@ class FriendCell: UITableViewCell {
         } else {
             profileImage.image = UIImage(systemName: "person.crop.circle.fill")
             profileImage.tintColor = .systemGray5
+        }
+        
+        guard let friendInfo = friend.mutual_friends else {
+            return
+        }
+        if friendInfo.count != 0  {
+            mutualFriendsLabel.text = "함께 아는 친구 \(friendInfo.count)명"
+            mutualFriendsLabel.isHidden = false
         }
     }
     
@@ -57,6 +66,8 @@ class FriendCell: UITableViewCell {
         }
         
         verticalStackView.addArrangedSubview(nameLabel)
+        verticalStackView.addArrangedSubview(mutualFriendsLabel)
+        mutualFriendsLabel.isHidden = true
         
         contentView.addSubview(menuButton)
         menuButton.snp.remakeConstraints { make in
@@ -74,18 +85,24 @@ class FriendCell: UITableViewCell {
         return imageView
     }()
     
-    private let verticalStackView = UIStackView()
+    private let verticalStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 3
+        
+        return stackView
+    }()
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.font = .systemFont(ofSize: 17)
         
         return label
     }()
     
-    private let withfriendLabel: UILabel = {
+    private let mutualFriendsLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 15)
         label.textColor = .gray
         
         return label

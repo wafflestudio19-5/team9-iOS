@@ -24,6 +24,7 @@ class FriendRequestCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.refreshingBag = DisposeBag()
+        mutualFriendsLabel.isHidden = true
         verticalStackView.removeArrangedSubview(stateLabel)
         stateLabel.removeFromSuperview()
         verticalStackView.addArrangedSubview(horizontalStackView)
@@ -40,6 +41,14 @@ class FriendRequestCell: UITableViewCell {
         } else {
             profileImage.image = UIImage(systemName: "person.crop.circle.fill")
             profileImage.tintColor = .systemGray5
+        }
+        
+        guard let friendInfo = friend.mutual_friends else {
+            return
+        }
+        if friendInfo.count != 0  {
+            mutualFriendsLabel.text = "함께 아는 친구 \(friendInfo.count)명"
+            mutualFriendsLabel.isHidden = false
         }
     }
     
@@ -62,13 +71,16 @@ class FriendRequestCell: UITableViewCell {
         horizontalStackView.addArrangedSubview(acceptButton)
         horizontalStackView.addArrangedSubview(deleteButton)
         verticalStackView.addArrangedSubview(nameLabel)
+        verticalStackView.addArrangedSubview(mutualFriendsLabel)
         verticalStackView.addArrangedSubview(horizontalStackView)
+        mutualFriendsLabel.isHidden = true
     }
     
     func updateState(isAccepted: Bool) {
         stateLabel.text = isAccepted ? "요청 수락함" : "요청 삭제됨"
         verticalStackView.removeArrangedSubview(horizontalStackView)
         horizontalStackView.removeFromSuperview()
+        mutualFriendsLabel.isHidden = true
         verticalStackView.addArrangedSubview(stateLabel)
     }
 
@@ -96,7 +108,7 @@ class FriendRequestCell: UITableViewCell {
         return label
     }()
     
-    private let withfriendLabel: UILabel = {
+    private let mutualFriendsLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textColor = .gray

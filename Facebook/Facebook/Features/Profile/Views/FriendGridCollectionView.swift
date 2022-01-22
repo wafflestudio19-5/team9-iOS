@@ -31,7 +31,7 @@ extension FriendGridCollectionView: UICollectionViewDelegateFlowLayout {
     private func getItemSize() -> CGSize {
         let screenWidth = UIScreen.main.bounds.width
         let itemWidth: CGFloat = (screenWidth - 50) / 3
-        let itemHeight: CGFloat = itemWidth + 40
+        let itemHeight: CGFloat = itemWidth + 50
         return CGSize(width: itemWidth, height: itemHeight)
     }
     

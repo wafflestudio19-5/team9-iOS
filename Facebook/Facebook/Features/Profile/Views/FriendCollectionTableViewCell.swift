@@ -28,11 +28,11 @@ class FriendCollectionTableViewCell: UITableViewCell {
         refreshingBag = DisposeBag() // because life cicle of every cell ends on prepare for reuse
     }
     
-    func configureCell(with friendsData: [User]) {
+    func configureCell(with friendsData: [User], friendInfo: String) {
         Observable.just(friendsData)
             .observe(on: MainScheduler.instance)
             .bind(to: friendGridCollectionView.rx.items(cellIdentifier: FriendGridCell.reuseIdentifier, cellType: FriendGridCell.self)) { row, data, cell in
-                cell.configureCell(with: data)
+                cell.configureCell(with: data, isMe: (friendInfo == "self") ? true : false)
             }
             .disposed(by: refreshingBag)
 
