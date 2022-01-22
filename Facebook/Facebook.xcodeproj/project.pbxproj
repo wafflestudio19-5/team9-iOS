@@ -93,10 +93,11 @@
 		B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */; };
 		B8A7F8342767507000F659D2 /* LabelWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8332767507000F659D2 /* LabelWithPadding.swift */; };
 		B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */; };
+		BE05C37E2799D5E5005471BD /* CreateHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE05C37D2799D5E5005471BD /* CreateHeaderView.swift */; };
+		BE05C3802799D75E005471BD /* ScopeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE05C37F2799D75E005471BD /* ScopeButton.swift */; };
 		BE0D43672786D29B00E2162F /* CommentPaginationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift */; };
 		BE0D43692787235000E2162F /* UIColor+TintColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D43682787235000E2162F /* UIColor+TintColors.swift */; };
 		BE0D436B2787631400E2162F /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D436A2787631400E2162F /* HapticManager.swift */; };
-		BE0D436D278892D600E2162F /* NewsfeedTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D436C278892D600E2162F /* NewsfeedTableView.swift */; };
 		BE0D4374278ADF1B00E2162F /* BaseDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4373278ADF1B00E2162F /* BaseDispatcher.swift */; };
 		BE0D4376278ADFCE00E2162F /* PostDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4375278ADFCE00E2162F /* PostDispatcher.swift */; };
 		BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0D4378278AE07E00E2162F /* StateManager.swift */; };
@@ -247,10 +248,11 @@
 		B8A7F8312761FCEB00F659D2 /* EnterPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterPasswordViewController.swift; sourceTree = "<group>"; };
 		B8A7F8332767507000F659D2 /* LabelWithPadding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelWithPadding.swift; sourceTree = "<group>"; };
 		B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		BE05C37D2799D5E5005471BD /* CreateHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateHeaderView.swift; sourceTree = "<group>"; };
+		BE05C37F2799D75E005471BD /* ScopeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeButton.swift; sourceTree = "<group>"; };
 		BE0D43662786D29B00E2162F /* CommentPaginationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentPaginationViewModel.swift; sourceTree = "<group>"; };
 		BE0D43682787235000E2162F /* UIColor+TintColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+TintColors.swift"; sourceTree = "<group>"; };
 		BE0D436A2787631400E2162F /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
-		BE0D436C278892D600E2162F /* NewsfeedTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsfeedTableView.swift; sourceTree = "<group>"; };
 		BE0D4373278ADF1B00E2162F /* BaseDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDispatcher.swift; sourceTree = "<group>"; };
 		BE0D4375278ADFCE00E2162F /* PostDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDispatcher.swift; sourceTree = "<group>"; };
 		BE0D4378278AE07E00E2162F /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
@@ -629,7 +631,6 @@
 			children = (
 				BE9C7C95276DB3C30089247F /* PostCell.swift */,
 				B897A921274E612B00FB67D3 /* NewsfeedTabView.swift */,
-				BE0D436C278892D600E2162F /* NewsfeedTableView.swift */,
 				BE64AF3627809F5400C25967 /* Headers */,
 				BE827A1227722ABD00BD3566 /* CreatePostTableViewCell.swift */,
 				BE827A1627722B9400BD3566 /* CreatePostTableViewCell.xib */,
@@ -791,6 +792,8 @@
 			isa = PBXGroup;
 			children = (
 				77E12FA12769A97800B8F191 /* CreatePostView.swift */,
+				BE05C37D2799D5E5005471BD /* CreateHeaderView.swift */,
+				BE05C37F2799D75E005471BD /* ScopeButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1041,6 +1044,7 @@
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
 				B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
+				BE05C3802799D75E005471BD /* ScopeButton.swift in Sources */,
 				B85D67E4277C964F002CCC04 /* AuthResponse.swift in Sources */,
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */,
@@ -1085,7 +1089,6 @@
 				B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */,
 				7754B86D2781A0B900775D81 /* Endpoint+Profile.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
-				BE0D436D278892D600E2162F /* NewsfeedTableView.swift in Sources */,
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
 				BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */,
 				BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */,
@@ -1096,6 +1099,7 @@
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
 				BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */,
 				BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */,
+				BE05C37E2799D5E5005471BD /* CreateHeaderView.swift in Sources */,
 				B846BDA52754E53700513B77 /* KakaoAuthManager.swift in Sources */,
 				77ABC5D82774A998000431E1 /* AddInformationView.swift in Sources */,
 				B86194FF2760FED800957BBC /* EnterEmailViewController.swift in Sources */,
@@ -1318,19 +1322,20 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GB5CDMBZQB;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Facebook/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.waffleteam9.Facebook.shp7724;
+				PRODUCT_BUNDLE_IDENTIFIER = com.waffleteam9.Facebook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1346,19 +1351,20 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = GB5CDMBZQB;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Facebook/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.waffleteam9.Facebook.shp7724;
+				PRODUCT_BUNDLE_IDENTIFIER = com.waffleteam9.Facebook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

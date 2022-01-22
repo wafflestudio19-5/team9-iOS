@@ -37,6 +37,7 @@ class CreatePostView: UIView {
         
         let scrollViewStack = UIStackView()
         scrollViewStack.axis = .vertical
+        scrollViewStack.addArrangedSubview(createHeaderView)
         scrollViewStack.addArrangedSubview(contentTextView)
         scrollViewStack.addArrangedSubview(imageGridCollectionView)
         
@@ -78,6 +79,8 @@ class CreatePostView: UIView {
 
         return customInputView
     }()
+    
+    var createHeaderView = CreateHeaderView()
     
     lazy var contentTextView: PlaceholderTextView = {
         let textView = PlaceholderTextView()
