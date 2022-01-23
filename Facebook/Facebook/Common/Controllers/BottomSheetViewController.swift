@@ -87,7 +87,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     private func hideBottomSheet(afterAction: (() -> ())? = nil) {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
-        bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight
+        bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight + bottomPadding
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
             self.bottomSheetView.dimmedView.alpha = 0.0
