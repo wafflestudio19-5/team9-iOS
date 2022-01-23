@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if animated {
             let options: UIView.AnimationOptions = .transitionCrossDissolve
-            let duration: TimeInterval = 0.5
+            let duration: TimeInterval = 0.4
 
             UIView.transition(with: window, duration: duration, options: options, animations: { }, completion: nil)
         }

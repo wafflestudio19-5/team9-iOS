@@ -8,9 +8,9 @@
 import Foundation
 
 struct User: Codable, Identifiable {
-    let id: Int
     let email: String
-    let username: String
-    let profile_image: String?
+    let id: Int
     var is_valid: Bool
+    let profile_image: String?
+    let username: String
 }

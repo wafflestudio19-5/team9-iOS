@@ -31,7 +31,6 @@ struct AuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.delete(endpoint: .deleteAccount())
                 .subscribe (onNext: { response in
-                    print(response)
                     NetworkService.removeToken()
                     result(.success(true))
                 }, onError: { _ in
@@ -63,13 +62,11 @@ struct AuthManager {
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.get(endpoint: .logout(), as: String.self)
                 .subscribe(onNext: { response in
-                    print(response)
                     if response.0.statusCode == 200 {
                         NetworkService.removeToken()
                         result(.success(true))
                     }
-                }, onError: { error in
-                    print(error)
+                }, onError: { _ in
                     result(.success(false))
                 }).disposed(by: disposeBag)
             return Disposables.create()
