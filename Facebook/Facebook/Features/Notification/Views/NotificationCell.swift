@@ -1,5 +1,5 @@
 //
-//  NotificationTableViewCell.swift
+//  NotificationCell.swift
 //  Facebook
 //
 //  Created by 최유림 on 2022/01/17.
@@ -9,9 +9,9 @@ import UIKit
 import RxSwift
 import SwiftUI
 
-class NotificationTableViewCell: UITableViewCell {
+class NotificationCell: UITableViewCell {
     
-    static let reuseIdentifier = "NotificationTableViewCell"
+    static let reuseIdentifier = "NotificationCell"
     
     var disposeBag = DisposeBag()
 
@@ -77,7 +77,6 @@ class NotificationTableViewCell: UITableViewCell {
     }
     
     func configure(with notification: Notification) {
-        print(notification)
         contentLabel.attributedText = addAttributeForMessage(user: notification.sender_preview.username, message: notification.content.message(user: notification.sender_preview.username))
         timeStampLabel.text = notification.posted_at
         subcontentLabel.text = { () -> String in
@@ -131,7 +130,7 @@ class NotificationTableViewCell: UITableViewCell {
 
 struct NotificationCellRepresentable: UIViewRepresentable {
     func makeUIView(context: Context) -> some UIView {
-        let view = NotificationTableViewCell().contentView
+        let view = NotificationCell().contentView
         return view
     }
     

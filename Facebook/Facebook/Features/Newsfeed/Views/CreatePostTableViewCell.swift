@@ -10,11 +10,6 @@ import RxSwift
 import RxCocoa
 import RxGesture
 
-
-protocol CreatePostTableViewCellDelegate: AnyObject {
-    func goCreatePostView()
-}
-
 class CreatePostTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "CreatePostCell"
@@ -38,7 +33,6 @@ class CreatePostTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         bindButton()
         setLayout()
     }
@@ -48,14 +42,8 @@ class CreatePostTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
-    
-    weak var delegate: CreatePostTableViewCellDelegate?
-    
+
     private func bindButton() {
-        createPostButton.rx.tap.bind {
-            self.delegate?.goCreatePostView()
-        }.disposed(by: disposeBag)
-        
         profileImage.rx.tapGesture().when(.recognized).subscribe(onNext: { _ in
             print("profileImage tap!")
         }).disposed(by: disposeBag)

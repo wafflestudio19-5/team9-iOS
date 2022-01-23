@@ -27,6 +27,10 @@ class NotificationTabView: UIView {
         return label
     }()
     
+    lazy var bottomSheetView: UIView = {
+        return BottomSheetView()
+    }()
+    
     let notificationTableView = ResponsiveTableView()
     
     override init(frame: CGRect) {
@@ -56,8 +60,20 @@ class NotificationTabView: UIView {
     
     private func configureTableView() {
         notificationTableView.separatorStyle = .none
-        notificationTableView.register(NotificationTableViewCell.self, forCellReuseIdentifier: NotificationTableViewCell.reuseIdentifier)
-
+        notificationTableView.register(NotificationCell.self, forCellReuseIdentifier: NotificationCell.reuseIdentifier)
+    }
+    
+    func showBottomSheetView() {
+        self.insertSubview(bottomSheetView, aboveSubview: self)
+        bottomSheetView.snp.makeConstraints { make in
+            make.edges.equalTo(self)
+        }
+        self.layoutIfNeeded()
+    }
+    
+    func dismissBottomSheetView() {
+        bottomSheetView.removeFromSuperview()
+        self.layoutIfNeeded()
     }
 }
 
