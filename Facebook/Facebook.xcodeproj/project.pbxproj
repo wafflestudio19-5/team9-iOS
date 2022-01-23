@@ -803,8 +803,8 @@
 		BE9C7CBC277200B70089247F /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				77547903275CE66A0065711C /* PostDetailViewController.swift */,
 				BE0D4382278D498200E2162F /* SubPostsViewController.swift */,
+				77547903275CE66A0065711C /* PostDetailViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";

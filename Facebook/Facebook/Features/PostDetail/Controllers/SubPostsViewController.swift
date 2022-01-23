@@ -53,11 +53,6 @@ class SubPostsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let standardAppearance = UINavigationBarAppearance()
-        standardAppearance.configureWithDefaultBackground()
-        self.navigationController?.navigationBar.standardAppearance = standardAppearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = standardAppearance
-        
         // tableView의 panGesture보다 swipe back 제스쳐가 우선이다.
         if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
             tableView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
@@ -66,6 +61,20 @@ class SubPostsViewController: UIViewController {
         bind()
         startPrefetching()
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        self.navigationController?.navigationBar.scrollEdgeAppearance = standardAppearance
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.scrollEdgeAppearance = nil
+    }
+    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

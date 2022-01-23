@@ -125,6 +125,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.interactivePopGestureRecognizer!.delegate = self
         navigationController?.interactivePopGestureRecognizer!.isEnabled = true
         
