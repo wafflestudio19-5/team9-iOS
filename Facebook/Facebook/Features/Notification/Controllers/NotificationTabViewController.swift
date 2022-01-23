@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxDataSources
 
 class NotificationTabViewController: BaseTabViewController<NotificationTabView>, UIScrollViewDelegate {
 
@@ -16,23 +15,26 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
         tabView.notificationTableView
     }
     
-    private var dummyData = BehaviorRelay(value: [1...10])
+    let viewModel = PaginationViewModel<Notification>(endpoint: .notification())
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: tabView.largeTitleLabel)
-        
-        
-        
+
         bind()
     }
     
-    private func bind() {
+    func bind() {
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
-        dummyData.bind(to: tableView.rx.items(cellIdentifier: NotificationTableViewCell.reuseIdentifier, cellType: NotificationTableViewCell.self)) { index, content, cell in
-            cell.configure(content: "IQUNIX에서 새로운 동영상을 게시했습니다: 'L80 Xmas Edition Wireless Mechanical Keyboard IQUNIX에서 새로운 동영상을 게시했습니다", timeStamp: "17시간", subcontent: "키보드 사고싶다")
-        }.disposed(by: disposeBag)
         
+        viewModel.dataList
+            .observe(on: MainScheduler.instance)
+            .bind(to: tableView.rx.items(cellIdentifier: NotificationTableViewCell.reuseIdentifier, cellType: NotificationTableViewCell.self)) { index, notification, cell in
+                print(notification)
+                cell.configure(with: notification)
+            }.disposed(by: disposeBag)
+
+        StateManager.of.notification.bind(with: viewModel.dataList).disposed(by: disposeBag)
+
     }
-    
 }

@@ -41,15 +41,7 @@ struct Comment: Codable, Identifiable {
 
 /// 댓글 알림을 받아올 때 이용되는 댓글 모델입니다.
 struct SimpleComment: Codable, Identifiable {
-    let user: User
     let id: Int
     let content: String
-    let file: String
-    
-    enum CodingKeys: String, CodingKey {
-        case user
-        case id = "comment_id"
-        case content
-        case file
-    }
+    let is_file: String?
 }
