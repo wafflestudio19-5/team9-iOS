@@ -63,7 +63,6 @@ class CommentPaginationViewModel: PaginationViewModel<Comment> {
         var indices = [Int]()
         
         for (index, oldComment) in flattenComments.enumerated() {
-            print(oldComment, comment)
             if oldComment.id == comment.id {
                 indices.append(index)
             }
