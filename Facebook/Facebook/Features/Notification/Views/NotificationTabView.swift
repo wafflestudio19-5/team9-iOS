@@ -27,7 +27,7 @@ class NotificationTabView: UIView {
         return label
     }()
     
-    let notificationTableView = ResponsiveTableView(frame: .zero, style: .grouped)
+    let notificationTableView = ResponsiveTableView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

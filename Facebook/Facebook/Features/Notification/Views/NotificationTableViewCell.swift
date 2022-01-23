@@ -13,7 +13,7 @@ class NotificationTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "NotificationTableViewCell"
     
-    private var disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
 
     lazy var contentLabel: UILabel = {
         let label = UILabel()
@@ -73,15 +73,30 @@ class NotificationTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        disposeBag = DisposeBag()
+        self.disposeBag = DisposeBag()
     }
     
-    func configure(content: String, timeStamp: String, subcontent: String = "") {
-        contentLabel.text = content
-        timeStampLabel.text = timeStamp
-        subcontentLabel.text = (subcontent.isEmpty ? "" : "· \"" + subcontent + "\"")
+    func configure(with notification: Notification) {
+        print(notification)
+        contentLabel.text = notification.content.message(user: notification.sender_preview.username)
+        timeStampLabel.text = notification.posted_at
+        subcontentLabel.text = { () -> String in
+            if let comment = notification.comment_preview?.content {
+                return "· \"" + comment + "\""
+            } else { return "" }
+        }()
         
-        profileImage.setImage(from: nil)
+        if let urlString = notification.sender_preview.profile_image {
+            profileImage.setImage(from: URL(string: urlString))
+        } else {
+            profileImage.setImage(from: nil)
+        }
+    }
+    
+    private func addAttributeForMessage(user: String, message: String) -> NSMutableAttributedString {
+        let attributedString = NSMutableAttributedString(string: message)
+        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 14.0, weight: .bold), range: (message as NSString).range(of: user))
+        return attributedString
     }
     
     private func setLayoutForView() {
