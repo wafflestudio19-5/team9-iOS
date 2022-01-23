@@ -261,7 +261,6 @@ extension PostDetailViewController {
                         NetworkService.put(endpoint: .commentLike(postId: self.post.id, commentId: comment.id), as: LikeResponse.self)
                             .bind { _, response in
                                 cell.like(syncWith: response)
-                                self.commentViewModel.invalidateLikeState(of: comment, with: response)
                             }
                             .disposed(by: cell.disposeBag)
                     }
@@ -422,12 +421,14 @@ extension PostDetailViewController {
             sheet.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
                 self.focusedItem = nil
                 NetworkService.delete(endpoint: .commentDelete(postId: self.post.id, commentId: comment.id))
-                    .bind { response in
+                    .bind { [weak self] response in
+                        guard let self = self else { return }
                         var comment = comment
-                        self.post.comments -= 1
                         comment.post_id = self.post.id
+                        let deleteIndices = self.commentViewModel.findDeletionIndices(of: comment)
+                        self.post.comments -= deleteIndices.count
                         StateManager.of.post.dispatch(self.post, commentCount: self.post.comments)
-                        StateManager.of.comment.dispatch(.init(data: comment, operation: .delete(index: row)))
+                        StateManager.of.comment.dispatch(delete: comment, at: deleteIndices)
                         if row > 0 {
                             self.commentTableView.scrollToRow(at: .init(row: row - 1, section: 0), at: .bottom, animated: true)
                         }
