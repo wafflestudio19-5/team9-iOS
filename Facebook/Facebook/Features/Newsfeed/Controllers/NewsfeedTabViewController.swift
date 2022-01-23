@@ -27,7 +27,6 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-        bindNavigationBar()
     }
     
     override func viewDidLayoutSubviews() {
@@ -42,21 +41,6 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-    
-    private func bindNavigationBar() {
-        tableView.rx.panGesture()
-            .when(.recognized)
-            .bind { [weak self] recognizer in
-                guard let self = self else { return }
-                let transition = recognizer.translation(in: self.tableView).y
-                if transition < -100 {
-                    self.navigationController?.setNavigationBarHidden(true, animated: true)
-                } else if transition > 100 {
-                    self.navigationController?.setNavigationBarHidden(false, animated: true)
-                }
-            }
-            .disposed(by: disposeBag)
     }
     
     func bind() {
@@ -158,6 +142,16 @@ extension UIViewController {
             .bind { [weak self] _ in
                 guard let self = self else { return }
                 let subpostVC = SubPostsViewController(post: cell.postContentView.post)
+                self.push(viewController: subpostVC)
+            }
+            .disposed(by: cell.refreshingBag)
+        
+        // 공유된 이미지 터치 제스쳐 등록
+        cell.postContentView.sharedPostView.imageGridCollectionView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+            .when(.recognized)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let subpostVC = SubPostsViewController(post: cell.postContentView.sharedPostView.post)
                 self.push(viewController: subpostVC)
             }
             .disposed(by: cell.refreshingBag)

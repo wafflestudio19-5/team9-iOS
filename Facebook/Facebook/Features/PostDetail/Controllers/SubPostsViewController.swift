@@ -114,7 +114,8 @@ class SubPostsViewController: UIViewController {
         subpostsDataSource
             .filter { $0.count != 0 }
             .observe(on: MainScheduler.asyncInstance)  // suppresses error caused by cyclic dependency
-            .bind { subposts in
+            .bind { [weak self] subposts in
+                guard let self = self else { return }
                 self.post.subposts = subposts
                 StateManager.of.post.dispatch(.init(data: self.post, operation: .edit))
             }
