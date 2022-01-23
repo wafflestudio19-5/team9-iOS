@@ -75,16 +75,18 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
             }).disposed(by: disposeBag)
         
         showFriendView.searchBar.rx.text.orEmpty
-            .debounce(RxTimeInterval.microseconds(5), scheduler: MainScheduler.instance)
+            .debounce(RxTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] key in
                 guard let self = self else { return }
+                
                 if key != "" {
                     self.friendViewModel.searchFriend(key: key)
-                    self.setTableViewBackground()
                 } else {
                     self.friendViewModel.refresh()
                 }
+                
+                self.setTableViewBackground()
             }).disposed(by: disposeBag)
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.

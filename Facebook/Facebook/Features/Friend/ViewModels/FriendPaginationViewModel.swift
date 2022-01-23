@@ -9,6 +9,8 @@ import Foundation
 
 class FriendPaginationViewModel: PaginationViewModel<User> {
     
+    lazy var allFriendList: [User] = []
+    
     private var count: Int {
         guard let lastResponse = lastResponse else { return 0 }
         guard let count = lastResponse.count else { return 0 }
@@ -16,20 +18,30 @@ class FriendPaginationViewModel: PaginationViewModel<User> {
     }
     
     func searchFriend(key: String) {
-        var endpoint = Endpoint.friend(id: 0, limit: count)
-        endpoint.path = self.endpoint.path
-        NetworkService
-            .get(endpoint: endpoint, as: PaginatedResponse<User>.self)
-            .subscribe(onNext: { [weak self] element in
-                guard let self = self else { return }
-                let paginatedResponse = element.1
-                self.lastResponse = paginatedResponse
-                let results = paginatedResponse.results
-                let filteredResults = results.filter { $0.username.contains(key.trimmingCharacters(in: .whitespaces)) }
-                self.dataList.accept(self.preprocessBeforeAccept(results: filteredResults))
-            }, onError: { error in
-                print(error)
-            })
-            .disposed(by: disposeBag)
+        if allFriendList.count == 0 {
+            var endpoint = Endpoint.friend(id: 0, limit: count)
+            endpoint.path = self.endpoint.path
+            NetworkService
+                .get(endpoint: endpoint, as: PaginatedResponse<User>.self)
+                .subscribe(onNext: { [weak self] element in
+                    guard let self = self else { return }
+                    let paginatedResponse = element.1
+                    self.lastResponse = paginatedResponse
+                    self.allFriendList = paginatedResponse.results
+                }, onError: { error in
+                    print(error)
+                }, onCompleted: { [weak self] in
+                    self?.filterList(key: key)
+                })
+                .disposed(by: disposeBag)
+        } else {
+            filterList(key: key)
+        }
+        
+    }
+    
+    private func filterList(key: String) {
+        let filteredResults = allFriendList.filter { $0.username.contains(key.trimmingCharacters(in: .whitespaces)) }
+        self.dataList.accept(filteredResults)
     }
 }
