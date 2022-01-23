@@ -207,7 +207,14 @@ class CommentCell: UITableViewCell {
         return button
     }()
     
-    lazy var cancelButton: UIButton = InfoButton(text: "취소", size: 14)
+    lazy var cancelButton: UIButton = {
+        let button = InfoButton(text: "취소", size: 14)
+        button.clipsToBounds = true
+        button.layer.borderColor = UIColor.grayscales.border.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 6
+        return button
+    }()
 }
 
 // MARK: Prepare UI For Editing
