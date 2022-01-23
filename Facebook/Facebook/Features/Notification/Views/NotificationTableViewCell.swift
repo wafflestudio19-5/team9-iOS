@@ -78,7 +78,7 @@ class NotificationTableViewCell: UITableViewCell {
     
     func configure(with notification: Notification) {
         print(notification)
-        contentLabel.text = notification.content.message(user: notification.sender_preview.username)
+        contentLabel.attributedText = addAttributeForMessage(user: notification.sender_preview.username, message: notification.content.message(user: notification.sender_preview.username))
         timeStampLabel.text = notification.posted_at
         subcontentLabel.text = { () -> String in
             if let comment = notification.comment_preview?.content {
@@ -95,7 +95,7 @@ class NotificationTableViewCell: UITableViewCell {
     
     private func addAttributeForMessage(user: String, message: String) -> NSMutableAttributedString {
         let attributedString = NSMutableAttributedString(string: message)
-        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 14.0, weight: .bold), range: (message as NSString).range(of: user))
+        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 14.0, weight: .semibold), range: (message as NSString).range(of: user))
         return attributedString
     }
     
