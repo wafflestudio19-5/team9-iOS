@@ -94,18 +94,27 @@ class SubPostsViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        /// Subposts ~ 테이블뷰 바인딩
         subpostsDataSource
             .bind(to: tableView.rx.items(cellIdentifier: SubPostCell.reuseIdentifier, cellType: SubPostCell.self)) { row, post, cell in
                 cell.configure(with: post)
 
                 // 좋아요 버튼 바인딩
-                cell.postContentView.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
+                cell.postContentView.likeButton.rx.tap.bind { _ in
                     cell.postContentView.like()
                     NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
                         .bind { response in
                             cell.postContentView.like(syncWith: response.1)
                         }
                         .disposed(by: cell.refreshingBag)
+                }.disposed(by: cell.refreshingBag)
+                
+                // 공유 버튼 바인딩
+                cell.postContentView.shareButton.rx.tap.bind { [weak self] _ in
+                    guard let self = self else { return }
+                    var postToShare = cell.postContentView.post
+                    postToShare.author = self.post.author  // inject author information that is not present in subposts
+                    self.presentCreatePostVC(sharing: postToShare, update: false)
                 }.disposed(by: cell.refreshingBag)
             }
             .disposed(by: disposeBag)
@@ -130,6 +139,13 @@ class SubPostsViewController: UIViewController {
                         self.mainPostView.like(syncWith: response.1)
                     }
                     .disposed(by: self.disposeBag)
+            }
+            .disposed(by: disposeBag)
+        
+        mainPostView.shareButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.presentCreatePostVC(sharing: self.post, update: false)
             }
             .disposed(by: disposeBag)
     }

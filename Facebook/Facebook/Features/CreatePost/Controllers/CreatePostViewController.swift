@@ -16,10 +16,12 @@ class CreatePostViewController: UIViewController {
     let disposeBag = DisposeBag()
     private let pickerViewModel = PHPickerViewModel()
     private var postToShare: Post?
+    private var updateListAfterCreation = true
     
-    convenience init(sharing post: Post?) {
+    convenience init(sharing post: Post?, update: Bool = true) {
         self.init(nibName: nil, bundle: nil)
         self.postToShare = post?.postToShare
+        self.updateListAfterCreation = update
     }
     
     override func loadView() {
@@ -131,7 +133,9 @@ class CreatePostViewController: UIViewController {
                             
                             request?.responseDecodable(of: Post.self) { dataResponse in
                                 guard let post = dataResponse.value else { return }
-                                StateManager.of.post.dispatch(.init(data: post, operation: .insert(index: 0)))
+                                if self.updateListAfterCreation {
+                                    StateManager.of.post.dispatch(.init(data: post, operation: .insert(index: 0)))
+                                }
                                 newsfeedVC.headerViews.uploadProgressHeaderView.isHidden = true
                                 callbackDisposeBag = DisposeBag()
                             }

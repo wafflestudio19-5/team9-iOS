@@ -115,8 +115,8 @@ extension UIViewController {
         self.push(viewController: detailVC)
     }
     
-    func presentCreatePostVC(sharing post: Post? = nil) {
-        let createPostViewController = CreatePostViewController(sharing: post)
+    func presentCreatePostVC(sharing post: Post? = nil, update: Bool = true) {
+        let createPostViewController = CreatePostViewController(sharing: post, update: update)
         let navigationController = UINavigationController(rootViewController: createPostViewController)
         navigationController.modalPresentationStyle = .fullScreen
         self.present(navigationController, animated: true, completion: nil)

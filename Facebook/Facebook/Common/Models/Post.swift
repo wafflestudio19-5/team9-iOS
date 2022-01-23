@@ -45,6 +45,10 @@ struct Post: Codable, Identifiable {
     }
     
     var subpostUrls: [URL?] {
+        // subpost에는 또다른 subpost가 존재하지 않으므로 대신 file 하나만으로 이루어진 리스트를 반환한다.
+        if let file = file {
+            return [URL(string: file)]
+        }
         return self.subposts?.map {
             guard let urlString = $0.file, let url = URL(string: urlString) else { return nil }
             return url

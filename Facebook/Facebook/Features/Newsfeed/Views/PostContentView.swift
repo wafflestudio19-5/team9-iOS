@@ -64,7 +64,7 @@ class PostContentView: UIView {
         }
         
         // CollectionView Layout
-        self.imageGridCollectionView.numberOfImages = post.subposts!.count
+        self.imageGridCollectionView.numberOfImages = post.subpostUrls.count
         imageGridCollectionView.dataSource = nil
         Observable.just(post.subpostUrls.prefix(5))
             .observe(on: MainScheduler.instance)
@@ -205,5 +205,13 @@ class PostContentView: UIView {
     
     var likeButton: LikeButton {
         return buttonHorizontalStackView.likeButton
+    }
+    
+    var commentButton: CommentButton {
+        return buttonHorizontalStackView.commentButton
+    }
+    
+    var shareButton: ShareButton {
+        return buttonHorizontalStackView.shareButton
     }
 }
