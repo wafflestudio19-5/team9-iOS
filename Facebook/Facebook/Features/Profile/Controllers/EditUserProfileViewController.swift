@@ -138,8 +138,18 @@ class EditUserProfileViewController<View: EditUserProfileView>: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        setNavigationItem()
         createSection()
         bind()
+    }
+    
+    private func setNavigationItem() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)), style: .plain, target: self, action: #selector(backAction))
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func backAction() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func createSection() {

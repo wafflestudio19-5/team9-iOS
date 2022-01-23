@@ -94,8 +94,18 @@ class SelectInformationViewController<View: SelectInformationView>: UIViewContro
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        setNavigationItem()
         initialSetup()
         bindTableView()
+    }
+    
+    private func setNavigationItem() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)), style: .plain, target: self, action: #selector(backAction))
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func backAction() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     private func initialSetup() {

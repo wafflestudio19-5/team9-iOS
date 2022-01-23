@@ -49,7 +49,17 @@ class EditUsernameViewController<View: EditUsernameView>: UIViewController {
 
         // Do any additional setup after loading the view.
         self.title = "이름 변경"
+        setNavigationItem()
         bindButton()
+    }
+    
+    private func setNavigationItem() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)), style: .plain, target: self, action: #selector(backAction))
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func backAction() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func bindButton() {

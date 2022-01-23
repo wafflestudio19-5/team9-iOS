@@ -148,8 +148,18 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
 
         // Do any additional setup after loading the view.
         self.title = "정보"
+        setNavigationItem()
         if userId != UserDefaultsManager.cachedUser?.id { loadData() }
         bind()
+    }
+    
+    private func setNavigationItem() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)), style: .plain, target: self, action: #selector(backAction))
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func backAction() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func loadData() {
