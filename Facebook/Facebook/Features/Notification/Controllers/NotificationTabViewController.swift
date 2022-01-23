@@ -36,5 +36,10 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
 
         StateManager.of.notification.bind(with: viewModel.dataList).disposed(by: disposeBag)
 
+        // cell을 탭할 경우 상세 페이지로 이동
+//        tableView.rx.modelSelected(Notification.self)
+//            .bind { [weak self] notification in
+//
+//            }.disposed(by: disposeBag)
     }
 }
