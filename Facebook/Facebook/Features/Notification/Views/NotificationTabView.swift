@@ -49,7 +49,7 @@ class NotificationTabView: UIView {
     
     private func setStyleForView() {
         largeTitleLabel.text = "알림"
-        largeTitleLabel.font = .systemFont(ofSize: 24.0, weight: .semibold)
+        largeTitleLabel.font = .systemFont(ofSize: 26.0, weight: .semibold)
         largeTitleLabel.textColor = .black
     }
     
