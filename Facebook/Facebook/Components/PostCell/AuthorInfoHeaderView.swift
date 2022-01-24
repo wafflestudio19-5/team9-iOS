@@ -53,9 +53,9 @@ class AuthorInfoHeaderView: UIView {
         
         self.addSubview(ellipsisButton)
         ellipsisButton.snp.makeConstraints { make in
-            make.top.equalTo(-5)
-            make.width.equalTo(20)
             make.trailing.equalTo(0)
+            make.centerY.equalTo(self).offset(-10)
+            make.width.equalTo(20)
         }
     }
     

@@ -6,11 +6,84 @@
 //
 
 import UIKit
+import RxSwift
 
 class PostDetailView: UIView {
     
+    private let disposeBag = DisposeBag()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = .white
+        configureTableView()
+        setLayout()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func configureTableView() {
+        commentTableView.tableHeaderView = postContentHeaderView
+        commentTableView.register(CommentCell.self, forCellReuseIdentifier: CommentCell.reuseIdentifier)
+        commentTableView.allowsSelection = false
+        commentTableView.translatesAutoresizingMaskIntoConstraints = false
+        commentTableView.keyboardDismissMode = .interactive
+        commentTableView.separatorStyle = .none
+    }
+    
+    func setLayout() {
+        
+        self.addSubview(authorHeaderView)
+        authorHeaderView.snp.makeConstraints { make in
+            make.top.equalTo(self.safeAreaLayoutGuide)
+            make.trailing.equalTo(CGFloat.standardTrailingMargin)
+            make.height.equalTo(CGFloat.profileImageSize + 20)
+        }
+        
+        self.addSubview(leftChevronButton)
+        leftChevronButton.snp.makeConstraints { make in
+            make.centerY.equalTo(authorHeaderView)
+            make.leading.equalTo(0)
+            make.trailing.equalTo(authorHeaderView.snp.leading)
+        }
+        
+        self.addSubview(navBarDivider)
+        navBarDivider.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(0)
+            make.height.equalTo(1)
+            make.bottom.equalTo(authorHeaderView)
+        }
+        
+        self.addSubview(commentTableView)
+        commentTableView.snp.makeConstraints { make in
+            make.top.equalTo(authorHeaderView.snp.bottom)
+            make.leading.bottom.trailing.equalToSuperview()
+        }
+        
+        postContentHeaderView.snp.makeConstraints { make in
+            make.width.equalTo(commentTableView.snp.width)
+        }
+        
+        commentTableView.rx.contentOffset.bind { [weak self] offset in
+            guard let self = self else { return }
+            UIView.animate(withDuration: 0.2) {
+                self.navBarDivider.alpha = offset.y > 0 ? 1 : 0
+            }
+        }.disposed(by: disposeBag)
+    }
+    
+    func configure(with post: Post) {
+        authorHeaderView.configure(with: post)
+        postContentHeaderView.configure(with: post)
+    }
+    
+    // MARK: UI Components
+    
+    let navBarDivider = Divider()
     let commentTableView = ResponsiveTableView()
     let postContentHeaderView = PostDetailHeaderView()
+    let authorHeaderView = AuthorInfoHeaderView()
     
     var likeButton: LikeButton {
         postContentHeaderView.buttonStackView.likeButton
@@ -20,35 +93,9 @@ class PostDetailView: UIView {
         postContentHeaderView.buttonStackView.commentButton
     }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = .white
-        configureTableView()
+    var shareButton: ShareButton {
+        postContentHeaderView.buttonStackView.shareButton
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func configureTableView() {
-        self.addSubview(commentTableView)
-        commentTableView.tableHeaderView = postContentHeaderView
-        commentTableView.register(CommentCell.self, forCellReuseIdentifier: CommentCell.reuseIdentifier)
-        commentTableView.allowsSelection = false
-        commentTableView.translatesAutoresizingMaskIntoConstraints = false
-        commentTableView.keyboardDismissMode = .interactive
-        commentTableView.separatorStyle = .none
-        NSLayoutConstraint.activate([
-            commentTableView.topAnchor.constraint(equalTo: self.topAnchor),
-            commentTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            commentTableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            commentTableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            
-            postContentHeaderView.widthAnchor.constraint(equalTo: commentTableView.widthAnchor)
-        ])
-    }
-    
-    // MARK: Keyboard Accessory Components
     
     lazy var textView: FlexibleTextView = {
         let textView = FlexibleTextView()
@@ -61,6 +108,15 @@ class PostDetailView: UIView {
         return textView
     }()
     
+    lazy var leftChevronButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.image = UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold))
+        config.baseForegroundColor = .grayscales.label
+        config.baseBackgroundColor = .clear
+        
+        let button = UIButton.init(configuration: config)
+        return button
+    }()
     
     var focusedAuthorLabel = InfoLabel(size: 12, weight: .semibold)
     var cancelFocusingButton = InfoLabel(size: 12, weight: .regular)
