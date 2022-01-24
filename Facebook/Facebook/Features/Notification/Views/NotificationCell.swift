@@ -77,7 +77,7 @@ class NotificationCell: UITableViewCell {
     }
     
     func configure(with notification: Notification) {
-        contentLabel.attributedText = addAttributeForMessage(notification: notification, message: notification.message())
+        contentLabel.attributedText = addAttributeForMessage(message: notification.message().0, users: notification.message().1)
         timeStampLabel.text = notification.posted_at
         
         /// subcontentLabel 내용 설정
@@ -113,12 +113,13 @@ class NotificationCell: UITableViewCell {
         self.backgroundColor = .white
     }
     
-    private func addAttributeForMessage(notification: Notification, message: String) -> NSMutableAttributedString {
+    private func addAttributeForMessage(message: String, users: [String]) -> NSMutableAttributedString {
         let attributedString = NSMutableAttributedString(string: message)
         let NSMessage = message as NSString
         
-        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 14.0, weight: .bold), range: NSMessage.range(of: "\(notification.sender_preview.username)"))
-        
+        for user in users {
+            attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 14.0, weight: .semibold), range: NSMessage.range(of: "\(user)"))
+        }
         
         return attributedString
     }
