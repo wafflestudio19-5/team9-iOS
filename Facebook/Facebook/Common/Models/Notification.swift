@@ -42,7 +42,7 @@ extension Notification {
             case .PostLike: return "회원님의 게시물을 좋아합니다."
             case .PostComment: return "회원님의 게시물에 댓글을 남겼습니다"
             case .CommentComment: return "\(post?.author?.id == id ? "회원" : post?.author?.username ?? "")님의 게시물에 있는 회원님의 댓글에 답글을 남겼습니다"
-            case .CommentLike: return "회원님의 댓글을 좋아합니다: \"\(parent_comment?.content ?? "")\""
+            case .CommentLike: return "회원님의 \(parent_comment?.is_file == "photo" ? "사진 " : (parent_comment?.is_file == "sticker" ? "스티커 " : ""))댓글을 좋아합니다: \"\(parent_comment?.content ?? "")\""
             case .FriendRequest: return "친구 요청을 보냈습니다."
             case .FriendAccept: return "회원님의 친구 요청을 수락했습니다."
             case .isFriend: return "님과 친구입니다."
