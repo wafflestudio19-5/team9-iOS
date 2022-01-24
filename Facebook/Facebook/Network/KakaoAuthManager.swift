@@ -75,16 +75,12 @@ struct KakaoAuthManager {
         // 카카오 access token으로 서버에 "카카오 계정으로 로그인" 요청
         
         return Single<Bool>.create { (result) -> Disposable in
-            NetworkService.post(endpoint: .loginWithKakao(accessToken: accessToken))
+            NetworkService.post(endpoint: .loginWithKakao(accessToken: accessToken), as: AuthResponse.self)
                 .subscribe(onNext: { response in
-                    guard let response = response as? AuthResponse else {
-                        result(.success(false))
-                        return
-                    }
-                    StateManager.of.user.dispatch(authResponse: response)
+                    StateManager.of.user.dispatch(authResponse: response.1)
                     result(.success(true))
-                }, onError: { error in
-                    result(.failure(error))
+                }, onError: { _ in
+                    result(.success(false))
                 }).disposed(by: disposeBag)
             return Disposables.create()
         }

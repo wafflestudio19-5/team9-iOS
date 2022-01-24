@@ -15,6 +15,7 @@ struct UserDefaultsManager {
     private static let userKey = "CurrentUser"
     private static let tokenKey = "Token"
     private static let isLoggedInKey = "isLoggedIn"
+    private static let isValidKey = "isValid"
     
     static var isLoggedIn: Bool {
         get {
@@ -43,6 +44,15 @@ struct UserDefaultsManager {
         set {
             let currentUserData = try? JSONEncoder().encode(newValue)
             UserDefaults.standard.setValue(currentUserData, forKey: self.userKey)
+        }
+    }
+    
+    static var isValid: Bool? {
+        get {
+            return UserDefaults.standard.value(forKey: isValidKey) as? Bool
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: isValidKey)
         }
     }
 }

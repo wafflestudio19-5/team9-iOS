@@ -31,6 +31,7 @@ class UserDispatcher: Dispatcher<UserProfile> {
         UserDefaultsManager.token = authResponse.token
         UserDefaultsManager.cachedUser = authResponse.user
         UserDefaultsManager.isLoggedIn = true
+        UserDefaultsManager.isValid = authResponse.user.is_valid
         NetworkService.registerToken(token: authResponse.token)
         profileDataSource.accept(UserProfile.getDummyProfile(from: authResponse.user))
     }

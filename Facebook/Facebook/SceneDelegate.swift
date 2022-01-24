@@ -12,18 +12,6 @@ import KakaoSDKAuth
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
-    // 로그인 여부를 확인하는 변수
-    private var didLogin: Bool {
-        guard let didLogin = UserDefaults.standard.value(forKey: "didLogin") as? Bool else {
-            print("\n로그인 정보가 없습니다!\n")
-            return false
-        }
-        if didLogin {
-            print("\n로그인 정보가 있습니다!\n")
-            return true
-        } else { return false }
-    }
     
     func changeRootViewController(_ viewController: UIViewController, wrap: Bool = false, animated: Bool = true) {
         guard let window = self.window else {
@@ -34,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if animated {
             let options: UIView.AnimationOptions = .transitionCrossDissolve
-            let duration: TimeInterval = 0.5
+            let duration: TimeInterval = 0.4
 
             UIView.transition(with: window, duration: duration, options: options, animations: { }, completion: nil)
         }

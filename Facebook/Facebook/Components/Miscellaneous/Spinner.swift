@@ -31,7 +31,10 @@ struct AlertWithSpinner {
     private let alert: UIAlertController
     private let spinner = UIActivityIndicatorView()
     
+    private var message: String
+    
     init(message: String) {
+        self.message = message
         alert = UIAlertController(title: nil,
                                       message: message,
                                       preferredStyle: .alert)
@@ -45,12 +48,13 @@ struct AlertWithSpinner {
         }
     }
     
-    func startSpinner(viewController: UIViewController) {
+    func start(viewController: UIViewController, message: String = "") {
+        if !message.isEmpty { self.alert.message = message }
         viewController.present(self.alert, animated: true)
         spinner.startAnimating()
     }
     
-    func stopSpinner() {
+    func stop() {
         spinner.stopAnimating()
         alert.dismiss(animated: true)
     }
