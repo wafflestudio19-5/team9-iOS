@@ -428,35 +428,40 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 self.addInformationView.layoutIfNeeded()
             }).disposed(by: disposeBag)
         
-        sectionSwitch.rx.tap.bind { [weak self]  in
-            guard let self = self else { return }
-            switch self.informationType {
-            case .company:
-                if self.companyInformation.is_active! {
-                    self.sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
-                    self.sectionSwitch.tintColor = .gray
-                    self.companyInformation.is_active = false
-                    self.createNotActiveSection()
-                } else {
-                    self.sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-                    self.sectionSwitch.tintColor = .systemBlue
-                    self.companyInformation.is_active = true
-                    self.createActiveSection()
-                }
-            case .university:
-                if self.universityInformation.is_active! {
-                    self.sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
-                    self.sectionSwitch.tintColor = .gray
-                    self.universityInformation.is_active = false
-                    self.createNotActiveSection()
-                } else {
-                    self.sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-                    self.sectionSwitch.tintColor = .systemBlue
-                    self.universityInformation.is_active = true
-                    self.createActiveSection()
-                }
-            }
-        }.disposed(by: disposeBag)
+        if informationType == .company {
+            sectionSwitch.rx
+                .tapGesture()
+                .when(.recognized)
+                .subscribe { [weak self] _ in
+                    guard let self = self else { return }
+                    if self.companyInformation.is_active ?? true {
+                        self.companyInformation.is_active = false
+                        self.sectionSwitch.isOn = false
+                        self.createNotActiveSection()
+                    } else {
+                        self.companyInformation.is_active = true
+                        self.sectionSwitch.isOn = true
+                        self.createActiveSection()
+                    }
+                }.disposed(by: disposeBag)
+        } else {
+            sectionButton.rx
+                .tap
+                .bind { [weak self]  in
+                    guard let self = self else { return }
+                    if self.universityInformation.is_active ?? true {
+                        self.sectionButton.setImage(UIImage(systemName: "square")!, for: .normal)
+                        self.sectionButton.tintColor = .gray
+                        self.universityInformation.is_active = false
+                        self.createNotActiveSection()
+                    } else {
+                        self.sectionButton.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+                        self.sectionButton.tintColor = .systemBlue
+                        self.universityInformation.is_active = true
+                        self.createActiveSection()
+                    }
+                }.disposed(by: disposeBag)
+        }
     
     }
     
@@ -538,6 +543,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         
         case .university:
             self.title = "학력 추가"
+            self.universityInformation.is_active = true
             
             sections = [
                 .DetailInformationSection(title: "학력", items: [
@@ -660,12 +666,20 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         }
     }
     
-    let sectionSwitch: UIButton = {
-        let sectionSwitch = UIButton()
-        sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+    let sectionSwitch: UISwitch = {
+        let sectionSwitch = UISwitch()
         sectionSwitch.tintColor = .systemBlue
+        
         return sectionSwitch
     }()
+    
+    let sectionButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+        button.tintColor = .systemBlue
+        return button
+    }()
+
     
     //UITableView의 custom header적용
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -681,19 +695,36 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         sectionLabel.font = UIFont.systemFont(ofSize: 18)
         
         headerView.addSubview(sectionLabel)
-        headerView.addSubview(sectionSwitch)
-        
         sectionLabel.translatesAutoresizingMaskIntoConstraints = false
-        sectionSwitch.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            sectionLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
-            sectionSwitch.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            sectionSwitch.heightAnchor.constraint(equalToConstant: 30),
-            sectionSwitch.widthAnchor.constraint(equalToConstant: 30),
-            sectionSwitch.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
-        ])
+        if self.informationType == .company {
+            headerView.addSubview(sectionSwitch)
+            sectionSwitch.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                sectionLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
+                sectionSwitch.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                sectionSwitch.heightAnchor.constraint(equalToConstant: 30),
+                sectionSwitch.widthAnchor.constraint(equalToConstant: 30),
+                sectionSwitch.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
+            ])
+            
+            self.sectionSwitch.isOn = self.companyInformation.is_active ?? true
+        } else {
+            headerView.addSubview(sectionButton)
+            sectionButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                sectionLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
+                sectionButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                sectionButton.heightAnchor.constraint(equalToConstant: 30),
+                sectionButton.widthAnchor.constraint(equalToConstant: 30),
+                sectionButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
+            ])
+            
+        }
         
         return headerView
     }
