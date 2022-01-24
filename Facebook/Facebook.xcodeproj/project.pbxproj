@@ -122,6 +122,7 @@
 		BE64AF3527809F3E00C25967 /* UploadProgressHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */; };
 		BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF372780A34D00C25967 /* MainHeaderView.swift */; };
 		BE64AF3A27827FAE00C25967 /* ResponsiveViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3927827FAE00C25967 /* ResponsiveViews.swift */; };
+		BE6F62FA279ECC8C00F62111 /* CommentModalViewConroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F62F9279ECC8C00F62111 /* CommentModalViewConroller.swift */; };
 		BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */; };
 		BE7D1DF9277DC63800E080E3 /* NSLayoutConstraints+Activate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */; };
 		BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DFA277E089F00E080E3 /* Rx+Upload.swift */; };
@@ -278,6 +279,7 @@
 		BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressHeaderView.swift; sourceTree = "<group>"; };
 		BE64AF372780A34D00C25967 /* MainHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
 		BE64AF3927827FAE00C25967 /* ResponsiveViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveViews.swift; sourceTree = "<group>"; };
+		BE6F62F9279ECC8C00F62111 /* CommentModalViewConroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModalViewConroller.swift; sourceTree = "<group>"; };
 		BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerViewModel.swift; sourceTree = "<group>"; };
 		BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraints+Activate.swift"; sourceTree = "<group>"; };
 		BE7D1DFA277E089F00E080E3 /* Rx+Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Upload.swift"; sourceTree = "<group>"; };
@@ -804,6 +806,7 @@
 			isa = PBXGroup;
 			children = (
 				BE0D4382278D498200E2162F /* SubPostsViewController.swift */,
+				BE6F62F9279ECC8C00F62111 /* CommentModalViewConroller.swift */,
 				77547903275CE66A0065711C /* PostDetailViewController.swift */,
 			);
 			path = Controllers;
@@ -1093,6 +1096,7 @@
 				B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */,
 				7754B86D2781A0B900775D81 /* Endpoint+Profile.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
+				BE6F62FA279ECC8C00F62111 /* CommentModalViewConroller.swift in Sources */,
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
 				BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */,
 				BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */,

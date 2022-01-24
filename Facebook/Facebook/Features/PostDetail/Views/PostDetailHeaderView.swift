@@ -11,13 +11,9 @@ import RxRelay
 import SwiftUI
 import SnapKit
 
+/// 포스팅 상세페이지 상단의 게시글 뷰. 댓글 TableView의 헤더로 들어간다.
 class PostDetailHeaderView: UIStackView {
     
-    /// 포스팅 상세페이지 상단의 게시글 뷰. 댓글 TableView의 헤더로 들어간다.
-    
-    private let contentLabel = PostContentLabel()
-    let buttonStackView = InteractionButtonStackView(useBottomBorder: true)
-    private let authorHeaderView = AuthorInfoHeaderView()
     private let disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
@@ -59,8 +55,12 @@ class PostDetailHeaderView: UIStackView {
         StateManager.of.post.dispatch(post, syncWith: response)
     }
     
+    let contentLabel = PostContentLabel()
+    let buttonStackView = InteractionButtonStackView(useBottomBorder: true)
+    let authorHeaderView = AuthorInfoHeaderView()
+    
     // 이미지 그리드 뷰
-    private let imageGridCollectionView = ImageGridCollectionView()
+    let imageGridCollectionView = ImageGridCollectionView()
     
     // 좋아요 수 라벨
     private let likeCountLabel: UILabel = InfoLabel(color: .grayscales.label, weight: .semibold)
@@ -90,7 +90,7 @@ class PostDetailHeaderView: UIStackView {
         contentLabel.text = post.content
         authorHeaderView.configure(with: post)
         
-        imageGridCollectionView.numberOfImages = post.subposts!.count
+        imageGridCollectionView.numberOfImages = post.subpostUrls.count
         imageGridCollectionView.dataSource = nil
         Observable.just(post.subpostUrls.prefix(5))
             .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in

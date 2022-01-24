@@ -109,6 +109,12 @@ class SubPostsViewController: UIViewController {
                         .disposed(by: cell.refreshingBag)
                 }.disposed(by: cell.refreshingBag)
                 
+                // 댓글 버튼 바인딩
+                cell.postContentView.commentButton.rx.tap.bind { [weak self] _ in
+                    guard let self = self else { return }
+                    self.presentCommentModalVC(to: cell.postContentView.post)
+                }.disposed(by: cell.refreshingBag)
+                
                 // 공유 버튼 바인딩
                 cell.postContentView.shareButton.rx.tap.bind { [weak self] _ in
                     guard let self = self else { return }

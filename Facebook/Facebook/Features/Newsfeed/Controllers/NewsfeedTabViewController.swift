@@ -115,6 +115,13 @@ extension UIViewController {
         self.push(viewController: detailVC)
     }
     
+    func presentCommentModalVC(to post: Post) {
+        let vc = CommentModalViewConroller(post: post, asFirstResponder: true)
+        let navigationController = UINavigationController(rootViewController: vc)
+        navigationController.isModalInPresentation = true
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
     func presentCreatePostVC(sharing post: Post? = nil, update: Bool = true) {
         let createPostViewController = CreatePostViewController(sharing: post, update: update)
         let navigationController = UINavigationController(rootViewController: createPostViewController)

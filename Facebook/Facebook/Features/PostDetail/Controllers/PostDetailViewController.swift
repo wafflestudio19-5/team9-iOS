@@ -101,7 +101,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return button
     }()
     
-    func setLeftBarButtonItems() {
+    func setNavBarItems() {
         let stackview = UIStackView.init(arrangedSubviews: [leftChevronButton, authorHeaderView])
         stackview.distribution = .equalSpacing
         stackview.axis = .horizontal
@@ -119,7 +119,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         bindTableView()
         bindLikeButton()
         bindCommentButton()
-        setLeftBarButtonItems()
+        setNavBarItems()
         setKeyboardToolbar()
     }
     
@@ -133,11 +133,12 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
             commentTableView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
         }
+        
+        bindKeyboardHeight()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        bindKeyboardHeight()
         if self.asFirstResponder && !keyboardTextView.isFirstResponder {
             keyboardTextView.becomeFirstResponder()
             self.asFirstResponder = false
