@@ -15,7 +15,7 @@ class CommentPaginationViewModel: PaginationViewModel<Comment> {
         
         func preorderTraversal(root: Comment) {
             flatten.append(root)
-            for child in root.children {
+            for child in root.children ?? [] {
                 preorderTraversal(root: child)
             }
         }
@@ -28,17 +28,6 @@ class CommentPaginationViewModel: PaginationViewModel<Comment> {
     
     override func preprocessBeforeAccept(oldData: [Comment] = [], results: [Comment]) -> [Comment] {
         return recursivelyFlatten(comments: results) + oldData
-    }
-    
-    func invalidateLikeState(of comment: Comment, with response: LikeResponse) {
-        var comments = dataList.value
-        if let firstIndex = comments.firstIndex(where: {$0.id == comment.id}) {
-            var target = comments[firstIndex]
-            target.is_liked = response.is_liked
-            target.likes = response.likes
-            comments[firstIndex] = target
-        }
-        dataList.accept(comments)
     }
     
     /// 업로드된 댓글이 어디에 삽입되어야 하는지 계산한다.
@@ -69,9 +58,26 @@ class CommentPaginationViewModel: PaginationViewModel<Comment> {
         return IndexPath(row: flattenComments.count, section: 0)
     }
     
+    func findDeletionIndices(of comment: Comment) -> [Int] {
+        let flattenComments = dataList.value
+        var indices = [Int]()
+        
+        for (index, oldComment) in flattenComments.enumerated() {
+            if oldComment.id == comment.id {
+                indices.append(index)
+            }
+            if oldComment.parent == comment.id {
+                indices.append(contentsOf: findDeletionIndices(of: oldComment))
+            }
+        }
+        return indices
+    }
+    
     func insert(_ comment: Comment, at indexPath: IndexPath) {
         var newData = dataList.value
         newData.insert(comment, at: indexPath.row)
         dataList.accept(newData)
     }
+    
+    
 }
