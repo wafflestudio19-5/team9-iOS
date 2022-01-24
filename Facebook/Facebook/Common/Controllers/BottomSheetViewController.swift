@@ -61,11 +61,8 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         self.bottomSheetView.dimmedView.alpha = 0.5
-        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
-            self.setInitialTopConstant()
-            self.showBottomSheet()
-            self.bottomSheetView.layoutIfNeeded()
-        }, completion: nil)
+        self.setInitialTopConstant()
+        self.showBottomSheet()
     }
     
     private func setInitialTopConstant() {
@@ -82,6 +79,10 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         } else {
             bottomSheetView.bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
         }
+        
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
+            self.bottomSheetView.layoutIfNeeded()
+        }, completion: nil)
     }
     
     private func hideBottomSheet(afterAction: (() -> ())? = nil) {
@@ -174,7 +175,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     }
     
     private func dimAlphaWithBottomSheetTopConstraint(value: CGFloat) -> CGFloat {
-        let fullDimAlpha: CGFloat = 0.7
+        let fullDimAlpha: CGFloat = 0.5
         
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = self.view.safeAreaInsets.bottom
