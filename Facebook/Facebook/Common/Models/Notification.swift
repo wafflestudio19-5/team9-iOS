@@ -19,6 +19,7 @@ struct Notification: Codable, Identifiable {
     var comment_preview: SimpleComment?
     var posted_at: String
     var is_checked: Bool
+    var is_accepted: Bool
     let url: String // 알림을 눌렀을 때 이동할 url,
 }
 

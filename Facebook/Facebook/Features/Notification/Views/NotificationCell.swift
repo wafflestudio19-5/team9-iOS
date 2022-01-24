@@ -82,14 +82,14 @@ class NotificationCell: UITableViewCell {
         
         /// subcontentLabel 내용 설정
         subcontentLabel.text = { () -> String in
-            if let comment = notification.comment_preview?.content {
-                return "· \"" + comment + "\""
-            }
             /// comment 내용 없이 사진, 스티커만 업로드한 경우의 메시지
             if notification.comment_preview?.is_file == "photo" {
-                return "\(notification.sender_preview.username) posted a photo"
+                return "· \(notification.sender_preview.username) posted a photo"
             } else if notification.comment_preview?.is_file == "sticker" {
-                return "\(notification.sender_preview.username) posted a sticker"
+                return "· \(notification.sender_preview.username) posted a sticker"
+            }
+            if let comment = notification.comment_preview?.content {
+                return "· \"" + comment + "\""
             }
             return ""
         }()

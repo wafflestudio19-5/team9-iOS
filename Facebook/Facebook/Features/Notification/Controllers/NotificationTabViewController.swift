@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxDataSources
 import RxGesture
 
 class NotificationTabViewController: BaseTabViewController<NotificationTabView>, UIScrollViewDelegate {
@@ -19,17 +20,19 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     private let isShowingBottomSheet: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     
     let viewModel = PaginationViewModel<Notification>(endpoint: .notification())
+    private let oldNotifications = BehaviorRelay<[Notification]>(value: [])
+    private let newNotifications = BehaviorRelay<[Notification]>(value: [])
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: tabView.largeTitleLabel)
 
+        //newNotifications.accept(viewModel.dataList.value)
         bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabView.layoutIfNeeded()
     }
     
     private func bind() {
@@ -38,9 +41,33 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
         viewModel.dataList
             .observe(on: MainScheduler.instance)
             .bind(to: tableView.rx.items(cellIdentifier: NotificationCell.reuseIdentifier, cellType: NotificationCell.self)) { [weak self] _, notification, cell in
+                print(notification)
                 self?.configure(cell: cell, with: notification)
             }.disposed(by: disposeBag)
-
+        
+//        print("oldNotifications")
+//        print(oldNotifications.value)
+//
+//        print("\n\nnewNotifications")
+//        print(newNotifications.value)
+//
+//        let configureCell: (TableViewSectionedDataSource<SectionModel<String, Notification>>, UITableView, IndexPath, Notification) -> UITableViewCell = { (datasource, tableView, indexPath, notification) in
+//            guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationCell.reuseIdentifier, for: indexPath) as? NotificationCell else { return UITableViewCell() }
+//            cell.configure(with: notification)
+//            return cell
+//        }
+//
+//        let datasource = RxTableViewSectionedReloadDataSource<SectionModel<String, Notification>>.init(configureCell: configureCell)
+//
+//        let sections = [
+//            SectionModel<String, Notification>(model: "새로운 알림", items: newNotifications.value),
+//            SectionModel<String, Notification>(model: "이전 알림", items: oldNotifications.value)
+//        ]
+//
+//        Observable.just(sections)
+//            .bind(to: tableView.rx.items(dataSource: datasource))
+//            .disposed(by: disposeBag)
+        
         StateManager.of.notification.bind(with: viewModel.dataList).disposed(by: disposeBag)
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
