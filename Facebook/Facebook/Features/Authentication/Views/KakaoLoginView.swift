@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class KakaoLoginView: UIView {
 
@@ -43,34 +44,34 @@ class KakaoLoginView: UIView {
     }
 
     private func setLayoutForView() {
-        
         self.addSubview(instructionLabel)
         self.insertSubview(backgroundImage, at: 0)
         self.addSubview(skipButton)
         self.addSubview(kakaoLoginButton)
         
-        instructionLabel.translatesAutoresizingMaskIntoConstraints = false
-        skipButton.translatesAutoresizingMaskIntoConstraints = false
-        kakaoLoginButton.translatesAutoresizingMaskIntoConstraints = false
-        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        instructionLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(48)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(36)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-36).priority(999)
+        }
         
-        NSLayoutConstraint.activate([
-            instructionLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 48.0),
-            instructionLabel.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 36.0),
-            instructionLabel.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -36.0),
-            
-            backgroundImage.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 40.0),
-            backgroundImage.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 32.0),
-            backgroundImage.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -32.0),
-            
-            skipButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20.0),
-            skipButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20.0),
-            skipButton.bottomAnchor.constraint(equalTo: kakaoLoginButton.topAnchor, constant: -10.0),
-            
-            kakaoLoginButton.heightAnchor.constraint(equalTo: kakaoLoginButton.widthAnchor, multiplier: 0.15),
-            kakaoLoginButton.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20.0),
-            kakaoLoginButton.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20.0),
-            kakaoLoginButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -30.0),
-        ])
+        backgroundImage.snp.makeConstraints { make in
+            make.centerY.equalTo(self).offset(40)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(32)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-32).priority(999)
+        }
+        
+        skipButton.snp.makeConstraints { make in
+            make.bottom.equalTo(kakaoLoginButton.snp.top).offset(-10)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(20)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20).priority(999)
+        }
+        
+        kakaoLoginButton.snp.makeConstraints { make in
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-16)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(20)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-20).priority(999)
+            make.height.equalTo(kakaoLoginButton.snp.width).multipliedBy(0.15)
+        }
     }
 }

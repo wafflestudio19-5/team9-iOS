@@ -28,7 +28,11 @@ extension Endpoint {
         return Endpoint(path: "account/signup/", parameters: ["email": newUser.email!, "first_name": newUser.first_name!, "last_name": newUser.last_name!, "birth": newUser.birth!, "gender": newUser.gender!, "password": newUser.password!])
     }
     
+    static func deleteAccount() -> Self {
+        return Endpoint(path: "account/delete/")
+
     static func refreshToken(token: String) -> Self {
         return Endpoint(path: "token/refresh/", parameters: ["token": token])
+
     }
 }

@@ -33,6 +33,7 @@ class KakaoLoginViewController<View: KakaoLoginView>: UIViewController {
         customView.skipButton.rx.tapGesture()
             .when(.recognized)
             .bind { [weak self] _ in
+                UserDefaultsManager.isLoggedIn = true
                 self?.changeRootViewController(to: RootTabBarController())
             }.disposed(by: disposeBag)
         
@@ -48,10 +49,11 @@ extension KakaoLoginViewController {
     private func requestKakaoLogin() {
         KakaoAuthManager.requestKakaoLogin(type: .connect)
             .subscribe (onNext: { [weak self] success in
-                if success {
-                    UserDefaults.standard.setValue(true, forKey: "didLogin")
+                switch success {
+                case true:
+                    UserDefaultsManager.isLoggedIn = true
                     self?.changeRootViewController(to: RootTabBarController())
-                } else {
+                case false:
                     self?.alert(title: "카카오 연동 실패", message: "이미 등록된 계정입니다.", action: "확인")
                 }
             }).disposed(by: disposeBag)
