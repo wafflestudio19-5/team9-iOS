@@ -11,13 +11,13 @@ struct Notification: Codable, Identifiable {
     let id: Int
     let user: Int
     let content: ContentType
-    let sender_preview: User
-    let senders: [User]
+    var sender_preview: User
+    var senders: [User]
     var count: Int   // A님 외 N명 할 때, N (없으면 0으로 돌아옴)
     let post: Post?    // 알림이 발생한 게시물 정보
     let parent_comment: SimpleComment?  // 알림이 발생한 댓글
-    let comment_preview: SimpleComment?
-    let posted_at: String
+    var comment_preview: SimpleComment?
+    var posted_at: String
     var is_checked: Bool
     let url: String // 알림을 눌렀을 때 이동할 url,
 }
