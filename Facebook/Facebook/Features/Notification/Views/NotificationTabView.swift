@@ -30,10 +30,6 @@ class NotificationTabView: UIView {
     }()
     
     
-    lazy var bottomSheetView: UIView = {
-        return BottomSheetView()
-    }()
-    
     let notificationTableView = ResponsiveTableView(frame: CGRect.zero, style: .grouped)
     
     override init(frame: CGRect) {
@@ -68,18 +64,18 @@ class NotificationTabView: UIView {
         notificationTableView.backgroundColor = .white
     }
     
-    func showBottomSheetView() {
-        self.insertSubview(bottomSheetView, aboveSubview: self)
-        bottomSheetView.snp.makeConstraints { make in
-            make.edges.equalTo(self)
-        }
-        self.layoutIfNeeded()
-    }
-    
-    func dismissBottomSheetView() {
-        bottomSheetView.removeFromSuperview()
-        self.layoutIfNeeded()
-    }
+//    func showBottomSheetView() {
+//        self.insertSubview(bottomSheetView, aboveSubview: self)
+//        bottomSheetView.snp.makeConstraints { make in
+//            make.edges.equalTo(self)
+//        }
+//        self.layoutIfNeeded()
+//    }
+//    
+//    func dismissBottomSheetView() {
+//        bottomSheetView.removeFromSuperview()
+//        self.layoutIfNeeded()
+//    }
 }
 
 

@@ -116,15 +116,15 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
             })
             .disposed(by: disposeBag)
         
-        tabView.bottomSheetView.rx.tapGesture().bind { [weak self] _ in
-            self?.isShowingBottomSheet.accept(false)
-        }.disposed(by: disposeBag)
-        
-        isShowingBottomSheet
-            .observe(on: MainScheduler.instance)
-            .bind { [weak self] isShowing in
-            isShowing ? self?.tabView.showBottomSheetView() : self?.tabView.dismissBottomSheetView()
-        }.disposed(by: disposeBag)
+//        tabView.bottomSheetView.rx.tapGesture().bind { [weak self] _ in
+//            self?.isShowingBottomSheet.accept(false)
+//        }.disposed(by: disposeBag)
+//        
+//        isShowingBottomSheet
+//            .observe(on: MainScheduler.instance)
+//            .bind { [weak self] isShowing in
+//            isShowing ? self?.tabView.showBottomSheetView() : self?.tabView.dismissBottomSheetView()
+//        }.disposed(by: disposeBag)
 
         /// cell을 탭하면 알림을 확인한 것으로 간주함
         Observable.zip(tableView.rx.modelSelected(Notification.self), tableView.rx.itemSelected).bind { [weak self] (notification, indexPath) in
@@ -174,7 +174,6 @@ extension NotificationTabViewController {
         NetworkService.get(endpoint: .notification(id: notification.id), as: Notification.self)
             .bind { [weak self] response in
                 print(response)
-                self?.tableView.layoutIfNeeded()
             }.disposed(by: disposeBag)
     }
 }
