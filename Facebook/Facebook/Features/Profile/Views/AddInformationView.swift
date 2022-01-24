@@ -54,8 +54,8 @@ class AddInformationView: UIView {
         self.addSubview(footerView)
         footerView.snp.makeConstraints { make in
             make.height.equalTo(50)
-            make.leading.trailing.bottom.equalTo(self.safeAreaLayoutGuide)
-            
+            make.bottom.equalTo(self.safeAreaLayoutGuide)
+            make.leading.trailing.equalTo(self.safeAreaLayoutGuide).priority(999)
         }
     }
     

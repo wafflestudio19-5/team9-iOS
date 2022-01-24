@@ -303,6 +303,10 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         bind()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     func loadData(id: Int) {
         switch informationType {
         case .company:
