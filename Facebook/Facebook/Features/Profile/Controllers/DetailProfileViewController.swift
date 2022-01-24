@@ -320,7 +320,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         ])
         
         if userId == UserDefaultsManager.cachedUser?.id {
-            if section == 2 || section == 3 {
+            if section == 3 {
                 let sectionButton = UIButton(type: .system)
                 sectionButton.setTitle("수정", for: .normal)
                 sectionButton.setTitleColor(UIColor.systemBlue, for: .normal)
@@ -332,16 +332,11 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                     sectionButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
                     sectionButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
                 ])
-                
-                //section header의 버튼 클릭 시 동작
-                switch section {
-                case 3:
-                    sectionButton.rx.tap.bind { [weak self] in
-                        let editUserProfileViewController = EditUserProfileViewController()
-                        self?.push(viewController: editUserProfileViewController)
-                    }.disposed(by: disposeBag)
-                default: break
-                }
+               
+                sectionButton.rx.tap.bind { [weak self] in
+                    let editUserProfileViewController = EditUserProfileViewController()
+                    self?.push(viewController: editUserProfileViewController)
+                }.disposed(by: disposeBag)
             }
         }
         
