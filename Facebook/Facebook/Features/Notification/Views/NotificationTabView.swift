@@ -71,7 +71,7 @@ class NotificationTabView: UIView {
 //        }
 //        self.layoutIfNeeded()
 //    }
-//    
+//
 //    func dismissBottomSheetView() {
 //        bottomSheetView.removeFromSuperview()
 //        self.layoutIfNeeded()
