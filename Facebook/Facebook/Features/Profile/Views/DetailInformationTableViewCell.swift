@@ -129,14 +129,14 @@ class DetailInformationTableViewCell: UITableViewCell {
         case .style1:
             contentView.addSubview(informationImage)
             informationImage.snp.remakeConstraints { make in
-                make.height.width.equalTo(35)
+                make.height.width.equalTo(35).priority(999)
                 make.top.bottom.equalTo(contentView).inset(10)
                 make.leading.equalTo(contentView).inset(15)
             }
             
             contentView.addSubview(labelStackView)
             labelStackView.snp.remakeConstraints { make in
-                make.centerY.equalTo(contentView)
+                make.centerY.equalTo(contentView).priority(999)
                 make.leading.equalTo(informationImage.snp.trailing).inset(-15)
             }
             
@@ -145,7 +145,7 @@ class DetailInformationTableViewCell: UITableViewCell {
         case .style2:
             contentView.addSubview(informationImage)
             informationImage.snp.remakeConstraints { make in
-                make.height.width.equalTo(35)
+                make.height.width.equalTo(35).priority(999)
                 make.top.equalTo(contentView).inset(CGFloat.standardTopMargin)
                 make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
             }
@@ -153,7 +153,7 @@ class DetailInformationTableViewCell: UITableViewCell {
             contentView.addSubview(labelStackView)
             labelStackView.snp.remakeConstraints { make in
                 make.centerY.equalTo(contentView)
-                make.top.bottom.equalTo(contentView).inset(5)
+                make.top.bottom.equalTo(contentView).inset(5).priority(999)
                 make.leading.equalTo(informationImage.snp.trailing).inset(-15)
             }
             
@@ -171,7 +171,7 @@ class DetailInformationTableViewCell: UITableViewCell {
             contentView.addSubview(labelStackView)
             labelStackView.snp.remakeConstraints { make in
                 make.centerY.equalTo(contentView)
-                make.top.bottom.equalTo(contentView).inset(5)
+                make.top.bottom.equalTo(contentView).inset(5).priority(999)
                 make.leading.equalTo(informationImage.snp.trailing).inset(-15)
             }
 
