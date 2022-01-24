@@ -37,7 +37,6 @@ class NewsfeedTabView: UIView {
         newsfeedTableView.register(PostCell.self, forCellReuseIdentifier: PostCell.reuseIdentifier)
         newsfeedTableView.allowsSelection = false
         newsfeedTableView.refreshControl = refreshControl
-        newsfeedTableView.delaysContentTouches = false
         newsfeedTableView.separatorStyle = .none
     }
 }

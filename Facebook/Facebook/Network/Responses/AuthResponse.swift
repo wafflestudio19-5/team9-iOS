@@ -11,3 +11,7 @@ struct AuthResponse: Codable {
     let user: User
     let token: String
 }
+
+struct TokenResponse: Codable {
+    let token: String
+}

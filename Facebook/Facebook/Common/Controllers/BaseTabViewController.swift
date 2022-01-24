@@ -7,6 +7,7 @@
 
 import RxSwift
 import RxGesture
+import UIKit
 
 class BaseTabViewController<View: UIView>: UIViewController {
     private let searchButton = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold)), style: .plain, target: nil, action: nil)
@@ -39,7 +40,7 @@ class BaseTabViewController<View: UIView>: UIViewController {
     private func bindNavigationBarItems() {
         searchButton.rx.tap.bind { [weak self] _ in
             // searchViewController 띄우기
-            self?.navigationController?.pushViewController(SearchViewController(), animated: false)
+            self?.push(viewController: SearchViewController())
         }.disposed(by: disposeBag)
         
         editButton.rx.tap.bind { [weak self] _ in

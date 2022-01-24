@@ -13,4 +13,10 @@ struct User: Codable, Identifiable {
     var is_valid: Bool
     let profile_image: String?
     let username: String
+    let is_friend: Bool?
+    let mutual_friends: FriendInfo?
+}
+
+struct FriendInfo: Codable {
+    let count: Int
 }

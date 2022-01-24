@@ -11,7 +11,7 @@ import RxCocoa
 import RxKeyboard
 
 class LoginViewController<View: LoginView>: UIViewController {
-
+    
     private let disposeBag = DisposeBag()
     
     override func loadView() {
@@ -48,7 +48,7 @@ class LoginViewController<View: LoginView>: UIViewController {
         loginView.createAccountButton.rx.tap.bind { [weak self] _ in
             self?.push(viewController: EnterUsernameViewController())
         }.disposed(by: disposeBag)
-
+        
         loginView.emailTextField.rx.text.orEmpty
             .bind(to: email)
             .disposed(by: disposeBag)
@@ -76,18 +76,15 @@ class LoginViewController<View: LoginView>: UIViewController {
             }).disposed(by: disposeBag)
         
         // view의 아무 곳이나 누르면 textfield 입력 상태 종료
-        view.rx.tapGesture(configuration: { _, delegate in
-            delegate.touchReceptionPolicy = .custom { _, shouldReceive in
-                return !(shouldReceive.view is UIControl)
-            }
-        }).bind { [weak self] _ in
-            guard let self = self else { return }
-            if self.loginView.emailTextField.isEditing {
-                self.loginView.emailTextField.endEditing(true)
-            } else if self.loginView.passwordTextField.isEditing {
-                self.loginView.passwordTextField.endEditing(true)
-            }
-        }.disposed(by: disposeBag)
+        view.rx.tapGesture(configuration: TapGestureConfigurations.cancelUIControlConfig)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                if self.loginView.emailTextField.isEditing {
+                    self.loginView.emailTextField.endEditing(true)
+                } else if self.loginView.passwordTextField.isEditing {
+                    self.loginView.passwordTextField.endEditing(true)
+                }
+            }.disposed(by: disposeBag)
     }
 }
 
