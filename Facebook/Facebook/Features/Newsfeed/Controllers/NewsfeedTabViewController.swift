@@ -151,6 +151,9 @@ extension UIViewController {
             .when(.recognized)
             .bind { [weak self] _ in
                 guard let self = self else { return }
+                if cell.postContentView.sharedPostView.imageGridCollectionView.numberOfImages == 1 {
+                    return  // 한 장짜리 이미지는 원래 전체화면 프리뷰로 전환되어야 한다.
+                }
                 let subpostVC = SubPostsViewController(post: cell.postContentView.sharedPostView.post)
                 self.push(viewController: subpostVC)
             }
