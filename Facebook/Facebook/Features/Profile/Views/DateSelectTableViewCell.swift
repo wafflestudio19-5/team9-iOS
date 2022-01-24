@@ -179,13 +179,14 @@ class DateSelectTableViewCell: UITableViewCell {
         self.contentView.addSubview(addDateLabel)
         addDateLabel.snp.remakeConstraints { make in
             make.height.equalTo(25).priority(999)
+            make.top.equalTo(dateKindLabel.snp.bottom).offset(5)
             make.bottom.left.equalToSuperview().inset(10)
         }
         
         self.contentView.addSubview(yearTextField)
         yearTextField.snp.remakeConstraints { make in
             make.height.equalTo(25).priority(999)
-            make.top.bottom.left.equalToSuperview().inset(10)
+            make.bottom.left.equalToSuperview().inset(10)
         }
         
         self.contentView.addSubview(monthTextField)
