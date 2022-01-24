@@ -13,14 +13,14 @@ struct Notification: Codable, Identifiable {
     let content: ContentType
     var sender_preview: User
     var senders: [User]
-    var count: Int   // A님 외 N명 할 때, N (없으면 0으로 돌아옴)
-    let post: Post?    // 알림이 발생한 게시물 정보
-    let parent_comment: SimpleComment?  // 알림이 발생한 댓글
+    var count: Int
+    let post: Post?
+    let parent_comment: SimpleComment?
     var comment_preview: SimpleComment?
     var posted_at: String
     var is_checked: Bool
     var is_accepted: Bool
-    let url: String // 알림을 눌렀을 때 이동할 url,
+    let url: String
 }
 
 extension Notification {
@@ -46,7 +46,6 @@ extension Notification {
             case .CommentLike: return "회원님의 \(parent_comment?.is_file == "photo" ? "사진 " : (parent_comment?.is_file == "sticker" ? "스티커 " : ""))댓글을 좋아합니다: \"\(parent_comment?.content ?? "")\""
             case .FriendRequest: return "친구 요청을 보냈습니다."
             case .FriendAccept: return "회원님의 친구 요청을 수락했습니다."
-            case .isFriend: return "님과 친구입니다."
             case .unknown: return ""
             }
         }())
@@ -62,6 +61,5 @@ enum ContentType: String, Codable {
     case CommentLike = "CommentLike"
     case FriendRequest = "FriendRequest"
     case FriendAccept = "FriendAccept"
-    case isFriend = "isFriend"
     case unknown = ""
 }

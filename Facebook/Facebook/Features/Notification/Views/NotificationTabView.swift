@@ -17,23 +17,24 @@ class NotificationTabView: UIView {
     
     lazy var newNotificationLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14.0, weight: .semibold)
+        label.font = .systemFont(ofSize: 16.0, weight: .semibold)
         label.text = "새로운 알림"
         return label
     }()
     
     lazy var oldNotificationLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14.0, weight: .semibold)
+        label.font = .systemFont(ofSize: 16.0, weight: .semibold)
         label.text = "이전 알림"
         return label
     }()
+    
     
     lazy var bottomSheetView: UIView = {
         return BottomSheetView()
     }()
     
-    let notificationTableView = ResponsiveTableView()
+    let notificationTableView = ResponsiveTableView(frame: CGRect.zero, style: .grouped)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -64,6 +65,7 @@ class NotificationTabView: UIView {
         notificationTableView.separatorStyle = .none
         notificationTableView.register(NotificationCell.self, forCellReuseIdentifier: NotificationCell.reuseIdentifier)
         notificationTableView.refreshControl = refreshControl
+        notificationTableView.backgroundColor = .white
     }
     
     func showBottomSheetView() {

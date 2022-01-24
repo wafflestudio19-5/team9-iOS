@@ -10,29 +10,52 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import RxGesture
+import SnapKit
 
-class NotificationTabViewController: BaseTabViewController<NotificationTabView>, UIScrollViewDelegate {
+class NotificationTabViewController: BaseTabViewController<NotificationTabView>, UITableViewDelegate, UIScrollViewDelegate {
 
     var tableView: UITableView {
         tabView.notificationTableView
     }
     
+    private lazy var dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, Notification>>(configureCell: configureCell)
+
+    private lazy var configureCell: RxTableViewSectionedReloadDataSource<SectionModel<String, Notification>>.ConfigureCell = { [weak self] dataSource, tableView, indexPath, notification in
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationCell.reuseIdentifier, for: indexPath) as? NotificationCell else { return UITableViewCell() }
+        cell.configure(with: notification)
+        return cell
+    }
+    
     private let isShowingBottomSheet: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     
     let viewModel = PaginationViewModel<Notification>(endpoint: .notification())
+    
     private let oldNotifications = BehaviorRelay<[Notification]>(value: [])
     private let newNotifications = BehaviorRelay<[Notification]>(value: [])
+    
+    private var sectionList = BehaviorRelay<[SectionModel<String, Notification>]>(value: [])
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: tabView.largeTitleLabel)
 
-        //newNotifications.accept(viewModel.dataList.value)
         bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("oldNotifications")
+        print(oldNotifications.value)
+
+        print("\n\nnewNotifications")
+        print(newNotifications.value)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let oldData = self.oldNotifications.value
+        self.oldNotifications.accept(oldData + newNotifications.value)
+        self.newNotifications.accept([])
     }
     
     private func bind() {
@@ -45,27 +68,21 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
                 self?.configure(cell: cell, with: notification)
             }.disposed(by: disposeBag)
         
-//        print("oldNotifications")
-//        print(oldNotifications.value)
-//
-//        print("\n\nnewNotifications")
-//        print(newNotifications.value)
-//
-//        let configureCell: (TableViewSectionedDataSource<SectionModel<String, Notification>>, UITableView, IndexPath, Notification) -> UITableViewCell = { (datasource, tableView, indexPath, notification) in
-//            guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationCell.reuseIdentifier, for: indexPath) as? NotificationCell else { return UITableViewCell() }
-//            cell.configure(with: notification)
-//            return cell
-//        }
-//
-//        let datasource = RxTableViewSectionedReloadDataSource<SectionModel<String, Notification>>.init(configureCell: configureCell)
+//        viewModel.dataList
+//            .bind { [weak self] notification in
+//                print("binding data from viewModel...")
+//                self?.newNotifications.accept(notification)
+//            }.disposed(by: disposeBag)
 //
 //        let sections = [
-//            SectionModel<String, Notification>(model: "새로운 알림", items: newNotifications.value),
-//            SectionModel<String, Notification>(model: "이전 알림", items: oldNotifications.value)
+//            SectionModel(model: "새로운 알림", items: newNotifications.value),
+//            SectionModel(model: "이전 알림", items: oldNotifications.value)
 //        ]
 //
+//        sectionList.accept(sections)
+//
 //        Observable.just(sections)
-//            .bind(to: tableView.rx.items(dataSource: datasource))
+//            .bind(to: tableView.rx.items(dataSource: dataSource))
 //            .disposed(by: disposeBag)
         
         StateManager.of.notification.bind(with: viewModel.dataList).disposed(by: disposeBag)
@@ -111,12 +128,13 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
 
         /// cell을 탭하면 알림을 확인한 것으로 간주함
         Observable.zip(tableView.rx.modelSelected(Notification.self), tableView.rx.itemSelected).bind { [weak self] (notification, indexPath) in
-            if !notification.is_checked {
-                self?.check(notification: notification)
+            guard let cell = self?.tableView.cellForRow(at: indexPath) as? NotificationCell else {
+                return
             }
-            if let cell = self?.tableView.cellForRow(at: indexPath) {
-                cell.isSelected = false
-                self?.tableView.layoutIfNeeded()
+            cell.isSelected = false
+            if !notification.is_checked {
+                cell.isChecked()
+                self?.check(notification: notification)
             }
             if let post = notification.post {
                 self?.push(viewController: PostDetailViewController(post: post))
@@ -126,6 +144,24 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
 }
 
 extension NotificationTabViewController {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect.zero)
+        let label = (section == 0 ? self.tabView.newNotificationLabel : self.tabView.oldNotificationLabel)
+        
+        headerView.addSubview(label)
+        headerView.backgroundColor = .white
+        
+        headerView.snp.makeConstraints { make in
+            make.height.equalTo(40)
+        }
+        
+        label.snp.makeConstraints { make in
+            make.centerY.equalTo(headerView)
+            make.left.equalTo(headerView).offset(16)
+        }
+        return headerView
+    }
+    
     private func configure(cell: NotificationCell, with notification: Notification) {
         cell.configure(with: notification)
         
