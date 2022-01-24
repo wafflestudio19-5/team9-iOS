@@ -8,6 +8,8 @@
 import UIKit
 
 class CommentModalViewConroller: PostDetailViewController {
+    
+    override var useSafeAreaLayoutGuide: Bool { false }
 
     override func viewDidLoad() {
         super.viewDidLoad()

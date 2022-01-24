@@ -175,6 +175,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    var useSafeAreaLayoutGuide: Bool { true }
     
     private func bindKeyboardHeight() {
         RxKeyboard.instance.visibleHeight
@@ -183,7 +184,8 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
                 let toolbarHeight = self.isKeyboardToolbarHidden ? 0 : self.keyboardAccessory.frame.height
                 self.keyboardAccessory.snp.remakeConstraints { make in
                     make.left.right.equalTo(0)
-                    make.bottom.equalTo(keyboardVisibleHeight == 0 ? self.view.safeAreaLayoutGuide.snp.bottom : self.view.snp.bottom).offset(-keyboardVisibleHeight)
+                    let bottom = self.useSafeAreaLayoutGuide ? self.view.safeAreaLayoutGuide.snp.bottom : self.view.snp.bottom
+                    make.bottom.equalTo(keyboardVisibleHeight == 0 ? bottom : self.view.snp.bottom).offset(-keyboardVisibleHeight)
                 }
                 self.view.setNeedsLayout()
                 UIView.animate(withDuration: 0) {
