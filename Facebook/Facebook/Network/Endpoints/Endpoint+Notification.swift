@@ -11,4 +11,8 @@ extension Endpoint {
     static func notification(cursor: String? = nil) -> Self {
         return Endpoint(path: "notices/", cursor: cursor)
     }
+    
+    static func notification(id: Int) -> Self {
+        return Endpoint(path: "notices/\(id)/")
+    }
 }

@@ -79,25 +79,33 @@ class NotificationCell: UITableViewCell {
     func configure(with notification: Notification) {
         contentLabel.attributedText = addAttributeForMessage(notification: notification, message: notification.message())
         timeStampLabel.text = notification.posted_at
+        
+        /// subcontentLabel 내용 설정
         subcontentLabel.text = { () -> String in
             if let comment = notification.comment_preview?.content {
                 return "· \"" + comment + "\""
             }
-            
-            // comment 내용 없이 사진, 스티커만 업로드한 경우의 메시지
+            /// comment 내용 없이 사진, 스티커만 업로드한 경우의 메시지
             if notification.comment_preview?.is_file == "photo" {
                 return "\(notification.sender_preview.username) posted a photo"
             } else if notification.comment_preview?.is_file == "sticker" {
                 return "\(notification.sender_preview.username) posted a sticker"
             }
-            
             return ""
         }()
         
+        /// 프로필 사진 설정
         if let urlString = notification.sender_preview.profile_image {
             profileImage.setImage(from: URL(string: urlString))
         } else {
             profileImage.setImage(from: nil)
+        }
+        
+        /// is_checked에 따라 cell 배경 색깔 설정
+        if notification.is_checked {
+            self.backgroundColor = .white
+        } else {
+            self.backgroundColor = .tintColors.mildBlue
         }
     }
     

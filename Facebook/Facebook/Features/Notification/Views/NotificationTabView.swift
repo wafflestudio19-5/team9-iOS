@@ -13,6 +13,8 @@ class NotificationTabView: UIView {
     
     let largeTitleLabel = UILabel()
     
+    let refreshControl = UIRefreshControl()
+    
     lazy var newNotificationLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14.0, weight: .semibold)
@@ -61,6 +63,7 @@ class NotificationTabView: UIView {
     private func configureTableView() {
         notificationTableView.separatorStyle = .none
         notificationTableView.register(NotificationCell.self, forCellReuseIdentifier: NotificationCell.reuseIdentifier)
+        notificationTableView.refreshControl = refreshControl
     }
     
     func showBottomSheetView() {
