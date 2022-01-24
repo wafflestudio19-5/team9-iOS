@@ -109,6 +109,10 @@ class NotificationCell: UITableViewCell {
         }
     }
     
+    func isChecked() {
+        self.backgroundColor = .white
+    }
+    
     private func addAttributeForMessage(notification: Notification, message: String) -> NSMutableAttributedString {
         let attributedString = NSMutableAttributedString(string: message)
         let NSMessage = message as NSString
