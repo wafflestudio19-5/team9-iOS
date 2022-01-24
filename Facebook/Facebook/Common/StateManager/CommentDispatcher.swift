@@ -39,4 +39,15 @@ class CommentDispatcher: Dispatcher<Comment> {
         comment.is_liked = response.is_liked
         dispatchedSignals.accept(.init(data: comment, operation: .edit))
     }
+    
+    func dispatch(delete comment: Comment, at indices: [Int]) {
+        guard let postId = postId else {
+            return
+        }
+        if comment.post_id != postId {
+            return
+        }
+        dispatchedSignals.accept(.init(data: comment, operation: .deleteRows(indices: indices)))
+
+    }
 }

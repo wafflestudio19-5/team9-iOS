@@ -131,7 +131,7 @@ class CommentCell: UITableViewCell {
         return horizontalStackForButtons
     }()
     
-    private lazy var bubbleView: UIView = {
+    lazy var bubbleView: UIView = {
         let bubbleView = UIView()
         bubbleView.addSubview(authorLabel)
         bubbleView.addSubview(contentLabel)
@@ -160,7 +160,7 @@ class CommentCell: UITableViewCell {
         
     }()
     
-    private let contentLabel: UILabel = {
+    let contentLabel: UILabel = {
         let label = InfoLabel(color: .label, size: 16, weight: .regular)
         label.numberOfLines = 0
         label.lineBreakStrategy = .hangulWordPriority
@@ -186,6 +186,87 @@ class CommentCell: UITableViewCell {
     var likeButton = InfoButton(text: "좋아요", size: 13, weight: .semibold)
     
     var replyButton = InfoButton(text: "답글 달기", size: 13, weight: .semibold)
+    
+    // MARK: UI for Edit
+    
+    var bubbleTextView: FlexibleTextView = {
+        let textView = FlexibleTextView()
+        textView.font = .systemFont(ofSize: 15)
+        textView.maxHeight = 140
+        textView.layer.cornerRadius = 18
+        textView.layer.borderWidth = 1
+        textView.layer.borderColor = UIColor.grayscales.border.cgColor
+        textView.contentInset = .init(top: 0, left: 8, bottom: 0, right: 8)
+        return textView
+    }()
+    
+    var updateButton: InfoButton = {
+        let button = InfoButton(text: "업데이트", color: .white, size: 14)
+        button.configurationUpdateHandler = nil
+        button.configuration?.baseBackgroundColor = .tintColors.blue
+        return button
+    }()
+    
+    lazy var cancelButton: UIButton = {
+        let button = InfoButton(text: "취소", size: 14)
+        button.clipsToBounds = true
+        button.layer.borderColor = UIColor.grayscales.border.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 6
+        return button
+    }()
+}
+
+// MARK: Prepare UI For Editing
+
+extension CommentCell {
+    func startEditing() {
+        bubbleView.isHidden = true
+        horizontalButtonStack.isHidden = true
+        likeCountLabelWithIcon.isHidden = true
+        bubbleTextView.text = contentLabel.text
+        bubbleTextView.becomeFirstResponder()
+        contentView.addSubview(bubbleTextView)
+        contentView.addSubview(updateButton)
+        contentView.addSubview(cancelButton)
+        bubbleTextView.snp.remakeConstraints { make in
+            make.top.equalTo(CGFloat.standardTopMargin)
+            make.leading.equalTo(profileImage.snp.trailing).offset(4)
+            make.trailing.equalTo(CGFloat.standardTrailingMargin)
+            make.height.equalTo(140).priority(.high)
+        }
+        updateButton.snp.makeConstraints { make in
+            make.top.equalTo(bubbleTextView.snp.bottom).offset(10)
+            make.trailing.equalTo(bubbleTextView)
+            make.bottom.equalTo(0)
+            make.height.equalTo(25)
+        }
+        cancelButton.snp.makeConstraints { make in
+            make.centerY.equalTo(updateButton)
+            make.trailing.equalTo(updateButton.snp.leading).offset(-10)
+            make.height.equalTo(25)
+        }
+        
+    }
+    
+    private func finishEditing() {
+        bubbleView.isHidden = false
+        horizontalButtonStack.isHidden = false
+        likeCountLabelWithIcon.isHidden = comment?.likes == 0
+        bubbleTextView.removeFromSuperview()
+        updateButton.removeFromSuperview()
+        cancelButton.removeFromSuperview()
+    }
+    
+    func cancelEditing() {
+        finishEditing()
+    }
+    
+    func completeEditing() {
+        contentLabel.text = bubbleTextView.text
+        finishEditing()
+    }
+    
 }
 
 // MARK: SwiftUI Preview
