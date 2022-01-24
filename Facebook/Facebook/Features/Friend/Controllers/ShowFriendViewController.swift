@@ -55,7 +55,7 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
                 cell.button.rx.tap.bind { [weak self] in
                     //self?.showAlertFriendMenu(friend: friend)
                     guard let self = self else { return }
-                    let menuList = self.createMenuList(friend: friend)
+                    let menuList = self.createFriendMenuList(friend: friend)
                     let bottomSheetVC = BottomSheetViewController(menuList: menuList)
                     bottomSheetVC.modalPresentationStyle = .overFullScreen
                     self.present(bottomSheetVC, animated: false, completion: nil)
@@ -144,7 +144,7 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
 }
 
 extension ShowFriendViewController {
-    func createMenuList(friend: User) -> [Menu] {
+    func createFriendMenuList(friend: User) -> [Menu] {
         let menuList = [ Menu(image: UIImage(systemName: "person.2.fill") ?? UIImage(),
                               text: friend.username + "님의 친구 보기", action: {
             let showFriendVC = ShowFriendViewController(userId: friend.id)
@@ -153,6 +153,19 @@ extension ShowFriendViewController {
                          Menu(image: UIImage(systemName: "person.fill.xmark") ?? UIImage(),
                               text: friend.username + "님과 친구 끊기", action: {
             self.deleleFriend(friend: friend)
+        })]
+        
+        return menuList
+    }
+    
+    func createResponseMenuList(friend: User) -> [Menu] {
+        let menuList = [ Menu(image: UIImage(systemName: "person.fill.checkmark") ?? UIImage(),
+                              text: "친구 요청 수락", action: {
+            self.acceptFriendRequest(friendId: friend.id)
+        }),
+                         Menu(image: UIImage(systemName: "person.fill.xmark") ?? UIImage(),
+                              text: "친구 요청 거절", action: {
+            self.deleteFriendRequest(friendId: friend.id)
         })]
         
         return menuList

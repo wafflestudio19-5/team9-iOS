@@ -38,7 +38,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         bottomSheetView.bottomSheetTableView
     }
     
-    var contentViewHeight: CGFloat = 0
+    var bottomSheetTableViewHeight: CGFloat = 0
     var bottomSheetPanMinTopConstant: CGFloat = 30.0
     private lazy var bottomSheetPanStartingTopConstant: CGFloat = bottomSheetPanMinTopConstant
     var menuBR: BehaviorRelay<[Menu]> = BehaviorRelay<[Menu]>(value: [])
@@ -46,7 +46,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     init(menuList: [Menu]) {
         super.init(nibName: nil, bundle: nil)
         self.menuBR.accept(menuList)
-        contentViewHeight = CGFloat(menuBR.value.count * 60 + 15)
+        bottomSheetTableViewHeight = CGFloat(menuBR.value.count * 60 + 15)
     }
     
     required init?(coder: NSCoder) {
@@ -60,7 +60,6 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.bottomSheetView.dimmedView.alpha = 0.5
         self.setInitialTopConstant()
         self.showBottomSheet()
     }
@@ -75,12 +74,13 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         
         if atState == .normal {
-            bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight - contentViewHeight
+            bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight - bottomSheetTableViewHeight
         } else {
             bottomSheetView.bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
         }
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
+            self.bottomSheetView.dimmedView.alpha = 0.5
             self.bottomSheetView.layoutIfNeeded()
         }, completion: nil)
     }
@@ -155,7 +155,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
                 let safeAreaHeight = self.view.safeAreaLayoutGuide.layoutFrame.height
                 let bottomPadding = self.view.safeAreaInsets.bottom
                         
-                let defaultPadding = safeAreaHeight - self.contentViewHeight
+                let defaultPadding = safeAreaHeight - self.bottomSheetTableViewHeight
                         
                 let nearestValue = self.nearest(to: self.bottomSheetView.bottomSheetViewTopConstraint.constant, inValues: [defaultPadding, safeAreaHeight + bottomPadding])
                         
@@ -180,26 +180,18 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = self.view.safeAreaInsets.bottom
         
-        // bottom sheet의 top constraint 값이 fullDimPosition과 같으면
-        // dimmer view의 alpha 값이 0.7이 되도록 합니다
-        let fullDimPosition = (safeAreaHeight + contentViewHeight) / 2
+        let fullDimPosition = safeAreaHeight + bottomPadding - bottomSheetTableViewHeight
 
-        // bottom sheet의 top constraint 값이 noDimPosition과 같으면
-        // dimmer view의 alpha 값이 0.0이 되도록 합니다
         let noDimPosition = safeAreaHeight + bottomPadding
 
-        // Bottom Sheet의 top constraint 값이 fullDimPosition보다 작으면
-        // 배경색이 가장 진해진 상태로 지정해줍니다.
         if value < fullDimPosition {
             return fullDimAlpha
         }
-        // Bottom Sheet의 top constraint 값이 noDimPosition보다 크면
-        // 배경색이 투명한 상태로 지정해줍니다.
+        
         if value > noDimPosition {
             return 0.0
         }
         
-        // 그 외의 경우 top constraint 값에 따라 0.0과 0.7 사이의 alpha 값이 Return되도록 합니다
         return fullDimAlpha * (1 - ((value - fullDimPosition) / (noDimPosition - fullDimPosition)))
     }
     
