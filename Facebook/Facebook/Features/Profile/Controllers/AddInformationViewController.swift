@@ -474,6 +474,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 } else {
+                    if !(companyInformation.is_active!) {
+                        if !checkDateValid() {
+                            self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                            return
+                        }
+                    }
+                    
                     NetworkService.put(endpoint: .company(id: id, company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] event in
                         guard let self = self else { return }
                         
@@ -491,6 +498,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 } else {
+                    if !(universityInformation.is_active!) {
+                        if !checkDateValid() {
+                            self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                            return
+                        }
+                    }
+                    
                     NetworkService.put(endpoint: .university(id: id, university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] event in
                         guard let self = self else { return }
                         
@@ -504,6 +518,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         } else {
             switch self.informationType {
             case .company:
+                if !(companyInformation.is_active!) {
+                    if !checkDateValid() {
+                        self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                        return
+                    }
+                }
+                
                 NetworkService.post(endpoint: .company(company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] event in
                     guard let self = self else { return }
                     
@@ -513,6 +534,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     self.navigationController?.popViewController(animated: true)
                 }).disposed(by: self.disposeBag)
             case .university:
+                if !(universityInformation.is_active!) {
+                    if !checkDateValid() {
+                        self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                        return
+                    }
+                }
+                
                 NetworkService.post(endpoint: .university(university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] event in
                     guard let self = self else { return }
                     
@@ -661,6 +689,57 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             start_date.accept(universityInformation.join_date ?? "")
             end_date.accept(universityInformation.graduate_date ?? "")
             isActive.accept(universityInformation.is_active!)
+        }
+    }
+    
+    private func checkDateValid() -> Bool {
+        if informationType == .company {            
+            guard let joinDate = companyInformation.join_date else { return false }
+            guard let startYear = Int(joinDate.split(separator: "-")[0]),
+                  let startMonth = Int(joinDate.split(separator: "-")[1]),
+                  let startDay = Int(joinDate.split(separator: "-")[2])
+            else { return false }
+            guard let leaveDate = companyInformation.leave_date else { return false }
+            guard let leaveYear = Int(leaveDate.split(separator: "-")[0]),
+                  let leaveMonth = Int(leaveDate.split(separator: "-")[1]),
+                  let leaveDay = Int(leaveDate.split(separator: "-")[2])
+            else { return false }
+            
+            if startYear > leaveYear { return false }
+            
+            if startYear == leaveYear {
+                if startMonth > leaveMonth { return false }
+                
+                if startMonth == leaveMonth {
+                    if startDay > leaveDay { return false }
+                }
+            }
+            
+            return true
+        } else {
+            
+            guard let joinDate = universityInformation.join_date else { return false }
+            guard let startYear = Int(joinDate.split(separator: "-")[0]),
+                  let startMonth = Int(joinDate.split(separator: "-")[1]),
+                  let startDay = Int(joinDate.split(separator: "-")[2])
+            else { return false }
+            guard let graduateDate = universityInformation.graduate_date else { return false }
+            guard let graduateYear = Int(graduateDate.split(separator: "-")[0]),
+                  let graduateMonth = Int(graduateDate.split(separator: "-")[1]),
+                  let graduateDay = Int(graduateDate.split(separator: "-")[2])
+            else { return false }
+            
+            if startYear > graduateYear { return false }
+            
+            if startYear == graduateYear {
+                if startMonth > graduateMonth { return false }
+                
+                if startMonth == graduateMonth {
+                    if startDay > graduateDay { return false }
+                }
+            }
+            
+            return true
         }
     }
     
