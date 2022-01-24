@@ -46,6 +46,8 @@ extension Notification {
             case .CommentLike: return "회원님의 \(parent_comment?.is_file == "photo" ? "사진 " : (parent_comment?.is_file == "sticker" ? "스티커 " : ""))댓글을 좋아합니다: \"\(parent_comment?.content ?? "")\""
             case .FriendRequest: return "친구 요청을 보냈습니다."
             case .FriendAccept: return "회원님의 친구 요청을 수락했습니다."
+            case .PostTag: return "게시물에 회원님을 태그했습니다."
+            case .CommentTag: return "댓글에서 회원님을 언급했습니다"
             case .unknown: return ""
             }
         }())
@@ -61,5 +63,7 @@ enum ContentType: String, Codable {
     case CommentLike = "CommentLike"
     case FriendRequest = "FriendRequest"
     case FriendAccept = "FriendAccept"
+    case PostTag = "PostTag"
+    case CommentTag = "CommentTag"
     case unknown = ""
 }
