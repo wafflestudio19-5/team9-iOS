@@ -232,7 +232,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                                             String(userProfile.birth.split(separator: "-")[1]) + "월 " +
                                            String(userProfile.birth.split(separator: "-")[2]) + "일 " : "",
                                            description: "생일",
-                                           privacyBound: "회원님의 친구의 친구")
+                                           privacyBound: "전체 공개")
                 ])
             ]
         } else {
