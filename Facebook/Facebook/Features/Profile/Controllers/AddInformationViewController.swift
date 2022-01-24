@@ -430,33 +430,27 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         
         if informationType == .company {
             sectionSwitch.rx
-                .tapGesture()
-                .when(.recognized)
-                .subscribe { [weak self] _ in
+                .controlEvent(.valueChanged)
+                .withLatestFrom(sectionSwitch.rx.value)
+                .subscribe(onNext : { [weak self] isOn in
                     guard let self = self else { return }
-                    if self.companyInformation.is_active ?? true {
-                        self.companyInformation.is_active = false
-                        self.sectionSwitch.isOn = false
-                        self.createNotActiveSection()
-                    } else {
-                        self.companyInformation.is_active = true
-                        self.sectionSwitch.isOn = true
-                        self.createActiveSection()
-                    }
-                }.disposed(by: disposeBag)
+                    self.companyInformation.is_active = isOn
+                    isOn ? self.createActiveSection() : self.createNotActiveSection()
+                })
+                .disposed(by: disposeBag)
         } else {
             sectionButton.rx
                 .tap
                 .bind { [weak self]  in
                     guard let self = self else { return }
                     if self.universityInformation.is_active ?? true {
-                        self.sectionButton.setImage(UIImage(systemName: "square")!, for: .normal)
-                        self.sectionButton.tintColor = .gray
+                        self.sectionButton.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+                        self.sectionButton.tintColor = .systemBlue
                         self.universityInformation.is_active = false
                         self.createNotActiveSection()
                     } else {
-                        self.sectionButton.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-                        self.sectionButton.tintColor = .systemBlue
+                        self.sectionButton.setImage(UIImage(systemName: "square")!, for: .normal)
+                        self.sectionButton.tintColor = .gray
                         self.universityInformation.is_active = true
                         self.createActiveSection()
                     }
@@ -690,7 +684,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         headerView.backgroundColor = .white
         
         let sectionLabel = UILabel(frame: frame)
-        sectionLabel.text = (informationType == .company) ? "현재 재직 중" : "현재 재학 중"
+        sectionLabel.text = (informationType == .company) ? "현재 재직 중" : "졸업"
         sectionLabel.textColor = .black
         sectionLabel.font = UIFont.systemFont(ofSize: 18)
         
@@ -707,7 +701,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 sectionSwitch.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
                 sectionSwitch.heightAnchor.constraint(equalToConstant: 30),
                 sectionSwitch.widthAnchor.constraint(equalToConstant: 30),
-                sectionSwitch.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
+                sectionSwitch.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -30)
             ])
             
             self.sectionSwitch.isOn = self.companyInformation.is_active ?? true
@@ -724,6 +718,13 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 sectionButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
             ])
             
+            if self.universityInformation.is_active ?? true {
+                sectionButton.setImage(UIImage(systemName: "square")!, for: .normal)
+                sectionButton.tintColor = .gray
+            } else {
+                sectionButton.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+                sectionButton.tintColor = .systemBlue
+            }
         }
         
         return headerView
