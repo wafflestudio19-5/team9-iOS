@@ -17,9 +17,9 @@ class DateSelectTableViewCell: UITableViewCell {
     let yearPickerView = UIPickerView()
     let monthPickerView = UIPickerView()
     let dayPickerView = UIPickerView()
-    let yearPickerToolbar = UIToolbar()
-    let monthPickerToolbar = UIToolbar()
-    let dayPickerToolbar = UIToolbar()
+    let yearPickerToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 35))
+    let monthPickerToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 35))
+    let dayPickerToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 35))
     
     let doneButtonList = [UIBarButtonItem(title: "확인", style: .plain, target: nil, action: nil),
                           UIBarButtonItem(title: "확인", style: .plain, target: nil, action: nil),

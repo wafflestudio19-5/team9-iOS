@@ -742,7 +742,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 { return 0 } //마지막 section header 제거
+        if section == 0 { return 0 }
         return 50
     }
     
