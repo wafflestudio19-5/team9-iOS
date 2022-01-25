@@ -711,7 +711,6 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
             return true
         } else {
-            
             guard let joinDate = universityInformation.join_date else { return false }
             guard let joinYear = Int(joinDate.split(separator: "-")[0]),
                   let joinMonth = Int(joinDate.split(separator: "-")[1]),

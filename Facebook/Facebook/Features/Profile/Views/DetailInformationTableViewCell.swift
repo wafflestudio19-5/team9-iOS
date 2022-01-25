@@ -173,6 +173,7 @@ class DetailInformationTableViewCell: UITableViewCell {
                 make.centerY.equalTo(contentView)
                 make.top.bottom.equalTo(contentView).inset(5).priority(999)
                 make.leading.equalTo(informationImage.snp.trailing).inset(-15)
+                make.trailing.equalTo(contentView).inset(55)
             }
 
             
@@ -230,6 +231,7 @@ class DetailInformationTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .gray
+        label.numberOfLines = 0
         
         return label
     }()
@@ -237,6 +239,7 @@ class DetailInformationTableViewCell: UITableViewCell {
     lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines = 0
         
         return label
     }()

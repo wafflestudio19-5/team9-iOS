@@ -62,9 +62,11 @@ class LabelTableViewCell: UITableViewCell {
         case .style1:
             label.font = UIFont.systemFont(ofSize: 20)
             label.textColor = .gray
+            label.textAlignment = .center
         case .style2:
             label.font = UIFont.systemFont(ofSize: 16)
             label.textColor = .gray
+            label.textAlignment = .left
         }
     }
     
@@ -72,14 +74,10 @@ class LabelTableViewCell: UITableViewCell {
         switch self.cellStyle {
         case .style1:
             self.contentView.addSubview(label)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                label.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-                label.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-                label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10)
-            ])
+            label.snp.makeConstraints { make in
+                make.centerY.centerX.equalToSuperview()
+                make.edges.equalToSuperview().inset(10)
+            }
         case .style2:
             self.contentView.addSubview(label)
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -93,5 +91,10 @@ class LabelTableViewCell: UITableViewCell {
         }
     }
     
-    let label = UILabel()
+    let label: UILabel = {
+        let label = UILabel()
+        label.numberOfLines = 0
+        
+        return label
+    }()
 }
