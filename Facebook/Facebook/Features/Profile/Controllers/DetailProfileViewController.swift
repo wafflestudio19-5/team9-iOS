@@ -202,7 +202,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 .DetailInformationSection(title: "연락처 정보", items: [
                     .DetailInformationItem(style: .style2,
                                            image: UIImage(systemName: "envelope.circle")!,
-                                           information: userProfile.email ?? "",
+                                           information: userProfile.email,
                                            description: "이메일",
                                            privacyBound: "전체 공개" )]),
                 .DetailInformationSection(title: "기본 정보", items: [
@@ -245,7 +245,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 .DetailInformationSection(title: "연락처 정보", items: [
                     .DetailInformationItem(style: .style2,
                                            image: UIImage(systemName: "envelope.circle")!,
-                                           information: userProfile.email ?? "",
+                                           information: userProfile.email,
                                            description: "이메일",
                                            privacyBound: "전체 공개" )]),
                 .DetailInformationSection(title: "기본 정보", items: [
