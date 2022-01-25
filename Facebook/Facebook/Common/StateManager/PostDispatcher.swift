@@ -24,6 +24,15 @@ class PostDispatcher: Dispatcher<Post> {
         dispatchedSignals.accept(.init(data: post, operation: .edit))
     }
     
+    override func _delete(dataSource: BehaviorRelay<[Post]>, signal: Signal<Post>) {
+        var dataList = dataSource.value
+        let index = dataList.firstIndex(where: { $0.id == signal.data.id })
+        if let index = index {
+            dataList.remove(at: index)
+            dataSource.accept(dataList)
+        }
+    }
+    
     override func _edit(dataSource: BehaviorRelay<[Post]>, signal: Signal<Post>) {
         var dataList = dataSource.value
         let index = dataList.firstIndex(where: { $0.id == signal.data.id })

@@ -30,6 +30,7 @@ class SharedPostContentView: PostContentView {
         }
         
         self.addSubview(postHeader)
+        postHeader.ellipsisButton.isHidden = true
         postHeader.snp.makeConstraints { make in
             make.leading.equalTo(self).offset(CGFloat.standardLeadingMargin - 3)
             make.trailing.equalTo(self).offset(CGFloat.standardTrailingMargin)

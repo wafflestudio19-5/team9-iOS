@@ -110,6 +110,53 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
 }
 
 extension UIViewController {
+    
+    enum PostMenu: CaseIterable {
+        case edit
+        case delete
+        
+        var text: String {
+            switch self {
+            case .edit:
+                return "게시물 수정"
+            case .delete:
+                return "게시물 삭제"
+            }
+        }
+        
+        var symbolName: String {
+            switch self {
+            case .edit:
+                return "square.and.pencil"
+            case .delete:
+                return "trash"
+            }
+        }
+        
+        var symbol: UIImage {
+            return UIImage(systemName: symbolName)!
+        }
+    }
+    
+    private func getPostMenus(of post: Post) -> UIMenu {
+        return UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
+            // EDIT
+            UIAction(title: PostMenu.edit.text, image: PostMenu.edit.symbol, handler: { _ in
+                print(post.id)
+            }),
+            // DELETE
+            UIAction(title: PostMenu.delete.text, image: PostMenu.delete.symbol, attributes: .destructive, handler: { _ in
+                let alert = UIAlertController(title: "게시물을 삭제하시겠습니까?", message: "이 작업은 되돌릴 수 없습니다.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+                alert.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
+                    let _ = NetworkService.delete(endpoint: .newsfeed(postId: post.id))  // single observable: no need to dispose
+                    StateManager.of.post.dispatch(.init(data: post, operation: .delete(index: nil)))
+                }))
+                self.present(alert, animated: true, completion: nil)
+            })
+        ])
+    }
+    
     func pushToDetailVC(cell: PostCell<PostContentView>, asFirstResponder: Bool) {
         let detailVC = PostDetailViewController(post: cell.postContentView.post, asFirstResponder: asFirstResponder)
         self.push(viewController: detailVC)
@@ -132,6 +179,15 @@ extension UIViewController {
     /// PostCell Configuration Logic
     func configure(cell: PostCell<PostContentView>, with post: Post) {
         cell.configure(with: post)
+        
+        let ellipsis = cell.postContentView.postHeader.ellipsisButton
+        if post.author?.id != StateManager.of.user.profile.id {
+            ellipsis.isHidden = true
+        } else {
+            ellipsis.isHidden = false
+            ellipsis.showsMenuAsPrimaryAction = true
+            ellipsis.menu = getPostMenus(of: post)
+        }
         
         // 좋아요 버튼 바인딩
         cell.postContentView.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
