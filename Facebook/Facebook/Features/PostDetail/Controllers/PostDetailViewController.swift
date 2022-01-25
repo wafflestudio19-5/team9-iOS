@@ -118,6 +118,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         bindTableView()
         bindLikeButton()
+        bindReply()
         bindCommentButton()
         setLeftBarButtonItems()
         setKeyboardToolbar()
@@ -155,6 +156,15 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: Keyboard Accessory Logics
     
     var toolbarButtonConstraint: NSLayoutConstraint?
+    var isKeyboardToolbarHidden = false {
+        didSet {
+            if isKeyboardToolbarHidden {
+                keyboardAccessory.isHidden = true
+            } else {
+                keyboardAccessory.isHidden = false
+            }
+        }
+    }
     private func setKeyboardToolbar() {
         postView.addSubview(keyboardAccessory)
         keyboardAccessory.snp.makeConstraints { make in
@@ -168,7 +178,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
-                let toolbarHeight = self.keyboardAccessory.frame.height
+                let toolbarHeight = self.isKeyboardToolbarHidden ? 0 : self.keyboardAccessory.frame.height
                 self.keyboardAccessory.snp.remakeConstraints { make in
                     make.left.right.equalTo(0)
                     make.bottom.equalTo(keyboardVisibleHeight == 0 ? self.view.safeAreaLayoutGuide.snp.bottom : self.view.snp.bottom).offset(-keyboardVisibleHeight)
@@ -211,11 +221,10 @@ extension PostDetailViewController {
     }
 }
 
-// MARK: Handle Comments
+// MARK: Binding
 
 extension PostDetailViewController {
     func bindTableView(){
-        
         /// 댓글 상태 바인딩
         StateManager.of.comment.bind(postId: self.post.id, with: commentViewModel.dataList).disposed(by: disposeBag)
         
@@ -230,10 +239,13 @@ extension PostDetailViewController {
                     cell.focus()
                 }
                 
-                let b = cell.authorLabel.rx.tap.map{ return true }
-                let a = cell.profileImage.rx.tapGesture().when(.recognized).map{ _ in return true }
+                let authorTapped = cell.authorLabel.rx.tap.map{ return true }
+                let profileTapped = cell.profileImage.rx
+                    .tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                    .when(.recognized)
+                    .map{ _ in return true }
                 
-                Observable.of(a, b)
+                Observable.of(profileTapped, authorTapped)
                     .merge()
                     .bind { [weak self] _ in
                         let profileVC = ProfileTabViewController(userId: comment.author.id)
@@ -249,7 +261,6 @@ extension PostDetailViewController {
                         NetworkService.put(endpoint: .commentLike(postId: self.post.id, commentId: comment.id), as: LikeResponse.self)
                             .bind { _, response in
                                 cell.like(syncWith: response)
-                                self.commentViewModel.invalidateLikeState(of: comment, with: response)
                             }
                             .disposed(by: cell.disposeBag)
                     }
@@ -258,11 +269,51 @@ extension PostDetailViewController {
                 cell.replyButton.rx.tap
                     .bind { [weak self] _ in
                         guard let self = self else { return }
-                        self.postView.textView.becomeFirstResponder()
-                        self.commentTableView.scrollToRow(at: IndexPath(row: row, section: 0), at: .bottom, animated: true)
-                        self.focusedItem = .init(row: row, comment: comment, cell: cell)
+                        self.prepareCommentReply(row: row, comment: comment, cell: cell)
                     }
                     .disposed(by: cell.disposeBag)
+                
+                cell.bubbleView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                    .when(.recognized)
+                    .bind { [weak self] _ in
+                        guard let self = self else { return }
+                        self.presentCommentActionSheet(row: row, comment: comment, cell: cell)
+                    }
+                    .disposed(by: cell.disposeBag)
+                
+                cell.cancelButton.rx.tap
+                    .observe(on: MainScheduler.instance)
+                    .bind { [weak self] _ in
+                        guard let self = self else { return }
+                        self.isKeyboardToolbarHidden = false
+                        self.commentTableView.beginUpdates()
+                        cell.cancelEditing()
+                        self.commentTableView.endUpdates()
+                    }.disposed(by: cell.disposeBag)
+                
+                cell.updateButton.rx.tap
+                    .observe(on: MainScheduler.instance)
+                    .bind { [weak self] _ in
+                        guard let self = self else { return }
+                        cell.updateButton.showIndicator()
+                        NetworkService.update(endpoint: .commentUpdate(postId: self.post.id, commentId: comment.id, content: cell.bubbleTextView.text))
+                            .observe(on: MainScheduler.instance)
+                            .bind { request in
+                                // workaround
+                                var updatedComment = comment
+                                updatedComment.content = cell.bubbleTextView.text
+                                
+                                self.isKeyboardToolbarHidden = false
+                                self.commentTableView.beginUpdates()
+                                cell.completeEditing()
+                                self.commentTableView.endUpdates()
+                                self.commentTableView.scrollToRow(at: .init(row: row, section: 0), at: .bottom, animated: true)
+                                cell.updateButton.hideIndicator()
+                                
+                                StateManager.of.comment.dispatch(.init(data: updatedComment, operation: .edit))
+                            }
+                            .disposed(by: cell.disposeBag)
+                    }.disposed(by: cell.disposeBag)
                 
             }
             .disposed(by: disposeBag)
@@ -281,7 +332,7 @@ extension PostDetailViewController {
         
         /// 이전 댓글 보기 버튼은 다음 데이터 유무에 따라 숨겨집니다.
         commentViewModel.hasNextObservable.map({!$0}).bind(to: postHeader.loadButtonHStack.rx.isHidden).disposed(by: disposeBag)
-
+        
         /// 이전 댓글 보기 버튼 바인딩
         postHeader.loadPreviousButton.rx.tap
             .bind { [weak self] in
@@ -292,7 +343,9 @@ extension PostDetailViewController {
         
         /// 댓글 전송 버튼의 활성화 여부를 바인딩합니다.
         keyboardTextView.isEmptyObservable.map({ !$0 }).bind(to: postView.sendButton.rx.isEnabled).disposed(by: disposeBag)
-        
+    }
+    
+    func bindReply() {
         /// 전송 버튼을 누르면 댓글을 등록합니다.
         postView.sendButton.rx.tap
             .bind { [weak self] _ in
@@ -306,7 +359,8 @@ extension PostDetailViewController {
                             guard var comment = dataResponse.value else { return }
                             let indexPath = self.commentViewModel.findInsertionIndexPath(of: comment)
                             comment.post_id = self.post.id  // to be deprecated
-                            StateManager.of.post.dispatch(self.post, commentCount: self.post.comments + 1)
+                            self.post.comments += 1
+                            StateManager.of.post.dispatch(self.post, commentCount: self.post.comments)
                             StateManager.of.comment.dispatch(.init(data: comment, operation: .insert(index: indexPath.row)))
                             self.commentTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
                             
@@ -331,4 +385,59 @@ extension PostDetailViewController {
             .disposed(by: disposeBag)
     }
     
+}
+
+extension PostDetailViewController {
+    func prepareCommentReply(row: Int, comment: Comment, cell: CommentCell) {
+        self.postView.textView.becomeFirstResponder()
+        self.commentTableView.scrollToRow(at: IndexPath(row: row, section: 0), at: .bottom, animated: true)
+        self.focusedItem = .init(row: row, comment: comment, cell: cell)
+    }
+    
+    func presentCommentActionSheet(row: Int, comment: Comment, cell: CommentCell) {
+        let isMyComment = comment.author.id == StateManager.of.user.profile.id
+        let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        sheet.addAction(UIAlertAction(title: "답글 달기",
+                                      style: .default) { action in
+            self.prepareCommentReply(row: row, comment: comment, cell: cell)
+        })
+        
+        if isMyComment {
+            sheet.addAction(UIAlertAction(title: "수정", style: .default, handler: { _ in
+                self.focusedItem = nil
+                self.isKeyboardToolbarHidden = true
+                self.commentTableView.beginUpdates()
+                cell.startEditing()
+                self.commentTableView.endUpdates()
+                self.commentTableView.scrollToRow(at: .init(row: row, section: 0), at: .bottom, animated: true)
+            }))
+        }
+        
+        sheet.addAction(UIAlertAction(title: "복사", style: .default) { _ in
+            UIPasteboard.general.string = cell.contentLabel.text
+        })
+        
+        if isMyComment {
+            sheet.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
+                self.focusedItem = nil
+                NetworkService.delete(endpoint: .commentDelete(postId: self.post.id, commentId: comment.id))
+                    .bind { [weak self] response in
+                        guard let self = self else { return }
+                        var comment = comment
+                        comment.post_id = self.post.id
+                        let deleteIndices = self.commentViewModel.findDeletionIndices(of: comment)
+                        self.post.comments -= deleteIndices.count
+                        StateManager.of.post.dispatch(self.post, commentCount: self.post.comments)
+                        StateManager.of.comment.dispatch(delete: comment, at: deleteIndices)
+                        if row > 0 {
+                            self.commentTableView.scrollToRow(at: .init(row: row - 1, section: 0), at: .bottom, animated: true)
+                        }
+                    }
+                    .disposed(by: self.disposeBag)
+            }))
+        }
+        
+        sheet.addAction(UIAlertAction(title: "취소", style: .cancel))
+        self.present(sheet, animated: true, completion: nil)
+    }
 }

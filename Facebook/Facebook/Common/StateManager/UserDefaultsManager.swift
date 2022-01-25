@@ -15,6 +15,8 @@ struct UserDefaultsManager {
     private static let userKey = "CurrentUser"
     private static let tokenKey = "Token"
     private static let isLoggedInKey = "isLoggedIn"
+    private static let isValidKey = "isValid"
+    private static let timestampKey = "tokenTimestamp"
     
     static var isLoggedIn: Bool {
         get {
@@ -35,6 +37,15 @@ struct UserDefaultsManager {
         }
     }
     
+    static var tokenRegisterTimestamp: TimeInterval? {
+        get {
+            return UserDefaults.standard.value(forKey: timestampKey) as? TimeInterval
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: timestampKey)
+        }
+    }
+    
     static var cachedUser: User? {
         get {
             let data = UserDefaults.standard.value(forKey: self.userKey) as? Data
@@ -43,6 +54,15 @@ struct UserDefaultsManager {
         set {
             let currentUserData = try? JSONEncoder().encode(newValue)
             UserDefaults.standard.setValue(currentUserData, forKey: self.userKey)
+        }
+    }
+    
+    static var isValid: Bool? {
+        get {
+            return UserDefaults.standard.value(forKey: isValidKey) as? Bool
+        }
+        set {
+            UserDefaults.standard.setValue(newValue, forKey: isValidKey)
         }
     }
 }

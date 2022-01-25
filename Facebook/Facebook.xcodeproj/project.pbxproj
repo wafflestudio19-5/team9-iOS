@@ -128,13 +128,11 @@
 		BE1F75B12785895000E51A28 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B02785895000E51A28 /* Spinner.swift */; };
 		BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */; };
 		BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B42785D2C600E51A28 /* InfoButton.swift */; };
-		BE64AF33277FE99D00C25967 /* ItemProvider+LoadFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */; };
 		BE64AF3527809F3E00C25967 /* UploadProgressHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */; };
 		BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF372780A34D00C25967 /* MainHeaderView.swift */; };
 		BE64AF3A27827FAE00C25967 /* ResponsiveTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3927827FAE00C25967 /* ResponsiveTableView.swift */; };
 		BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */; };
 		BE7D1DF9277DC63800E080E3 /* NSLayoutConstraints+Activate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */; };
-		BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DFA277E089F00E080E3 /* Rx+Upload.swift */; };
 		BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */; };
 		BE7FD9F9277CCFDA00C3FF8E /* ImageGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9F8277CCFDA00C3FF8E /* ImageGridCell.swift */; };
 		BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */; };
@@ -296,13 +294,11 @@
 		BE1F75B02785895000E51A28 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+BottomSpinner.swift"; sourceTree = "<group>"; };
 		BE1F75B42785D2C600E51A28 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
-		BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemProvider+LoadFile.swift"; sourceTree = "<group>"; };
 		BE64AF3427809F3E00C25967 /* UploadProgressHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadProgressHeaderView.swift; sourceTree = "<group>"; };
 		BE64AF372780A34D00C25967 /* MainHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainHeaderView.swift; sourceTree = "<group>"; };
 		BE64AF3927827FAE00C25967 /* ResponsiveTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveTableView.swift; sourceTree = "<group>"; };
 		BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerViewModel.swift; sourceTree = "<group>"; };
 		BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraints+Activate.swift"; sourceTree = "<group>"; };
-		BE7D1DFA277E089F00E080E3 /* Rx+Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Rx+Upload.swift"; sourceTree = "<group>"; };
 		BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridCollectionView.swift; sourceTree = "<group>"; };
 		BE7FD9F8277CCFDA00C3FF8E /* ImageGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridCell.swift; sourceTree = "<group>"; };
 		BE8015AA276B6CC90014FEFA /* PaginatedResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedResponse.swift; sourceTree = "<group>"; };
@@ -631,8 +627,6 @@
 				BE86BAE32784183600948CAA /* UITableView+DynamicHeader.swift */,
 				BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */,
 				BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */,
-				BE7D1DFA277E089F00E080E3 /* Rx+Upload.swift */,
-				BE64AF32277FE99D00C25967 /* ItemProvider+LoadFile.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1174,7 +1168,6 @@
 				BE0D436D278892D600E2162F /* NewsfeedTableView.swift in Sources */,
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
 				BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */,
-				BE7D1DFB277E089F00E080E3 /* Rx+Upload.swift in Sources */,
 				B82EC92F278BE20600750397 /* MenuTabViewController.swift in Sources */,
 				B85D67F027840F16002CCC04 /* AuthManager.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
@@ -1188,7 +1181,6 @@
 				77ABC5D82774A998000431E1 /* AddInformationView.swift in Sources */,
 				B86194FF2760FED800957BBC /* EnterEmailViewController.swift in Sources */,
 				B86195092761AFAE00957BBC /* ContentSizeFitViews.swift in Sources */,
-				BE64AF33277FE99D00C25967 /* ItemProvider+LoadFile.swift in Sources */,
 				BE86BADE2783F45B00948CAA /* FlexibleTextView.swift in Sources */,
 				772FBF0727911C0A003556EC /* FriendRequestCell.swift in Sources */,
 				BE86BAE42784183600948CAA /* UITableView+DynamicHeader.swift in Sources */,

@@ -17,9 +17,9 @@ class DateSelectTableViewCell: UITableViewCell {
     let yearPickerView = UIPickerView()
     let monthPickerView = UIPickerView()
     let dayPickerView = UIPickerView()
-    let yearPickerToolbar = UIToolbar()
-    let monthPickerToolbar = UIToolbar()
-    let dayPickerToolbar = UIToolbar()
+    let yearPickerToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 35))
+    let monthPickerToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 35))
+    let dayPickerToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 35))
     
     let doneButtonList = [UIBarButtonItem(title: "확인", style: .plain, target: nil, action: nil),
                           UIBarButtonItem(title: "확인", style: .plain, target: nil, action: nil),
@@ -42,7 +42,7 @@ class DateSelectTableViewCell: UITableViewCell {
     lazy var selectedMonth = ""
     lazy var selectedDay = ""
     
-    let dateBS = BehaviorSubject<String>(value: "")
+    let datePS = PublishSubject<String>()
     
     enum Style {
         case startDateStyle
@@ -55,6 +55,7 @@ class DateSelectTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.frame.size.width = UIScreen.main.bounds.width // important for initial layout
     }
     
     required init?(coder: NSCoder) {
@@ -115,6 +116,8 @@ class DateSelectTableViewCell: UITableViewCell {
             case .endDateStyle:
                 dateKindLabel.text = "종료 날짜"
                 
+                yearPickerView.selectRow(yearDataBR.value.count - 1, inComponent: 0, animated: false)
+                
                 showAddDateLabel()
                 hideYearTextField()
                 hideMonthTextField()
@@ -130,10 +133,10 @@ class DateSelectTableViewCell: UITableViewCell {
             
             yearTextField.text = String(dateInfo.split(separator: "-")[0])
             monthTextField.text = dateInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
-            dayTextField.text = String(dateInfo.split(separator: "-")[2])
+            dayTextField.text = String(dateInfo.split(separator: "-")[2]).trimmingCharacters(in: ["0"])
             selectedYear = String(dateInfo.split(separator: "-")[0])
             selectedMonth = dateInfo.split(separator: "-")[1].trimmingCharacters(in: ["0"]) + "월"
-            selectedDay = String(dateInfo.split(separator: "-")[2])
+            selectedDay = String(dateInfo.split(separator: "-")[2]).trimmingCharacters(in: ["0"])
             
             hideAddDateLabel()
             showYearTextField()
@@ -168,53 +171,37 @@ class DateSelectTableViewCell: UITableViewCell {
     
     private func setLayout() {
         self.contentView.addSubview(dateKindLabel)
-        dateKindLabel.translatesAutoresizingMaskIntoConstraints = false
-            
-        NSLayoutConstraint.activate([
-            dateKindLabel.heightAnchor.constraint(equalToConstant: 15),
-            dateKindLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-            dateKindLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10)
-        ])
+        dateKindLabel.snp.remakeConstraints { make in
+            make.height.equalTo(15).priority(999)
+            make.top.left.equalToSuperview().inset(10)
+        }
         
         self.contentView.addSubview(addDateLabel)
-        addDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            addDateLabel.heightAnchor.constraint(equalToConstant: 25),
-            addDateLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            addDateLabel.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
-        ])
+        addDateLabel.snp.remakeConstraints { make in
+            make.height.equalTo(25).priority(999)
+            make.top.equalTo(dateKindLabel.snp.bottom).offset(5)
+            make.bottom.left.equalToSuperview().inset(10)
+        }
         
         self.contentView.addSubview(yearTextField)
-        yearTextField.translatesAutoresizingMaskIntoConstraints = false
-            
-        NSLayoutConstraint.activate([
-            yearTextField.heightAnchor.constraint(equalToConstant: 25),
-            //yearTextField.widthAnchor.constraint(equalToConstant: 60),
-            yearTextField.topAnchor.constraint(equalTo: dateKindLabel.bottomAnchor, constant: 10),
-            yearTextField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            yearTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
-        ])
+        yearTextField.snp.remakeConstraints { make in
+            make.height.equalTo(25).priority(999)
+            make.bottom.left.equalToSuperview().inset(10)
+        }
         
         self.contentView.addSubview(monthTextField)
-        monthTextField.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            monthTextField.heightAnchor.constraint(equalToConstant: 25),
-            //monthTextField.widthAnchor.constraint(equalToConstant: 60),
-            monthTextField.leadingAnchor.constraint(equalTo: yearTextField.trailingAnchor, constant: 10),
-            monthTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
-        ])
+        monthTextField.snp.remakeConstraints { make in
+            make.height.equalTo(25).priority(999)
+            make.bottom.equalToSuperview().inset(10)
+            make.left.equalTo(yearTextField.snp.right).offset(10)
+        }
         
         self.contentView.addSubview(dayTextField)
-        dayTextField.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            dayTextField.heightAnchor.constraint(equalToConstant: 25),
-            //dayTextField.widthAnchor.constraint(equalToConstant: 60),
-            dayTextField.leadingAnchor.constraint(equalTo: monthTextField.trailingAnchor, constant: 10),
-            dayTextField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10)
-        ])
+        dayTextField.snp.remakeConstraints { make in
+            make.height.equalTo(25).priority(999)
+            make.bottom.equalToSuperview().inset(10)
+            make.left.equalTo(monthTextField.snp.right).offset(10)
+        }
     }
     
     //현재 날짜를 기준으로 PickerView의 데이터를 설정
@@ -402,7 +389,7 @@ class DateSelectTableViewCell: UITableViewCell {
     }
     
     private func dateInformationPass() {
-        if !(selectedYear == "" || selectedMonth == "" || selectedDay == "") {
+        if (selectedYear != "" && selectedMonth != "" && selectedDay != "") {
             var month = selectedMonth.trimmingCharacters(in: ["월"])
             if month.count == 1 {
                 month = "0" + month
@@ -414,8 +401,9 @@ class DateSelectTableViewCell: UITableViewCell {
             }
             
             let date = selectedYear + "-" + month + "-" + day
-            
-            dateBS.onNext(date)
+            datePS.onNext(date)
+        } else {
+            datePS.onNext("")
         }
     }
     

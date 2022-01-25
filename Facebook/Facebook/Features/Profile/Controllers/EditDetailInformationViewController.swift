@@ -43,10 +43,6 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
                                description: "",
                                privacyBound: "")
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                cell.toggleIndicate()
-            }).disposed(by: cell.disposeBag)
-            
             cell.editButton.rx.tap.bind { [weak self] in
                 let addInformationViewController = AddInformationViewController(informationType: .company, id: company.id ?? nil)
                 self?.push(viewController: addInformationViewController)
@@ -63,10 +59,6 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
                                description: "",
                                privacyBound: "")
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                cell.toggleIndicate()
-            }).disposed(by: cell.disposeBag)
-            
             cell.editButton.rx.tap.bind { [weak self] in
                 let addInformationViewController = AddInformationViewController(informationType: .university, id: university.id ?? nil)
                 self?.push(viewController: addInformationViewController)
@@ -79,10 +71,10 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
             cell.initialSetup(cellStyle: .style3)
             cell.configureCell(buttonText: buttonText)
             
-            /* cell.button.rx.tap.bind { [weak self] in
+            cell.button.rx.tap.bind { [weak self] in
                 let addInformationViewController = AddInformationViewController(informationType: style)
                 self?.push(viewController: addInformationViewController)
-            }.disposed(by: cell.disposeBag) */
+            }.disposed(by: cell.disposeBag) 
             
             return cell
         default:
@@ -96,8 +88,18 @@ class EditDetailInformationViewController<View: EditDetailInformationView>: UIVi
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.title = "상세 정보 수정"
+        setNavigationItem()
         createSection()
         bind()
+    }
+    
+    private func setNavigationItem() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)), style: .plain, target: self, action: #selector(backAction))
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func backAction() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func createSection() {

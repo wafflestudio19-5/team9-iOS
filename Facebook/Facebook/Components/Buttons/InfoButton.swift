@@ -35,7 +35,6 @@ class InfoButton: UIButton {
         
         var configuration = UIButton.Configuration.filled()
         configuration.baseForegroundColor = color
-        configuration.baseBackgroundColor = .red
         configuration.contentInsets = .init(top: 3, leading: 6, bottom: 3, trailing: 6)
         self.configuration = configuration
         
@@ -59,7 +58,6 @@ class InfoButton: UIButton {
                 button.configuration?.baseForegroundColor = color
                 button.configuration?.baseBackgroundColor = .clear
             default:
-                print(text, "디폴트")
                 button.configuration?.baseBackgroundColor = .clear
             }
         }
@@ -67,6 +65,14 @@ class InfoButton: UIButton {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func showIndicator() {
+        self.configuration?.showsActivityIndicator = true
+    }
+    
+    func hideIndicator() {
+        self.configuration?.showsActivityIndicator = false
     }
 
 }
