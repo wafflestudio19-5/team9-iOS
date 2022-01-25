@@ -19,8 +19,7 @@ class CommentModalViewConroller: PostDetailViewController {
         super.viewDidLoad()
         
         // 필요 없는 뷰 삭제
-        postHeader.contentLabel.removeFromSuperview()
-        postHeader.imageGridCollectionView.removeFromSuperview()
+        postHeader.postContentView.removeFromSuperview()
         postHeader.buttonStackView.removeFromSuperview()
     }
     

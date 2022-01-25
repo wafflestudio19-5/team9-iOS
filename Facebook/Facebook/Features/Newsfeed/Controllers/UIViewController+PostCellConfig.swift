@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxSwift
 
 extension UIViewController {
     
@@ -48,7 +49,7 @@ extension UIViewController {
                 let alert = UIAlertController(title: "게시물을 삭제하시겠습니까?", message: "이 작업은 되돌릴 수 없습니다.", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "취소", style: .cancel))
                 alert.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
-                    let _ = NetworkService.delete(endpoint: .newsfeed(postId: post.id))  // single observable: no need to dispose
+                    let _ = NetworkService.delete(endpoint: .newsfeed(postId: post.id)).bind(onNext: {_ in})  // single observable: no need to dispose
                     StateManager.of.post.dispatch(.init(data: post, operation: .delete(index: nil)))
                 }))
                 self.present(alert, animated: true, completion: nil)

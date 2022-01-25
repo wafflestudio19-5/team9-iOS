@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class SharedPostContentView: PostContentView {
     
@@ -18,6 +19,24 @@ class SharedPostContentView: PostContentView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(sharing newPost: Post?) {
+        guard let newPost = newPost else {
+            configureForbidden()
+            return
+        }
+        
+        post = newPost
+        textContentLabel.text = post.content
+        postHeader.configure(with: post)
+        
+        // CollectionView Layout
+        configureImageGrid(with: newPost)
+    }
+    
+    private func configureForbidden() {
+        print("forbidden")
     }
     
     override func setLayout() {

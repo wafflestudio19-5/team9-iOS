@@ -89,7 +89,7 @@ class CreatePostView: UIView {
     let imageGridCollectionView = ImageGridCollectionView()
     lazy var sharingPostView: SharedPostContentView = {
         let view = SharedPostContentView(fullWidthImageGrid: false)
-        view.configure(with: postToShare!)
+        view.configure(sharing: postToShare)
         return view
     }()
     

@@ -124,6 +124,7 @@
 		BE6F62FA279ECC8C00F62111 /* CommentModalViewConroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F62F9279ECC8C00F62111 /* CommentModalViewConroller.swift */; };
 		BE6F62FE279F1A5D00F62111 /* CommentModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F62FD279F1A5D00F62111 /* CommentModalView.swift */; };
 		BE6F630027A0233900F62111 /* UIViewController+PostCellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F62FF27A0233900F62111 /* UIViewController+PostCellConfig.swift */; };
+		BE6F630227A02BDE00F62111 /* PostDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F630127A02BDE00F62111 /* PostDetailContentView.swift */; };
 		BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */; };
 		BE7D1DF9277DC63800E080E3 /* NSLayoutConstraints+Activate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */; };
 		BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */; };
@@ -281,6 +282,7 @@
 		BE6F62F9279ECC8C00F62111 /* CommentModalViewConroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModalViewConroller.swift; sourceTree = "<group>"; };
 		BE6F62FD279F1A5D00F62111 /* CommentModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModalView.swift; sourceTree = "<group>"; };
 		BE6F62FF27A0233900F62111 /* UIViewController+PostCellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PostCellConfig.swift"; sourceTree = "<group>"; };
+		BE6F630127A02BDE00F62111 /* PostDetailContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailContentView.swift; sourceTree = "<group>"; };
 		BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerViewModel.swift; sourceTree = "<group>"; };
 		BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraints+Activate.swift"; sourceTree = "<group>"; };
 		BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridCollectionView.swift; sourceTree = "<group>"; };
@@ -820,6 +822,7 @@
 				BE6F62FD279F1A5D00F62111 /* CommentModalView.swift */,
 				BE50BFF8279BF3A700876D10 /* SubPostContentView.swift */,
 				BEF254F3277B0DC500FBAACB /* PostDetailHeaderView.swift */,
+				BE6F630127A02BDE00F62111 /* PostDetailContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1084,6 +1087,7 @@
 				B897A91F274E389000FB67D3 /* NewsfeedTabViewController.swift in Sources */,
 				77AC749B275CEDAD00F10BD5 /* PostDetailView.swift in Sources */,
 				775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */,
+				BE6F630227A02BDE00F62111 /* PostDetailContentView.swift in Sources */,
 				BE0D4376278ADFCE00E2162F /* PostDispatcher.swift in Sources */,
 				77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
