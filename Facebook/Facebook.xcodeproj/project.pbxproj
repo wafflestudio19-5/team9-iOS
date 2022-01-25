@@ -123,6 +123,7 @@
 		BE64AF3A27827FAE00C25967 /* ResponsiveViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64AF3927827FAE00C25967 /* ResponsiveViews.swift */; };
 		BE6F62FA279ECC8C00F62111 /* CommentModalViewConroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F62F9279ECC8C00F62111 /* CommentModalViewConroller.swift */; };
 		BE6F62FE279F1A5D00F62111 /* CommentModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F62FD279F1A5D00F62111 /* CommentModalView.swift */; };
+		BE6F630027A0233900F62111 /* UIViewController+PostCellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F62FF27A0233900F62111 /* UIViewController+PostCellConfig.swift */; };
 		BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */; };
 		BE7D1DF9277DC63800E080E3 /* NSLayoutConstraints+Activate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */; };
 		BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */; };
@@ -279,6 +280,7 @@
 		BE64AF3927827FAE00C25967 /* ResponsiveViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponsiveViews.swift; sourceTree = "<group>"; };
 		BE6F62F9279ECC8C00F62111 /* CommentModalViewConroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModalViewConroller.swift; sourceTree = "<group>"; };
 		BE6F62FD279F1A5D00F62111 /* CommentModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModalView.swift; sourceTree = "<group>"; };
+		BE6F62FF27A0233900F62111 /* UIViewController+PostCellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PostCellConfig.swift"; sourceTree = "<group>"; };
 		BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerViewModel.swift; sourceTree = "<group>"; };
 		BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraints+Activate.swift"; sourceTree = "<group>"; };
 		BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridCollectionView.swift; sourceTree = "<group>"; };
@@ -642,6 +644,7 @@
 			isa = PBXGroup;
 			children = (
 				B897A91E274E389000FB67D3 /* NewsfeedTabViewController.swift */,
+				BE6F62FF27A0233900F62111 /* UIViewController+PostCellConfig.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1164,6 +1167,7 @@
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
 				BE1F75B12785895000E51A28 /* Spinner.swift in Sources */,
 				77FE728D2777512000482CE7 /* DateSelectTableViewCell.swift in Sources */,
+				BE6F630027A0233900F62111 /* UIViewController+PostCellConfig.swift in Sources */,
 				77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */,
 				BE0D4374278ADF1B00E2162F /* BaseDispatcher.swift in Sources */,
 				BE86BAD52783047500948CAA /* LikeResponse.swift in Sources */,
