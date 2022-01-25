@@ -71,34 +71,61 @@ class FriendCell: UITableViewCell {
         
         contentView.addSubview(button)
         button.snp.remakeConstraints { make in
-            make.height.equalTo(30)
+            make.height.width.equalTo(35)
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().inset(15)
         }
     }
     
-    private func setButtonStyle() {
-        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
-        button.tintColor = .black
-        
-        button.layer.cornerRadius = 5
-        button.setTitle("친구 추가", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        button.backgroundColor = .systemBlue
-        
-        button.layer.cornerRadius = 5
-        button.setTitle("응답", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        button.backgroundColor = .systemBlue
-        
-        button.layer.cornerRadius = 5
-        button.setTitle("취소", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-        button.backgroundColor = .systemGray4
-        
+    func setButtonStyle(friendInfo: String) {
+        switch friendInfo {
+        case "self":
+            button.isHidden = true
+        case "friend":
+            button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
+            button.tintColor = .black
+            button.setTitle("", for: .normal)
+            button.backgroundColor = .clear
+            button.isHidden = false
+            button.snp.updateConstraints { make in
+                make.width.equalTo(35)
+            }
+        case "sent":
+            button.setImage(UIImage(), for: .normal)
+            button.layer.cornerRadius = 5
+            button.setTitle("취소", for: .normal)
+            button.setTitleColor(.black, for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+            button.backgroundColor = .systemGray4
+            button.isHidden = false
+            button.snp.updateConstraints { make in
+                make.width.equalTo(50)
+            }
+        case "received":
+            button.setImage(UIImage(), for: .normal)
+            button.layer.cornerRadius = 5
+            button.setTitle("응답", for: .normal)
+            button.setTitleColor(.white, for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+            button.backgroundColor = .systemBlue
+            button.isHidden = false
+            button.snp.updateConstraints { make in
+                make.width.equalTo(50)
+            }
+        case "nothing":
+            button.setImage(UIImage(), for: .normal)
+            button.layer.cornerRadius = 5
+            button.setTitle("친구 추가", for: .normal)
+            button.setTitleColor(.white, for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+            button.backgroundColor = .systemBlue
+            button.isHidden = false
+            button.snp.updateConstraints { make in
+                make.width.equalTo(80)
+            }
+        default :
+            button.isHidden = true
+        }
     }
 
     private let profileImage: UIImageView = {
@@ -134,7 +161,6 @@ class FriendCell: UITableViewCell {
     
     lazy var button: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "ellipsis"), for: .normal)
         button.tintColor = .black
     
         return button

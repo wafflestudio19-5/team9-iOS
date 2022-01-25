@@ -51,14 +51,33 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
             .bind(to: tableView.rx.items(cellIdentifier: FriendCell.reuseIdentifier, cellType: FriendCell.self)) { [weak self] row, friend, cell in
                 guard let self = self else { return }
                 cell.configureCell(with: friend)
+                cell.setButtonStyle(friendInfo: friend.friend_info ?? "self")
                 
                 cell.button.rx.tap.bind { [weak self] in
-                    //self?.showAlertFriendMenu(friend: friend)
                     guard let self = self else { return }
-                    let menuList = self.createFriendMenuList(friend: friend)
-                    let bottomSheetVC = BottomSheetViewController(menuList: menuList)
-                    bottomSheetVC.modalPresentationStyle = .overFullScreen
-                    self.present(bottomSheetVC, animated: false, completion: nil)
+                    
+                    switch friend.friend_info {
+                    case "self":
+                        break
+                    case "friend":
+                        let menuList = self.createFriendMenuList(cell: cell, friend: friend)
+                        let bottomSheetVC = BottomSheetViewController(menuList: menuList)
+                        bottomSheetVC.modalPresentationStyle = .overFullScreen
+                        self.present(bottomSheetVC, animated: false, completion: nil)
+                    case "sent":
+                        self.deleteFriendRequest(friendId: friend.id)
+                        cell.setButtonStyle(friendInfo: "nothing")
+                    case "received":
+                        let menuList = self.createResponseMenuList(cell: cell, friend: friend)
+                        let bottomSheetVC = BottomSheetViewController(menuList: menuList)
+                        bottomSheetVC.modalPresentationStyle = .overFullScreen
+                        self.present(bottomSheetVC, animated: false, completion: nil)
+                    case "nothing":
+                        self.friendRequest(friendId: friend.id)
+                        cell.setButtonStyle(friendInfo: "sent")
+                    default :
+                        break
+                    }
                 }.disposed(by: cell.refreshingBag)
             }
             .disposed(by: disposeBag)
@@ -144,7 +163,7 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
 }
 
 extension ShowFriendViewController {
-    func createFriendMenuList(friend: User) -> [Menu] {
+    func createFriendMenuList(cell: FriendCell, friend: User) -> [Menu] {
         let menuList = [ Menu(image: UIImage(systemName: "person.2.fill") ?? UIImage(),
                               text: friend.username + "님의 친구 보기", action: {
             let showFriendVC = ShowFriendViewController(userId: friend.id)
@@ -153,19 +172,22 @@ extension ShowFriendViewController {
                          Menu(image: UIImage(systemName: "person.fill.xmark") ?? UIImage(),
                               text: friend.username + "님과 친구 끊기", action: {
             self.deleleFriend(friend: friend)
+            cell.setButtonStyle(friendInfo: "nothing")
         })]
         
         return menuList
     }
     
-    func createResponseMenuList(friend: User) -> [Menu] {
+    func createResponseMenuList(cell: FriendCell, friend: User) -> [Menu] {
         let menuList = [ Menu(image: UIImage(systemName: "person.fill.checkmark") ?? UIImage(),
                               text: "친구 요청 수락", action: {
             self.acceptFriendRequest(friendId: friend.id)
+            cell.setButtonStyle(friendInfo: "friend")
         }),
                          Menu(image: UIImage(systemName: "person.fill.xmark") ?? UIImage(),
                               text: "친구 요청 거절", action: {
             self.deleteFriendRequest(friendId: friend.id)
+            cell.setButtonStyle(friendInfo: "nothing")
         })]
         
         return menuList
