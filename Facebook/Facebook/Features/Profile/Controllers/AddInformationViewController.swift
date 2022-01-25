@@ -695,9 +695,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     private func checkDateValid() -> Bool {
         if informationType == .company {
             guard let joinDate = companyInformation.join_date else { return false }
-            guard let startYear = Int(joinDate.split(separator: "-")[0]),
-                  let startMonth = Int(joinDate.split(separator: "-")[1]),
-                  let startDay = Int(joinDate.split(separator: "-")[2])
+            guard let joinYear = Int(joinDate.split(separator: "-")[0]),
+                  let joinMonth = Int(joinDate.split(separator: "-")[1]),
+                  let joinDay = Int(joinDate.split(separator: "-")[2])
             else { return false }
             guard let leaveDate = companyInformation.leave_date else { return false }
             guard let leaveYear = Int(leaveDate.split(separator: "-")[0]),
@@ -705,23 +705,17 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                   let leaveDay = Int(leaveDate.split(separator: "-")[2])
             else { return false }
             
-            if startYear > leaveYear { return false }
-            
-            if startYear == leaveYear {
-                if startMonth > leaveMonth { return false }
-                
-                if startMonth == leaveMonth {
-                    if startDay > leaveDay { return false }
-                }
-            }
+            if joinYear > leaveYear { return false }
+            if joinYear == leaveYear && joinMonth > leaveMonth { return false }
+            if joinYear == leaveYear && joinMonth == leaveMonth && joinDay > leaveDay { return false }
             
             return true
         } else {
             
             guard let joinDate = universityInformation.join_date else { return false }
-            guard let startYear = Int(joinDate.split(separator: "-")[0]),
-                  let startMonth = Int(joinDate.split(separator: "-")[1]),
-                  let startDay = Int(joinDate.split(separator: "-")[2])
+            guard let joinYear = Int(joinDate.split(separator: "-")[0]),
+                  let joinMonth = Int(joinDate.split(separator: "-")[1]),
+                  let joinDay = Int(joinDate.split(separator: "-")[2])
             else { return false }
             guard let graduateDate = universityInformation.graduate_date else { return false }
             guard let graduateYear = Int(graduateDate.split(separator: "-")[0]),
@@ -729,15 +723,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                   let graduateDay = Int(graduateDate.split(separator: "-")[2])
             else { return false }
             
-            if startYear > graduateYear { return false }
-            
-            if startYear == graduateYear {
-                if startMonth > graduateMonth { return false }
-                
-                if startMonth == graduateMonth {
-                    if startDay > graduateDay { return false }
-                }
-            }
+            if joinYear > graduateYear { return false }
+            if joinYear == graduateYear && joinMonth > graduateMonth { return false }
+            if joinYear == graduateYear && joinMonth == graduateMonth && joinDay > graduateDay { return false }
             
             return true
         }
