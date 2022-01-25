@@ -26,6 +26,7 @@ struct NetworkService {
     }
     
     static func registerToken(token: String) {
+        print("JWT \(token)")
         UserDefaultsManager.tokenRegisterTimestamp = NSDate().timeIntervalSince1970
         self.session = Session(configuration: configuration, interceptor: Interceptor(adapters: [JWTAdapter(token: token)]))
     }

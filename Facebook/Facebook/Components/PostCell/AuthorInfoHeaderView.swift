@@ -7,6 +7,7 @@
 
 import UIKit
 import SwiftUI
+import SnapKit
 
 class AuthorInfoHeaderView: UIView {
 
@@ -30,18 +31,26 @@ class AuthorInfoHeaderView: UIView {
         labelStack.translatesAutoresizingMaskIntoConstraints = false
         labelStack.addSubview(authorNameLabel)
         labelStack.addSubview(postDateLabel)
-        NSLayoutConstraint.activate([
-            authorNameLabel.topAnchor.constraint(equalTo: labelStack.topAnchor),
-            authorNameLabel.leadingAnchor.constraint(equalTo: labelStack.leadingAnchor),
-            postDateLabel.leadingAnchor.constraint(equalTo: labelStack.leadingAnchor),
-            postDateLabel.bottomAnchor.constraint(equalTo: labelStack.bottomAnchor),
-            postDateLabel.topAnchor.constraint(equalTo: authorNameLabel.bottomAnchor)
-        ])
+        labelStack.addSubview(scopeSymbol)
+        
+        authorNameLabel.snp.makeConstraints { make in
+            make.top.leading.equalTo(0)
+        }
+        
+        postDateLabel.snp.makeConstraints { make in
+            make.leading.bottom.equalTo(0)
+            make.top.equalTo(authorNameLabel.snp.bottom)
+        }
+        
+        scopeSymbol.snp.makeConstraints { make in
+            make.centerY.equalTo(postDateLabel)
+            make.leading.equalTo(postDateLabel.snp.trailing)
+        }
         
         self.addSubview(labelStack)
         NSLayoutConstraint.activate([
             labelStack.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            labelStack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 5)
+            labelStack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8)
         ])
     }
     
@@ -49,6 +58,14 @@ class AuthorInfoHeaderView: UIView {
         authorNameLabel.text = post.author?.username ?? "알 수 없음"
         postDateLabel.text = post.posted_at
         profileImageView.setImage(from: post.author?.profile_image)
+        
+        if let scope = post.scope {
+            scopeSymbol.isHidden = false
+            scopeSymbol.image = scope.getImage(fill: true, size: 12)
+            postDateLabel.text? += " · "
+        } else {
+            scopeSymbol.isHidden = true
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -62,7 +79,12 @@ class AuthorInfoHeaderView: UIView {
     let authorNameLabel: InfoLabel = InfoLabel(color: .label, size: 16, weight: .medium)
     
     // 작성 시간 라벨
-    private let postDateLabel: UILabel = InfoLabel()
+    private let postDateLabel: UILabel = InfoLabel(size: 12)
+    private var scopeSymbol: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
 }
 
 

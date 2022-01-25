@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class InteractionButtonStackView: UIStackView {
     
@@ -13,21 +14,11 @@ class InteractionButtonStackView: UIStackView {
     
     let likeButton = LikeButton()
     let commentButton = CommentButton()
+    let shareButton = ShareButton()
     
-    // 버튼 스택 뷰 위에 보이는 디바이더
-    private let topBorder: UIView = {
-        let line = UIView()
-        line.backgroundColor = .grayscales.border
-        line.translatesAutoresizingMaskIntoConstraints = false
-        return line
-    }()
-    
-    private let bottomBorder: UIView = {
-        let line = UIView()
-        line.backgroundColor = .grayscales.border
-        line.translatesAutoresizingMaskIntoConstraints = false
-        return line
-    }()
+    // 버튼 스택 뷰 위아래에 보이는 디바이더
+    private let topBorder: UIView = Divider()
+    private let bottomBorder: UIView = Divider()
     
     init(useBottomBorder: Bool = false) {
         super.init(frame: .zero)
@@ -35,23 +26,20 @@ class InteractionButtonStackView: UIStackView {
         self.distribution = .fillProportionally
         self.addArrangedSubview(likeButton)
         self.addArrangedSubview(commentButton)
+        self.addArrangedSubview(shareButton)
         
         self.addSubview(topBorder)
-        NSLayoutConstraint.activate([
-            topBorder.heightAnchor.constraint(equalToConstant: 1),
-            topBorder.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
-            topBorder.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-            topBorder.topAnchor.constraint(equalTo: self.topAnchor)
-        ])
+        topBorder.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.leading.trailing.top.equalToSuperview()
+        }
         
         if useBottomBorder {
             self.addSubview(bottomBorder)
-            NSLayoutConstraint.activate([
-                bottomBorder.heightAnchor.constraint(equalToConstant: 1),
-                bottomBorder.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
-                bottomBorder.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-                bottomBorder.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-            ])
+            bottomBorder.snp.remakeConstraints { make in
+                make.height.equalTo(1)
+                make.leading.trailing.bottom.equalToSuperview()
+            }
         }
     }
     

@@ -101,7 +101,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return button
     }()
     
-    func setLeftBarButtonItems() {
+    func setNavBarItems() {
         let stackview = UIStackView.init(arrangedSubviews: [leftChevronButton, authorHeaderView])
         stackview.distribution = .equalSpacing
         stackview.axis = .horizontal
@@ -120,12 +120,13 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         bindLikeButton()
         bindReply()
         bindCommentButton()
-        setLeftBarButtonItems()
+        setNavBarItems()
         setKeyboardToolbar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         navigationController?.interactivePopGestureRecognizer!.delegate = self
         navigationController?.interactivePopGestureRecognizer!.isEnabled = true
         
@@ -133,11 +134,12 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
             commentTableView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
         }
+        
+        bindKeyboardHeight()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        bindKeyboardHeight()
         if self.asFirstResponder && !keyboardTextView.isFirstResponder {
             keyboardTextView.becomeFirstResponder()
             self.asFirstResponder = false
@@ -173,6 +175,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    var useSafeAreaLayoutGuide: Bool { true }
     
     private func bindKeyboardHeight() {
         RxKeyboard.instance.visibleHeight
@@ -181,7 +184,8 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
                 let toolbarHeight = self.isKeyboardToolbarHidden ? 0 : self.keyboardAccessory.frame.height
                 self.keyboardAccessory.snp.remakeConstraints { make in
                     make.left.right.equalTo(0)
-                    make.bottom.equalTo(keyboardVisibleHeight == 0 ? self.view.safeAreaLayoutGuide.snp.bottom : self.view.snp.bottom).offset(-keyboardVisibleHeight)
+                    let bottom = self.useSafeAreaLayoutGuide ? self.view.safeAreaLayoutGuide.snp.bottom : self.view.snp.bottom
+                    make.bottom.equalTo(keyboardVisibleHeight == 0 ? bottom : self.view.snp.bottom).offset(-keyboardVisibleHeight)
                 }
                 self.view.setNeedsLayout()
                 UIView.animate(withDuration: 0) {

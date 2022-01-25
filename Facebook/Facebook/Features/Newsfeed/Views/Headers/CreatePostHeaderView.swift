@@ -46,7 +46,7 @@ class CreatePostHeaderView: UIView {
         self.addSubview(createPostButton)
         NSLayoutConstraint.activate([
             createPostButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            createPostButton.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 0),
+            createPostButton.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 5),
             createPostButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15)
         ])
         
