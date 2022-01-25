@@ -10,23 +10,25 @@ import RxSwift
 import RxKeyboard
 
 class CreatePostView: UIView {
-    let placeholder = "무슨 생각을 하고 계신가요?"
-    let imageGridCollectionView = ImageGridCollectionView()
     private let disposeBag = DisposeBag()
+    var postToShare: Post?
+    var isSharing: Bool {
+        return postToShare != nil
+    }
+    var placeholder: String {
+        return isSharing ? "이 링크에 대해 이야기해주세요..." : "무슨 생각을 하고 계신가요?"
+    }
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setStyleForView()
+    init(sharing post: Post? = nil) {
+        self.postToShare = post
+        super.init(frame: .zero)
+        self.backgroundColor = .systemBackground
         setLayoutForView()
         contentTextView.inputAccessoryView = keyboardAccessory
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setStyleForView() {
-        self.backgroundColor = .systemBackground
     }
     
     /// `view` > `scrollView` > `stackView`
@@ -37,8 +39,12 @@ class CreatePostView: UIView {
         
         let scrollViewStack = UIStackView()
         scrollViewStack.axis = .vertical
+        scrollViewStack.addArrangedSubview(createHeaderView)
         scrollViewStack.addArrangedSubview(contentTextView)
         scrollViewStack.addArrangedSubview(imageGridCollectionView)
+        if isSharing {
+            scrollViewStack.addArrangedSubview(sharingPostView)
+        }
         
         self.addSubview(scrollView)
         scrollView.addSubview(scrollViewStack)
@@ -56,7 +62,7 @@ class CreatePostView: UIView {
     
     // MARK: UI Components
     
-    let scrollView = UIScrollView()
+    let scrollView = ResponsiveScrollView()
     
     lazy var keyboardAccessory: UIView = {
         let divider = Divider()
@@ -75,8 +81,16 @@ class CreatePostView: UIView {
             make.leading.trailing.top.equalTo(customInputView)
             make.height.equalTo(1)
         }
-
+        
         return customInputView
+    }()
+    
+    var createHeaderView = CreateHeaderView()
+    let imageGridCollectionView = ImageGridCollectionView()
+    lazy var sharingPostView: SharedPostContentView = {
+        let view = SharedPostContentView(fullWidthImageGrid: false)
+        view.configure(with: postToShare!)
+        return view
     }()
     
     lazy var contentTextView: PlaceholderTextView = {
@@ -97,13 +111,14 @@ class CreatePostView: UIView {
         return button
     }()
     
-    let photosButton: UIButton = {
+    lazy var photosButton: UIButton = {
         var config = UIButton.Configuration.tinted()
         config.image = UIImage(systemName: "photo.on.rectangle.angled")
         config.cornerStyle = .capsule
         
         let button = UIButton()
         button.configuration = config
+        button.isEnabled = !isSharing
         return button
     }()
 }

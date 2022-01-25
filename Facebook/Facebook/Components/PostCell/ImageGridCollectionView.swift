@@ -14,12 +14,15 @@ class ImageGridCollectionView: ContentSizeFitCollectionView {
     /// https://stackoverflow.com/questions/70523591/swift-facebook-style-image-grid-using-uicollectionviewflowlayout/70523865?noredirect=1#comment124669129_70523865
     /// 버그 수정을 위한 workaround
     let eps: CGFloat = 0.000001
+    var maxWidth: CGFloat
     
-    init(frame: CGRect = .zero) {
+    init(frame: CGRect = .init(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0)) {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = spacing
         layout.minimumInteritemSpacing = spacing
+        self.maxWidth = frame.width
         super.init(frame: frame, collectionViewLayout: layout)
+        
         self.register(ImageGridCell.self, forCellWithReuseIdentifier: ImageGridCell.reuseIdentifier)
         self.translatesAutoresizingMaskIntoConstraints = false
         self.isScrollEnabled = false
@@ -53,7 +56,7 @@ extension ImageGridCollectionView: UICollectionViewDelegateFlowLayout {
     }
     
     private func getItemSize(width: FractionalLength, height: FractionalLength) -> CGSize {
-        let screenWidth = UIScreen.main.bounds.width
+        let screenWidth = maxWidth
         let itemWidth: CGFloat = (screenWidth - spacing * (1 / width.fractionalValue - 1)) * width.fractionalValue
         let itemHeight: CGFloat = screenWidth * height.fractionalValue
         return CGSize(width: itemWidth, height: itemHeight)
