@@ -693,7 +693,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     }
     
     private func checkDateValid() -> Bool {
-        if informationType == .company {            
+        if informationType == .company {
             guard let joinDate = companyInformation.join_date else { return false }
             guard let startYear = Int(joinDate.split(separator: "-")[0]),
                   let startMonth = Int(joinDate.split(separator: "-")[1]),
