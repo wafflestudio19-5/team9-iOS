@@ -58,10 +58,15 @@ class NotificationTabView: UIView {
     private func configureTableView() {
         notificationTableView.separatorStyle = .none
         notificationTableView.register(NotificationCell.self, forCellReuseIdentifier: NotificationCell.reuseIdentifier)
+        notificationTableView.register(HeaderViewWithTitle.self, forHeaderFooterViewReuseIdentifier: HeaderViewWithTitle.reuseIdentifier)
         notificationTableView.refreshControl = refreshControl
         notificationTableView.backgroundColor = .white
         notificationTableView.contentInsetAdjustmentBehavior = .never
         notificationTableView.tableHeaderView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 0.1))
+        notificationTableView.sectionHeaderTopPadding = 0.0
+        
+        notificationTableView.tableFooterView = UIView(frame: CGRect.zero)
+        notificationTableView.sectionFooterHeight = 0.0
     }
     
 //    func showBottomSheetView() {
