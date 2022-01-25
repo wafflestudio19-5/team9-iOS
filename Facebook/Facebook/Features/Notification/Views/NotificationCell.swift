@@ -7,7 +7,6 @@
 
 import UIKit
 import RxSwift
-import SwiftUI
 
 class NotificationCell: UITableViewCell {
     
@@ -149,26 +148,5 @@ class NotificationCell: UITableViewCell {
             make.centerY.equalTo(contentView)
             make.right.equalTo(contentView.safeAreaLayoutGuide.snp.right).offset(-16).priority(999)
         }
-    }
-}
-
-
-
-struct NotificationCellRepresentable: UIViewRepresentable {
-    func makeUIView(context: Context) -> some UIView {
-        let view = NotificationCell().contentView
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
-}
-
-struct NotificationCellPreview: PreviewProvider {
-    static var previews: some View {
-        VStack{
-            Spacer()
-            NotificationCellRepresentable()
-            Spacer()
-        }.preferredColorScheme(.light).previewDevice("iPhone 12 Pro").background(.white)
     }
 }
