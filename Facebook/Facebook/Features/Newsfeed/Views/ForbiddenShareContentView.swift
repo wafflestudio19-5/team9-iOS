@@ -36,7 +36,7 @@ class ForbiddenShareContentView: UIView {
         self.addSubview(content)
         content.snp.makeConstraints { make in
             make.leading.equalTo(title.snp.leading)
-            make.top.equalTo(title.snp.bottom).offset(3)
+            make.top.equalTo(title.snp.bottom).offset(3).priority(.high)
             make.bottom.equalTo(CGFloat.standardBottomMargin)
             make.trailing.equalTo(CGFloat.standardTrailingMargin)
         }
