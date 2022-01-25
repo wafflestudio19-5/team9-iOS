@@ -7,7 +7,9 @@
 
 import UIKit
 import RxSwift
+import RxGesture
 import RxCocoa
+import RxKeyboard
 import RxDataSources
 import RxKeyboard
 import MapKit
@@ -41,7 +43,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             cell.initialSetup(cellStyle: .style4)
             cell.configureCell(image: image, information: information)
             
-            //값의 입력된 정보라면 textColor를 black으로
+            //입력된 정보라면 textColor를 black으로
             switch style {
             case .company:
                 if (self.companyInformation.name != nil && self.companyInformation.name != "") {
@@ -76,19 +78,28 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     .subscribe(onNext: { [weak self] information in
                         guard let self = self else { return }
                         
+                        self.name.accept(information)
+                        
                         switch self.informationType {
                         case .company:
                             self.companyInformation.name = information
                             if self.companyInformation.is_active == nil {
                                 self.companyInformation.is_active = true
+                                self.createActiveSection()
+                            } else {
+                                (self.companyInformation.is_active ?? true) ?
+                                    self.createActiveSection() : self.createNotActiveSection()
                             }
                         case .university:
                             self.universityInformation.name = information
                             if self.universityInformation.is_active == nil {
                                 self.universityInformation.is_active = true
+                                self.createActiveSection()
+                            } else {
+                                (self.universityInformation.is_active ?? true) ?
+                                    self.createActiveSection() : self.createNotActiveSection()
                             }
                         }
-                        self.createActiveSection()
                     }).disposed(by: cell.disposeBag)
                 
                 self.push(viewController: selectInformationViewController)
@@ -96,17 +107,25 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             
             cell.deleteButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
-                switch style {
-                case .company:
-                    self.companyInformation = Company()
-                    self.createDefaultSection()
-                case .university:
-                    self.universityInformation = University()
-                    self.createDefaultSection()
-                default:
-                    break
-                }
                 
+                self.name.accept("")
+                
+                switch self.informationType {
+                case .company:
+                    self.companyInformation.name = nil
+                    if self.companyInformation.is_active == true {
+                        self.createActiveSection()
+                    } else {
+                        self.createNotActiveSection()
+                    }
+                case .university:
+                    self.universityInformation.name = nil
+                    if self.universityInformation.is_active == true {
+                        self.createActiveSection()
+                    } else {
+                        self.createNotActiveSection()
+                    }
+                }
             }.disposed(by: cell.disposeBag)
             
             return cell
@@ -185,20 +204,37 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             cell.textView.rx.text
                 .orEmpty
                 .subscribe(onNext: { [weak self] detail in
+                    //기본 placeholder 일때는 반영 x 
                     if detail == "직업에 대해 설명해주세요(선택 사항)" { return }
                     self?.companyInformation.detail = detail
                 }).disposed(by: cell.disposeBag)
+            
+            // view의 아무 곳이나 누르면 textView 입력 상태 종료
+            self.view.rx.tapGesture(configuration: { _, delegate in
+                delegate.touchReceptionPolicy = .custom { _, shouldReceive in
+                    return !(shouldReceive.view is UIControl)
+                }
+            }).bind { [weak self] _ in
+                guard let self = self else { return }
+                cell.textView.endEditing(true)
+            }.disposed(by: self.disposeBag)
             
             return cell
         case let .SelectDateItem(style, dateInfo):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: DateSelectTableViewCell.reuseIdentifier, for: idxPath) as? DateSelectTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: style)
-            cell.configureCell(dateInfo: dateInfo)
             
-            cell.dateBS.subscribe(onNext: { [weak self] date in
+            cell.datePS.subscribe(onNext: { [weak self] date in
                 guard let self = self else { return }
-                if date == "" { return }
+                
+                switch style {
+                case .startDateStyle:
+                    self.start_date.accept(date)
+                case .endDateStyle:
+                    self.end_date.accept(date)
+                }
+                
                 switch self.informationType {
                 case .company:
                     switch style {
@@ -216,6 +252,8 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     }
                 }
             }).disposed(by: cell.disposeBag)
+            
+            cell.configureCell(dateInfo: dateInfo)
             
             return cell
         default:
@@ -236,6 +274,12 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     lazy var companyInformation = Company()
     lazy var universityInformation = University()
     
+    private let name = BehaviorRelay<String>(value: "")
+    private let start_date = BehaviorRelay<String>(value: "")
+    private let end_date = BehaviorRelay<String>(value: "")
+    private let isActive = BehaviorRelay<Bool>(value: true)
+    
+    
     init(informationType: InformationType, id: Int? = nil) {
         self.informationType = informationType
         super.init(nibName: nil, bundle: nil)
@@ -255,7 +299,12 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        setNavigationItem()
         bind()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     func loadData(id: Int) {
@@ -277,6 +326,8 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 
                     self.companyInformation = response
                     
+                    self.checkHasEntered()
+                    
                     if self.companyInformation.is_active! {
                         self.createActiveSection()
                     } else {
@@ -297,8 +348,10 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         print(event)
                         return
                     }
-        
+                    
                     self.universityInformation = response
+                    
+                    self.checkHasEntered()
                     
                     if self.universityInformation.is_active! {
                         self.createActiveSection()
@@ -306,6 +359,23 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         self.createNotActiveSection()
                     }
             }.disposed(by: disposeBag)
+        }
+    }
+    
+    private func setNavigationItem() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)), style: .plain, target: self, action: #selector(backAction))
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func backAction() {
+        if self.id != nil {
+            self.backAlert()
+        } else {
+            if self.name.value != "" {
+                self.backAlert()
+            } else {
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 
@@ -316,15 +386,81 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         
         addInformationView.saveButton.rx.tap.bind{ [weak self] in
             guard let self = self else { return }
-            switch self.informationType {
-            case .company:
-                print(self.companyInformation)
-            case .university:
-                print(self.universityInformation)
+            if self.name.value == "" {
+                self.deleteAlert()
+            } else {
+                self.saveData()
             }
-            
-           //self.saveData()
         }.disposed(by: disposeBag)
+        
+        //저장 버튼 활성화 구현
+        let hasEnteredBoth = Observable.combineLatest(name, start_date, isActive, resultSelector: { (!$0.isEmpty && !$1.isEmpty && $2 ) })
+        let hasEnteredAll = Observable.combineLatest(name, start_date, end_date, isActive,resultSelector: { !$0.isEmpty && !$1.isEmpty && !$2.isEmpty && !$3 })
+        let isEnableButton: Observable<Bool>
+        
+        if self.id == nil {
+            isEnableButton = Observable.combineLatest(hasEnteredBoth, hasEnteredAll, resultSelector: { $0 || $1 })
+            
+            isEnableButton
+                .bind(to: self.addInformationView.saveButton.rx.isEnabled)
+                .disposed(by: disposeBag)
+        } else {
+            isEnableButton = Observable.combineLatest(hasEnteredBoth, hasEnteredAll, name,resultSelector: { $0 || $1 || $2.isEmpty })
+        }
+        
+        isEnableButton
+            .bind(to: self.addInformationView.saveButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        isEnableButton
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] result in
+                guard let self = self else { return }
+                self.addInformationView.saveButton.setTitleColor((result ? .white : .gray), for: .normal)
+                self.addInformationView.saveButton.backgroundColor = (result ? .systemBlue : .systemGray4)
+            }).disposed(by: disposeBag)
+        
+        // Keyboard의 높이에 따라 "새 계정 만들기" 버튼 위치 조정
+        RxKeyboard.instance.visibleHeight
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self = self else { return }
+
+                self.addInformationView.footerView.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-keyboardVisibleHeight + (keyboardVisibleHeight == 0 ? 0 : 85 ))
+                }
+                
+                self.addInformationView.layoutIfNeeded()
+            }).disposed(by: disposeBag)
+        
+        if informationType == .company {
+            sectionSwitch.rx
+                .controlEvent(.valueChanged)
+                .withLatestFrom(sectionSwitch.rx.value)
+                .subscribe(onNext : { [weak self] isOn in
+                    guard let self = self else { return }
+                    self.companyInformation.is_active = isOn
+                    isOn ? self.createActiveSection() : self.createNotActiveSection()
+                })
+                .disposed(by: disposeBag)
+        } else {
+            sectionButton.rx
+                .tap
+                .bind { [weak self]  in
+                    guard let self = self else { return }
+                    if self.universityInformation.is_active ?? true {
+                        self.sectionButton.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+                        self.sectionButton.tintColor = .systemBlue
+                        self.universityInformation.is_active = false
+                        self.createNotActiveSection()
+                    } else {
+                        self.sectionButton.setImage(UIImage(systemName: "square")!, for: .normal)
+                        self.sectionButton.tintColor = .gray
+                        self.universityInformation.is_active = true
+                        self.createActiveSection()
+                    }
+                }.disposed(by: disposeBag)
+        }
+    
     }
     
     private func saveData() {
@@ -332,34 +468,78 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             switch self.informationType {
             case .company:
                 if (self.companyInformation.name == nil || self.companyInformation.name == "")  {
-                    NetworkService.delete(endpoint: .company(id: id)).subscribe(onNext: { [weak self] _ in
-                        self?.navigationController?.popViewController(animated: true)
+                    NetworkService.delete(endpoint: .company(id: id)).subscribe(onNext: { [weak self] event in
+                        guard let self = self else { return }
+                        StateManager.of.user.dispatch(companyId: id)
+                        self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 } else {
-                    NetworkService.put(endpoint: .company(id: id, company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] _ in
-                        self?.navigationController?.popViewController(animated: true)
+                    if !(companyInformation.is_active!) && !checkDateValid() {
+                        self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                        return
+                    }
+                    
+                    NetworkService.put(endpoint: .company(id: id, company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] event in
+                        guard let self = self else { return }
+                        
+                        let response = event.1
+                        
+                        StateManager.of.user.dispatch(companyId: id, company: response)
+                        self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 }
             case .university:
                 if (self.universityInformation.name == nil || self.universityInformation.name == "") {
-                    NetworkService.delete(endpoint: .university(id: id)).subscribe(onNext: { [weak self] _ in
-                        self?.navigationController?.popViewController(animated: true)
+                    NetworkService.delete(endpoint: .university(id: id)).subscribe(onNext: { [weak self] event in
+                        guard let self = self else { return }
+                        StateManager.of.user.dispatch(universityId: id)
+                        self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 } else {
-                    NetworkService.put(endpoint: .university(id: id, university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] _ in
-                        self?.navigationController?.popViewController(animated: true)
+                    if !(universityInformation.is_active!) && !checkDateValid() {
+                        self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                        return
+                    }
+                        
+                    NetworkService.put(endpoint: .university(id: id, university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] event in
+                        guard let self = self else { return }
+                        
+                        let response = event.1
+                        
+                        StateManager.of.user.dispatch(universityId: id, university: response)
+                        self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 }
             }
         } else {
             switch self.informationType {
             case .company:
-                NetworkService.post(endpoint: .company(company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] _ in
-                    self?.navigationController?.popViewController(animated: true)
+                if !(companyInformation.is_active!) && !checkDateValid() {
+                    self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                    return
+                }
+                
+                NetworkService.post(endpoint: .company(company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] event in
+                    guard let self = self else { return }
+                    
+                    let response = event.1
+                    
+                    StateManager.of.user.dispatch(company: response)
+                    self.navigationController?.popViewController(animated: true)
                 }).disposed(by: self.disposeBag)
             case .university:
-                NetworkService.post(endpoint: .university(university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] _ in
-                    self?.navigationController?.popViewController(animated: true)
+                if !(universityInformation.is_active!) && !checkDateValid() {
+                    self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                    return
+                }
+                
+                NetworkService.post(endpoint: .university(university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] event in
+                    guard let self = self else { return }
+                    
+                    let response = event.1
+                    
+                    StateManager.of.user.dispatch(university: response)
+                    self.navigationController?.popViewController(animated: true)
                 }).disposed(by: self.disposeBag)
             }
         }
@@ -381,6 +561,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         
         case .university:
             self.title = "학력 추가"
+            self.universityInformation.is_active = true
             
             sections = [
                 .DetailInformationSection(title: "학력", items: [
@@ -395,6 +576,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 ])
             ]
         }
+        
         
         sectionsBR.accept(sections)
     }
@@ -437,6 +619,7 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             ]
         }
         
+        self.isActive.accept(true)
         self.sectionsBR.accept(sections)
     }
     
@@ -482,12 +665,80 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
             ]
         }
         
+        self.isActive.accept(false)
         self.sectionsBR.accept(sections)
     }
     
+    private func checkHasEntered() {
+        switch informationType {
+        case .company:
+            name.accept(companyInformation.name ?? "")
+            start_date.accept(companyInformation.join_date ?? "")
+            end_date.accept(companyInformation.leave_date ?? "")
+            isActive.accept(companyInformation.is_active!)
+        case .university:
+            name.accept(universityInformation.name ?? "")
+            start_date.accept(universityInformation.join_date ?? "")
+            end_date.accept(universityInformation.graduate_date ?? "")
+            isActive.accept(universityInformation.is_active!)
+        }
+    }
+    
+    private func checkDateValid() -> Bool {
+        if informationType == .company {
+            guard let joinDate = companyInformation.join_date else { return false }
+            guard let joinYear = Int(joinDate.split(separator: "-")[0]),
+                  let joinMonth = Int(joinDate.split(separator: "-")[1]),
+                  let joinDay = Int(joinDate.split(separator: "-")[2])
+            else { return false }
+            guard let leaveDate = companyInformation.leave_date else { return false }
+            guard let leaveYear = Int(leaveDate.split(separator: "-")[0]),
+                  let leaveMonth = Int(leaveDate.split(separator: "-")[1]),
+                  let leaveDay = Int(leaveDate.split(separator: "-")[2])
+            else { return false }
+            
+            if joinYear > leaveYear { return false }
+            if joinYear == leaveYear && joinMonth > leaveMonth { return false }
+            if joinYear == leaveYear && joinMonth == leaveMonth && joinDay > leaveDay { return false }
+            
+            return true
+        } else {
+            guard let joinDate = universityInformation.join_date else { return false }
+            guard let joinYear = Int(joinDate.split(separator: "-")[0]),
+                  let joinMonth = Int(joinDate.split(separator: "-")[1]),
+                  let joinDay = Int(joinDate.split(separator: "-")[2])
+            else { return false }
+            guard let graduateDate = universityInformation.graduate_date else { return false }
+            guard let graduateYear = Int(graduateDate.split(separator: "-")[0]),
+                  let graduateMonth = Int(graduateDate.split(separator: "-")[1]),
+                  let graduateDay = Int(graduateDate.split(separator: "-")[2])
+            else { return false }
+            
+            if joinYear > graduateYear { return false }
+            if joinYear == graduateYear && joinMonth > graduateMonth { return false }
+            if joinYear == graduateYear && joinMonth == graduateMonth && joinDay > graduateDay { return false }
+            
+            return true
+        }
+    }
+    
+    let sectionSwitch: UISwitch = {
+        let sectionSwitch = UISwitch()
+        sectionSwitch.tintColor = .systemBlue
+        
+        return sectionSwitch
+    }()
+    
+    let sectionButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+        button.tintColor = .systemBlue
+        return button
+    }()
+
+    
     //UITableView의 custom header적용
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    
         if section == 0 { return UIView() }
         
         let frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 42)
@@ -495,60 +746,49 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         headerView.backgroundColor = .white
         
         let sectionLabel = UILabel(frame: frame)
-        sectionLabel.text = "현재 재직 중"
+        sectionLabel.text = (informationType == .company) ? "현재 재직 중" : "졸업"
         sectionLabel.textColor = .black
         sectionLabel.font = UIFont.systemFont(ofSize: 18)
         
-        let sectionSwitch = UIButton()
-        //sectionSwitch.onTintColor = .systemBlue
-        sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-        sectionSwitch.tintColor = .systemBlue
-        
         headerView.addSubview(sectionLabel)
-        headerView.addSubview(sectionSwitch)
-        
         sectionLabel.translatesAutoresizingMaskIntoConstraints = false
-        sectionSwitch.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            sectionLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
-            sectionSwitch.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            sectionSwitch.heightAnchor.constraint(equalToConstant: 30),
-            sectionSwitch.widthAnchor.constraint(equalToConstant: 30),
-            sectionSwitch.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
-        ])
-        
-        sectionSwitch.rx.tap.bind { [weak self]  in
-            guard let self = self else { return }
-            switch self.informationType {
-            case .company:
-                if self.companyInformation.is_active! {
-                    sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
-                    sectionSwitch.tintColor = .gray
-                    self.companyInformation.is_active = false
-                    self.createNotActiveSection()
-                } else {
-                    sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-                    sectionSwitch.tintColor = .systemBlue
-                    self.companyInformation.is_active = true
-                    self.createActiveSection()
-                }
-            case .university:
-                if self.universityInformation.is_active! {
-                    sectionSwitch.setImage(UIImage(systemName: "square")!, for: .normal)
-                    sectionSwitch.tintColor = .gray
-                    self.universityInformation.is_active = false
-                    self.createNotActiveSection()
-                } else {
-                    sectionSwitch.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
-                    sectionSwitch.tintColor = .systemBlue
-                    self.universityInformation.is_active = true
-                    self.createActiveSection()
-                }
+        if self.informationType == .company {
+            headerView.addSubview(sectionSwitch)
+            sectionSwitch.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                sectionLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
+                sectionSwitch.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                sectionSwitch.heightAnchor.constraint(equalToConstant: 30),
+                sectionSwitch.widthAnchor.constraint(equalToConstant: 30),
+                sectionSwitch.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -30)
+            ])
+            
+            self.sectionSwitch.isOn = self.companyInformation.is_active ?? true
+        } else {
+            headerView.addSubview(sectionButton)
+            sectionButton.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                sectionLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                sectionLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 15),
+                sectionButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+                sectionButton.heightAnchor.constraint(equalToConstant: 30),
+                sectionButton.widthAnchor.constraint(equalToConstant: 30),
+                sectionButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
+            ])
+            
+            if self.universityInformation.is_active ?? true {
+                sectionButton.setImage(UIImage(systemName: "square")!, for: .normal)
+                sectionButton.tintColor = .gray
+            } else {
+                sectionButton.setImage(UIImage(systemName: "checkmark.square.fill")!, for: .normal)
+                sectionButton.tintColor = .systemBlue
             }
-        }.disposed(by: disposeBag)
-    
+        }
+        
         return headerView
     }
     
@@ -560,11 +800,35 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 { return 0 } //마지막 section header 제거
+        if section == 0 { return 0 }
         return 50
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 5
+    }
+}
+
+extension AddInformationViewController {
+    private func deleteAlert() {
+        let alert = UIAlertController(title: "정보를 삭제하시겠어요?", message: "삭제하시겠어요?", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        let deleteAction = UIAlertAction(title: "삭제", style: .default) { (action) in
+            self.saveData()
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(deleteAction)
+        self.present(alert, animated: false, completion: nil)
+    }
+    
+    private func backAlert() {
+        let alert = UIAlertController(title: "이 페이지에서 나가시겠어요?", message: "이 페이지의 변경 사항이 아직\n저장되지 않았습니다.", preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
+        let backAction = UIAlertAction(title: "이 페이지 나가기", style: .default) { (action) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(cancelAction)
+        alert.addAction(backAction)
+        self.present(alert, animated: false, completion: nil)
     }
 }

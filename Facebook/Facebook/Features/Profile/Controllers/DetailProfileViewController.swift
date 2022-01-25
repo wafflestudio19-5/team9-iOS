@@ -27,6 +27,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
     
     let disposeBag = DisposeBag()
+    let dateFormatter = DateFormatter()
     
     //TableView 바인딩을 위한 dataSource객체
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
@@ -42,12 +43,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             cell.configureCell(image: image, information: information)
             
             if self.userId == UserDefaultsManager.cachedUser?.id {
-                /* cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
+                cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
                     guard let informationType = informationType else { return }
                     
                     let addInformationViewController = AddInformationViewController(informationType: informationType)
                     self?.push(viewController: addInformationViewController)
-                }).disposed(by: cell.disposeBag) */
+                }).disposed(by: cell.disposeBag)
             }
             
             return cell
@@ -64,19 +65,11 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             
             cell.initialSetup(cellStyle: .style3)
             
-            if company.is_active! {
-                cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
-                                   information: company.name ?? "",
-                                   time: company.join_date ?? "" + " - 현재",
-                                   description: company.detail ?? "",
-                                   privacyBound: "전체 공개")
-            } else {
-                cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
-                                   information: company.name ?? "",
-                                   time: (company.join_date ?? "") + " ~ " + (company.leave_date ?? ""),
-                                   description: company.detail ?? "",
-                                   privacyBound: "전체 공개")
-            }
+            cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
+                               information: company.name ?? "",
+                               time: Date().changeDateStringFormat(startDateString: company.join_date ?? "", endDateString: company.leave_date ?? ""),
+                               description: company.detail ?? "",
+                               privacyBound: "전체 공개")
             
             if self.userId == UserDefaultsManager.cachedUser?.id {
                 cell.editButton.rx.tap.bind { [weak self] in
@@ -93,19 +86,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 DetailInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: .style3)
-            if university.is_active! {
-                cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
-                                   information: university.name ?? "",
-                                   time: university.join_date! + " - 현재",
-                                   description: "",
-                                   privacyBound: "전체 공개")
-            } else {
-                cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
-                                   information: university.name ?? "",
-                                   time: university.join_date! + "~" + university.graduate_date!,
-                                   description: "",
-                                   privacyBound: "전체 공개")
-            }
+            
+            cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
+                               information: university.name ?? "",
+                               time: Date().changeDateStringFormat(startDateString: university.join_date ?? "", endDateString: university.graduate_date ?? ""),
+                               description: "",
+                               privacyBound: "전체 공개")
             
             if self.userId == UserDefaultsManager.cachedUser?.id {
                 cell.editButton.rx.tap.bind { [weak self] in
@@ -148,8 +134,18 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
 
         // Do any additional setup after loading the view.
         self.title = "정보"
+        setNavigationItem()
         if userId != UserDefaultsManager.cachedUser?.id { loadData() }
         bind()
+    }
+    
+    private func setNavigationItem() {
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)), style: .plain, target: self, action: #selector(backAction))
+        self.navigationItem.leftBarButtonItem = backButton
+    }
+    
+    @objc func backAction() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     func loadData() {
@@ -206,7 +202,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 .DetailInformationSection(title: "연락처 정보", items: [
                     .DetailInformationItem(style: .style2,
                                            image: UIImage(systemName: "envelope.circle")!,
-                                           information: userProfile.email ?? "",
+                                           information: userProfile.email,
                                            description: "이메일",
                                            privacyBound: "전체 공개" )]),
                 .DetailInformationSection(title: "기본 정보", items: [
@@ -217,11 +213,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                     .DetailInformationItem(style: .style2,
                                            image: UIImage(systemName: "gift.circle")!,
                                            information:
+                                            (userProfile.birth != "") ?
                                             String(userProfile.birth.split(separator: "-")[0]) + "년 " +
                                             String(userProfile.birth.split(separator: "-")[1]) + "월 " +
-                                            String(userProfile.birth.split(separator: "-")[2]) + "일 ",
+                                           String(userProfile.birth.split(separator: "-")[2]) + "일 " : "",
                                            description: "생일",
-                                           privacyBound: "회원님의 친구의 친구")
+                                           privacyBound: "전체 공개")
                 ])
             ]
         } else {
@@ -248,7 +245,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 .DetailInformationSection(title: "연락처 정보", items: [
                     .DetailInformationItem(style: .style2,
                                            image: UIImage(systemName: "envelope.circle")!,
-                                           information: userProfile.email ?? "",
+                                           information: userProfile.email,
                                            description: "이메일",
                                            privacyBound: "전체 공개" )]),
                 .DetailInformationSection(title: "기본 정보", items: [
@@ -309,7 +306,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
         ])
         
         if userId == UserDefaultsManager.cachedUser?.id {
-            if section == 2 || section == 3 {
+            if section == 3 {
                 let sectionButton = UIButton(type: .system)
                 sectionButton.setTitle("수정", for: .normal)
                 sectionButton.setTitleColor(UIColor.systemBlue, for: .normal)
@@ -321,16 +318,11 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                     sectionButton.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
                     sectionButton.trailingAnchor.constraint(equalTo: headerView.trailingAnchor,constant: -15)
                 ])
-                
-                //section header의 버튼 클릭 시 동작
-                switch section {
-                case 3:
-                    sectionButton.rx.tap.bind { [weak self] in
-                        let editUserProfileViewController = EditUserProfileViewController()
-                        self?.push(viewController: editUserProfileViewController)
-                    }.disposed(by: disposeBag)
-                default: break
-                }
+               
+                sectionButton.rx.tap.bind { [weak self] in
+                    let editUserProfileViewController = EditUserProfileViewController()
+                    self?.push(viewController: editUserProfileViewController)
+                }.disposed(by: disposeBag)
             }
         }
         
@@ -364,3 +356,42 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
 }
 
+extension Date {
+    func changeDateStringFormat(startDateString: String, endDateString: String? = nil) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-DD"
+        guard let startDate = dateFormatter.date(from: startDateString) else { return "" }
+        dateFormatter.dateFormat = "YYYY년 MM월 DD일"
+        let startResult = dateFormatter.string(from: startDate)
+        
+        if endDateString != nil && endDateString != "" {
+            dateFormatter.dateFormat = "YYYY-MM-DD"
+            guard let endDate = dateFormatter.date(from: endDateString ?? "") else { return startResult + " - 현재" }
+            dateFormatter.dateFormat = "YYYY년 MM월 DD일"
+            let endResult = dateFormatter.string(from: endDate)
+            
+            return startResult + " ~ " + endResult
+        }
+        
+        
+        if self.dateCompare(dateString: startDateString) {
+            return startResult + "에 시작"
+        } else {
+            return startResult + " - 현재"
+        }
+    }
+    
+    func dateCompare(dateString: String) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-DD"
+        guard let date = dateFormatter.date(from: dateString) else { return true }
+        let result: ComparisonResult = self.compare(date)
+        
+        switch result {
+        case .orderedAscending:
+            return true
+        default:
+            return false
+        }
+    }
+}

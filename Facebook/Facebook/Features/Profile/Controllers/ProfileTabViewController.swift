@@ -326,16 +326,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
                                                   information: (userId == UserDefaultsManager.cachedUser?.id)  ?
-                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
-                SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
+                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기")
             ]
         } else {
             otherItems = [
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
                                                   information: (userId == UserDefaultsManager.cachedUser?.id)  ?
-                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기"),
-                SectionItem.ButtonItem(style: .style1, buttonText: "전체 공개 정보 수정")
+                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기")
             ]
         }
         

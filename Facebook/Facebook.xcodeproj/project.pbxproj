@@ -28,8 +28,6 @@
 		7754B87727829C4700775D81 /* EditUsernameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B87627829C4700775D81 /* EditUsernameTableViewCell.swift */; };
 		7754B8792782A0B700775D81 /* EditUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8782782A0B700775D81 /* EditUsernameView.swift */; };
 		7754B87B2782A0CC00775D81 /* EditUsernameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B87A2782A0CC00775D81 /* EditUsernameViewController.swift */; };
-		7754B8822782C25800775D81 /* PhotoPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8812782C25800775D81 /* PhotoPopUpView.swift */; };
-		7754B8842782C27D00775D81 /* PhotoPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */; };
 		775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */; };
 		775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150E27730BA000C9872F /* DataSourceModel.swift */; };
 		7779931D2750843C007A3898 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7779931C2750843B007A3898 /* SearchViewController.swift */; };
@@ -177,8 +175,6 @@
 		7754B87627829C4700775D81 /* EditUsernameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameTableViewCell.swift; sourceTree = "<group>"; };
 		7754B8782782A0B700775D81 /* EditUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameView.swift; sourceTree = "<group>"; };
 		7754B87A2782A0CC00775D81 /* EditUsernameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameViewController.swift; sourceTree = "<group>"; };
-		7754B8812782C25800775D81 /* PhotoPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPopUpView.swift; sourceTree = "<group>"; };
-		7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoPopUpViewController.swift; sourceTree = "<group>"; };
 		775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
 		775F150E27730BA000C9872F /* DataSourceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceModel.swift; sourceTree = "<group>"; };
 		7779931C2750843B007A3898 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -349,7 +345,6 @@
 				77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */,
 				7754B8702781D66400775D81 /* EditUserProfileViewController.swift */,
 				7754B87A2782A0CC00775D81 /* EditUsernameViewController.swift */,
-				7754B8832782C27D00775D81 /* PhotoPopUpViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -651,7 +646,6 @@
 				7754B862277DAE2F00775D81 /* AddSelfIntroView.swift */,
 				77ABC5D72774A998000431E1 /* AddInformationView.swift */,
 				77FE72862775E00600482CE7 /* SelectInformationView.swift */,
-				7754B8812782C25800775D81 /* PhotoPopUpView.swift */,
 				77FE728A2776021600482CE7 /* SearchHeaderView.swift */,
 				774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */,
 				774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */,
@@ -1026,7 +1020,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */,
-				7754B8822782C25800775D81 /* PhotoPopUpView.swift in Sources */,
 				77B635482768B30A00C41EB3 /* EditProfileViewController.swift in Sources */,
 				BEF254E8277AD3C700FBAACB /* InfoLabel.swift in Sources */,
 				7754B8732781D7BC00775D81 /* BirthSelectTableViewCell.swift in Sources */,
@@ -1049,7 +1042,6 @@
 				77B635422768B2C100C41EB3 /* DetailProfileView.swift in Sources */,
 				BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */,
 				BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */,
-				7754B8842782C27D00775D81 /* PhotoPopUpViewController.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
