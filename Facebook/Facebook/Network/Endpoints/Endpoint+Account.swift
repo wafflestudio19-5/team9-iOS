@@ -30,6 +30,7 @@ extension Endpoint {
     
     static func deleteAccount() -> Self {
         return Endpoint(path: "account/delete/")
+    }
 
     static func refreshToken(token: String) -> Self {
         return Endpoint(path: "token/refresh/", parameters: ["token": token])
