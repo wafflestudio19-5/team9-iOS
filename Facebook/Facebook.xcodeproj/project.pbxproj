@@ -125,6 +125,7 @@
 		BE6F62FE279F1A5D00F62111 /* CommentModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F62FD279F1A5D00F62111 /* CommentModalView.swift */; };
 		BE6F630027A0233900F62111 /* UIViewController+PostCellConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F62FF27A0233900F62111 /* UIViewController+PostCellConfig.swift */; };
 		BE6F630227A02BDE00F62111 /* PostDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F630127A02BDE00F62111 /* PostDetailContentView.swift */; };
+		BE6F630427A04F4A00F62111 /* ForbiddenShareContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6F630327A04F4A00F62111 /* ForbiddenShareContentView.swift */; };
 		BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */; };
 		BE7D1DF9277DC63800E080E3 /* NSLayoutConstraints+Activate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */; };
 		BE7FD9F7277CCDCA00C3FF8E /* ImageGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */; };
@@ -283,6 +284,7 @@
 		BE6F62FD279F1A5D00F62111 /* CommentModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModalView.swift; sourceTree = "<group>"; };
 		BE6F62FF27A0233900F62111 /* UIViewController+PostCellConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+PostCellConfig.swift"; sourceTree = "<group>"; };
 		BE6F630127A02BDE00F62111 /* PostDetailContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostDetailContentView.swift; sourceTree = "<group>"; };
+		BE6F630327A04F4A00F62111 /* ForbiddenShareContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForbiddenShareContentView.swift; sourceTree = "<group>"; };
 		BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPickerViewModel.swift; sourceTree = "<group>"; };
 		BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraints+Activate.swift"; sourceTree = "<group>"; };
 		BE7FD9F6277CCDCA00C3FF8E /* ImageGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGridCollectionView.swift; sourceTree = "<group>"; };
@@ -636,6 +638,7 @@
 				BE9C7C95276DB3C30089247F /* PostCell.swift */,
 				BE50BFF6279BE9EC00876D10 /* PostContentView.swift */,
 				BE50BFFC279C6B1D00876D10 /* SharedPostContentView.swift */,
+				BE6F630327A04F4A00F62111 /* ForbiddenShareContentView.swift */,
 				B897A921274E612B00FB67D3 /* NewsfeedTabView.swift */,
 				BE64AF3627809F5400C25967 /* Headers */,
 			);
@@ -1130,6 +1133,7 @@
 				BE8015AB276B6CC90014FEFA /* PaginatedResponse.swift in Sources */,
 				77FE72872775E00600482CE7 /* SelectInformationView.swift in Sources */,
 				7779931D2750843C007A3898 /* SearchViewController.swift in Sources */,
+				BE6F630427A04F4A00F62111 /* ForbiddenShareContentView.swift in Sources */,
 				B86194EE275D28D000957BBC /* EnterUsernameView.swift in Sources */,
 				BEF254E5277AD28200FBAACB /* AuthorInfoHeaderView.swift in Sources */,
 				B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */,
