@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import SwiftUI
 
 class NotificationTabView: UIView {
     
@@ -77,24 +76,4 @@ class NotificationTabView: UIView {
 //        bottomSheetView.removeFromSuperview()
 //        self.layoutIfNeeded()
 //    }
-}
-
-
-struct NotificationViewRepresentable: UIViewRepresentable {
-    func makeUIView(context: Context) -> some UIView {
-        let view = NotificationTabView()
-        return view
-    }
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {}
-}
-
-struct NotificationViewPreview: PreviewProvider {
-    static var previews: some View {
-        VStack{
-            Spacer()
-            NotificationViewRepresentable()
-            Spacer()
-        }.preferredColorScheme(.light).previewDevice("iPhone 12 Pro").background(.white)
-    }
 }
