@@ -30,25 +30,31 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     
     let viewModel = PaginationViewModel<Notification>(endpoint: .notification())
     
+    /// 새로운 알림, 이전 알림
     private let oldNotifications = BehaviorRelay<[Notification]>(value: [])
     private let newNotifications = BehaviorRelay<[Notification]>(value: [])
     
-    private var sectionList = BehaviorRelay<[SectionModel<String, Notification>]>(value: [])
+    private let sectionList = BehaviorRelay<[SectionModel<String, Notification>]>(value: [])
+    private var sections: [SectionModel<String, Notification>] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: tabView.largeTitleLabel)
-
+        
+        tableView.sectionHeaderTopPadding = 0.0
         bind()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("oldNotifications")
-        print(oldNotifications.value)
+        
+        sectionList.accept([])
+        sections.removeAll()
+        
+        if !newNotifications.value.isEmpty { sections.append(SectionModel(model: "새로운 알림", items: newNotifications.value)) }
+        if !oldNotifications.value.isEmpty { sections.append(SectionModel(model: "이전 알림", items: oldNotifications.value)) }
 
-        print("\n\nnewNotifications")
-        print(newNotifications.value)
+        sectionList.accept(sections)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -60,30 +66,21 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     
     private func bind() {
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
+
+//        viewModel.dataList
+//            .observe(on: MainScheduler.instance)
+//            .bind(to: tableView.rx.items(cellIdentifier: NotificationCell.reuseIdentifier, cellType: NotificationCell.self)) { [weak self] _, notification, cell in
+//                self?.configure(cell: cell, with: notification)
+//            }.disposed(by: disposeBag)
         
         viewModel.dataList
-            .observe(on: MainScheduler.instance)
-            .bind(to: tableView.rx.items(cellIdentifier: NotificationCell.reuseIdentifier, cellType: NotificationCell.self)) { [weak self] _, notification, cell in
-                print(notification)
-                self?.configure(cell: cell, with: notification)
+            .bind { [weak self] notification in
+                self?.newNotifications.accept(notification)
             }.disposed(by: disposeBag)
         
-//        viewModel.dataList
-//            .bind { [weak self] notification in
-//                print("binding data from viewModel...")
-//                self?.newNotifications.accept(notification)
-//            }.disposed(by: disposeBag)
-//
-//        let sections = [
-//            SectionModel(model: "새로운 알림", items: newNotifications.value),
-//            SectionModel(model: "이전 알림", items: oldNotifications.value)
-//        ]
-//
-//        sectionList.accept(sections)
-//
-//        Observable.just(sections)
-//            .bind(to: tableView.rx.items(dataSource: dataSource))
-//            .disposed(by: disposeBag)
+        sectionList
+            .bind(to: tableView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
         
         StateManager.of.notification.bind(with: viewModel.dataList).disposed(by: disposeBag)
         
@@ -119,7 +116,7 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
 //        tabView.bottomSheetView.rx.tapGesture().bind { [weak self] _ in
 //            self?.isShowingBottomSheet.accept(false)
 //        }.disposed(by: disposeBag)
-//        
+//
 //        isShowingBottomSheet
 //            .observe(on: MainScheduler.instance)
 //            .bind { [weak self] isShowing in
@@ -146,8 +143,14 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
 extension NotificationTabViewController {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView(frame: CGRect.zero)
-        let label = (section == 0 ? self.tabView.newNotificationLabel : self.tabView.oldNotificationLabel)
-        
+        var label = UILabel()
+
+        if sections[section].model == "새로운 알림" {
+            label = self.tabView.newNotificationLabel
+        } else if sections[section].model == "이전 알림" {
+            label = self.tabView.oldNotificationLabel
+        }
+
         headerView.addSubview(label)
         headerView.backgroundColor = .white
         

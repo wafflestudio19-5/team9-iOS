@@ -28,8 +28,7 @@ class NotificationTabView: UIView {
         label.text = "이전 알림"
         return label
     }()
-    
-    
+
     let notificationTableView = ResponsiveTableView(frame: CGRect.zero, style: .grouped)
     
     override init(frame: CGRect) {
@@ -62,6 +61,8 @@ class NotificationTabView: UIView {
         notificationTableView.register(NotificationCell.self, forCellReuseIdentifier: NotificationCell.reuseIdentifier)
         notificationTableView.refreshControl = refreshControl
         notificationTableView.backgroundColor = .white
+        notificationTableView.contentInsetAdjustmentBehavior = .never
+        notificationTableView.tableHeaderView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: 0.0, height: 0.1))
     }
     
 //    func showBottomSheetView() {
