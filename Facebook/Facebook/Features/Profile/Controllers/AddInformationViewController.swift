@@ -474,11 +474,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 } else {
-                    if !(companyInformation.is_active!) {
-                        if !checkDateValid() {
-                            self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
-                            return
-                        }
+                    if !(companyInformation.is_active!) && !checkDateValid() {
+                        self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                        return
                     }
                     
                     NetworkService.put(endpoint: .company(id: id, company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] event in
@@ -498,13 +496,11 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                         self.navigationController?.popViewController(animated: true)
                     }).disposed(by: self.disposeBag)
                 } else {
-                    if !(universityInformation.is_active!) {
-                        if !checkDateValid() {
-                            self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
-                            return
-                        }
+                    if !(universityInformation.is_active!) && !checkDateValid() {
+                        self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                        return
                     }
-                    
+                        
                     NetworkService.put(endpoint: .university(id: id, university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] event in
                         guard let self = self else { return }
                         
@@ -518,11 +514,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
         } else {
             switch self.informationType {
             case .company:
-                if !(companyInformation.is_active!) {
-                    if !checkDateValid() {
-                        self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
-                        return
-                    }
+                if !(companyInformation.is_active!) && !checkDateValid() {
+                    self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                    return
                 }
                 
                 NetworkService.post(endpoint: .company(company: self.companyInformation), as: Company.self).subscribe(onNext: { [weak self] event in
@@ -534,11 +528,9 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                     self.navigationController?.popViewController(animated: true)
                 }).disposed(by: self.disposeBag)
             case .university:
-                if !(universityInformation.is_active!) {
-                    if !checkDateValid() {
-                        self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
-                        return
-                    }
+                if !(universityInformation.is_active!) && !checkDateValid() {
+                    self.alert(title: "", message: "종료 날짜가 시작 날짜보다 빠른 날짜일 수 없습니다. 다시 입력하세요.", action: "확인")
+                    return
                 }
                 
                 NetworkService.post(endpoint: .university(university: self.universityInformation), as: University.self).subscribe(onNext: { [weak self] event in
