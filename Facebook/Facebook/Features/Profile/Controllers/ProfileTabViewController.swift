@@ -660,7 +660,6 @@ extension ProfileTabViewController {
                     return
                 }
                 
-                self.title = response.username
                 if self.userId == UserDefaultsManager.cachedUser?.id {
                     StateManager.of.user.dispatch(profile: response)
                     self.userProfile = response
