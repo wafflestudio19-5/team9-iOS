@@ -1073,8 +1073,8 @@
 			files = (
 				771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */,
 				777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */,
+				7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */,
 				771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */,
-				777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */,
 				7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */,
 				771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */,
 				7779931B274FD8E4007A3898 /* PostTableViewCell.xib in Resources */,
