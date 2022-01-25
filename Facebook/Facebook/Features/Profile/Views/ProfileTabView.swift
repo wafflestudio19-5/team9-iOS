@@ -40,6 +40,7 @@ class ProfileTabView: UIView {
         profileTableView.register(UINib(nibName: "MainProfileTableViewCell", bundle: nil), forCellReuseIdentifier: "MainProfileCell")
         profileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         profileTableView.register(ButtonTableViewCell.self, forCellReuseIdentifier: ButtonTableViewCell.reuseIdentifier)
+        profileTableView.register(FriendCollectionTableViewCell.self, forCellReuseIdentifier: FriendCollectionTableViewCell.reuseIdentifier)
         profileTableView.register(PostCell.self, forCellReuseIdentifier: PostCell.reuseIdentifier)
         profileTableView.allowsSelection = false
         profileTableView.refreshControl = refreshControl

@@ -13,10 +13,10 @@ import RxAlamofire
 class PaginationViewModel<DataModel: Codable> {
     /// 앱 내에서 Infinite Scrolling이 필요한 경우가 많을 것으로 예상되어, 해당 로직을 재사용할 수 있도록 `ViewModel`로 작성했습니다..
     
-    private let disposeBag = DisposeBag()
+    let disposeBag = DisposeBag()
     var endpoint: Endpoint
     
-    private var lastResponse: PaginatedResponse<DataModel>?
+    var lastResponse: PaginatedResponse<DataModel>?
     private var hasNext: Bool {
         guard let lastResponse = lastResponse else { return true }
         return lastResponse.next != nil

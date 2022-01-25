@@ -18,15 +18,16 @@ struct UserProfile: Codable, Identifiable  {
     let self_intro: String
     let profile_image: String?
     let cover_image: String?
+    var friend_info: String
     var company: [Company]
     var university: [University]
     
     static func getDummyProfile() -> Self {
-        return UserProfile(id: -1, first_name: "", last_name: "", username: "", email: "", birth: "", gender: "", self_intro: "", profile_image: nil, cover_image: nil, company: [], university: [])
+        return UserProfile(id: -1, first_name: "", last_name: "", username: "", email: "", birth: "", gender: "", self_intro: "", profile_image: nil, cover_image: nil, friend_info: "", company: [], university: [])
     }
     
     static func getDummyProfile(from user: User) -> Self {
-        return UserProfile(id: user.id, first_name: "", last_name: "", username: user.username, email: user.email, birth: "", gender: "", self_intro: "", profile_image: user.profile_image, cover_image: nil, company: [], university: [])
+        return UserProfile(id: user.id, first_name: "", last_name: "", username: user.username, email: user.email, birth: "", gender: "", self_intro: "", profile_image: user.profile_image, cover_image: nil, friend_info: "", company: [], university: [])
     }
 }
 

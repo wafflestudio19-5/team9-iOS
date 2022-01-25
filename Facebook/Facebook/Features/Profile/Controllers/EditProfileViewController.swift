@@ -321,30 +321,21 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
 extension EditProfileViewController {
     //자기 소개가 이미 있을 때 자기 소개 관련 메뉴(alertsheet형식) present
     func showAlertSelfIntroMenu() {
-        let alertMenu = UIAlertController(title: "자기 소개", message: "", preferredStyle: .actionSheet)
-        
-        let editSelfIntroAction = UIAlertAction(title: "소개 수정", style: .default, handler: { action in
+        let menuList = [ Menu(image: UIImage(systemName: "pencil.and.outline") ?? UIImage(),
+                              text: "소개 수정", action: {
             let addSelfIntroViewController = AddSelfIntroViewController()
             let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
             navigationController.modalPresentationStyle = .fullScreen
             self.present(navigationController, animated: true, completion: nil)
-        })
-        editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
-        editSelfIntroAction.setValue(UIImage(systemName: "pencil.circle")!, forKey: "image")
-        
-        let deleteSelfIntroAction = UIAlertAction(title: "소개 삭제", style: .default, handler: { action in
+        }),
+                         Menu(image: UIImage(systemName: "trash.fill") ?? UIImage(),
+                              text: "소개 삭제", action: {
             self.deleteSelfIntro()
-        })
-        deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
-        deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
+        })]
         
-        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
-        
-        alertMenu.addAction(editSelfIntroAction)
-        alertMenu.addAction(deleteSelfIntroAction)
-        alertMenu.addAction(cancelAction)
-        
-        self.present(alertMenu, animated: true, completion: nil)
+        let bottomSheetVC = BottomSheetViewController(menuList: menuList)
+        bottomSheetVC.modalPresentationStyle = .overFullScreen
+        self.present(bottomSheetVC, animated: false, completion: nil)
     }
     
     func deleteSelfIntro() {
@@ -363,36 +354,20 @@ extension EditProfileViewController {
     }
     
     func showAlertImageMenu() {
-        let alertMenu = UIAlertController(title: self.imageType == "profile_image" ?
-                                          "프로필 사진 수정" : "커버 사진 수정",
-                                          message: "",
-                                          preferredStyle: .actionSheet)
+        let menuList = [ Menu(image: UIImage(systemName: "photo.on.rectangle.angled") ?? UIImage(),
+                              text: self.imageType == "profile_image" ?
+                              "프로필 사진 변경" : "커버 사진 변경", action: {
+            self.presentPicker()
+        }),
+                         Menu(image: UIImage(systemName: "trash.fill") ?? UIImage(),
+                              text: self.imageType == "profile_image" ?
+                              "프로필 사진 삭제" : "커버 사진 삭제", action: {
+            self.deleteImage()
+        })]
         
-        let editSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
-                                                "프로필 사진 변경" : "커버 사진 변경",
-                                                style: .default,
-                                                handler: { action in
-                                                    self.presentPicker()
-                                                })
-        editSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
-        editSelfIntroAction.setValue(UIImage(systemName: "photo.on.rectangle.angled")!, forKey: "image")
-        
-        let deleteSelfIntroAction = UIAlertAction(title: self.imageType == "profile_image" ?
-                                                  "프로필 사진 삭제" : "커버 사진 삭제",
-                                                  style: .default,
-                                                  handler: { action in
-                                                      self.deleteImage()
-                                                  })
-        deleteSelfIntroAction.setValue(0, forKey: "titleTextAlignment")
-        deleteSelfIntroAction.setValue(UIImage(systemName: "trash.circle")!, forKey: "image")
-        
-        let cancelAction = UIAlertAction(title: "취소", style: .default, handler: nil)
-        
-        alertMenu.addAction(editSelfIntroAction)
-        alertMenu.addAction(deleteSelfIntroAction)
-        alertMenu.addAction(cancelAction)
-        
-        self.present(alertMenu, animated: true, completion: nil)
+        let bottomSheetVC = BottomSheetViewController(menuList: menuList)
+        bottomSheetVC.modalPresentationStyle = .overFullScreen
+        self.present(bottomSheetVC, animated: false, completion: nil)
     }
     
     func deleteImage() {

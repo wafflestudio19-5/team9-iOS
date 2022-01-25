@@ -71,7 +71,7 @@ struct NetworkService {
     }
     
     static func delete(endpoint: Endpoint) -> Observable<Any> {
-        return session.rx.json(.delete, endpoint.url)
+        return session.rx.json(.delete, endpoint.url, parameters: endpoint.parameters, encoding: JSONEncoding.default)
     }
     
     /*
@@ -79,7 +79,7 @@ struct NetworkService {
      */
     
     static func get<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {
-        return session.rx.responseDecodable(.get, endpoint.url)
+        return session.rx.responseDecodable(.get, endpoint.url, parameters: endpoint.parameters)
     }
     
     static func post<T: Decodable>(endpoint: Endpoint, as: T.Type = T.self) -> Observable<(HTTPURLResponse, T)> {

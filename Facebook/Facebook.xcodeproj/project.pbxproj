@@ -8,8 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		4C1F3D1EBBA69784AF1CB7FC /* Pods_Facebook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74F8DC55374F2CDB24937D2A /* Pods_Facebook.framework */; };
+		7706A6C02797B434007F5064 /* FriendPaginationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7706A6BF2797B433007F5064 /* FriendPaginationViewModel.swift */; };
+		7706A6C22797C636007F5064 /* EmptyBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7706A6C12797C636007F5064 /* EmptyBackgroundView.swift */; };
 		771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771DF59E27707DD900B69351 /* ImageTableViewCell.swift */; };
 		771DF5A127707DD900B69351 /* ImageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 771DF59F27707DD900B69351 /* ImageTableViewCell.xib */; };
+		772FBF012790057C003556EC /* FriendTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF002790057C003556EC /* FriendTabView.swift */; };
+		772FBF0327900595003556EC /* FriendTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0227900595003556EC /* FriendTabViewController.swift */; };
+		772FBF0527900A4F003556EC /* FriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0427900A4F003556EC /* FriendCell.swift */; };
+		772FBF0727911C0A003556EC /* FriendRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0627911C0A003556EC /* FriendRequestCell.swift */; };
+		772FBF09279125AB003556EC /* Endpoint+Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF08279125AB003556EC /* Endpoint+Friend.swift */; };
+		772FBF0B279128FC003556EC /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0A279128FC003556EC /* Friend.swift */; };
+		772FBF0D279130E8003556EC /* ShowFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0C279130E8003556EC /* ShowFriendView.swift */; };
+		772FBF0F279130FE003556EC /* ShowFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF0E279130FE003556EC /* ShowFriendViewController.swift */; };
+		772FBF122792831C003556EC /* FriendGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF112792831C003556EC /* FriendGridCell.swift */; };
+		772FBF1527928369003556EC /* FriendGridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF1427928369003556EC /* FriendGridCollectionView.swift */; };
+		772FBF1727929553003556EC /* FriendCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 772FBF1627929553003556EC /* FriendCollectionTableViewCell.swift */; };
 		774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */; };
 		774094392750E57100AD8DC2 /* MainProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */; };
 		7740943E2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */; };
@@ -33,6 +46,9 @@
 		7779931D2750843C007A3898 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7779931C2750843B007A3898 /* SearchViewController.swift */; };
 		777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777993232750D280007A3898 /* NotificationTableViewCell.swift */; };
 		777993262750D280007A3898 /* NotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 777993242750D280007A3898 /* NotificationTableViewCell.xib */; };
+		779775B0279ABFD400AEF7B4 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779775AF279ABFD400AEF7B4 /* BottomSheetView.swift */; };
+		779775B2279ABFE300AEF7B4 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779775B1279ABFE300AEF7B4 /* BottomSheetViewController.swift */; };
+		779775BA279AC1D000AEF7B4 /* BottomSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779775B9279AC1D000AEF7B4 /* BottomSheetCell.swift */; };
 		77ABC5D42774A906000431E1 /* EditDetailInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5D32774A906000431E1 /* EditDetailInformationView.swift */; };
 		77ABC5D62774A944000431E1 /* EditDetailInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */; };
 		77ABC5D82774A998000431E1 /* AddInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77ABC5D72774A998000431E1 /* AddInformationView.swift */; };
@@ -159,8 +175,21 @@
 /* Begin PBXFileReference section */
 		6359F47475B70FE61F708C89 /* Pods-Facebook.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.debug.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.debug.xcconfig"; sourceTree = "<group>"; };
 		74F8DC55374F2CDB24937D2A /* Pods_Facebook.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Facebook.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7706A6BF2797B433007F5064 /* FriendPaginationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendPaginationViewModel.swift; sourceTree = "<group>"; };
+		7706A6C12797C636007F5064 /* EmptyBackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBackgroundView.swift; sourceTree = "<group>"; };
 		771DF59E27707DD900B69351 /* ImageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTableViewCell.swift; sourceTree = "<group>"; };
 		771DF59F27707DD900B69351 /* ImageTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageTableViewCell.xib; sourceTree = "<group>"; };
+		772FBF002790057C003556EC /* FriendTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabView.swift; sourceTree = "<group>"; };
+		772FBF0227900595003556EC /* FriendTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendTabViewController.swift; sourceTree = "<group>"; };
+		772FBF0427900A4F003556EC /* FriendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCell.swift; sourceTree = "<group>"; };
+		772FBF0627911C0A003556EC /* FriendRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestCell.swift; sourceTree = "<group>"; };
+		772FBF08279125AB003556EC /* Endpoint+Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Friend.swift"; sourceTree = "<group>"; };
+		772FBF0A279128FC003556EC /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
+		772FBF0C279130E8003556EC /* ShowFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowFriendView.swift; sourceTree = "<group>"; };
+		772FBF0E279130FE003556EC /* ShowFriendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowFriendViewController.swift; sourceTree = "<group>"; };
+		772FBF112792831C003556EC /* FriendGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendGridCell.swift; sourceTree = "<group>"; };
+		772FBF1427928369003556EC /* FriendGridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendGridCollectionView.swift; sourceTree = "<group>"; };
+		772FBF1627929553003556EC /* FriendCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		774094362750E57100AD8DC2 /* MainProfileTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileTableViewCell.swift; sourceTree = "<group>"; };
 		774094372750E57100AD8DC2 /* MainProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7740943C2750E7E400AD8DC2 /* SimpleInformationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleInformationTableViewCell.swift; sourceTree = "<group>"; };
@@ -184,6 +213,9 @@
 		7779931C2750843B007A3898 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		777993232750D280007A3898 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		777993242750D280007A3898 /* NotificationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationTableViewCell.xib; sourceTree = "<group>"; };
+		779775AF279ABFD400AEF7B4 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
+		779775B1279ABFE300AEF7B4 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
+		779775B9279AC1D000AEF7B4 /* BottomSheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetCell.swift; sourceTree = "<group>"; };
 		77ABC5D32774A906000431E1 /* EditDetailInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailInformationView.swift; sourceTree = "<group>"; };
 		77ABC5D52774A944000431E1 /* EditDetailInformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailInformationViewController.swift; sourceTree = "<group>"; };
 		77ABC5D72774A998000431E1 /* AddInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInformationView.swift; sourceTree = "<group>"; };
@@ -357,12 +389,60 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		772FBEFC27900525003556EC /* Friend */ = {
+			isa = PBXGroup;
+			children = (
+				772FBF10279132F5003556EC /* ViewModels */,
+				772FBEFE27900540003556EC /* Controllers */,
+				772FBEFF27900547003556EC /* Views */,
+			);
+			path = Friend;
+			sourceTree = "<group>";
+		};
+		772FBEFE27900540003556EC /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				772FBF0227900595003556EC /* FriendTabViewController.swift */,
+				772FBF0E279130FE003556EC /* ShowFriendViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		772FBEFF27900547003556EC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				772FBF002790057C003556EC /* FriendTabView.swift */,
+				772FBF0C279130E8003556EC /* ShowFriendView.swift */,
+				772FBF0427900A4F003556EC /* FriendCell.swift */,
+				772FBF0627911C0A003556EC /* FriendRequestCell.swift */,
+				7706A6C12797C636007F5064 /* EmptyBackgroundView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		772FBF10279132F5003556EC /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				7706A6BF2797B433007F5064 /* FriendPaginationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		7754B868277F33ED00775D81 /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				775F150E27730BA000C9872F /* DataSourceModel.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		779775AE279ABF8000AEF7B4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				779775AF279ABFD400AEF7B4 /* BottomSheetView.swift */,
+				779775B9279AC1D000AEF7B4 /* BottomSheetCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B82EC929278BE12400750397 /* Settings */ = {
@@ -600,6 +680,7 @@
 		BE9C7CA62771700C0089247F /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				772FBEFC27900525003556EC /* Friend */,
 				BE9C7CB9277200760089247F /* CreatePost */,
 				BE9C7CB8277200480089247F /* PostDetail */,
 				BE9C7CB52771731D0089247F /* Search */,
@@ -667,6 +748,9 @@
 				7754B8722781D7BC00775D81 /* BirthSelectTableViewCell.swift */,
 				7754B87627829C4700775D81 /* EditUsernameTableViewCell.swift */,
 				7754B8742781DD9A00775D81 /* GenderSelectTableViewCell.swift */,
+				772FBF1627929553003556EC /* FriendCollectionTableViewCell.swift */,
+				772FBF1427928369003556EC /* FriendGridCollectionView.swift */,
+				772FBF112792831C003556EC /* FriendGridCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -732,6 +816,7 @@
 			children = (
 				B897A914274E372300FB67D3 /* RootTabBarController.swift */,
 				B897A927274E69CF00FB67D3 /* BaseTabViewController.swift */,
+				779775B1279ABFE300AEF7B4 /* BottomSheetViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -829,6 +914,7 @@
 		BEBDA762276C28DA0004FFD7 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				779775AE279ABF8000AEF7B4 /* Views */,
 				BE9C7CB4277172CA0089247F /* Controllers */,
 				BEFFFAA5276B125E009CBF25 /* Models */,
 				BE9C7CA527716EC00089247F /* ViewModels */,
@@ -884,6 +970,7 @@
 				BEFFFAA6276B126D009CBF25 /* Post.swift */,
 				BE9C7C9E276EC6EC0089247F /* User.swift */,
 				7754B869277F357F00775D81 /* UserProfile.swift */,
+				772FBF0A279128FC003556EC /* Friend.swift */,
 				BE86BAD827830FC100948CAA /* Comment.swift */,
 				B85D67DF2775AC03002CCC04 /* NewUser.swift */,
 				B85D67E5277ECA74002CCC04 /* CurrentUser.swift */,
@@ -897,6 +984,7 @@
 				BEA834AD275123FD00D6EC95 /* Endpoint.swift */,
 				BEFFFAAC276B1BA2009CBF25 /* Endpoint+Newsfeed.swift */,
 				7754B86C2781A0B900775D81 /* Endpoint+Profile.swift */,
+				772FBF08279125AB003556EC /* Endpoint+Friend.swift */,
 				B821C060279487D7000BA22D /* Endpoint+Account.swift */,
 			);
 			path = Endpoints;
@@ -1035,6 +1123,8 @@
 				BE50BFF7279BE9EC00876D10 /* PostContentView.swift in Sources */,
 				7754B8732781D7BC00775D81 /* BirthSelectTableViewCell.swift in Sources */,
 				77B635442768B2E200C41EB3 /* DetailProfileViewController.swift in Sources */,
+				772FBF0D279130E8003556EC /* ShowFriendView.swift in Sources */,
+				7706A6C02797B434007F5064 /* FriendPaginationViewModel.swift in Sources */,
 				BEFFFAA7276B126D009CBF25 /* Post.swift in Sources */,
 				7740944A2750ECDC00AD8DC2 /* ButtonTableViewCell.swift in Sources */,
 				B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */,
@@ -1045,6 +1135,7 @@
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */,
 				B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */,
+				7706A6C22797C636007F5064 /* EmptyBackgroundView.swift in Sources */,
 				BE0D4383278D498200E2162F /* SubPostsViewController.swift in Sources */,
 				B85D67F22784B5A5002CCC04 /* CommentCell.swift in Sources */,
 				BE0D436B2787631400E2162F /* HapticManager.swift in Sources */,
@@ -1055,10 +1146,12 @@
 				77B635422768B2C100C41EB3 /* DetailProfileView.swift in Sources */,
 				BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */,
 				BE9C7C96276DB3C30089247F /* PostCell.swift in Sources */,
+				772FBF122792831C003556EC /* FriendGridCell.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				B86194F2275DC0C200957BBC /* EnterBirthdateView.swift in Sources */,
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				BE64AF3527809F3E00C25967 /* UploadProgressHeaderView.swift in Sources */,
+				772FBF0F279130FE003556EC /* ShowFriendViewController.swift in Sources */,
 				B86194F0275D290600957BBC /* EnterUsernameViewController.swift in Sources */,
 				B8A7F8322761FCEB00F659D2 /* EnterPasswordViewController.swift in Sources */,
 				B846BDA72754F35800513B77 /* LoginView.swift in Sources */,
@@ -1076,6 +1169,7 @@
 				77B635462768B2F900C41EB3 /* EditProfileView.swift in Sources */,
 				777993252750D280007A3898 /* NotificationTableViewCell.swift in Sources */,
 				BEF254EE277B062800FBAACB /* PostContentLabel.swift in Sources */,
+				772FBF1527928369003556EC /* FriendGridCollectionView.swift in Sources */,
 				771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */,
 				77547904275CE66A0065711C /* PostDetailViewController.swift in Sources */,
 				771DF5A027707DD900B69351 /* ImageTableViewCell.swift in Sources */,
@@ -1090,9 +1184,11 @@
 				B82EC92F278BE20600750397 /* MenuTabViewController.swift in Sources */,
 				B85D67F027840F16002CCC04 /* AuthManager.swift in Sources */,
 				B897A924274E61A900FB67D3 /* ProfileTabView.swift in Sources */,
+				772FBF012790057C003556EC /* FriendTabView.swift in Sources */,
 				B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */,
 				B8619501276101AD00957BBC /* BaseSignUpViewController.swift in Sources */,
 				BE64AF382780A34E00C25967 /* MainHeaderView.swift in Sources */,
+				772FBF0527900A4F003556EC /* FriendCell.swift in Sources */,
 				BE50BFFD279C6B1D00876D10 /* SharedPostContentView.swift in Sources */,
 				BE7D1DF7277D975000E080E3 /* PHPickerViewModel.swift in Sources */,
 				BE05C37E2799D5E5005471BD /* AuthorHeaderView.swift in Sources */,
@@ -1101,11 +1197,14 @@
 				B86194FF2760FED800957BBC /* EnterEmailViewController.swift in Sources */,
 				B86195092761AFAE00957BBC /* ContentSizeFitViews.swift in Sources */,
 				BE86BADE2783F45B00948CAA /* FlexibleTextView.swift in Sources */,
+				772FBF0727911C0A003556EC /* FriendRequestCell.swift in Sources */,
 				BE86BAE42784183600948CAA /* UITableView+DynamicHeader.swift in Sources */,
+				772FBF0327900595003556EC /* FriendTabViewController.swift in Sources */,
 				B846BDB02755119600513B77 /* FacebookTextField.swift in Sources */,
 				BE64AF3A27827FAE00C25967 /* ResponsiveViews.swift in Sources */,
 				BE0D438A278DA7F500E2162F /* SubPostCell.swift in Sources */,
 				B86195052761051900957BBC /* SelectGenderViewController.swift in Sources */,
+				772FBF1727929553003556EC /* FriendCollectionTableViewCell.swift in Sources */,
 				7754B863277DAE2F00775D81 /* AddSelfIntroView.swift in Sources */,
 				B897A915274E372300FB67D3 /* RootTabBarController.swift in Sources */,
 				7754B861277D68D200775D81 /* DetailInformationTableViewCell.swift in Sources */,
@@ -1118,14 +1217,17 @@
 				BEF254E5277AD28200FBAACB /* AuthorInfoHeaderView.swift in Sources */,
 				B86194FD2760FEC700957BBC /* EnterEmailView.swift in Sources */,
 				BE0D439027903F0200E2162F /* SearchView.swift in Sources */,
+				779775BA279AC1D000AEF7B4 /* BottomSheetCell.swift in Sources */,
 				B897A928274E69CF00FB67D3 /* BaseTabViewController.swift in Sources */,
 				BEBDA767276C296F0004FFD7 /* GradientIcon.swift in Sources */,
 				BE0D4386278D567100E2162F /* SubPostsView.swift in Sources */,
 				BE7FD9F9277CCFDA00C3FF8E /* ImageGridCell.swift in Sources */,
 				BE7D1DF9277DC63800E080E3 /* NSLayoutConstraints+Activate.swift in Sources */,
 				B897A919274E378300FB67D3 /* ProfileTabViewController.swift in Sources */,
+				779775B2279ABFE300AEF7B4 /* BottomSheetViewController.swift in Sources */,
 				77ABC5D42774A906000431E1 /* EditDetailInformationView.swift in Sources */,
 				B8A7F8372767690F00F659D2 /* UIViewController+Extensions.swift in Sources */,
+				772FBF09279125AB003556EC /* Endpoint+Friend.swift in Sources */,
 				BEF254F4277B0DC500FBAACB /* PostDetailHeaderView.swift in Sources */,
 				BE86BAD927830FC100948CAA /* Comment.swift in Sources */,
 				BE827A0F2772131000BD3566 /* UIColor+Grayscales.swift in Sources */,
@@ -1138,6 +1240,7 @@
 				BE9C7C9F276EC6EC0089247F /* User.swift in Sources */,
 				BEF254EC277ADBE800FBAACB /* InteractionButtonStackView.swift in Sources */,
 				B82EC92D278BE1EB00750397 /* MenuTabView.swift in Sources */,
+				779775B0279ABFD400AEF7B4 /* BottomSheetView.swift in Sources */,
 				7754B86F2781D63900775D81 /* EditUserProfileView.swift in Sources */,
 				77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */,
 				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
@@ -1148,6 +1251,7 @@
 				7754B87727829C4700775D81 /* EditUsernameTableViewCell.swift in Sources */,
 				77ABC5D62774A944000431E1 /* EditDetailInformationViewController.swift in Sources */,
 				BEFFFAAD276B1BA2009CBF25 /* Endpoint+Newsfeed.swift in Sources */,
+				772FBF0B279128FC003556EC /* Friend.swift in Sources */,
 				B8A7F8342767507000F659D2 /* LabelWithPadding.swift in Sources */,
 				B86194F4275DC49100957BBC /* EnterBirthdateViewController.swift in Sources */,
 				BE0D439627904D6B00E2162F /* SearchResultCell.swift in Sources */,

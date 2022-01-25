@@ -33,6 +33,7 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     private func setTabBarController() {
         let controllers = [newsfeedNavController,
+                           friendNavController,
                            profileNavController,
                            notificationNavController,
                            menuNavController]
@@ -46,6 +47,13 @@ class RootTabBarController: UITabBarController, UITabBarControllerDelegate {
         let newsfeedTabViewIcon = UITabBarItem(title: "뉴스피드", image: UIImage(systemName: "house"), selectedImage: UIImage(systemName: "house.fill"))
         newsfeedTabViewController.tabBarItem = newsfeedTabViewIcon
         return newsfeedTabViewController
+    }()
+    
+    lazy var friendNavController: UINavigationController = {
+        let friendTabViewController = UINavigationController(rootViewController: FriendTabViewController())
+        let friendTabViewIcon = UITabBarItem(title: "친구", image: UIImage(systemName: "person.2"), selectedImage: UIImage(systemName: "person.2.fill"))
+        friendTabViewController.tabBarItem = friendTabViewIcon
+        return friendTabViewController
     }()
     
     lazy var profileNavController: UINavigationController = {
