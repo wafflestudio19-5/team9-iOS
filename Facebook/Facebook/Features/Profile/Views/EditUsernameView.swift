@@ -186,104 +186,96 @@ class EditUsernameView: UIView {
     
     private func setLayoutForView() {
         self.addSubview(contentView)
-        NSLayoutConstraint.activate([
-            contentView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
-            contentView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            contentView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -10)
-        ])
+        contentView.snp.makeConstraints { make in
+            make.top.left.right.equalTo(self.safeAreaLayoutGuide).inset(10)
+        }
         
         contentView.addSubview(titleLabel)
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
-        ])
+        titleLabel.snp.makeConstraints { make in
+            make.top.left.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(divider)
-        NSLayoutConstraint.activate([
-            divider.heightAnchor.constraint(equalToConstant: 2),
-            divider.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-            divider.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            divider.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
-        ])
+        divider.snp.makeConstraints { make in
+            make.height.equalTo(2)
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
+            make.left.right.equalToSuperview()
+        }
         
         contentView.addSubview(verticalStackView)
-        NSLayoutConstraint.activate([
-            verticalStackView.topAnchor.constraint(equalTo: divider.bottomAnchor, constant: 10),
-            verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
-        ])
+        verticalStackView.snp.makeConstraints { make in
+            make.top.equalTo(divider.snp.bottom).offset(10)
+            make.left.right.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(descriptionLabel)
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 5),
-            descriptionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
-        ])
+        descriptionLabel.snp.makeConstraints { make in
+            make.top.equalTo(verticalStackView.snp.bottom).offset(5)
+            make.left.right.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(lastNameLabel)
-        NSLayoutConstraint.activate([
-            lastNameLabel.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 15),
-            lastNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
-        ])
+        lastNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(descriptionLabel.snp.bottom).offset(15)
+            make.left.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(lastNameTextField)
-        NSLayoutConstraint.activate([
-            lastNameTextField.heightAnchor.constraint(equalToConstant: 30),
-            lastNameTextField.widthAnchor.constraint(equalToConstant: 200),
-            lastNameTextField.topAnchor.constraint(equalTo: lastNameLabel.bottomAnchor),
-            lastNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
-        ])
+        lastNameTextField.snp.makeConstraints { make in
+            make.height.equalTo(30)
+            make.width.equalTo(200)
+            make.top.equalTo(lastNameLabel.snp.bottom)
+            make.left.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(firstNameLabel)
-        NSLayoutConstraint.activate([
-            firstNameLabel.topAnchor.constraint(equalTo: lastNameTextField.bottomAnchor),
-            firstNameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
-        ])
+        firstNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(lastNameTextField.snp.bottom)
+            make.left.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(firstNameTextField)
-        NSLayoutConstraint.activate([
-            firstNameTextField.heightAnchor.constraint(equalToConstant: 30),
-            firstNameTextField.widthAnchor.constraint(equalToConstant: 200),
-            firstNameTextField.topAnchor.constraint(equalTo: firstNameLabel.bottomAnchor),
-            firstNameTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
-        ])
+        firstNameTextField.snp.makeConstraints { make in
+            make.height.equalTo(30)
+            make.width.equalTo(200)
+            make.top.equalTo(firstNameLabel.snp.bottom)
+            make.left.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(notificationLabel)
-        NSLayoutConstraint.activate([
-            notificationLabel.topAnchor.constraint(equalTo: firstNameTextField.bottomAnchor, constant: 15),
-            notificationLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            notificationLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
-        ])
+        notificationLabel.snp.makeConstraints { make in
+            make.top.equalTo(firstNameTextField.snp.bottom).offset(15)
+            make.left.right.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(passwordLabel)
-        NSLayoutConstraint.activate([
-            passwordLabel.topAnchor.constraint(equalTo: notificationLabel.bottomAnchor, constant: 15),
-            passwordLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
-        ])
+        passwordLabel.snp.makeConstraints { make in
+            make.top.equalTo(notificationLabel.snp.bottom).offset(15)
+            make.left.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(passwordTextField)
-        NSLayoutConstraint.activate([
-            passwordTextField.heightAnchor.constraint(equalToConstant: 30),
-            passwordTextField.widthAnchor.constraint(equalToConstant: 200),
-            passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 5),
-            passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10)
-        ])
+        
+        passwordTextField.snp.makeConstraints { make in
+            make.height.equalTo(30)
+            make.width.equalTo(200)
+            make.top.equalTo(passwordLabel.snp.bottom).offset(5)
+            make.left.equalToSuperview().inset(10)
+        }
         
         contentView.addSubview(saveButton)
-        NSLayoutConstraint.activate([
-            saveButton.heightAnchor.constraint(equalToConstant: 40),
-            saveButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 10),
-            saveButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-            saveButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
-        ])
+        saveButton.snp.makeConstraints { make in
+            make.height.equalTo(40)
+            make.top.equalTo(passwordTextField.snp.bottom).offset(10)
+            make.left.right.equalToSuperview().inset(5)
+        }
         
         contentView.addSubview(cancelButton)
-        NSLayoutConstraint.activate([
-            cancelButton.heightAnchor.constraint(equalToConstant: 40),
-            cancelButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 5),
-            cancelButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-            cancelButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
-            cancelButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5)
-        ])
+        cancelButton.snp.makeConstraints { make in
+            make.height.equalTo(40)
+            make.top.equalTo(saveButton.snp.bottom).offset(10)
+            make.bottom.left.right.equalToSuperview().inset(5)
+        }
     }
 
 }

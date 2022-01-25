@@ -10,12 +10,29 @@ import SnapKit
 
 class MenuTabView: UIView {
     
+    enum WorkType {
+        case logout
+        case deletion
+        
+        func getMessage() -> String {
+            switch self {
+            case .logout: return "로그아웃 중입니다..."
+            case .deletion: return "회원탈퇴 중입니다..."
+            }
+        }
+    }
+    
     let largeTitleLabel = UILabel()
     
     let logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
     
-    let alertSpinner = AlertWithSpinner(message: "로그아웃 중입니다...")
+    let alertSpinner = AlertWithSpinner(message: "")
     
+    let kakaoConnectButton = RectangularSlimButton(title: "카카오 계정 연결하기", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
+    let kakaoDisconnectButton = RectangularSlimButton(title: "카카오 계정 연결 끊기", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
+    
+    let deleteAccountButton = RectangularSlimButton(title: "회원 탈퇴", titleColor: .red, backgroundColor: .white, highlightColor: .systemGray6)
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
@@ -28,6 +45,10 @@ class MenuTabView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func activateAlertSpinner(workType: WorkType, at viewController: UIViewController) {
+        alertSpinner.start(viewController: viewController, message: workType.getMessage())
+    }
+    
     private func setStyleForView() {
         largeTitleLabel.text = "메뉴"
         largeTitleLabel.font = .systemFont(ofSize: 24.0, weight: .semibold)
@@ -36,9 +57,31 @@ class MenuTabView: UIView {
     
     private func setLayoutForView() {
         self.addSubview(logoutButton)
+        self.addSubview(kakaoDisconnectButton)
+        self.addSubview(kakaoConnectButton)
+        self.addSubview(deleteAccountButton)
         
         logoutButton.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(16)
+            make.top.left.equalTo(self.safeAreaLayoutGuide).offset(16)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+        }
+        
+        kakaoDisconnectButton.snp.makeConstraints { make in
+            make.top.equalTo(logoutButton.snp.bottom).offset(10.0)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+        }
+        
+        kakaoConnectButton.snp.makeConstraints { make in
+            make.top.equalTo(kakaoDisconnectButton.snp.bottom).offset(10.0)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
+        }
+        
+        deleteAccountButton.snp.makeConstraints { make in
+            make.bottom.equalTo(self.safeAreaLayoutGuide.snp.bottom).offset(-16.0)
+            make.left.equalTo(self.safeAreaLayoutGuide.snp.left).offset(16.0)
+            make.right.equalTo(self.safeAreaLayoutGuide.snp.right).offset(-16.0).priority(999)
         }
     }
 }

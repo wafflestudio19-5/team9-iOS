@@ -92,11 +92,12 @@ extension LoginViewController {
     private func kakaoLogin() {
         KakaoAuthManager.requestKakaoLogin(type: .login)
             .subscribe (onNext: { [weak self] success in
-                if success {
-                    UserDefaults.standard.setValue(true, forKey: "didLogin")
+                switch success {
+                case true:
+                    UserDefaultsManager.isLoggedIn = true
                     self?.changeRootViewController(to: RootTabBarController())
-                } else {
-                    self?.alert(title: "카카오 로그인 실패", message: "등록되지 않은 계정입니다. 이메일을 통하여 로그인 혹은 회원가입 후 카카오 계정을 연동해주시기 바랍니다.", action: "확인")
+                case false:
+                    self?.alert(title: "실패", message: "등록되지 않은 계정입니다. 이메일을 통하여 로그인 혹은 회원가입 후 카카오 계정을 연동해주시기 바랍니다.", action: "확인")
                 }
             }).disposed(by: disposeBag)
     }
@@ -106,7 +107,7 @@ extension LoginViewController {
             .subscribe { [weak self] success in
                 switch success {
                 case .success(true):
-                    UserDefaults.standard.setValue(true, forKey: "didLogin")
+                    UserDefaultsManager.isLoggedIn = true
                     self?.changeRootViewController(to: RootTabBarController())
                 default: self?.alert(title: "잘못된 이메일", message: "입력한 이메일이 계정에 포함된 이메일이 아닌 것 같습니다. 이메일 주소를 확인하고 다시 시도해주세요.", action: "확인")
                 }

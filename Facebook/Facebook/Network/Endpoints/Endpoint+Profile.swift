@@ -66,6 +66,7 @@ extension Endpoint {
                                          "role": company.role ?? "",
                                          "location": company.location ?? "" ,
                                          "join_date": company.join_date ?? "",
+                                         "leave_date": "",
                                          "detail": company.detail ?? ""])
         } else {
             return Endpoint(path: "user/company/\(id)/",
@@ -106,7 +107,8 @@ extension Endpoint {
                             parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,
                                          "name": university.name ?? "",
                                          "major": university.major ?? "" ,
-                                         "join_date": university.join_date ?? ""])
+                                         "join_date": university.join_date ?? "",
+                                         "graduate_date": ""])
         } else {
             return Endpoint(path: "user/university/\(id)/",
                             parameters: ["user": UserDefaultsManager.cachedUser?.id ?? 0,

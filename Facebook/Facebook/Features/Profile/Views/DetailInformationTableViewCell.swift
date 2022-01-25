@@ -24,10 +24,9 @@ class DetailInformationTableViewCell: UITableViewCell {
     
     var cellStyle: Style = .style1
     
-    lazy var isIndicate = true
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.frame.size.width = UIScreen.main.bounds.width // important for initial layout
     }
     
     required init?(coder: NSCoder) {
@@ -79,9 +78,7 @@ class DetailInformationTableViewCell: UITableViewCell {
         case .style4:
             informationImage.image = UIImage(systemName: "checkmark.square.fill")
             informationLabel.text = information
-            descriptionLabel.text = "소개에 표시되지 않으며 전체 공개가 유지됩니다"
             editButton.setImage(UIImage(systemName: "pencil.circle.fill"), for: .normal)
-            isIndicate = true
         }
     }
     
@@ -130,66 +127,55 @@ class DetailInformationTableViewCell: UITableViewCell {
     private func setLayout() {
         switch self.cellStyle {
         case .style1:
-            self.contentView.addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 35),
-                informationImage.widthAnchor.constraint(equalToConstant: 35),
-                informationImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-                informationImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
-                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
-            ])
+            contentView.addSubview(informationImage)
+            informationImage.snp.remakeConstraints { make in
+                make.height.width.equalTo(35).priority(999)
+                make.top.bottom.equalTo(contentView).inset(10)
+                make.leading.equalTo(contentView).inset(15)
+            }
             
-            self.contentView.addSubview(labelStackView)
-            labelStackView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                labelStackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                labelStackView.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
-            ])
+            contentView.addSubview(labelStackView)
+            labelStackView.snp.remakeConstraints { make in
+                make.centerY.equalTo(contentView).priority(999)
+                make.leading.equalTo(informationImage.snp.trailing).inset(-15)
+            }
             
             labelStackView.addArrangedSubview(informationLabel)
             labelStackView.addArrangedSubview(descriptionLabel)
         case .style2:
-            self.contentView.addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 35),
-                informationImage.widthAnchor.constraint(equalToConstant: 35),
-                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
-            ])
+            contentView.addSubview(informationImage)
+            informationImage.snp.remakeConstraints { make in
+                make.height.width.equalTo(35).priority(999)
+                make.top.equalTo(contentView).inset(CGFloat.standardTopMargin)
+                make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+            }
             
-            self.contentView.addSubview(labelStackView)
-            labelStackView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                labelStackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                labelStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
-                labelStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
-                labelStackView.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
-            ])
+            contentView.addSubview(labelStackView)
+            labelStackView.snp.remakeConstraints { make in
+                make.centerY.equalTo(contentView)
+                make.top.bottom.equalTo(contentView).inset(5).priority(999)
+                make.leading.equalTo(informationImage.snp.trailing).inset(-15)
+            }
             
             labelStackView.addArrangedSubview(informationLabel)
             labelStackView.addArrangedSubview(descriptionLabel)
             labelStackView.addArrangedSubview(privacyBoundLabel)
         case .style3:
-            self.contentView.addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 35),
-                informationImage.widthAnchor.constraint(equalToConstant: 35),
-                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
-            ])
+            contentView.addSubview(informationImage)
+            informationImage.snp.remakeConstraints { make in
+                make.height.width.equalTo(35)
+                make.top.equalTo(contentView).inset(CGFloat.standardTopMargin)
+                make.leading.equalTo(contentView).inset(CGFloat.standardLeadingMargin)
+            }
             
-            self.contentView.addSubview(labelStackView)
-            labelStackView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                labelStackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                labelStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
-                labelStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
-                labelStackView.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
-            ])
+            contentView.addSubview(labelStackView)
+            labelStackView.snp.remakeConstraints { make in
+                make.centerY.equalTo(contentView)
+                make.top.bottom.equalTo(contentView).inset(5).priority(999)
+                make.leading.equalTo(informationImage.snp.trailing).inset(-15)
+                make.trailing.equalTo(contentView).inset(55)
+            }
+
             
             labelStackView.addArrangedSubview(informationLabel)
             labelStackView.addArrangedSubview(timeLabel)
@@ -197,61 +183,36 @@ class DetailInformationTableViewCell: UITableViewCell {
             labelStackView.addArrangedSubview(descriptionLabel)
 
             
-            self.contentView.addSubview(editButton)
-            editButton.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                editButton.heightAnchor.constraint(equalToConstant: 30),
-                editButton.widthAnchor.constraint(equalToConstant: 30),
-                editButton.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-                editButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10)
-            ])
+            contentView.addSubview(editButton)
+            editButton.snp.remakeConstraints { make in
+                make.height.width.equalTo(30)
+                make.top.equalTo(contentView).inset(CGFloat.standardTopMargin)
+                make.trailing.equalTo(contentView).inset(15)
+            }
         case .style4:
-            self.contentView.addSubview(informationImage)
-            informationImage.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                informationImage.heightAnchor.constraint(equalToConstant: 20),
-                informationImage.widthAnchor.constraint(equalToConstant: 20),
-                informationImage.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                informationImage.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 15),
-                informationImage.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -15),
-                informationImage.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15)
-            ])
+            contentView.addSubview(informationImage)
+            informationImage.snp.remakeConstraints { make in
+                make.centerY.equalTo(contentView)
+                make.height.width.equalTo(20)
+                make.top.bottom.leading.equalTo(contentView).inset(15)
+            }
             
-            self.contentView.addSubview(labelStackView)
-            labelStackView.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                labelStackView.heightAnchor.constraint(equalToConstant: 20),
-                labelStackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                labelStackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 5),
-                labelStackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -5),
-                labelStackView.leadingAnchor.constraint(equalTo: informationImage.trailingAnchor, constant: 15)
-            ])
+            
+            contentView.addSubview(labelStackView)
+            labelStackView.snp.remakeConstraints { make in
+                make.centerY.equalTo(contentView)
+                make.height.equalTo(20)
+                make.leading.equalTo(informationImage.snp.trailing).inset(-15)
+            }
             
             labelStackView.addArrangedSubview(informationLabel)
             
-            self.contentView.addSubview(editButton)
-            editButton.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                editButton.heightAnchor.constraint(equalToConstant: 30),
-                editButton.widthAnchor.constraint(equalToConstant: 30),
-                editButton.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor),
-                editButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -15)
-            ])
-        }
-    }
-    
-    func toggleIndicate() {
-        if isIndicate {
-            informationImage.image = UIImage(systemName: "square")!
-            informationImage.tintColor = .darkGray
-            labelStackView.addArrangedSubview(descriptionLabel)
-            isIndicate = false
-        } else {
-            informationImage.image = UIImage(systemName: "checkmark.square.fill")!
-            informationImage.tintColor = .systemBlue
-            labelStackView.removeArrangedSubview(descriptionLabel)
-            descriptionLabel.removeFromSuperview()
-            isIndicate = true
+            contentView.addSubview(editButton)
+            editButton.snp.remakeConstraints { make in
+                make.height.width.equalTo(30)
+                make.centerY.equalTo(contentView)
+                make.trailing.equalTo(contentView).inset(15)
+            }
         }
     }
 
@@ -270,6 +231,7 @@ class DetailInformationTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16)
         label.textColor = .gray
+        label.numberOfLines = 0
         
         return label
     }()
@@ -277,6 +239,7 @@ class DetailInformationTableViewCell: UITableViewCell {
     lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines = 0
         
         return label
     }()

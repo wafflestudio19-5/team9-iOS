@@ -18,6 +18,7 @@ class TextViewTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.frame.size.width = UIScreen.main.bounds.width // important for initial layout
     }
     
     required init?(coder: NSCoder) {
@@ -64,15 +65,10 @@ class TextViewTableViewCell: UITableViewCell {
     
     private func setLayout() {
         self.contentView.addSubview(textView)
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            textView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10),
-            textView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10),
-            textView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 10),
-            textView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10)
-        ])
-        textView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        textView.snp.remakeConstraints { make in
+            make.height.equalTo(80).priority(999)
+            make.edges.equalToSuperview().inset(10)
+        }
     }
     
     private func setTextViewPlaceholder() {
