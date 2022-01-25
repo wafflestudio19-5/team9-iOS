@@ -47,7 +47,7 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         sectionList.accept([])
         sections.removeAll()
         
@@ -59,9 +59,7 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let oldData = self.oldNotifications.value
-        self.oldNotifications.accept(oldData + newNotifications.value)
-        self.newNotifications.accept([])
+        
     }
     
     private func bind() {
@@ -175,8 +173,8 @@ extension NotificationTabViewController {
     
     private func check(notification: Notification) {
         NetworkService.get(endpoint: .notification(id: notification.id), as: Notification.self)
-            .bind { [weak self] response in
-                print(response)
+            .bind { response in
+                StateManager.of.notification.dispatch(check: response.1)
             }.disposed(by: disposeBag)
     }
 }
