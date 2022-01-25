@@ -16,6 +16,10 @@ struct User: Codable, Identifiable {
     let is_friend: Bool?
     let mutual_friends: FriendInfo?
     var friend_info: String?
+    
+    static func changeFriendInfo(user: User, friendInfo: String) -> Self {
+        return User(email: user.email, id: user.id, is_valid: user.is_valid, profile_image: user.profile_image, username: user.username, is_friend: user.is_friend, mutual_friends: user.mutual_friends, friend_info: friendInfo)
+    }
 }
 
 struct FriendInfo: Codable {

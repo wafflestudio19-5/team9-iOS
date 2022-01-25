@@ -65,16 +65,14 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
                         bottomSheetVC.modalPresentationStyle = .overFullScreen
                         self.present(bottomSheetVC, animated: false, completion: nil)
                     case "sent":
-                        self.deleteFriendRequest(friendId: friend.id)
-                        cell.setButtonStyle(friendInfo: "nothing")
+                        self.deleteFriendRequest(friend: friend)
                     case "received":
                         let menuList = self.createResponseMenuList(cell: cell, friend: friend)
                         let bottomSheetVC = BottomSheetViewController(menuList: menuList)
                         bottomSheetVC.modalPresentationStyle = .overFullScreen
                         self.present(bottomSheetVC, animated: false, completion: nil)
                     case "nothing":
-                        self.friendRequest(friendId: friend.id)
-                        cell.setButtonStyle(friendInfo: "sent")
+                        self.friendRequest(friend: friend)
                     default :
                         break
                     }
@@ -172,7 +170,6 @@ extension ShowFriendViewController {
                          Menu(image: UIImage(systemName: "person.fill.xmark") ?? UIImage(),
                               text: friend.username + "님과 친구 끊기", action: {
             self.deleleFriend(friend: friend)
-            cell.setButtonStyle(friendInfo: "nothing")
         })]
         
         return menuList
@@ -181,13 +178,11 @@ extension ShowFriendViewController {
     func createResponseMenuList(cell: FriendCell, friend: User) -> [Menu] {
         let menuList = [ Menu(image: UIImage(systemName: "person.fill.checkmark") ?? UIImage(),
                               text: "친구 요청 수락", action: {
-            self.acceptFriendRequest(friendId: friend.id)
-            cell.setButtonStyle(friendInfo: "friend")
+            self.acceptFriendRequest(friend: friend)
         }),
                          Menu(image: UIImage(systemName: "person.fill.xmark") ?? UIImage(),
                               text: "친구 요청 거절", action: {
-            self.deleteFriendRequest(friendId: friend.id)
-            cell.setButtonStyle(friendInfo: "nothing")
+            self.deleteFriendRequest(friend: friend)
         })]
         
         return menuList
@@ -197,8 +192,8 @@ extension ShowFriendViewController {
 
 extension ShowFriendViewController {
     //친구 요청
-    func friendRequest(friendId: Int) {
-        NetworkService.post(endpoint: .friendRequest(id: friendId), as: FriendRequestCreate.self)
+    func friendRequest(friend: User) {
+        NetworkService.post(endpoint: .friendRequest(id: friend.id), as: FriendRequestCreate.self)
             .subscribe { [weak self] event in
                 guard let self = self else { return }
                 
@@ -209,13 +204,13 @@ extension ShowFriendViewController {
                 if event.element?.1 == nil {
                     self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 } else {
-                    self.friendViewModel.refresh()
+                    self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "sent"))
                 }
             }.disposed(by: self.disposeBag)
     }
     
-    func acceptFriendRequest(friendId: Int) {
-        NetworkService.put(endpoint: .friendRequest(id: friendId))
+    func acceptFriendRequest(friend: User) {
+        NetworkService.put(endpoint: .friendRequest(id: friend.id))
             .subscribe { [weak self] event in
                 guard let self = self else { return }
                 
@@ -226,13 +221,13 @@ extension ShowFriendViewController {
                 if event.element as? String != "수락 완료되었습니다." {
                     self.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 } else {
-                    self.friendViewModel.refresh()
+                    self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "friend"))
                 }
             }.disposed(by: self.disposeBag)
     }
     
-    func deleteFriendRequest(friendId: Int) {
-        NetworkService.delete(endpoint: .friendRequest(id: friendId))
+    func deleteFriendRequest(friend: User) {
+        NetworkService.delete(endpoint: .friendRequest(id: friend.id))
             .subscribe{ [weak self] event in
                 guard let self = self else { return }
                 
@@ -243,7 +238,7 @@ extension ShowFriendViewController {
                 if !(event.element is NSNull) {
                     self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 } else {
-                    self.friendViewModel.refresh()
+                    self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "nothing"))
                 }
             }.disposed(by: self.disposeBag)
     }
@@ -264,7 +259,7 @@ extension ShowFriendViewController {
                     if !(event.element is NSNull) {
                         self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                     } else {
-                        self.friendViewModel.refresh()
+                        self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "nothing"))
                     }
                 }.disposed(by: self.disposeBag)
         }
