@@ -31,8 +31,8 @@ class SubPostsViewController: UIViewController {
         return subPostsView.subpostsTableView
     }
     
-    var mainPostCell: PostCell {
-        return subPostsView.postCell
+    var mainPostView: PostContentView {
+        return subPostsView.mainPostHeader
     }
     
     init(post: Post) {
@@ -53,11 +53,6 @@ class SubPostsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let standardAppearance = UINavigationBarAppearance()
-        standardAppearance.configureWithDefaultBackground()
-        self.navigationController?.navigationBar.standardAppearance = standardAppearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance = standardAppearance
-        
         // tableView의 panGesture보다 swipe back 제스쳐가 우선이다.
         if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
             tableView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
@@ -65,6 +60,25 @@ class SubPostsViewController: UIViewController {
         
         bind()
         startPrefetching()
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let standardAppearance = UINavigationBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        self.navigationController?.navigationBar.scrollEdgeAppearance = standardAppearance
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.scrollEdgeAppearance = nil
+    }
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        tableView.adjustHeaderHeight()
     }
     
     private func bind() {
@@ -80,18 +94,33 @@ class SubPostsViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        /// Subposts ~ 테이블뷰 바인딩
         subpostsDataSource
             .bind(to: tableView.rx.items(cellIdentifier: SubPostCell.reuseIdentifier, cellType: SubPostCell.self)) { row, post, cell in
-                cell.configureCell(with: post)
-                
+                cell.configure(with: post)
+
                 // 좋아요 버튼 바인딩
-                cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
-                    cell.like()
+                cell.postContentView.likeButton.rx.tap.bind { _ in
+                    cell.postContentView.like()
                     NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
                         .bind { response in
-                            cell.like(syncWith: response.1)
+                            cell.postContentView.like(syncWith: response.1)
                         }
                         .disposed(by: cell.refreshingBag)
+                }.disposed(by: cell.refreshingBag)
+                
+                // 댓글 버튼 바인딩
+                cell.postContentView.commentButton.rx.tap.bind { [weak self] _ in
+                    guard let self = self else { return }
+                    self.presentCommentModalVC(to: cell.postContentView.post)
+                }.disposed(by: cell.refreshingBag)
+                
+                // 공유 버튼 바인딩
+                cell.postContentView.shareButton.rx.tap.bind { [weak self] _ in
+                    guard let self = self else { return }
+                    var postToShare = cell.postContentView.post
+                    postToShare.author = self.post.author  // inject author information that is not present in subposts
+                    self.presentCreatePostVC(sharing: postToShare, update: false)
                 }.disposed(by: cell.refreshingBag)
             }
             .disposed(by: disposeBag)
@@ -100,21 +129,29 @@ class SubPostsViewController: UIViewController {
         subpostsDataSource
             .filter { $0.count != 0 }
             .observe(on: MainScheduler.asyncInstance)  // suppresses error caused by cyclic dependency
-            .bind { subposts in
+            .bind { [weak self] subposts in
+                guard let self = self else { return }
                 self.post.subposts = subposts
                 StateManager.of.post.dispatch(.init(data: self.post, operation: .edit))
             }
             .disposed(by: disposeBag)
         
-        mainPostCell.likeButton.rx.tap
+        mainPostView.likeButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                self.mainPostCell.like()
+                self.mainPostView.like()
                 NetworkService.put(endpoint: .newsfeedLike(postId: self.post.id), as: LikeResponse.self)
                     .bind { response in
-                        self.mainPostCell.like(syncWith: response.1)
+                        self.mainPostView.like(syncWith: response.1)
                     }
-                    .disposed(by: self.mainPostCell.refreshingBag)
+                    .disposed(by: self.disposeBag)
+            }
+            .disposed(by: disposeBag)
+        
+        mainPostView.shareButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.presentCreatePostVC(sharing: self.post, update: false)
             }
             .disposed(by: disposeBag)
     }
@@ -126,7 +163,6 @@ class SubPostsViewController: UIViewController {
         }
         
         let prefetcher = ImagePrefetcher(urls: urls, options: [.processor(KFProcessors.shared.downsampling), .diskCacheExpiration(.never)]) { skippedResources, failedResources, completedResources in
-            print("completed", completedResources.count)
             self.isPrefetching.accept(false)
             self.subpostsDataSource.accept(self.post.subposts ?? [])
         }

@@ -15,9 +15,17 @@ import RxKeyboard
 class CreatePostViewController: UIViewController {
     let disposeBag = DisposeBag()
     private let pickerViewModel = PHPickerViewModel()
+    private var postToShare: Post?
+    private var updateListAfterCreation = true
+    
+    convenience init(sharing post: Post?, update: Bool = true) {
+        self.init(nibName: nil, bundle: nil)
+        self.postToShare = post?.postToShare
+        self.updateListAfterCreation = update
+    }
     
     override func loadView() {
-        view = CreatePostView()
+        view = CreatePostView(sharing: postToShare)
     }
     
     var createPostView: CreatePostView {
@@ -74,10 +82,14 @@ class CreatePostViewController: UIViewController {
     
     func bindNavigationBarButtonStyle() {
         // contentTextField의 내용 유무에 따라 버튼 활성화
-        createPostView.contentTextView.isEmptyObservable
-            .map { !$0 }
-            .bind(to:self.createPostView.postButton.rx.isEnabled)
-            .disposed(by: disposeBag)
+        let empty = createPostView.contentTextView.isEmptyObservable
+        let photoCount = pickerViewModel.selectionCount
+        Observable.combineLatest(empty, photoCount) { [weak self] isEmpty, selectedCount in
+            return !isEmpty || selectedCount > 0 || self?.postToShare != nil
+        }
+        .bind(to: self.createPostView.postButton.rx.isEnabled)
+        .disposed(by: disposeBag)
+        
     }
     
     func bindPostButton() {
@@ -93,6 +105,7 @@ class CreatePostViewController: UIViewController {
                 
                 // dismiss current VC first
                 self.dismiss(animated: true, completion: nil)
+                newsfeedVC.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .none, animated: true)
                 
                 // show progress bar with initial value (1%)
                 let tempProgress = Progress()
@@ -108,7 +121,9 @@ class CreatePostViewController: UIViewController {
                     NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "",
                                                               files: array,
                                                               subcontents: [String](repeating: "", count: self.pickerViewModel.selectionCount.value),
-                                                              scope: self.createPostView.createHeaderView.selectedScope))
+                                                              scope: self.createPostView.createHeaderView.selectedScope,
+                                                              sharing: self.postToShare?.id
+                                                             ))
                         .subscribe { event in
                             let request = event.element
                             let progress = request?.uploadProgress
@@ -118,7 +133,9 @@ class CreatePostViewController: UIViewController {
                             
                             request?.responseDecodable(of: Post.self) { dataResponse in
                                 guard let post = dataResponse.value else { return }
-                                StateManager.of.post.dispatch(.init(data: post, operation: .insert(index: 0)))
+                                if self.updateListAfterCreation {
+                                    StateManager.of.post.dispatch(.init(data: post, operation: .insert(index: 0)))
+                                }
                                 newsfeedVC.headerViews.uploadProgressHeaderView.isHidden = true
                                 callbackDisposeBag = DisposeBag()
                             }

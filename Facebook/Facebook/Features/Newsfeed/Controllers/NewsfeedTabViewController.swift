@@ -27,7 +27,6 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         bind()
-        bindNavigationBar()
     }
     
     override func viewDidLayoutSubviews() {
@@ -44,32 +43,13 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    private func bindNavigationBar() {
-        tableView.rx.panGesture()
-            .when(.recognized)
-            .bind { [weak self] recognizer in
-                guard let self = self else { return }
-                let transition = recognizer.translation(in: self.tableView).y
-                if transition < -100 {
-                    self.navigationController?.setNavigationBarHidden(true, animated: true)
-                } else if transition > 100 {
-                    self.navigationController?.setNavigationBarHidden(false, animated: true)
-                }
-            }
-            .disposed(by: disposeBag)
-    }
-    
     func bind() {
         
         /// `무슨 생각을 하고 계신가요?` 버튼을 클릭하면 포스트 작성 화면으로 넘어가도록 바인딩
         tabView.mainTableHeaderView.createPostButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
-                guard let self = self else { return }
-                let createPostViewController = CreatePostViewController()
-                let navigationController = UINavigationController(rootViewController: createPostViewController)
-                navigationController.modalPresentationStyle = .fullScreen
-                self.present(navigationController, animated: true, completion: nil)
+                self?.presentCreatePostVC()
             }
             .disposed(by: disposeBag)
         
@@ -130,44 +110,77 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
 }
 
 extension UIViewController {
-    func pushToDetailVC(cell: PostCell, asFirstResponder: Bool) {
-        let detailVC = PostDetailViewController(post: cell.post, asFirstResponder: asFirstResponder)
+    func pushToDetailVC(cell: PostCell<PostContentView>, asFirstResponder: Bool) {
+        let detailVC = PostDetailViewController(post: cell.postContentView.post, asFirstResponder: asFirstResponder)
         self.push(viewController: detailVC)
     }
     
+    func presentCommentModalVC(to post: Post) {
+        let vc = CommentModalViewConroller(post: post, asFirstResponder: true)
+        let navigationController = UINavigationController(rootViewController: vc)
+        navigationController.isModalInPresentation = true
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
+    func presentCreatePostVC(sharing post: Post? = nil, update: Bool = true) {
+        let createPostViewController = CreatePostViewController(sharing: post, update: update)
+        let navigationController = UINavigationController(rootViewController: createPostViewController)
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
     /// PostCell Configuration Logic
-    func configure(cell: PostCell, with post: Post) {
-        cell.configureCell(with: post)
+    func configure(cell: PostCell<PostContentView>, with post: Post) {
+        cell.configure(with: post)
         
         // 좋아요 버튼 바인딩
-        cell.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
-            cell.like()
+        cell.postContentView.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in
+            cell.postContentView.like()
             NetworkService.put(endpoint: .newsfeedLike(postId: post.id), as: LikeResponse.self)
                 .bind { response in
-                    cell.like(syncWith: response.1)
+                    cell.postContentView.like(syncWith: response.1)
                 }
                 .disposed(by: cell.refreshingBag)
         }.disposed(by: cell.refreshingBag)
         
         // 이미지 그리드 터치 제스쳐 등록
-        cell.imageGridCollectionView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+        cell.postContentView.imageGridCollectionView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
             .when(.recognized)
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                let subpostVC = SubPostsViewController(post: cell.post)
+                let subpostVC = SubPostsViewController(post: cell.postContentView.post)
+                self.push(viewController: subpostVC)
+            }
+            .disposed(by: cell.refreshingBag)
+        
+        // 공유된 이미지 터치 제스쳐 등록
+        cell.postContentView.sharedPostView.imageGridCollectionView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+            .when(.recognized)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                if cell.postContentView.sharedPostView.imageGridCollectionView.numberOfImages == 1 {
+                    return  // 한 장짜리 이미지는 원래 전체화면 프리뷰로 전환되어야 한다.
+                }
+                let subpostVC = SubPostsViewController(post: cell.postContentView.sharedPostView.post)
                 self.push(viewController: subpostVC)
             }
             .disposed(by: cell.refreshingBag)
         
         // 댓글 버튼 터치 시 디테일 화면으로 이동
-        cell.buttonHorizontalStackView.commentButton.rx.tap
+        cell.postContentView.buttonHorizontalStackView.commentButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
                 self?.pushToDetailVC(cell: cell, asFirstResponder: true)
             }.disposed(by: cell.refreshingBag)
         
-        let authorNameTapped = cell.postHeader.authorNameLabel.rx.tapGesture().when(.recognized)  // not working...
-        let profileImageTapped = cell.postHeader.profileImageView.rx.tapGesture().when(.recognized)
+        cell.postContentView.buttonHorizontalStackView.shareButton.rx.tap
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] _ in
+                self?.presentCreatePostVC(sharing: cell.postContentView.post)
+            }.disposed(by: cell.refreshingBag)
+        
+        let authorNameTapped = cell.postContentView.postHeader.authorNameLabel.rx.tapGesture().when(.recognized)  // not working...
+        let profileImageTapped = cell.postContentView.postHeader.profileImageView.rx.tapGesture().when(.recognized)
         Observable.of(profileImageTapped, authorNameTapped)
             .merge()
             .bind { [weak self] _ in
@@ -177,7 +190,7 @@ extension UIViewController {
             .disposed(by: cell.refreshingBag)
         
         // 댓글 수 클릭시 디테일 화면으로 이동
-        cell.commentCountButton.rx.tap
+        cell.postContentView.commentCountButton.rx.tap
             .observe(on: MainScheduler.instance)
             .bind { [weak self] _ in
                 self?.pushToDetailVC(cell: cell, asFirstResponder: false)
