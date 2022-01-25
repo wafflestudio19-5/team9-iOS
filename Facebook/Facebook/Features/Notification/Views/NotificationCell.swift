@@ -96,8 +96,6 @@ class NotificationCell: UITableViewCell {
         /// 프로필 사진 설정
         if let urlString = notification.sender_preview.profile_image {
             profileImage.setImage(from: URL(string: urlString))
-        } else {
-            profileImage.setImage(from: nil)
         }
         
         /// is_checked에 따라 cell 배경 색깔 설정
