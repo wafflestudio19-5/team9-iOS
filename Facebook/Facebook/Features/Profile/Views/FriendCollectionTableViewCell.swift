@@ -35,8 +35,6 @@ class FriendCollectionTableViewCell: UITableViewCell {
                 cell.configureCell(with: data, isMe: (friendInfo == "self") ? true : false)
             }
             .disposed(by: refreshingBag)
-
-        layoutIfNeeded()
     }
     
     private func setLayout() {

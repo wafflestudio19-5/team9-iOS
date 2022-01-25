@@ -105,6 +105,8 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                     self?.push(viewController: profileTabVC)
                 }).disposed(by: cell.refreshingBag)
             
+            cell.layoutIfNeeded()
+            
             return cell
         case let .PostItem(post):
             guard let cell = tableView.dequeueReusableCell(withIdentifier: PostCell.reuseIdentifier, for: idxPath) as? PostCell else { return UITableViewCell() }
