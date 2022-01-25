@@ -27,6 +27,7 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
     
     let disposeBag = DisposeBag()
+    let dateFormatter = DateFormatter()
     
     //TableView 바인딩을 위한 dataSource객체
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>(configureCell: configureCell)
@@ -64,19 +65,11 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             
             cell.initialSetup(cellStyle: .style3)
             
-            if company.is_active! {
-                cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
-                                   information: company.name ?? "",
-                                   time: (company.join_date ?? "") + " - 현재",
-                                   description: company.detail ?? "",
-                                   privacyBound: "전체 공개")
-            } else {
-                cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
-                                   information: company.name ?? "",
-                                   time: (company.join_date ?? "") + " ~ " + (company.leave_date ?? ""),
-                                   description: company.detail ?? "",
-                                   privacyBound: "전체 공개")
-            }
+            cell.configureCell(image: UIImage(systemName: "briefcase.circle")!,
+                               information: company.name ?? "",
+                               time: Date().changeDateStringFormat(startDateString: company.join_date ?? "", endDateString: company.leave_date ?? ""),
+                               description: company.detail ?? "",
+                               privacyBound: "전체 공개")
             
             if self.userId == UserDefaultsManager.cachedUser?.id {
                 cell.editButton.rx.tap.bind { [weak self] in
@@ -93,19 +86,12 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
                 DetailInformationTableViewCell else { return UITableViewCell() }
             
             cell.initialSetup(cellStyle: .style3)
-            if university.is_active! {
-                cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
-                                   information: university.name ?? "",
-                                   time: university.join_date! + " - 현재",
-                                   description: "",
-                                   privacyBound: "전체 공개")
-            } else {
-                cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
-                                   information: university.name ?? "",
-                                   time: university.join_date! + "~" + university.graduate_date!,
-                                   description: "",
-                                   privacyBound: "전체 공개")
-            }
+            
+            cell.configureCell(image: UIImage(systemName: "graduationcap.circle")!,
+                               information: university.name ?? "",
+                               time: Date().changeDateStringFormat(startDateString: university.join_date ?? "", endDateString: university.graduate_date ?? ""),
+                               description: "",
+                               privacyBound: "전체 공개")
             
             if self.userId == UserDefaultsManager.cachedUser?.id {
                 cell.editButton.rx.tap.bind { [weak self] in
@@ -370,3 +356,42 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
     }
 }
 
+extension Date {
+    func changeDateStringFormat(startDateString: String, endDateString: String? = nil) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-DD"
+        guard let startDate = dateFormatter.date(from: startDateString) else { return "" }
+        dateFormatter.dateFormat = "YYYY년 MM월 DD일"
+        let startResult = dateFormatter.string(from: startDate)
+        
+        if endDateString != nil && endDateString != "" {
+            dateFormatter.dateFormat = "YYYY-MM-DD"
+            guard let endDate = dateFormatter.date(from: endDateString ?? "") else { return startResult + " - 현재" }
+            dateFormatter.dateFormat = "YYYY년 MM월 DD일"
+            let endResult = dateFormatter.string(from: endDate)
+            
+            return startResult + " ~ " + endResult
+        }
+        
+        
+        if self.dateCompare(dateString: startDateString) {
+            return startResult + "에 시작"
+        } else {
+            return startResult + " - 현재"
+        }
+    }
+    
+    func dateCompare(dateString: String) -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-DD"
+        guard let date = dateFormatter.date(from: dateString) else { return true }
+        let result: ComparisonResult = self.compare(date)
+        
+        switch result {
+        case .orderedAscending:
+            return true
+        default:
+            return false
+        }
+    }
+}
