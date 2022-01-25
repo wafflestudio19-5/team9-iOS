@@ -65,6 +65,7 @@
 		77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728A2776021600482CE7 /* SearchHeaderView.swift */; };
 		77FE728D2777512000482CE7 /* DateSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */; };
 		B80318E52799D5B400983AB1 /* Endpoint+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318E42799D5B400983AB1 /* Endpoint+Notification.swift */; };
+		B80318E727A02FDA00983AB1 /* HeaderViewWithTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318E627A02FDA00983AB1 /* HeaderViewWithTitle.swift */; };
 		B821C061279487D7000BA22D /* Endpoint+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = B821C060279487D7000BA22D /* Endpoint+Account.swift */; };
 		B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */; };
 		B82EC9202787F93F00750397 /* KakaoLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91F2787F93F00750397 /* KakaoLoginView.swift */; };
@@ -237,6 +238,7 @@
 		77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectTableViewCell.swift; sourceTree = "<group>"; };
 		AF0AA20D3E5E391258D676CE /* Pods-Facebook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.release.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.release.xcconfig"; sourceTree = "<group>"; };
 		B80318E42799D5B400983AB1 /* Endpoint+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Notification.swift"; sourceTree = "<group>"; };
+		B80318E627A02FDA00983AB1 /* HeaderViewWithTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewWithTitle.swift; sourceTree = "<group>"; };
 		B821C060279487D7000BA22D /* Endpoint+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Account.swift"; sourceTree = "<group>"; };
 		B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
 		B82EC91F2787F93F00750397 /* KakaoLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginView.swift; sourceTree = "<group>"; };
@@ -787,6 +789,7 @@
 			children = (
 				B897A925274E61D800FB67D3 /* NotificationTabView.swift */,
 				B86E7F4B279565730098D334 /* NotificationCell.swift */,
+				B80318E627A02FDA00983AB1 /* HeaderViewWithTitle.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1259,6 +1262,7 @@
 				779775B0279ABFD400AEF7B4 /* BottomSheetView.swift in Sources */,
 				7754B86F2781D63900775D81 /* EditUserProfileView.swift in Sources */,
 				77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */,
+				B80318E727A02FDA00983AB1 /* HeaderViewWithTitle.swift in Sources */,
 				B8922CD82799435C00D02232 /* NotificationDispatcher.swift in Sources */,
 				BE9C7CA1276ECA1F0089247F /* Int+Formatter.swift in Sources */,
 				B897A91D274E387300FB67D3 /* NotificationTabViewController.swift in Sources */,

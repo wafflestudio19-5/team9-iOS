@@ -10,7 +10,6 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import RxGesture
-import SnapKit
 
 class NotificationTabViewController: BaseTabViewController<NotificationTabView>, UITableViewDelegate, UIScrollViewDelegate {
 
@@ -41,25 +40,7 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: tabView.largeTitleLabel)
         
-        tableView.sectionHeaderTopPadding = 0.0
         bind()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        sectionList.accept([])
-        sections.removeAll()
-        
-        if !newNotifications.value.isEmpty { sections.append(SectionModel(model: "새로운 알림", items: newNotifications.value)) }
-        if !oldNotifications.value.isEmpty { sections.append(SectionModel(model: "이전 알림", items: oldNotifications.value)) }
-
-        sectionList.accept(sections)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
     }
     
     private func bind() {
@@ -73,7 +54,18 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
         
         viewModel.dataList
             .bind { [weak self] notification in
-                self?.newNotifications.accept(notification)
+                guard let self = self else { return }
+                
+                self.oldNotifications.accept(notification.filter { $0.is_checked })
+                self.newNotifications.accept(notification.filter { !$0.is_checked })
+                
+                self.sectionList.accept([])
+                self.sections.removeAll()
+                
+                if !self.newNotifications.value.isEmpty { self.sections.append(SectionModel(model: "새로운 알림", items: self.newNotifications.value)) }
+                if !self.oldNotifications.value.isEmpty { self.sections.append(SectionModel(model: "이전 알림", items: self.oldNotifications.value)) }
+
+                self.sectionList.accept(self.sections)
             }.disposed(by: disposeBag)
         
         sectionList
@@ -140,27 +132,21 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
 
 extension NotificationTabViewController {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView(frame: CGRect.zero)
-        var label = UILabel()
-
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderViewWithTitle.reuseIdentifier) as? HeaderViewWithTitle else {
+            return UITableViewHeaderFooterView()
+        }
+        
         if sections[section].model == "새로운 알림" {
-            label = self.tabView.newNotificationLabel
-        } else if sections[section].model == "이전 알림" {
-            label = self.tabView.oldNotificationLabel
-        }
-
-        headerView.addSubview(label)
-        headerView.backgroundColor = .white
-        
-        headerView.snp.makeConstraints { make in
-            make.height.equalTo(40)
+            header.setTitle(as: "새로운 알림")
+        } else {
+            header.setTitle(as: "이전 알림")
         }
         
-        label.snp.makeConstraints { make in
-            make.centerY.equalTo(headerView)
-            make.left.equalTo(headerView).offset(16)
-        }
-        return headerView
+        return header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40.0
     }
     
     private func configure(cell: NotificationCell, with notification: Notification) {
@@ -171,10 +157,22 @@ extension NotificationTabViewController {
         }.disposed(by: disposeBag)
     }
     
+    // 알림 확인
     private func check(notification: Notification) {
         NetworkService.get(endpoint: .notification(id: notification.id), as: Notification.self)
             .bind { response in
                 StateManager.of.notification.dispatch(check: response.1)
             }.disposed(by: disposeBag)
+    }
+    
+    // 알림 삭제
+    private func delete(notification: Notification) {
+        NetworkService.delete(endpoint: .notification(id: notification.id), as: String.self)
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { response in
+                if response.0.statusCode == 204 {
+                    StateManager.of.notification.dispatch(delete: notification)
+                }
+            }).disposed(by: disposeBag)
     }
 }
