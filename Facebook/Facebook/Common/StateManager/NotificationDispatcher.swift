@@ -10,15 +10,15 @@ import RxRelay
 
 class NotificationDispatcher: Dispatcher<Notification> {
     
-    /// 알림을 확인한 경우
+    /// 알림을 확인합니다
     func dispatch(check notification: Notification) {
         let notification = notification
         dispatchedSignals.accept(.init(data: notification, operation: .edit))
     }
     
-    /// 알림을 삭제한 경우
-    func dispatch(delete notification: Notification) {
-        let notification = notification
-        dispatchedSignals.accept(.init(data: notification, operation: .delete(index: notification.id)))
+    /// 알림을 삭제합니다
+    func dispatch(delete notification: Notification, at index: Int) {
+        if index == -1 { return }
+        dispatchedSignals.accept(.init(data: notification, operation: .delete(index: index)))
     }
 }

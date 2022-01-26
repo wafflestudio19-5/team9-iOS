@@ -22,12 +22,17 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<SectionModel<String, Notification>>.ConfigureCell = { [weak self] dataSource, tableView, indexPath, notification in
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationCell.reuseIdentifier, for: indexPath) as? NotificationCell else { return UITableViewCell() }
         cell.configure(with: notification)
+        cell.detailButton.rx.tap.bind { [weak self] in
+            guard let self = self else { return }
+            self.didTapDeleteButton(notification: notification)
+        }.disposed(by: self!.disposeBag)
+        
         return cell
     }
     
     private let isShowingBottomSheet: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     
-    let viewModel = PaginationViewModel<Notification>(endpoint: .notification())
+    private let viewModel = NotificationPaginationViewModel(endpoint: .notification())
     
     /// 새로운 알림, 이전 알림
     private let oldNotifications = BehaviorRelay<[Notification]>(value: [])
@@ -36,9 +41,22 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     private let sectionList = BehaviorRelay<[SectionModel<String, Notification>]>(value: [])
     private var sections: [SectionModel<String, Notification>] = []
     
+//    private let menu = [ Menu(image: UIImage(systemName: "xmark.rectangle.fill") ?? UIImage(),
+//                              text: "이 알림 삭제",
+//                              action: { print("button tapped") }),
+//                         Menu(image: UIImage(systemName: "bell.slash.fill") ?? UIImage(),
+//                              text: "알림 해제",
+//                              action: { print("button tapped") })]
+//
+//    private var bottomSheetViewController = UIViewController()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: tabView.largeTitleLabel)
+        
+//        bottomSheetViewController = BottomSheetViewController(menuList: self.menu)
+//        bottomSheetViewController.modalPresentationStyle = .overFullScreen
         
         bind()
     }
@@ -46,13 +64,10 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     private func bind() {
         tableView.rx.setDelegate(self).disposed(by: disposeBag)
 
-//        viewModel.dataList
-//            .observe(on: MainScheduler.instance)
-//            .bind(to: tableView.rx.items(cellIdentifier: NotificationCell.reuseIdentifier, cellType: NotificationCell.self)) { [weak self] _, notification, cell in
-//                self?.configure(cell: cell, with: notification)
-//            }.disposed(by: disposeBag)
+        StateManager.of.notification.bind(with: viewModel.dataList).disposed(by: disposeBag)
         
         viewModel.dataList
+            .observe(on: MainScheduler.instance)
             .bind { [weak self] notification in
                 guard let self = self else { return }
                 
@@ -71,8 +86,6 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
         sectionList
             .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
-        
-        StateManager.of.notification.bind(with: viewModel.dataList).disposed(by: disposeBag)
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
         viewModel.isLoading
@@ -103,15 +116,20 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
             })
             .disposed(by: disposeBag)
         
-//        tabView.bottomSheetView.rx.tapGesture().bind { [weak self] _ in
-//            self?.isShowingBottomSheet.accept(false)
+//        tabView.rx.tapGesture().bind { [weak self] _ in
+//            guard let self = self else { return }
+//            print("touch recognized")
+//            if self.isShowingBottomSheet.value {
+//                self.isShowingBottomSheet.accept(false)
+//            }
 //        }.disposed(by: disposeBag)
 //
 //        isShowingBottomSheet
 //            .observe(on: MainScheduler.instance)
 //            .bind { [weak self] isShowing in
-//            isShowing ? self?.tabView.showBottomSheetView() : self?.tabView.dismissBottomSheetView()
-//        }.disposed(by: disposeBag)
+//                guard let self = self else { return }
+//
+//            }.disposed(by: disposeBag)
 
         /// cell을 탭하면 알림을 확인한 것으로 간주함
         Observable.zip(tableView.rx.modelSelected(Notification.self), tableView.rx.itemSelected).bind { [weak self] (notification, indexPath) in
@@ -167,12 +185,23 @@ extension NotificationTabViewController {
     
     // 알림 삭제
     private func delete(notification: Notification) {
-        NetworkService.delete(endpoint: .notification(id: notification.id), as: String.self)
+        NetworkService.delete(endpoint: .notification(id: notification.id))
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { response in
-                if response.0.statusCode == 204 {
-                    StateManager.of.notification.dispatch(delete: notification)
-                }
+            .subscribe(onNext: { [weak self] response in
+                guard let self = self else { return }
+                StateManager.of.notification.dispatch(delete: notification, at: self.viewModel.findDeletionIndex(of: notification))
             }).disposed(by: disposeBag)
+    }
+    
+    private func didTapDeleteButton(notification: Notification) {
+        let alert = UIAlertController(title: "알림 삭제",
+                                      message: "알림을 삭제하시겠습니까?",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        alert.addAction(UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            self.delete(notification: notification)
+        })
+        self.present(alert, animated: true, completion: nil)
     }
 }
