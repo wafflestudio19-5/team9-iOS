@@ -150,6 +150,7 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
             if !notification.is_checked {
                 self?.check(notification: notification)
             }
+            cell.isSelected = false
             
             /// 게시물과 관련된 알림(좋아요, 댓글, 답글 등)은 해당 게시물 상세 페이지로 이동
             if let post = notification.post {
@@ -158,7 +159,7 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
             
             /// 친구 요청 및 요청 수락 알림은 친구 목록 페이지로 이동
             if notification.content == .FriendRequest || notification.content == .FriendAccept {
-                self?.push(viewController: FriendTabViewController())
+                self?.push(viewController: FriendTabViewController(isMain: false))
             }
         }.disposed(by: disposeBag)
     }

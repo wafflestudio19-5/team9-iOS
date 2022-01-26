@@ -22,19 +22,32 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        setNavigationBar()
         bind()
+    }
+    
+    init(isMain: Bool = true) {
+        super.init(nibName: nil, bundle: nil)
+        setNavigationBar(isMain: isMain)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         friendRequestViewModel.refresh()
     }
     
-    func setNavigationBar() {
-        let titleLabel = UILabel()
-        titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        titleLabel.text = "친구"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleLabel)
+    func setNavigationBar(isMain: Bool = true) {
+        if isMain {
+            let titleLabel = UILabel()
+            titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+            titleLabel.text = "친구"
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleLabel)
+        } else {
+            navigationItem.leftBarButtonItem = nil
+            self.navigationItem.title = "친구"
+        }
     }
     
     func bind() {
