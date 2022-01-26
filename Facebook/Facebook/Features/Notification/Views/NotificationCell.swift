@@ -104,7 +104,7 @@ class NotificationCell: UITableViewCell {
     }
     
     func configure(with notification: Notification) {
-        contentLabel.attributedText = addAttributeForMessage(message: notification.message().0, users: notification.message().1)
+        contentLabel.attributedText = addAttributeForMessage(message: notification.message(), users: notification.users())
         
         /// 친구 요청이 수락된 경우에는 timeStampLabel을 "확인됨"으로, 이외의 경우에는 원래대로 timeStamp를 표시
         timeStampLabel.text = {
@@ -134,11 +134,7 @@ class NotificationCell: UITableViewCell {
         }
         
         /// is_checked에 따라 cell 배경 색깔 설정
-        if notification.is_checked {
-            self.backgroundColor = .white
-        } else {
-            self.backgroundColor = .tintColors.mildBlue
-        }
+        self.backgroundColor = notification.is_checked ? .white : .tintColors.mildBlue
         
         /// 친구 요청이 들어온 경우 확인/삭제 버튼을 보여줌. 요청을 수락하거나 거절한 경우에는 버튼을 띄우지 않음
         if notification.content == .FriendRequest {

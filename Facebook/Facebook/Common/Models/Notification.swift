@@ -24,9 +24,8 @@ struct Notification: Codable, Identifiable {
 }
 
 extension Notification {
-    func message() -> (message: String, users: [String]) {
+    func message() -> String {
         var message = "\(sender_preview.username)"
-        var users: [String] = []
         
         /// 알림을 보내는 유저의 수에 따른 메시지 반환
         message.append( { () -> String in
@@ -53,15 +52,19 @@ extension Notification {
             }
         }())
         
-        /// 알림에 등장하는 username을 모두 배열에 저장 후 반환
-        /// 우선은 빠른 구현을 위해 이 함수 내부에 함께 넣었습니다(추후 정리)
+        return message
+    }
+    
+    /// 알림에 등장하는 username을 모두 배열에 저장 후 반환
+    func users() -> [String] {
+        var users: [String] = []
+        
         users.append(sender_preview.username)
         senders.forEach { user in
             users.append(user.username)
         }
         users.append((post?.author?.id == id) ? "" : (post?.author?.username ?? ""))
-        
-        return (message, users)
+        return users
     }
 }
 
