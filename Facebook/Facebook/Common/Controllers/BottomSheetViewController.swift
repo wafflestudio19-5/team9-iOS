@@ -94,6 +94,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
         bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight + bottomPadding
+        bottomSheetView.bottomSheetTableView.snp.removeConstraints()
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
             self.bottomSheetView.dimmedView.alpha = 0.0
