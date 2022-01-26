@@ -67,7 +67,8 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     private func setInitialTopConstant() {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
-        bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight + bottomPadding
+        bottomSheetView.bottomSheetViewTopConstraint = bottomSheetView.contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: safeAreaHeight + bottomPadding)
+        bottomSheetView.bottomSheetViewTopConstraint.isActive = true
     }
     
     private func showBottomSheet(atState: BottomSheetViewState = .normal) {
@@ -77,6 +78,10 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
             bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight - bottomSheetTableViewHeight
         } else {
             bottomSheetView.bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
+        }
+        
+        bottomSheetView.bottomSheetTableView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
         }
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
