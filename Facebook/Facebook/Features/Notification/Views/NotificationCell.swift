@@ -41,7 +41,7 @@ class NotificationCell: UITableViewCell {
     lazy var verticalStackForContents: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 4.0
+        stackView.spacing = 3.0
         stackView.alignment = .leading
         return stackView
     }()
@@ -60,6 +60,34 @@ class NotificationCell: UITableViewCell {
         return button
     }()
     
+    /// 확인 버튼: 친구 요청과 관련된 알림일 때에만 사용하는 버튼입니다.
+    lazy var acceptButton: UIButton = {
+        let button = RectangularSlimButton(title: "확인", titleColor: .white, backgroundColor: .tintColors.blue, height: 32.0, titleSize: 14.0)
+    
+        return button
+    }()
+    
+    /// 삭제 버튼: 친구 요청과 관련된 알림일 때에만 사용하는 버튼입니다.
+    lazy var deleteButton: UIButton = {
+        let button = RectangularSlimButton(title: "삭제", titleColor: .black, backgroundColor: .grayscales.button, height: 32.0, titleSize: 14.0)
+    
+        return button
+    }()
+    
+    /// 버튼 스택: 확인 버튼과 삭제 버튼을 담고 있는 스택으로, 친구 요청과 관련된 알림일 때에만 사용됩니다.
+    lazy var horizontalStackForButtons: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 8.0
+        stackView.alignment = .leading
+        stackView.distribution = .fillEqually
+        
+        stackView.addArrangedSubview(acceptButton)
+        stackView.addArrangedSubview(deleteButton)
+        
+        return stackView
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.tintColor = .black
@@ -73,6 +101,8 @@ class NotificationCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         self.disposeBag = DisposeBag()
+        removeButtonForFriendRequest()
+        profileImage.setImage(from: URL(string: ""))
     }
     
     func configure(with notification: Notification) {
@@ -104,10 +134,10 @@ class NotificationCell: UITableViewCell {
         } else {
             self.backgroundColor = .tintColors.mildBlue
         }
-    }
-    
-    func isChecked() {
-        self.backgroundColor = .white
+        
+        if notification.content == .FriendRequest {
+            addButtonForFriendRequest()
+        }
     }
     
     private func addAttributeForMessage(message: String, users: [String]) -> NSMutableAttributedString {
@@ -131,20 +161,68 @@ class NotificationCell: UITableViewCell {
         contentView.addSubview(detailButton)
         
         profileImage.snp.makeConstraints { make in
-            make.top.bottom.equalTo(contentView.safeAreaLayoutGuide).inset(8)
+            make.top.bottom.equalTo(contentView.safeAreaLayoutGuide).inset(8).priority(999)
             make.left.equalTo(contentView.snp.left).offset(15)
             make.height.width.equalTo(68)
         }
         
         verticalStackForContents.snp.makeConstraints { make in
             make.left.equalTo(profileImage.snp.right).offset(10)
-            make.centerY.equalTo(contentView)
+            make.centerY.equalTo(contentView).priority(999)
             make.right.equalTo(detailButton.snp.left).offset(-16).priority(999)
         }
         
         detailButton.snp.makeConstraints { make in
-            make.centerY.equalTo(contentView)
+            make.centerY.equalTo(verticalStackForContents)
             make.right.equalTo(contentView.safeAreaLayoutGuide.snp.right).offset(-16).priority(999)
         }
+    }
+    
+    private func addButtonForFriendRequest() {
+        contentView.addSubview(horizontalStackForButtons)
+        
+        verticalStackForContents.snp.remakeConstraints { make in
+            make.left.equalTo(profileImage.snp.right).offset(10)
+            make.right.equalTo(detailButton.snp.left).offset(-16).priority(999)
+            make.top.equalTo(contentView).offset(9)
+        }
+        
+        profileImage.snp.remakeConstraints { make in
+            make.top.equalTo(contentView).offset(8)
+            make.left.equalTo(contentView.snp.left).offset(15)
+            make.height.width.equalTo(68)
+        }
+        
+        horizontalStackForButtons.snp.makeConstraints { make in
+            make.left.equalTo(profileImage.snp.right).offset(10)
+            make.right.equalTo(contentView).offset(-16).priority(999)
+            make.top.equalTo(verticalStackForContents.snp.bottom).offset(8).priority(999)
+            make.bottom.equalTo(contentView).offset(-8).priority(999)
+        }
+        
+        self.layoutIfNeeded()
+    }
+    
+    private func removeButtonForFriendRequest() {
+        horizontalStackForButtons.removeFromSuperview()
+        
+        profileImage.snp.remakeConstraints { make in
+            make.top.bottom.equalTo(contentView).inset(8).priority(999)
+            make.left.equalTo(contentView.snp.left).offset(15)
+            make.height.width.equalTo(68)
+        }
+        
+        verticalStackForContents.snp.remakeConstraints { make in
+            make.left.equalTo(profileImage.snp.right).offset(10)
+            make.centerY.equalTo(contentView)
+            make.right.equalTo(detailButton.snp.left).offset(-16).priority(999)
+        }
+        
+        detailButton.snp.remakeConstraints { make in
+            make.centerY.equalTo(verticalStackForContents)
+            make.right.equalTo(contentView.safeAreaLayoutGuide.snp.right).offset(-16).priority(999)
+        }
+        
+        self.layoutIfNeeded()
     }
 }

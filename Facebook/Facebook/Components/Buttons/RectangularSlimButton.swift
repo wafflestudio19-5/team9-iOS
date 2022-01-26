@@ -14,7 +14,7 @@ class RectangularSlimButton: UIButton {
     private var highlight: UIColor
     private var needsIndicator: Bool
     
-    init(title: String, titleColor: UIColor, backgroundColor: UIColor, highlightColor: UIColor = .tintColors.blue, needsIndicator: Bool = false) {
+    init(title: String, titleColor: UIColor, backgroundColor: UIColor, highlightColor: UIColor = .tintColors.blue, height: CGFloat = 40.0, titleSize: CGFloat = 16.0, needsIndicator: Bool = false) {
         self.background = backgroundColor
         self.highlight = highlightColor
         self.needsIndicator = needsIndicator
@@ -22,8 +22,8 @@ class RectangularSlimButton: UIButton {
         
         self.configuration = .plain()
         setButtonStyle()
-        setButtonLabel(as: title, color: titleColor)
-        setLayoutForView()
+        setButtonLabel(as: title, color: titleColor, size: titleSize)
+        setLayoutForView(height: height)
     }
     
     required init?(coder: NSCoder) {
@@ -52,17 +52,17 @@ class RectangularSlimButton: UIButton {
         configuration?.imagePadding = 10.0
     }
     
-    private func setButtonLabel(as text: String, color: UIColor) {
+    private func setButtonLabel(as text: String, color: UIColor, size: CGFloat) {
         var container = AttributeContainer()
-        container.font = .systemFont(ofSize: 16.0, weight: .semibold)
+        container.font = .systemFont(ofSize: size, weight: .semibold)
         configuration?.title = text
         configuration?.baseForegroundColor = color
         configuration?.attributedTitle = AttributedString(text, attributes: container)
     }
     
-    private func setLayoutForView() {
+    private func setLayoutForView(height: CGFloat) {
         self.snp.makeConstraints { make in
-            make.height.equalTo(40)
+            make.height.equalTo(height)
         }
     }
 }

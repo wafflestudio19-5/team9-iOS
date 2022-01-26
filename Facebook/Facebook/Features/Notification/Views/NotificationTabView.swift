@@ -67,6 +67,10 @@ class NotificationTabView: UIView {
         
         notificationTableView.tableFooterView = UIView(frame: CGRect.zero)
         notificationTableView.sectionFooterHeight = 0.0
+        
+        // for making layout warning silent
+        notificationTableView.rowHeight = UITableView.automaticDimension
+        notificationTableView.estimatedRowHeight = 1.0
     }
     
 //    func showBottomSheetView() {

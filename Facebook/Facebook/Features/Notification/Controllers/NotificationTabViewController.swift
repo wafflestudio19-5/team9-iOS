@@ -136,9 +136,7 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
             guard let cell = self?.tableView.cellForRow(at: indexPath) as? NotificationCell else {
                 return
             }
-            cell.isSelected = false
             if !notification.is_checked {
-                cell.isChecked()
                 self?.check(notification: notification)
             }
             if let post = notification.post {
