@@ -107,10 +107,17 @@ class NotificationCell: UITableViewCell {
     
     func configure(with notification: Notification) {
         contentLabel.attributedText = addAttributeForMessage(message: notification.message().0, users: notification.message().1)
-        timeStampLabel.text = notification.posted_at
+        
+        /// 친구 요청이 수락된 경우에는 timeStampLabel을 "확인됨"으로, 이외의 경우에는 원래대로 timeStamp를 표시
+        timeStampLabel.text = {
+            if notification.content == .FriendRequest && notification.is_accepted {
+                return "확인됨"
+            }
+            return notification.posted_at
+        }()
         
         /// subcontentLabel 내용 설정
-        subcontentLabel.text = { () -> String in
+        subcontentLabel.text = {
             /// comment 내용 없이 사진, 스티커만 업로드한 경우의 메시지
             if notification.comment_preview?.is_file == "photo" {
                 return "· \(notification.sender_preview.username) posted a photo"
@@ -135,8 +142,9 @@ class NotificationCell: UITableViewCell {
             self.backgroundColor = .tintColors.mildBlue
         }
         
+        /// 친구 요청이 들어온 경우 확인/삭제 버튼을 보여줌. 요청을 수락하거나 거절한 경우에는 버튼을 띄우지 않음
         if notification.content == .FriendRequest {
-            addButtonForFriendRequest()
+            notification.is_accepted ? removeButtonForFriendRequest() : addButtonForFriendRequest()
         }
     }
     

@@ -20,12 +20,23 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     private lazy var dataSource = RxTableViewSectionedReloadDataSource<SectionModel<String, Notification>>(configureCell: configureCell)
 
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<SectionModel<String, Notification>>.ConfigureCell = { [weak self] dataSource, tableView, indexPath, notification in
+        guard let self = self else { return UITableViewCell() }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationCell.reuseIdentifier, for: indexPath) as? NotificationCell else { return UITableViewCell() }
         cell.configure(with: notification)
+        
         cell.detailButton.rx.tap.bind { [weak self] in
-            guard let self = self else { return }
-            self.didTapDeleteButton(notification: notification)
-        }.disposed(by: self!.disposeBag)
+            self?.didTapDeleteButton(notification: notification)
+        }.disposed(by: self.disposeBag)
+        
+        /// 친구 요청(FriendRequest) 알림일 때는 확인, 삭제 버튼에 대한 기능 binding
+        if notification.content == .FriendRequest {
+            cell.acceptButton.rx.tap.bind { [weak self] in
+                self?.acceptFriendRequest(from: notification)
+            }.disposed(by: self.disposeBag)
+            cell.deleteButton.rx.tap.bind { [weak self] in
+                self?.deleteFriendRequest(from: notification)
+            }.disposed(by: self.disposeBag)
+        }
         
         return cell
     }
@@ -139,8 +150,15 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
             if !notification.is_checked {
                 self?.check(notification: notification)
             }
+            
+            /// 게시물과 관련된 알림(좋아요, 댓글, 답글 등)은 해당 게시물 상세 페이지로 이동
             if let post = notification.post {
                 self?.push(viewController: PostDetailViewController(post: post))
+            }
+            
+            /// 친구 요청 및 요청 수락 알림은 친구 목록 페이지로 이동
+            if notification.content == .FriendRequest || notification.content == .FriendAccept {
+                self?.push(viewController: FriendTabViewController())
             }
         }.disposed(by: disposeBag)
     }
@@ -173,7 +191,7 @@ extension NotificationTabViewController {
         }.disposed(by: disposeBag)
     }
     
-    // 알림 확인
+    /// 알림을 확인합니다. 알림의 "is checked" 필드가 true로 전환되어 돌아온 Response를 StateManager에 dispatch합니다.
     private func check(notification: Notification) {
         NetworkService.get(endpoint: .notification(id: notification.id), as: Notification.self)
             .bind { response in
@@ -181,7 +199,7 @@ extension NotificationTabViewController {
             }.disposed(by: disposeBag)
     }
     
-    // 알림 삭제
+    /// 알림을 삭제합니다. 별도의 애니메이션 없이 알림 cell을 지웁니다.
     private func delete(notification: Notification) {
         NetworkService.delete(endpoint: .notification(id: notification.id))
             .observe(on: MainScheduler.instance)
@@ -201,5 +219,32 @@ extension NotificationTabViewController {
             self.delete(notification: notification)
         })
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func acceptFriendRequest(from notification: Notification) {
+        NetworkService.put(endpoint: .friendRequest(id: notification.sender_preview.id), as: String.self)
+            .subscribe (onNext: { event in
+                // 요청 수락
+                if event.0.statusCode == 200 {
+                    StateManager.of.notification.dispatch(accept: notification)
+                    return
+                }
+            }, onError: { [weak self] _ in
+                self?.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+            }).disposed(by: disposeBag)
+    }
+    
+    private func deleteFriendRequest(from notification: Notification) {
+        NetworkService.delete(endpoint: .friendRequest(id: notification.sender_preview.id))
+            .subscribe { [weak self] event in
+                // 요청 거절
+                if event.isCompleted {
+                    self?.delete(notification: notification)
+                    return
+                }
+                if !(event.element is NSNull) {
+                    self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+                }
+            }.disposed(by: disposeBag)
     }
 }
