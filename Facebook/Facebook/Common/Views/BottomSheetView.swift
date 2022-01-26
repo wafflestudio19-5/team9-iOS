@@ -10,7 +10,9 @@ import UIKit
 class BottomSheetView: UIView {
     let dimmedView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.darkGray.withAlphaComponent(0.7)
+        view.backgroundColor = .black
+        view.alpha = 0.0
+
         return view
     }()
     

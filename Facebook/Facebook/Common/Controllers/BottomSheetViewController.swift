@@ -80,7 +80,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         }
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
-            self.bottomSheetView.dimmedView.alpha = 0.5
+            self.bottomSheetView.dimmedView.alpha = 0.4
             self.bottomSheetView.layoutIfNeeded()
         }, completion: nil)
     }
@@ -175,7 +175,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     }
     
     private func dimAlphaWithBottomSheetTopConstraint(value: CGFloat) -> CGFloat {
-        let fullDimAlpha: CGFloat = 0.5
+        let fullDimAlpha: CGFloat = 0.4
         
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = self.view.safeAreaInsets.bottom
@@ -192,7 +192,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
             return 0.0
         }
         
-        return fullDimAlpha * (1 - ((value - fullDimPosition) / (noDimPosition - fullDimPosition)))
+        return fullDimAlpha * (noDimPosition - value) / (noDimPosition - fullDimPosition)
     }
     
     
