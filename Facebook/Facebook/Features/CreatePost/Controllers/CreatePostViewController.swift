@@ -12,13 +12,6 @@ import PhotosUI
 import RxCocoa
 import RxKeyboard
 
-struct SubPost {
-    var id: Int?
-    var pickerId: String?
-    var pickerResult: PHPickerResult?
-    var imageUrl: String?
-    var content: String?
-}
 
 class CreatePostViewController: UIViewController {
     let disposeBag = DisposeBag()
@@ -78,7 +71,7 @@ class CreatePostViewController: UIViewController {
     }
     
     func presentEditSubPostVC() {
-        let vc = EditSubPostViewController()
+        let vc = SubPostCaptionViewController(viewModel: subPostViewModel)
         let nvc = UINavigationController(rootViewController: vc)
         nvc.modalPresentationStyle = .fullScreen
         return self.present(nvc, animated: true, completion: nil)
@@ -115,9 +108,6 @@ class CreatePostViewController: UIViewController {
         createPostView.postButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
-                
-                self.subPostViewModel.delete()
-                return
                 
                 // get the VC that presented this VC
                 guard let rootTabBarController = self.presentingViewController as? RootTabBarController,

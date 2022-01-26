@@ -13,6 +13,6 @@ struct KFProcessors {
     static let shared = KFProcessors()
     
     // Downsampling
-    let downsampling = DownsamplingImageProcessor(size: CGSize(width: 500, height: 500))
+    let downsampling = DownsamplingImageProcessor(size: CGSize(width: 501, height: 501))
 
 }
