@@ -40,11 +40,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.initialSetup(cellStyle: style)
             cell.configureCell(image: image, information: information)
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
-                self.push(viewController: detailProfileViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                    self.push(viewController: detailProfileViewController)
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .ButtonItem(style, buttonText):
@@ -66,11 +68,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.configureCell(image: UIImage(systemName: "briefcase.fill") ?? UIImage(),
                                information: company.name ?? "")
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
-                self.push(viewController: detailProfileViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                    self.push(viewController: detailProfileViewController)
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .UniversityItem(university):
@@ -80,11 +84,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.configureCell(image: UIImage(systemName: "graduationcap.fill") ?? UIImage(),
                                information: university.name ?? "")
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
-                self.push(viewController: detailProfileViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                    self.push(viewController: detailProfileViewController)
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .FriendGridItem(friendsData):
@@ -552,7 +558,7 @@ extension ProfileTabViewController {
             
             //프로필 이미지
             cell.profileImage.rx
-                .tapGesture()
+                .tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
                 .when(.recognized)
                 .subscribe(onNext: { [weak self] _ in
                     guard let self = self else { return }
@@ -566,7 +572,7 @@ extension ProfileTabViewController {
             
             //자기소개 관련 동작
             cell.selfIntroLabel.rx
-                .tapGesture()
+                .tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
                 .when(.recognized)
                 .subscribe(onNext: { [weak self] _ in
                     if selfIntro == "" {
