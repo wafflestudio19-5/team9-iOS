@@ -47,15 +47,18 @@ class ImageTableViewCell: UITableViewCell {
             switch self.cellStyle {
             case .profileImage:
                 imgView.snp.remakeConstraints { make in
-                    make.height.width.equalTo(175)
+                    make.height.width.equalTo(175).priority(999)
+                    make.centerX.centerY.equalToSuperview()
+                    make.top.bottom.equalToSuperview().inset(10)
                 }
                 imgView.layer.cornerRadius = 175 / 2
                 imgView.image = UIImage(systemName: "person.circle.fill")
                 imgView.contentMode = .center
             case .coverImage:
                 imgView.snp.remakeConstraints { make in
-                    make.height.equalTo(225)
-                    make.leading.trailing.equalTo(self).inset(CGFloat.standardLeadingMargin)
+                    make.height.equalTo(225).priority(999)
+                    make.centerX.centerY.equalToSuperview()
+                    make.edges.equalToSuperview().inset(10)
                 }
                 imgView.layer.cornerRadius = 5
                 imgView.image = UIImage(systemName: "photo")
@@ -79,15 +82,18 @@ extension ImageTableViewCell {
         switch cellStyle {
         case .profileImage:
             imgView.snp.remakeConstraints { make in
-                make.height.width.equalTo(175)
+                make.height.width.equalTo(175).priority(999)
+                make.centerX.centerY.equalToSuperview()
+                make.top.bottom.equalToSuperview().inset(10)
             }
             imgView.layer.cornerRadius = 175 / 2
             imgView.clipsToBounds = true
             imgView.contentMode = .scaleAspectFill
         case .coverImage:
             imgView.snp.remakeConstraints { make in
-                make.height.equalTo(225)
-                make.leading.trailing.equalTo(self).inset(CGFloat.standardLeadingMargin)
+                make.height.equalTo(225).priority(999)
+                make.centerX.centerY.equalToSuperview()
+                make.edges.equalToSuperview().inset(10)
             }
             imgView.layer.cornerRadius = 5
             imgView.contentMode = .scaleAspectFill
