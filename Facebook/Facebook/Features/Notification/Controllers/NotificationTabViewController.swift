@@ -157,9 +157,14 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
                 self?.push(viewController: PostDetailViewController(post: post))
             }
             
-            /// 친구 요청 및 요청 수락 알림은 친구 목록 페이지로 이동
-            if notification.content == .FriendRequest || notification.content == .FriendAccept {
+            /// 친구 요청 알림은 친구 목록 페이지로 이동
+            if notification.content == .FriendRequest {
                 self?.push(viewController: FriendTabViewController(isMain: false))
+            }
+            
+            /// 친구 요청 수락 알림은 상대방의 프로필 페이지로 이동
+            if notification.content == .FriendAccept {
+                self?.push(viewController: ProfileTabViewController(userId: notification.sender_preview.id))
             }
         }.disposed(by: disposeBag)
     }
@@ -224,9 +229,9 @@ extension NotificationTabViewController {
     
     private func acceptFriendRequest(from notification: Notification) {
         NetworkService.put(endpoint: .friendRequest(id: notification.sender_preview.id), as: String.self)
-            .subscribe (onNext: { event in
+            .subscribe (onNext: { response in
                 // 요청 수락
-                if event.0.statusCode == 200 {
+                if response.0.statusCode == 200 {
                     StateManager.of.notification.dispatch(accept: notification)
                     return
                 }
@@ -236,16 +241,15 @@ extension NotificationTabViewController {
     }
     
     private func deleteFriendRequest(from notification: Notification) {
-        NetworkService.delete(endpoint: .friendRequest(id: notification.sender_preview.id))
-            .subscribe { [weak self] event in
+        NetworkService.delete(endpoint: .friendRequest(id: notification.sender_preview.id), as: String.self)
+            .subscribe (onNext: { [weak self] response in
                 // 요청 거절
-                if event.isCompleted {
+                if response.0.statusCode == 204 {
                     self?.delete(notification: notification)
                     return
                 }
-                if !(event.element is NSNull) {
-                    self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                }
-            }.disposed(by: disposeBag)
+            }, onError: { [weak self] _ in
+                self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
+            }).disposed(by: disposeBag)
     }
 }
