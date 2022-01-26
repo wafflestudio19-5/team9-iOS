@@ -63,14 +63,12 @@ class NotificationCell: UITableViewCell {
     /// 확인 버튼: 친구 요청과 관련된 알림일 때에만 사용하는 버튼입니다.
     lazy var acceptButton: UIButton = {
         let button = RectangularSlimButton(title: "확인", titleColor: .white, backgroundColor: .tintColors.blue, height: 32.0, titleSize: 14.0)
-    
         return button
     }()
     
     /// 삭제 버튼: 친구 요청과 관련된 알림일 때에만 사용하는 버튼입니다.
     lazy var deleteButton: UIButton = {
         let button = RectangularSlimButton(title: "삭제", titleColor: .black, backgroundColor: .grayscales.button, height: 32.0, titleSize: 14.0)
-    
         return button
     }()
     

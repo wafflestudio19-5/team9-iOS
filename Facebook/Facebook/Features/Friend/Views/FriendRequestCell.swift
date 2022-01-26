@@ -120,28 +120,18 @@ class FriendRequestCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 10
+        stackView.spacing = 8.0
         
         return stackView
     }()
     
-    let acceptButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("확인", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 5
-    
+    lazy var acceptButton: UIButton = {
+        let button = RectangularSlimButton(title: "확인", titleColor: .white, backgroundColor: .tintColors.blue, height: 32.0, titleSize: 14.0)
         return button
     }()
     
-    let deleteButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("삭제", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .systemGray5
-        button.layer.cornerRadius = 5
-    
+    lazy var deleteButton: UIButton = {
+        let button = RectangularSlimButton(title: "삭제", titleColor: .black, backgroundColor: .grayscales.button, height: 32.0, titleSize: 14.0)
         return button
     }()
     
