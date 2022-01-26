@@ -35,7 +35,7 @@ class EditProfileView: UIView {
     }
 
     private func configureTableView() {
-        editProfileTableView.tableHeaderView = UIView(frame: .zero)
+        editProfileTableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         editProfileTableView.separatorStyle = .none //cell과 cell사이 separator line 제거
         editProfileTableView.register(UINib(nibName: "ImageTableViewCell", bundle: nil), forCellReuseIdentifier: "ImageCell")
         editProfileTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)

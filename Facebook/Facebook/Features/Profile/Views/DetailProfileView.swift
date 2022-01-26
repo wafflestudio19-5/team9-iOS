@@ -36,7 +36,7 @@ class DetailProfileView: UIView {
     }
     
     private func configureTableView() {
-        detailProfileTableView.tableHeaderView = UIView(frame: .zero)
+        detailProfileTableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         detailProfileTableView.separatorStyle = .none  
         detailProfileTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         detailProfileTableView.register(DetailInformationTableViewCell.self, forCellReuseIdentifier: DetailInformationTableViewCell.reuseIdentifier)

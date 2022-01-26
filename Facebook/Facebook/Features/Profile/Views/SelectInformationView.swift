@@ -37,9 +37,7 @@ class SelectInformationView: UIView {
     
     private func configureTableView() {
         selectInformationTableView.tableHeaderView = searchHeaderView
-        
         searchHeaderView.widthAnchor.constraint(equalTo: selectInformationTableView.widthAnchor).isActive = true
-        
         selectInformationTableView.separatorStyle = .none
         selectInformationTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         selectInformationTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)
