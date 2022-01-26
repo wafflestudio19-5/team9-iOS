@@ -42,7 +42,7 @@ extension UIViewController {
         return UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
             // EDIT
             UIAction(title: PostMenu.edit.text, image: PostMenu.edit.symbol, handler: { _ in
-                print(post.id)
+                self.presentEditPostVC(editing: post)
             }),
             // DELETE
             UIAction(title: PostMenu.delete.text, image: PostMenu.delete.symbol, attributes: .destructive, handler: { _ in
@@ -64,16 +64,23 @@ extension UIViewController {
     
     func presentCommentModalVC(to post: Post) {
         let vc = CommentModalViewConroller(post: post, asFirstResponder: true)
-        let navigationController = UINavigationController(rootViewController: vc)
-        navigationController.isModalInPresentation = true
-        self.present(navigationController, animated: true, completion: nil)
+        let nvc = UINavigationController(rootViewController: vc)
+        nvc.isModalInPresentation = true
+        self.present(nvc, animated: true, completion: nil)
     }
     
     func presentCreatePostVC(sharing post: Post? = nil, update: Bool = true) {
-        let createPostViewController = CreatePostViewController(sharing: post, update: update)
-        let navigationController = UINavigationController(rootViewController: createPostViewController)
-        navigationController.modalPresentationStyle = .fullScreen
-        self.present(navigationController, animated: true, completion: nil)
+        let vc = CreatePostViewController(sharing: post, update: update)
+        let nvc = UINavigationController(rootViewController: vc)
+        nvc.modalPresentationStyle = .fullScreen
+        self.present(nvc, animated: true, completion: nil)
+    }
+    
+    func presentEditPostVC(editing post: Post) {
+        let vc = EditPostViewController(editing: post)
+        let nvc = UINavigationController(rootViewController: vc)
+        nvc.modalPresentationStyle = .fullScreen
+        self.present(nvc, animated: true, completion: nil)
     }
     
     /// PostCell Configuration Logic

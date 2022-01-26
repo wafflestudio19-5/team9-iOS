@@ -17,9 +17,7 @@ class PHPickerViewModel {
     private weak var presentingViewController: UIViewController?
     private let dispatchQueue = DispatchQueue(label: "PHPickerViewModel.dispatchQueue")
     
-    // 최대 5개까지만 보여준다.
-    var firstFiveResults = BehaviorRelay<[PHPickerResult]>(value: [])
-    
+    var pickerResults = BehaviorRelay<[String: PHPickerResult]>(value: [:])
     let selectionCount = BehaviorRelay<Int>(value: 0)
     
     private lazy var pickerController: PHPickerViewController = {
@@ -65,7 +63,7 @@ extension PHPickerViewModel: PHPickerViewControllerDelegate {
         // Track the selection in case the user deselects it later.
         selection = newSelection
         selectionCount.accept(newSelection.count)
-        firstFiveResults.accept(Array(newSelection.map{ $0.1 }.prefix(5)))
+        pickerResults.accept(newSelection)
         selectedAssetIdentifiers = results.map(\.assetIdentifier!)
         
         dismissPickerVC()

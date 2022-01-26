@@ -12,9 +12,18 @@ import PhotosUI
 import RxCocoa
 import RxKeyboard
 
+struct SubPost {
+    var id: Int?
+    var pickerId: String?
+    var pickerResult: PHPickerResult?
+    var imageUrl: String?
+    var content: String?
+}
+
 class CreatePostViewController: UIViewController {
     let disposeBag = DisposeBag()
     private let pickerViewModel = PHPickerViewModel()
+    private let subPostViewModel = SubPostViewModel()
     private var postToShare: Post?
     private var updateListAfterCreation = true
     
@@ -68,6 +77,15 @@ class CreatePostViewController: UIViewController {
         navigationController?.dismiss(animated: true, completion: nil)
     }
     
+    func presentEditSubPostVC() {
+        let vc = EditSubPostViewController()
+        let nvc = UINavigationController(rootViewController: vc)
+        nvc.modalPresentationStyle = .fullScreen
+        return self.present(nvc, animated: true, completion: nil)
+    }
+    
+    // MARK: Binding
+    
     private func bindKeyboardHeight() {
         RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
@@ -97,6 +115,9 @@ class CreatePostViewController: UIViewController {
         createPostView.postButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
+                
+                self.subPostViewModel.delete()
+                return
                 
                 // get the VC that presented this VC
                 guard let rootTabBarController = self.presentingViewController as? RootTabBarController,
@@ -145,9 +166,6 @@ class CreatePostViewController: UIViewController {
             }.disposed(by: disposeBag)
     }
     
-    
-    // MARK: Photo Picker
-    
     private func bindPhotosButton() {
         createPostView.photosButton.rx.tap
             .bind { [weak self] _ in
@@ -156,24 +174,39 @@ class CreatePostViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
-}
-
-// MARK: Image Grid Binding with PickerViewModel
-
-extension CreatePostViewController {
+    
+    
     func bindImageGridView() {
-        pickerViewModel.firstFiveResults
+        pickerViewModel.pickerResults
+            .map { [weak self] in self?.subPostViewModel.convertPickerToSubposts(results: $0) }
+            .compactMap { $0 }
+            .bind(to: subPostViewModel.subposts)
+            .disposed(by: disposeBag)
+        
+        subPostViewModel.subposts
+            .map { $0.prefix(5) }
             .bind(to: createPostView.imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
-                cell.displayMedia(from: data)
+                if let pickerData = data.pickerResult {
+                    cell.displayMedia(from: pickerData)
+                } else if let urlString = data.imageUrl {
+                    cell.displayMedia(from: URL(string: urlString))
+                }
             }
             .disposed(by: disposeBag)
         
-        pickerViewModel.selectionCount
+        subPostViewModel.subposts
+            .map { $0.count }
             .bind { [weak self] count in
                 guard let self = self else { return }
                 self.createPostView.imageGridCollectionView.numberOfImages = count
             }
             .disposed(by: disposeBag)
+        
+        createPostView.imageGridCollectionView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+            .when(.recognized)
+            .bind { [weak self] _ in
+                self?.presentEditSubPostVC()
+            }
+            .disposed(by: disposeBag)
     }
 }
-

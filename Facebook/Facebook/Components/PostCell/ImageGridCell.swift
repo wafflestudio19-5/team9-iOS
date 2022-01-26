@@ -63,6 +63,7 @@ extension ImageGridCell {
             return
         }
 
+
         KF.url(url)
           .setProcessor(KFProcessors.shared.downsampling)
           .loadDiskFileSynchronously()

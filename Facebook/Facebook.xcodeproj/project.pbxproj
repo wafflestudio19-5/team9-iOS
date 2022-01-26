@@ -115,6 +115,10 @@
 		BE1F75B12785895000E51A28 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B02785895000E51A28 /* Spinner.swift */; };
 		BE1F75B327858A0600E51A28 /* UITableView+BottomSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */; };
 		BE1F75B52785D2C600E51A28 /* InfoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1F75B42785D2C600E51A28 /* InfoButton.swift */; };
+		BE33B20427A17B8A003D6410 /* EditPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33B20327A17B8A003D6410 /* EditPostViewController.swift */; };
+		BE33B20627A1845B003D6410 /* EditSubPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33B20527A1845B003D6410 /* EditSubPostViewController.swift */; };
+		BE33B20827A188D9003D6410 /* CreateSubPostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33B20727A188D9003D6410 /* CreateSubPostContentView.swift */; };
+		BE33B20A27A19BC5003D6410 /* SubPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33B20927A19BC5003D6410 /* SubPostViewModel.swift */; };
 		BE50BFF7279BE9EC00876D10 /* PostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFF6279BE9EC00876D10 /* PostContentView.swift */; };
 		BE50BFF9279BF3A700876D10 /* SubPostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFF8279BF3A700876D10 /* SubPostContentView.swift */; };
 		BE50BFFD279C6B1D00876D10 /* SharedPostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFFC279C6B1D00876D10 /* SharedPostContentView.swift */; };
@@ -274,6 +278,10 @@
 		BE1F75B02785895000E51A28 /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+BottomSpinner.swift"; sourceTree = "<group>"; };
 		BE1F75B42785D2C600E51A28 /* InfoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoButton.swift; sourceTree = "<group>"; };
+		BE33B20327A17B8A003D6410 /* EditPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPostViewController.swift; sourceTree = "<group>"; };
+		BE33B20527A1845B003D6410 /* EditSubPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSubPostViewController.swift; sourceTree = "<group>"; };
+		BE33B20727A188D9003D6410 /* CreateSubPostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSubPostContentView.swift; sourceTree = "<group>"; };
+		BE33B20927A19BC5003D6410 /* SubPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostViewModel.swift; sourceTree = "<group>"; };
 		BE50BFF6279BE9EC00876D10 /* PostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentView.swift; sourceTree = "<group>"; };
 		BE50BFF8279BF3A700876D10 /* SubPostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostContentView.swift; sourceTree = "<group>"; };
 		BE50BFFC279C6B1D00876D10 /* SharedPostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPostContentView.swift; sourceTree = "<group>"; };
@@ -530,6 +538,7 @@
 			isa = PBXGroup;
 			children = (
 				BE7D1DF6277D975000E080E3 /* PHPickerViewModel.swift */,
+				BE33B20927A19BC5003D6410 /* SubPostViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -792,6 +801,8 @@
 			isa = PBXGroup;
 			children = (
 				77E12FA32769A98900B8F191 /* CreatePostViewController.swift */,
+				BE33B20527A1845B003D6410 /* EditSubPostViewController.swift */,
+				BE33B20327A17B8A003D6410 /* EditPostViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -801,6 +812,7 @@
 			children = (
 				77E12FA12769A97800B8F191 /* CreatePostView.swift */,
 				BE05C37D2799D5E5005471BD /* AuthorHeaderView.swift */,
+				BE33B20727A188D9003D6410 /* CreateSubPostContentView.swift */,
 				BE05C37F2799D75E005471BD /* ScopeButton.swift */,
 			);
 			path = Views;
@@ -1061,6 +1073,7 @@
 				BE50BFF9279BF3A700876D10 /* SubPostContentView.swift in Sources */,
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
 				BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */,
+				BE33B20427A17B8A003D6410 /* EditPostViewController.swift in Sources */,
 				B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */,
 				BE0D4383278D498200E2162F /* SubPostsViewController.swift in Sources */,
 				B85D67F22784B5A5002CCC04 /* CommentCell.swift in Sources */,
@@ -1068,6 +1081,7 @@
 				B897A8FE274E303600FB67D3 /* AppDelegate.swift in Sources */,
 				7754B87B2782A0CC00775D81 /* EditUsernameViewController.swift in Sources */,
 				7754B867277DB05800775D81 /* TextViewTableViewCell.swift in Sources */,
+				BE33B20827A188D9003D6410 /* CreateSubPostContentView.swift in Sources */,
 				BE0D437B278AE0F100E2162F /* UserDispatcher.swift in Sources */,
 				77B635422768B2C100C41EB3 /* DetailProfileView.swift in Sources */,
 				BE9C7C90276C71DB0089247F /* InteractionButtons.swift in Sources */,
@@ -1173,6 +1187,7 @@
 				B86194F4275DC49100957BBC /* EnterBirthdateViewController.swift in Sources */,
 				BE0D439627904D6B00E2162F /* SearchResultCell.swift in Sources */,
 				BEA834AE275123FD00D6EC95 /* Endpoint.swift in Sources */,
+				BE33B20627A1845B003D6410 /* EditSubPostViewController.swift in Sources */,
 				BE1F75B12785895000E51A28 /* Spinner.swift in Sources */,
 				77FE728D2777512000482CE7 /* DateSelectTableViewCell.swift in Sources */,
 				BE6F630027A0233900F62111 /* UIViewController+PostCellConfig.swift in Sources */,
@@ -1183,6 +1198,7 @@
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
 				B846BDB42759250400513B77 /* BaseSignUpView.swift in Sources */,
 				BE0D437D278AF1E500E2162F /* CommentDispatcher.swift in Sources */,
+				BE33B20A27A19BC5003D6410 /* SubPostViewModel.swift in Sources */,
 				B8A7F8302761FC5F00F659D2 /* EnterPasswordView.swift in Sources */,
 				774094382750E57100AD8DC2 /* MainProfileTableViewCell.swift in Sources */,
 				B821C061279487D7000BA22D /* Endpoint+Account.swift in Sources */,

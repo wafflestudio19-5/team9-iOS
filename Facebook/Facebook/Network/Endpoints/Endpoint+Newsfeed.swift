@@ -31,7 +31,8 @@ extension Endpoint {
             
             // subcontents의 내용을 추가
             for subcontent in subcontents {
-                formData.append(subcontent.data(using: .utf8)!, withName: "subposts")
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["content": subcontent], options: .prettyPrinted) else { continue }
+                formData.append(jsonData, withName: "subposts")
             }
             
             // 각 file을 추가
