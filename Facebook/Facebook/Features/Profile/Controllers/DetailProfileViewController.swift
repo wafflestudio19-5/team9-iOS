@@ -43,12 +43,14 @@ class DetailProfileViewController<View: DetailProfileView>: UIViewController, UI
             cell.configureCell(image: image, information: information)
             
             if self.userId == UserDefaultsManager.cachedUser?.id {
-                cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                    guard let informationType = informationType else { return }
-                    
-                    let addInformationViewController = AddInformationViewController(informationType: informationType)
-                    self?.push(viewController: addInformationViewController)
-                }).disposed(by: cell.disposeBag)
+                cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                    .when(.recognized)
+                        .subscribe(onNext: { [weak self] _ in
+                        guard let informationType = informationType else { return }
+                        
+                        let addInformationViewController = AddInformationViewController(informationType: informationType)
+                        self?.push(viewController: addInformationViewController)
+                    }).disposed(by: cell.disposeBag)
             }
             
             return cell

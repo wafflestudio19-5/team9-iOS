@@ -59,51 +59,53 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 break
             }
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                
-                var selectInformationViewController: SelectInformationViewController<SelectInformationView>
-                switch style {
-                case .company:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style, information: self.companyInformation.name ?? "")
-                case .university:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style, information: self.universityInformation.name ?? "")
-                default:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style)
-                }
-                
-                //SelectInformationViewContoller로 부터 데이터를 받음
-                selectInformationViewController.selectedInformation
-                    .observe(on: MainScheduler.instance)
-                    .subscribe(onNext: { [weak self] information in
-                        guard let self = self else { return }
-                        
-                        self.name.accept(information)
-                        
-                        switch self.informationType {
-                        case .company:
-                            self.companyInformation.name = information
-                            if self.companyInformation.is_active == nil {
-                                self.companyInformation.is_active = true
-                                self.createActiveSection()
-                            } else {
-                                (self.companyInformation.is_active ?? true) ?
-                                    self.createActiveSection() : self.createNotActiveSection()
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    
+                    var selectInformationViewController: SelectInformationViewController<SelectInformationView>
+                    switch style {
+                    case .company:
+                        selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style, information: self.companyInformation.name ?? "")
+                    case .university:
+                        selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style, information: self.universityInformation.name ?? "")
+                    default:
+                        selectInformationViewController = SelectInformationViewController(cellType: .withImage, informationType: style)
+                    }
+                    
+                    //SelectInformationViewContoller로 부터 데이터를 받음
+                    selectInformationViewController.selectedInformation
+                        .observe(on: MainScheduler.instance)
+                        .subscribe(onNext: { [weak self] information in
+                            guard let self = self else { return }
+                            
+                            self.name.accept(information)
+                            
+                            switch self.informationType {
+                            case .company:
+                                self.companyInformation.name = information
+                                if self.companyInformation.is_active == nil {
+                                    self.companyInformation.is_active = true
+                                    self.createActiveSection()
+                                } else {
+                                    (self.companyInformation.is_active ?? true) ?
+                                        self.createActiveSection() : self.createNotActiveSection()
+                                }
+                            case .university:
+                                self.universityInformation.name = information
+                                if self.universityInformation.is_active == nil {
+                                    self.universityInformation.is_active = true
+                                    self.createActiveSection()
+                                } else {
+                                    (self.universityInformation.is_active ?? true) ?
+                                        self.createActiveSection() : self.createNotActiveSection()
+                                }
                             }
-                        case .university:
-                            self.universityInformation.name = information
-                            if self.universityInformation.is_active == nil {
-                                self.universityInformation.is_active = true
-                                self.createActiveSection()
-                            } else {
-                                (self.universityInformation.is_active ?? true) ?
-                                    self.createActiveSection() : self.createNotActiveSection()
-                            }
-                        }
-                    }).disposed(by: cell.disposeBag)
-                
-                self.push(viewController: selectInformationViewController)
-            }).disposed(by: cell.disposeBag)
+                        }).disposed(by: cell.disposeBag)
+                    
+                    self.push(viewController: selectInformationViewController)
+                }).disposed(by: cell.disposeBag)
             
             cell.deleteButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
@@ -153,46 +155,48 @@ class AddInformationViewController<View: AddInformationView>: UIViewController, 
                 break
             }
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                var selectInformationViewController: SelectInformationViewController<SelectInformationView>
-                switch style {
-                case .role:
-                    selectInformationViewController =  SelectInformationViewController(cellType: .withoutImage, informationType: style, information: self.companyInformation.role ?? "" )
-                case .location:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style, information: self.companyInformation.location ?? "" )
-                case .major:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style, information: self.universityInformation.major ?? "" )
-                default:
-                    selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style)
-                }
-                
-                //SelectInformationViewContoller로 부터 데이터를 받음
-                selectInformationViewController.selectedInformation
-                    .observe(on: MainScheduler.instance)
-                    .subscribe(onNext: { [weak self] information in
-                        guard let self = self else { return }
-                        
-                        switch style {
-                        case .role:
-                            self.companyInformation.role = information
-                            (self.companyInformation.is_active ?? true) ?
-                                self.createActiveSection() : self.createNotActiveSection()
-                        case .location:
-                            self.companyInformation.location = information
-                            (self.companyInformation.is_active ?? true) ?
-                                self.createActiveSection() : self.createNotActiveSection()
-                        case .major:
-                            self.universityInformation.major = information
-                            (self.universityInformation.is_active ?? true) ?
-                                self.createActiveSection() : self.createNotActiveSection()
-                        default:
-                            break
-                        }
-                    }).disposed(by: cell.disposeBag)
-                
-                self.push(viewController: selectInformationViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    var selectInformationViewController: SelectInformationViewController<SelectInformationView>
+                    switch style {
+                    case .role:
+                        selectInformationViewController =  SelectInformationViewController(cellType: .withoutImage, informationType: style, information: self.companyInformation.role ?? "" )
+                    case .location:
+                        selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style, information: self.companyInformation.location ?? "" )
+                    case .major:
+                        selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style, information: self.universityInformation.major ?? "" )
+                    default:
+                        selectInformationViewController = SelectInformationViewController(cellType: .withoutImage, informationType: style)
+                    }
+                    
+                    //SelectInformationViewContoller로 부터 데이터를 받음
+                    selectInformationViewController.selectedInformation
+                        .observe(on: MainScheduler.instance)
+                        .subscribe(onNext: { [weak self] information in
+                            guard let self = self else { return }
+                            
+                            switch style {
+                            case .role:
+                                self.companyInformation.role = information
+                                (self.companyInformation.is_active ?? true) ?
+                                    self.createActiveSection() : self.createNotActiveSection()
+                            case .location:
+                                self.companyInformation.location = information
+                                (self.companyInformation.is_active ?? true) ?
+                                    self.createActiveSection() : self.createNotActiveSection()
+                            case .major:
+                                self.universityInformation.major = information
+                                (self.universityInformation.is_active ?? true) ?
+                                    self.createActiveSection() : self.createNotActiveSection()
+                            default:
+                                break
+                            }
+                        }).disposed(by: cell.disposeBag)
+                    
+                    self.push(viewController: selectInformationViewController)
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .TextFieldItem(text):
