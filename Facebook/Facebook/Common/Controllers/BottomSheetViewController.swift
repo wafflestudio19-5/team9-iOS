@@ -92,7 +92,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
             self.bottomSheetView.dimmedView.alpha = 0.0
-            self.bottomSheetView.contentView.layoutIfNeeded()
+            self.bottomSheetView.layoutIfNeeded()
         }) { _ in
             if self.presentingViewController != nil {
             self.dismiss(animated: false, completion: nil)
@@ -116,6 +116,12 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         tableView.rx.modelSelected(Menu.self)
             .subscribe(onNext: { [weak self] menu in
                 self?.hideBottomSheet(afterAction: menu.action)
+            }).disposed(by: disposeBag)
+        
+        bottomSheetView.dimmedView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(onNext: { [weak self] _ in
+                self?.hideBottomSheet()
             }).disposed(by: disposeBag)
         
         view.rx
