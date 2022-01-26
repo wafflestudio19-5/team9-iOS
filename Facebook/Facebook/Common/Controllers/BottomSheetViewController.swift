@@ -67,7 +67,8 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     private func setInitialTopConstant() {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
-        bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight + bottomPadding
+        bottomSheetView.bottomSheetViewTopConstraint = bottomSheetView.contentView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: safeAreaHeight + bottomPadding)
+        bottomSheetView.bottomSheetViewTopConstraint.isActive = true
     }
     
     private func showBottomSheet(atState: BottomSheetViewState = .normal) {
@@ -79,8 +80,12 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
             bottomSheetView.bottomSheetViewTopConstraint.constant = bottomSheetPanMinTopConstant
         }
         
+        bottomSheetView.bottomSheetTableView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+        }
+        
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
-            self.bottomSheetView.dimmedView.alpha = 0.5
+            self.bottomSheetView.dimmedView.alpha = 0.4
             self.bottomSheetView.layoutIfNeeded()
         }, completion: nil)
     }
@@ -89,10 +94,11 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = view.safeAreaInsets.bottom
         bottomSheetView.bottomSheetViewTopConstraint.constant = safeAreaHeight + bottomPadding
+        bottomSheetView.bottomSheetTableView.snp.removeConstraints()
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseIn, animations: {
             self.bottomSheetView.dimmedView.alpha = 0.0
-            self.bottomSheetView.contentView.layoutIfNeeded()
+            self.bottomSheetView.layoutIfNeeded()
         }) { _ in
             if self.presentingViewController != nil {
             self.dismiss(animated: false, completion: nil)
@@ -116,6 +122,12 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
         tableView.rx.modelSelected(Menu.self)
             .subscribe(onNext: { [weak self] menu in
                 self?.hideBottomSheet(afterAction: menu.action)
+            }).disposed(by: disposeBag)
+        
+        bottomSheetView.dimmedView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe(onNext: { [weak self] _ in
+                self?.hideBottomSheet()
             }).disposed(by: disposeBag)
         
         view.rx
@@ -175,7 +187,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
     }
     
     private func dimAlphaWithBottomSheetTopConstraint(value: CGFloat) -> CGFloat {
-        let fullDimAlpha: CGFloat = 0.5
+        let fullDimAlpha: CGFloat = 0.4
         
         let safeAreaHeight = view.safeAreaLayoutGuide.layoutFrame.height
         let bottomPadding = self.view.safeAreaInsets.bottom
@@ -192,7 +204,7 @@ class BottomSheetViewController<View: BottomSheetView>: UIViewController {
             return 0.0
         }
         
-        return fullDimAlpha * (1 - ((value - fullDimPosition) / (noDimPosition - fullDimPosition)))
+        return fullDimAlpha * (noDimPosition - value) / (noDimPosition - fullDimPosition)
     }
     
     

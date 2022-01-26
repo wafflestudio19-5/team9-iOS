@@ -10,7 +10,9 @@ import UIKit
 class BottomSheetView: UIView {
     let dimmedView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.darkGray.withAlphaComponent(0.7)
+        view.backgroundColor = .black
+        view.alpha = 0.0
+
         return view
     }()
     
@@ -54,8 +56,6 @@ class BottomSheetView: UIView {
         }
         
         self.addSubview(contentView)
-        bottomSheetViewTopConstraint = contentView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: UIScreen.main.bounds.height)
-        bottomSheetViewTopConstraint.isActive = true
         contentView.snp.makeConstraints { make in
             make.bottom.left.right.equalToSuperview()
         }
@@ -63,7 +63,7 @@ class BottomSheetView: UIView {
         contentView.addSubview(bottomSheetTableView)
         bottomSheetTableView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(15)
-            make.bottom.left.right.equalToSuperview()
+            make.left.right.equalToSuperview()
         }
         
         contentView.addSubview(dragIndicatorView)
