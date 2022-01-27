@@ -33,6 +33,12 @@ class SubPostCaptionContentView: SubPostContentView {
             make.height.equalTo(400).priority(.high)  // default estimated height
         }
         
+        self.addSubview(deleteButton)
+        deleteButton.snp.makeConstraints { make in
+            make.top.trailing.equalToSuperview().inset(15)
+            make.height.width.equalTo(30)
+        }
+        
         self.addSubview(captionTextView)
         captionTextView.snp.makeConstraints { make in
             make.top.equalTo(singleImageView.snp.bottom).offset(CGFloat.standardTopMargin)
@@ -47,6 +53,14 @@ class SubPostCaptionContentView: SubPostContentView {
         textView.placeholder = "설명 추가..."
         textView.font = .systemFont(ofSize: 15)
         return textView
+    }()
+    
+    var deleteButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.image = UIImage(systemName: "xmark")
+        config.baseBackgroundColor = .label.withAlphaComponent(0.7)
+        let button = UIButton(configuration: config)
+        return button
     }()
 
 }

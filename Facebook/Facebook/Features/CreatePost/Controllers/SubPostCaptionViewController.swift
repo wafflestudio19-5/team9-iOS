@@ -88,15 +88,20 @@ class SubPostCaptionViewController: UIViewController {
         }.disposed(by: disposeBag)
         
         subPostViewModel.prefetchedSubposts.bind(to: subpostCaptionView.subpostsTableView.rx.items(cellIdentifier: SubPostCaptionCell.reuseIdentifier, cellType: SubPostCaptionCell.self)) { [weak self] row, data, cell in
-            guard let self = self else { return }
             cell.configure(subpost: data)
             
-            cell.postContentView.captionTextView.rx.text.orEmpty.bind { [weak self] text in
+            cell.postContentView.captionTextView.rx.text.orEmpty.distinctUntilChanged().skip(1).bind { [weak self] text in
                 guard let self = self else { return }
+                print("text",text)
                 self.subPostViewModel.storeContents(row: row, content: text)
                 self.subpostCaptionView.subpostsTableView.beginUpdates()
                 self.subpostCaptionView.subpostsTableView.endUpdates()
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: cell.refreshingBag)
+            
+            cell.postContentView.deleteButton.rx.tap.bind { [weak self] in
+                guard let self = self else { return }
+                self.subPostViewModel.deleteSubpost(subpost: data)
+            }.disposed(by: cell.refreshingBag)
             
         }.disposed(by: disposeBag)
     }

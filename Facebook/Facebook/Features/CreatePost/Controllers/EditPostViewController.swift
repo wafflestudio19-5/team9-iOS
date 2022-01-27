@@ -74,7 +74,7 @@ class EditPostViewController: CreatePostViewController {
                 
                 // load selected images as an array of data
                 self.subPostViewModel.loadSubPostData { subposts in
-                    NetworkService.update(endpoint: .newsfeed(editing: self.postToEdit, subposts: subposts))
+                    NetworkService.update(endpoint: .newsfeed(editing: self.postToEdit, subposts: subposts, removed_subposts: self.subPostViewModel.removed_subposts))
                         .subscribe { event in
                             let request = event.element
                             let progress = request?.uploadProgress

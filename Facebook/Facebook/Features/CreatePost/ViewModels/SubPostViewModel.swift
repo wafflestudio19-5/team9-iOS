@@ -90,6 +90,20 @@ class SubPostViewModel {
         self.subposts.accept(previousSubPosts)
     }
     
+    
+    var removed_subposts: [Int] = []
+    func deleteSubpost(subpost: SubPost) {
+        
+        if let removedId = subpost.id {  // track removal of already created subposts
+            removed_subposts.append(removedId)
+        }
+        let removed = self.subposts.value.filter { prev in
+            return !((prev.id != nil && prev.id == subpost.id) || (prev.pickerId != nil && prev.pickerId == subpost.pickerId))
+        }
+        self.subposts.accept(removed)
+        self.prefetchedSubposts.accept(removed)
+    }
+    
     // TODO: Duplicate
     func loadSubPostData(to pointSize: CGSize? = nil, scale: CGFloat = UIScreen.main.scale, completion: (([SubPost]) -> Void)? = nil) {
         let group = DispatchGroup()

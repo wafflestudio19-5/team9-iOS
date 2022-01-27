@@ -43,7 +43,7 @@ extension Endpoint {
         return Endpoint(path: "newsfeed/", multipartFormDataBuilder: builder)
     }
     
-    static func newsfeed(editing post: Post, subposts: [SubPost]) -> Self {
+    static func newsfeed(editing post: Post, subposts: [SubPost], removed_subposts: [Int] = []) -> Self {
         
         let builder: (MultipartFormData) -> Void = { formData in
             // content를 추가
@@ -66,6 +66,10 @@ extension Endpoint {
             for subcontent in subcontents {
                 guard let jsonData = try? JSONSerialization.data(withJSONObject: ["content": subcontent], options: .prettyPrinted) else { continue }
                 formData.append(jsonData, withName: "new_subposts")
+            }
+            
+            for removedId in removed_subposts {
+                formData.append(removedId.description.data(using: .utf8)!, withName: "removed_subposts")
             }
         }
         return Endpoint(path: "newsfeed/\(post.id)/", multipartFormDataBuilder: builder)
