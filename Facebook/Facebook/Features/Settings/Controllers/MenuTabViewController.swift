@@ -13,7 +13,7 @@ import RxCocoa
 class MenuTabViewController: BaseTabViewController<MenuTabView> {
 
     private let isProcessing = BehaviorRelay(value: false)
-    private var workType: MenuTabView.WorkType = .deletion
+    private var workType: AuthManager.WorkType = .deletion
     
     override func viewDidLoad() {
         super.viewDidLoad()

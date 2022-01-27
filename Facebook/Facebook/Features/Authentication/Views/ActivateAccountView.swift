@@ -35,7 +35,10 @@ class ActivateAccountView: UIView {
     }()
     
     lazy var verificationButton = RectangularSlimButton(title: "인증 완료", titleColor: .white, backgroundColor: .tintColors.blue)
-    lazy var returnButton = RectangularSlimButton(title: "돌아가기", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
+    lazy var logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
+    lazy var deleteAccountButton = RectangularSlimButton(title: "회원 탈퇴", titleColor: .red, backgroundColor: .white, highlightColor: .systemGray6)
+    
+    lazy var alertSpinner = AlertWithSpinner(message: "")
     
     /// todo: 로그아웃, 회원탈퇴 버튼 추가
 
@@ -55,6 +58,10 @@ class ActivateAccountView: UIView {
         subContentLabel.text = "이메일이 도착하지 않았나요?\n\n이메일이 전송되는 데 약 1분의 시간이 소요됩니다.\n이후에도 메일을 받지 못하셨다면 스팸메일함이나 스마트메일함 등을 확인해주시기 바랍니다."
     }
     
+    func activateAlertSpinner(workType: AuthManager.WorkType, at viewController: UIViewController) {
+        alertSpinner.start(viewController: viewController, message: workType.getMessage())
+    }
+    
     private func makeBold(originalText: String, range: String) -> NSMutableAttributedString {
         let attributedString = NSMutableAttributedString(string: originalText)
         attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 14.0, weight: .semibold), range: (originalText as NSString).range(of: "\(range)"))
@@ -67,7 +74,8 @@ class ActivateAccountView: UIView {
         self.addSubview(contentLabel)
         self.addSubview(subContentLabel)
         self.addSubview(verificationButton)
-        self.addSubview(returnButton)
+        self.addSubview(logoutButton)
+        self.addSubview(deleteAccountButton)
         
         backgroundImage.snp.makeConstraints { make in
             make.centerX.equalTo(self)
@@ -90,8 +98,13 @@ class ActivateAccountView: UIView {
             make.left.right.equalTo(self.safeAreaLayoutGuide).inset(18)
         }
         
-        returnButton.snp.makeConstraints { make in
+        logoutButton.snp.makeConstraints { make in
             make.top.equalTo(verificationButton.snp.bottom).offset(10)
+            make.left.right.equalTo(self.safeAreaLayoutGuide).inset(18)
+        }
+        
+        deleteAccountButton.snp.makeConstraints { make in
+            make.top.equalTo(logoutButton.snp.bottom).offset(10)
             make.left.right.equalTo(self.safeAreaLayoutGuide).inset(18)
         }
     }

@@ -10,18 +10,6 @@ import SnapKit
 
 class MenuTabView: UIView {
     
-    enum WorkType {
-        case logout
-        case deletion
-        
-        func getMessage() -> String {
-            switch self {
-            case .logout: return "로그아웃 중입니다..."
-            case .deletion: return "회원탈퇴 중입니다..."
-            }
-        }
-    }
-    
     let largeTitleLabel = UILabel()
     
     let logoutButton = RectangularSlimButton(title: "로그아웃", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
@@ -45,7 +33,7 @@ class MenuTabView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func activateAlertSpinner(workType: WorkType, at viewController: UIViewController) {
+    func activateAlertSpinner(workType: AuthManager.WorkType, at viewController: UIViewController) {
         alertSpinner.start(viewController: viewController, message: workType.getMessage())
     }
     

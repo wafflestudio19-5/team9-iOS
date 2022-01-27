@@ -11,6 +11,18 @@ struct AuthManager {
     
     static let disposeBag = DisposeBag()
     
+    enum WorkType {
+        case logout
+        case deletion
+        
+        func getMessage() -> String {
+            switch self {
+            case .logout: return "로그아웃 중입니다..."
+            case .deletion: return "회원탈퇴 중입니다..."
+            }
+        }
+    }
+    
     /// 회원가입
     static func signup(user: NewUser) -> Single<Bool> {
         return Single<Bool>.create { (result) -> Disposable in
