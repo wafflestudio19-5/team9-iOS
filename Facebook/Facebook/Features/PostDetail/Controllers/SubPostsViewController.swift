@@ -148,6 +148,11 @@ class SubPostsViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        mainPostView.commentButton.rx.tap.bind { [weak self] _ in
+            guard let self = self else { return }
+            self.presentCommentModalVC(to: self.post)
+        }.disposed(by: disposeBag)
+        
         mainPostView.shareButton.rx.tap
             .bind { [weak self] _ in
                 guard let self = self else { return }
