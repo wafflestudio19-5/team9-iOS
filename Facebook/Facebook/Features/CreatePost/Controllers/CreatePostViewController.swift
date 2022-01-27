@@ -176,7 +176,9 @@ class CreatePostViewController: UIViewController {
         subPostViewModel.subposts
             .map { $0.prefix(5) }
             .bind(to: createPostView.imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
-                if let pickerData = data.pickerResult {
+                if let image = data.prefetchedImage {
+                    cell.displayImage(image)
+                } else if let pickerData = data.pickerResult {
                     cell.displayMedia(from: pickerData)
                 } else if let urlString = data.imageUrl {
                     cell.displayMedia(from: URL(string: urlString))

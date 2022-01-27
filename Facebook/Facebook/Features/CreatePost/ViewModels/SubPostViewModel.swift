@@ -55,6 +55,9 @@ class SubPostViewModel {
         // Prefetch PHPickerResult
         var subpostsList = self.subposts.value
         for (index, subpost) in subposts.value.enumerated() {
+            if subpostsList[index].prefetchedImage != nil {
+                continue
+            }
             group.enter()
             subpost.pickerResult?.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
                 guard let image = image as? UIImage else { return }
