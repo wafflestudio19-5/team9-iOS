@@ -730,56 +730,44 @@ extension ProfileTabViewController {
     
     //친구 요청
     func friendRequest() {
-        NetworkService.post(endpoint: .friendRequest(id: self.userId), as: FriendRequestCreate.self)
-            .subscribe { [weak self] event in
+        FriendRequestManager.makeRequest(to: self.userId)
+            .subscribe { [weak self] success in
                 guard let self = self else { return }
-                
-                if event.isCompleted {
-                    return
-                }
-                
-                if event.element?.1 == nil {
-                    self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                } else {
+                switch success {
+                case .success(true):
                     self.userProfile?.friend_info = "sent"
                     self.createSection()
+                default:
+                    self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: disposeBag)
     }
     
     func acceptFriendRequest() {
-        NetworkService.put(endpoint: .friendRequest(id: self.userId))
-            .subscribe { [weak self] event in
+        FriendRequestManager.acceptRequest(from: self.userId)
+            .subscribe { [weak self] success in
                 guard let self = self else { return }
-                
-                if event.isCompleted {
-                    return
-                }
-                
-                if event.element as? String != "수락 완료되었습니다." {
-                    self.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                } else {
+                switch success {
+                case .success(true):
                     self.userProfile?.friend_info = "friend"
                     self.createSection()
+                default:
+                    self.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: disposeBag)
     }
     
     func deleteFriendRequest() {
-        NetworkService.delete(endpoint: .friendRequest(id: self.userId))
-            .subscribe{ [weak self] event in
+        FriendRequestManager.deleteRequest(from: self.userId)
+            .subscribe { [weak self] success in
                 guard let self = self else { return }
-                
-                if event.isCompleted {
-                    return
-                }
-                
-                if !(event.element is NSNull) {
-                    self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                } else {
+                switch success {
+                case .success(true):
                     self.userProfile?.friend_info = "nothing"
                     self.createSection()
+                default:
+                    self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: disposeBag)
     }
 }
