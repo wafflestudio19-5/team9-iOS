@@ -38,3 +38,10 @@ struct Comment: Codable, Identifiable {
         }
     }
 }
+
+/// 댓글 알림을 받아올 때 이용되는 댓글 모델입니다.
+struct SimpleComment: Codable, Identifiable {
+    let id: Int
+    let content: String
+    let is_file: String?
+}

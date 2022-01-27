@@ -193,54 +193,42 @@ extension ShowFriendViewController {
 extension ShowFriendViewController {
     //친구 요청
     func friendRequest(friend: User) {
-        NetworkService.post(endpoint: .friendRequest(id: friend.id), as: FriendRequestCreate.self)
-            .subscribe { [weak self] event in
+        FriendRequestManager.makeRequest(to: friend.id)
+            .subscribe { [weak self] success in
                 guard let self = self else { return }
-                
-                if event.isCompleted {
-                    return
-                }
-                
-                if event.element?.1 == nil {
-                    self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                } else {
+                switch success {
+                case .success(true):
                     self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "sent"))
+                default:
+                    self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: disposeBag)
     }
     
     func acceptFriendRequest(friend: User) {
-        NetworkService.put(endpoint: .friendRequest(id: friend.id))
-            .subscribe { [weak self] event in
+        FriendRequestManager.acceptRequest(from: friend.id)
+            .subscribe { [weak self] success in
                 guard let self = self else { return }
-                
-                if event.isCompleted {
-                    return
-                }
-                
-                if event.element as? String != "수락 완료되었습니다." {
-                    self.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                } else {
+                switch success {
+                case .success(true):
                     self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "friend"))
+                default:
+                    self.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: disposeBag)
     }
     
     func deleteFriendRequest(friend: User) {
-        NetworkService.delete(endpoint: .friendRequest(id: friend.id))
-            .subscribe{ [weak self] event in
+        FriendRequestManager.deleteRequest(from: friend.id)
+            .subscribe { [weak self] success in
                 guard let self = self else { return }
-                
-                if event.isCompleted {
-                    return
-                }
-                
-                if !(event.element is NSNull) {
-                    self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                } else {
+                switch success {
+                case .success(true):
                     self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "nothing"))
+                default:
+                    self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: disposeBag)
     }
     
     func deleleFriend(friend: User) {

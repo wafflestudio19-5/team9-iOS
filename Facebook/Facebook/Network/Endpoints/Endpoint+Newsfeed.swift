@@ -7,7 +7,6 @@
 
 import Foundation
 import Alamofire
-import SwiftUI
 
 extension Endpoint {
     static func newsfeed(cursor: String? = nil) -> Self {
