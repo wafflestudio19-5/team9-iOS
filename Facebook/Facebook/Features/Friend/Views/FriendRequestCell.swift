@@ -77,7 +77,7 @@ class FriendRequestCell: UITableViewCell {
         
         contentView.addSubview(timeLabel)
         timeLabel.snp.remakeConstraints { make in
-            make.top.equalToSuperview().inset(10)
+            make.centerY.equalTo(nameLabel)
             make.right.equalToSuperview().inset(10)
         }
     }
