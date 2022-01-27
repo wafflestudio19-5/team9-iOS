@@ -374,6 +374,31 @@ extension PostDetailViewController {
                 self.navigationController?.popViewController(animated: true)
             }
             .disposed(by: disposeBag)
+        
+        
+        let authorNameTapped = postView.authorHeaderView.authorNameLabel.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)  // not working...
+        let profileImageTapped = postView.authorHeaderView.profileImageView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)
+        Observable.of(authorNameTapped, profileImageTapped)
+            .merge()
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let profileVC = ProfileTabViewController(userId: self.post.author?.id)
+                self.push(viewController: profileVC)
+            }
+            .disposed(by: disposeBag)
+        
+        let sharedAuthorNameTapped = postView.postContentHeaderView.postContentView.sharedPostView.postHeader.authorNameLabel.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)  // not working...
+        let sharedProfileImageTapped = postView.postContentHeaderView.postContentView.sharedPostView.postHeader.profileImageView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)
+        Observable.of(sharedAuthorNameTapped, sharedProfileImageTapped)
+            .merge()
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let profileVC = ProfileTabViewController(userId: self.post.shared_post?.author.id)
+                self.push(viewController: profileVC)
+            }
+            .disposed(by: disposeBag)
+        
+        
     }
     
     
