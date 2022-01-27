@@ -26,16 +26,16 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
         
         cell.detailButton.rx.tap.bind { [weak self] in
             self?.didTapDeleteButton(notification: notification)
-        }.disposed(by: self.disposeBag)
+        }.disposed(by: cell.disposeBag)
         
         /// 친구 요청(FriendRequest) 알림일 때는 확인, 삭제 버튼에 대한 기능 binding
         if notification.content == .FriendRequest {
             cell.acceptButton.rx.tap.bind { [weak self] in
                 self?.acceptFriendRequest(from: notification)
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: cell.disposeBag)
             cell.deleteButton.rx.tap.bind { [weak self] in
                 self?.deleteFriendRequest(from: notification)
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: cell.disposeBag)
         }
         
         return cell
@@ -228,26 +228,26 @@ extension NotificationTabViewController {
     }
     
     private func acceptFriendRequest(from notification: Notification) {
-        NetworkService.put(endpoint: .friendRequest(id: notification.sender_preview.id), as: String.self)
-            .subscribe (onNext: { response in
-                // 요청 수락
-                if response.0.statusCode == 200 {
+        FriendRequestManager.acceptRequest(from: notification.sender_preview.id)
+            .subscribe { [weak self] success in
+                switch success {
+                case .success(true):
                     StateManager.of.notification.dispatch(accept: notification)
+                default:
+                    self?.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
-            }, onError: { [weak self] _ in
-                self?.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-            }).disposed(by: disposeBag)
+            }.disposed(by: disposeBag)
     }
     
     private func deleteFriendRequest(from notification: Notification) {
-        NetworkService.delete(endpoint: .friendRequest(id: notification.sender_preview.id), as: String.self)
-            .subscribe (onNext: { [weak self] response in
-                // 요청 거절
-                if response.0.statusCode == 204 {
+        FriendRequestManager.deleteRequest(from: notification.sender_preview.id)
+            .subscribe { [weak self] success in
+                switch success {
+                case .success(true):
                     self?.delete(notification: notification)
+                default:
+                    self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
-            }, onError: { [weak self] _ in
-                self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-            }).disposed(by: disposeBag)
+            }.disposed(by: disposeBag)
     }
 }
