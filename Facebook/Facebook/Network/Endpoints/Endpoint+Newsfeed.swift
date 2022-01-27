@@ -51,20 +51,22 @@ extension Endpoint {
             formData.append((post.scope?.rawValue ?? 1).description.data(using: .utf8)!, withName: "scope")
             
             for subpost in subposts {
-                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["id": subpost.id!, "content": subpost.content ?? ""]) else { continue }
+                guard let subpostId = subpost.id else { continue }
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["id": subpostId, "content": subpost.content ?? ""]) else { continue }
                 formData.append(jsonData, withName: "subposts")
             }
             
-//            // subcontents의 내용을 추가
-//            for subcontent in subcontents {
-//                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["content": subcontent], options: .prettyPrinted) else { continue }
-//                formData.append(jsonData, withName: "subposts")
-//            }
-//
-//            // 각 file을 추가
-//            for i in 0..<filesCount {
-//                formData.append(files[i], withName: "file", fileName: "\(Date().timeIntervalSince1970).jpeg" , mimeType: "image/jpeg")
-//            }
+            // 추가되는 이미지
+            let files = subposts.map {$0.data}.compactMap{$0}
+            let subcontents = subposts.map {$0.data != nil ? $0.content ?? "" : nil}.compactMap{$0}
+            assert(files.count == subcontents.count)
+            for i in 0..<files.count {
+                formData.append(files[i], withName: "file", fileName: "\(Date().timeIntervalSince1970).jpeg" , mimeType: "image/jpeg")
+            }
+            for subcontent in subcontents {
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["content": subcontent], options: .prettyPrinted) else { continue }
+                formData.append(jsonData, withName: "new_subposts")
+            }
         }
         return Endpoint(path: "newsfeed/\(post.id)/", multipartFormDataBuilder: builder)
     }

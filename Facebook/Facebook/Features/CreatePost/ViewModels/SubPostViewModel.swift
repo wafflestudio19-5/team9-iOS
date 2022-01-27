@@ -79,6 +79,17 @@ class SubPostViewModel {
         subposts.accept(subpostList)
     }
     
+    func acceptNewSubposts(subposts: [SubPost]) {
+        var previousSubPosts = self.subposts.value
+        for subpost in subposts {
+            guard let _ = previousSubPosts.firstIndex(where: { prev in prev.pickerId == subpost.pickerId }) else {
+                previousSubPosts.append(subpost)
+                continue
+            }
+        }
+        self.subposts.accept(previousSubPosts)
+    }
+    
     // TODO: Duplicate
     func loadSubPostData(to pointSize: CGSize? = nil, scale: CGFloat = UIScreen.main.scale, completion: (([SubPost]) -> Void)? = nil) {
         let group = DispatchGroup()

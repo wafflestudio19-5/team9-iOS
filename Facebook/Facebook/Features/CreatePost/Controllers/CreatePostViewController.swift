@@ -133,7 +133,7 @@ class CreatePostViewController: UIViewController {
                 self.subPostViewModel.loadSubPostData { subposts in
                     NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "",
                                                               files: subposts.map{$0.data}.compactMap{$0},
-                                                              subcontents: subposts.map{$0.content}.compactMap{$0},
+                                                              subcontents: subposts.map{$0.content ?? ""},
                                                               scope: self.createPostView.createHeaderView.selectedScope,
                                                               sharing: self.postToShare?.id
                                                              ))
@@ -171,7 +171,10 @@ class CreatePostViewController: UIViewController {
         pickerViewModel.pickerResults
             .map { [weak self] in self?.subPostViewModel.convertPickerToSubposts(results: $0) }
             .compactMap { $0 }
-            .bind(to: subPostViewModel.subposts)
+            .bind { [weak self] pickerSubposts in
+                guard let self = self else { return }
+                self.subPostViewModel.acceptNewSubposts(subposts: pickerSubposts)
+            }
             .disposed(by: disposeBag)
     }
     

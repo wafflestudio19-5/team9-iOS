@@ -24,9 +24,9 @@ class EditPostViewController: CreatePostViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "게시물 수정"
+        configure(with: postToEdit)
         bindSubPostsData()
         bindEditing()
-        configure(with: postToEdit)
     }
     
     func configure(with post: Post) {

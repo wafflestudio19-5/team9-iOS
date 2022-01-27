@@ -67,10 +67,6 @@ class PostDispatcher: Dispatcher<Post> {
             }
         }
         
-        if loop > 0 {
-            print("@PostDispatcher.edit:", loop)
-        }
-        
         if found {
             dataSource.accept(dataList)
         }
