@@ -32,12 +32,25 @@ class ActivateAccountViewController<View: ActivateAccountView>: UIViewController
     
     private func bind() {
         customView.verificationButton.rx.tap.bind { [weak self] _ in
-            // active 유저인지 확인
-            print(UserDefaultsManager.isValid)
+            self?.checkAccountStatus()
         }.disposed(by: disposeBag)
         
         customView.returnButton.rx.tap.bind { [weak self] _ in
             self?.changeRootViewController(to: LoginViewController(), wrap: true)
         }.disposed(by: disposeBag)
+    }
+}
+
+extension ActivateAccountViewController {
+    private func checkAccountStatus() {
+        AuthManager.check()
+            .subscribe { [weak self] success in
+                switch success {
+                case .success(true):
+                    UserDefaultsManager.isLoggedIn = true
+                    self?.changeRootViewController(to: RootTabBarController())
+                default: self?.alert(title: "활성화되지 않음", message: "계정이 활성화되지 않았습니다. 이메일을 확인해주세요.", action: "확인")
+                }
+            }.disposed(by: disposeBag)
     }
 }
