@@ -11,7 +11,7 @@ import RxCocoa
 import RxDataSources
 import RxGesture
 
-class NotificationTabViewController: BaseTabViewController<NotificationTabView>, UITableViewDelegate, UIScrollViewDelegate {
+class NotificationTabViewController: BaseTabViewController<NotificationTabView>, UIScrollViewDelegate {
 
     var tableView: UITableView {
         tabView.notificationTableView
@@ -171,24 +171,6 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
 }
 
 extension NotificationTabViewController {
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderViewWithTitle.reuseIdentifier) as? HeaderViewWithTitle else {
-            return UITableViewHeaderFooterView()
-        }
-        
-        if sections[section].model == "새로운 알림" {
-            header.setTitle(as: "새로운 알림")
-        } else {
-            header.setTitle(as: "이전 알림")
-        }
-        
-        return header
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40.0
-    }
-    
     private func configure(cell: NotificationCell, with notification: Notification) {
         cell.configure(with: notification)
         
@@ -249,5 +231,25 @@ extension NotificationTabViewController {
                     self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
             }.disposed(by: disposeBag)
+    }
+}
+
+extension NotificationTabViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderViewWithTitle.reuseIdentifier) as? HeaderViewWithTitle else {
+            return UITableViewHeaderFooterView()
+        }
+        
+        if sections[section].model == "새로운 알림" {
+            header.setTitle(as: "새로운 알림")
+        } else {
+            header.setTitle(as: "이전 알림")
+        }
+        
+        return header
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40.0
     }
 }
