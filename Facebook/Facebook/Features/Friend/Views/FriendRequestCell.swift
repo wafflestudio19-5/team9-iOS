@@ -74,6 +74,12 @@ class FriendRequestCell: UITableViewCell {
         verticalStackView.addArrangedSubview(mutualFriendsLabel)
         verticalStackView.addArrangedSubview(horizontalStackView)
         mutualFriendsLabel.isHidden = true
+        
+        contentView.addSubview(timeLabel)
+        timeLabel.snp.remakeConstraints { make in
+            make.top.equalTo(nameLabel)
+            make.right.equalToSuperview().inset(10)
+        }
     }
     
     func updateState(isAccepted: Bool) {
@@ -99,6 +105,14 @@ class FriendRequestCell: UITableViewCell {
         stackView.spacing = 10
         
         return stackView
+    }()
+    
+    private let timeLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14)
+        label.textColor = .gray
+        
+        return label
     }()
     
     private let nameLabel: UILabel = {
@@ -164,5 +178,30 @@ extension FriendRequestCell {
             .fade(duration: 0.1)
             .onFailure { error in print("프로필 이미지 로딩 실패", error)}
             .set(to: self.profileImage)
+    }
+    
+    func setTimeLabel(time: String) {
+        if time == "" { return }
+        let timeString = String(time.split(separator: "T")[0] + " " + (time.split(separator: "T")[1]).split(separator: ".")[0])
+        var dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        guard let date = dateFormatter.date(from: timeString) else { return }
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let timeGap = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: currentDate, to: date)
+        if (timeGap.year ?? 0) > 0 {
+            timeLabel.text = "\(timeGap.year ?? 0)년 전"
+        } else if (timeGap.month ?? 0) > 0 {
+            timeLabel.text = "\(timeGap.month ?? 0)개월 전 "
+        } else if (timeGap.day ?? 0) > 0 {
+            timeLabel.text = "\(timeGap.day ?? 0)일 전 "
+        } else if (timeGap.hour ?? 0) > 0 {
+            timeLabel.text = "\(timeGap.hour ?? 0)시간 전 "
+        } else if (timeGap.minute ?? 0) > 0 {
+            timeLabel.text = "\(timeGap.minute ?? 0)분 전 "
+        } else {
+            timeLabel.text = "방금 전"
+        }
     }
 }

@@ -43,6 +43,7 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
             .bind(to: tableView.rx.items(cellIdentifier: FriendRequestCell.reuseIdentifier, cellType: FriendRequestCell.self)) { [weak self] row, requestFriend, cell in
                 guard let self = self else { return }
                 cell.configureCell(with: requestFriend.sender_profile)
+                cell.setTimeLabel(time: requestFriend.created ?? "")
                 
                 cell.acceptButton.rx.tap
                     .bind { [weak self] _ in
