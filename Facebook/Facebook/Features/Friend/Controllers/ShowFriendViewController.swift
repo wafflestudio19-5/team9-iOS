@@ -102,9 +102,12 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
                 } else {
                     self.friendViewModel.refresh()
                 }
-                
-                self.setTableViewBackground()
             }).disposed(by: disposeBag)
+        
+        friendViewModel.dataList
+            .bind { [weak self] _ in
+                self?.setTableViewBackground()
+            }.disposed(by: disposeBag)
         
         /// `isLoading` 값이 바뀔 때마다 하단 스피너를 토글합니다.
         friendViewModel.isLoading
