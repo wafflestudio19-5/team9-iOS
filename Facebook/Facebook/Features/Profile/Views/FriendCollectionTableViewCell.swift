@@ -45,7 +45,7 @@ class FriendCollectionTableViewCell: UITableViewCell {
         
         contentView.addSubview(showFriendButton)
         showFriendButton.snp.remakeConstraints { make in
-            make.height.equalTo(35)
+            make.height.equalTo(35).priority(999)
             make.top.equalTo(friendGridCollectionView.snp.bottom)
             make.bottom.leading.trailing.equalToSuperview().inset(15)
         }
