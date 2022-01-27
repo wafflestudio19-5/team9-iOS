@@ -166,6 +166,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         view.backgroundColor = .systemBackground
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        createSection()
+    }
+    
     
     func bind() {
         sectionsBR.bind(to: tableView.rx.items(dataSource: dataSource)).disposed(by: disposeBag)
@@ -270,14 +274,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
                                                   information: (userId == UserDefaultsManager.cachedUser?.id)  ?
-                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기")
+                                                  "내 정보 보기" : "\(userProfile.username)님의 정보 보기")
             ]
         } else {
             otherItems = [
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
                                                   information: (userId == UserDefaultsManager.cachedUser?.id)  ?
-                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기")
+                                                  "내 정보 보기" : "\(userProfile.username)님의 정보 보기")
             ]
         }
         //다른 사람 프로필일 경우 정보 수정 버튼 삭제
