@@ -142,12 +142,22 @@ extension UIViewController {
                 self?.presentCreatePostVC(sharing: cell.postContentView.post)
             }.disposed(by: cell.refreshingBag)
         
-        let authorNameTapped = cell.postContentView.postHeader.authorNameLabel.rx.tapGesture().when(.recognized)  // not working...
-        let profileImageTapped = cell.postContentView.postHeader.profileImageView.rx.tapGesture().when(.recognized)
+        let authorNameTapped = cell.postContentView.postHeader.authorNameLabel.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)  // not working...
+        let profileImageTapped = cell.postContentView.postHeader.profileImageView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)
         Observable.of(profileImageTapped, authorNameTapped)
             .merge()
             .bind { [weak self] _ in
                 let profileVC = ProfileTabViewController(userId: post.author?.id)
+                self?.push(viewController: profileVC)
+            }
+            .disposed(by: cell.refreshingBag)
+        
+        let sharedAuthorNameTapped = cell.postContentView.sharedPostView.postHeader.authorNameLabel.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)  // not working...
+        let sharedProfileImageTapped = cell.postContentView.sharedPostView.postHeader.profileImageView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)
+        Observable.of(sharedAuthorNameTapped, sharedProfileImageTapped)
+            .merge()
+            .bind { [weak self] _ in
+                let profileVC = ProfileTabViewController(userId: post.shared_post?.author.id)
                 self?.push(viewController: profileVC)
             }
             .disposed(by: cell.refreshingBag)

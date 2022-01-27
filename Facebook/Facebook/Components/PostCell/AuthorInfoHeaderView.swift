@@ -49,6 +49,7 @@ class AuthorInfoHeaderView: UIView {
         labelStack.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(profileImageView.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().offset(CGFloat.standardTrailingMargin)
         }
         
         self.addSubview(ellipsisButton)
