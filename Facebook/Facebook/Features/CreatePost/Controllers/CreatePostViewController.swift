@@ -128,10 +128,10 @@ class CreatePostViewController: UIViewController {
                 }
                 
                 // load selected images as an array of data
-                self.pickerViewModel.loadMediaAsDataArray { array in
+                self.subPostViewModel.loadSubPostData { subposts in
                     NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "",
-                                                              files: array,
-                                                              subcontents: [String](repeating: "", count: self.pickerViewModel.selectionCount.value),
+                                                              files: subposts.map{$0.data}.compactMap{$0},
+                                                              subcontents: subposts.map{$0.content}.compactMap{$0},
                                                               scope: self.createPostView.createHeaderView.selectedScope,
                                                               sharing: self.postToShare?.id
                                                              ))

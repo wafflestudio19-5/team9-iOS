@@ -19,6 +19,7 @@ struct SubPost {
     var imageUrl: String?
     var prefetchedImage: UIImage?
     var content: String?
+    var data: Data?
 }
 
 /// `SubPost`의 생성 및 수정을 관리하는 뷰 모델
@@ -66,6 +67,77 @@ class SubPostViewModel {
             self.subposts.accept(subpostsList)
             self.prefetchedSubposts.accept(subpostsList)
             self.isPrefetching.accept(false)
+        }
+    }
+    
+    func storeContents(row: Int, content: String) {
+        var subpostList = subposts.value
+        subpostList[row].content = content
+        subposts.accept(subpostList)
+    }
+    
+    // TODO: Duplicate
+    func loadSubPostData(to pointSize: CGSize? = nil, scale: CGFloat = UIScreen.main.scale, completion: (([SubPost]) -> Void)? = nil) {
+        let group = DispatchGroup()
+        var selectedDataArray: [SubPost] = []
+        for subpost in self.subposts.value {
+            group.enter()  // 루프 시작
+            let result = subpost.pickerResult!
+            result.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { (url, error) in
+                guard let url = url else { return }
+                let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary
+                guard let source = CGImageSourceCreateWithURL(url as CFURL, sourceOptions) else { return }
+                
+                var maxDimensionInPixels: CGFloat {
+                    guard let pointSize = pointSize else {
+                        return 3000
+                    }
+                    return max(pointSize.width, pointSize.height) * scale
+                }
+                
+                let downsampleOptions = [
+                    kCGImageSourceCreateThumbnailFromImageAlways: true,
+                    kCGImageSourceCreateThumbnailWithTransform: true,
+                    kCGImageSourceThumbnailMaxPixelSize: maxDimensionInPixels,
+                ] as CFDictionary
+                
+                guard let cgImage = CGImageSourceCreateThumbnailAtIndex(source, 0, downsampleOptions) else { return }
+                
+                let data = NSMutableData()  // data to return
+                
+                // 전송할 파일 형식은 jpeg
+                guard let imageDestination = CGImageDestinationCreateWithData(data, UTType.jpeg.identifier as CFString, 1, nil) else { return }
+                
+                // PNG 파일은 압축하지 않는다.
+                let isPNG: Bool = {
+                    guard let utType = cgImage.utType else { return false }
+                    return (utType as String) == UTType.png.identifier
+                }()
+                
+                let destinationProperties = [
+                    kCGImageDestinationLossyCompressionQuality: isPNG ? 1.0 : 0.75
+                ] as CFDictionary
+                
+                CGImageDestinationAddImage(imageDestination, cgImage, destinationProperties)
+                CGImageDestinationFinalize(imageDestination)
+                
+                var subpostWithData = subpost
+                subpostWithData.data = data as Data
+                selectedDataArray.append(subpostWithData)
+                group.leave() // async 작업 종료
+            }
+        }
+        
+        group.notify(queue: .main) {  // 모든 작업이 완료되면 실행
+            if let completion = completion {
+                completion(selectedDataArray)
+            }
+        }
+    }
+    
+    var contents: [String] {
+        return subposts.value.map { subpost in
+            return subpost.content ?? ""
         }
     }
 }

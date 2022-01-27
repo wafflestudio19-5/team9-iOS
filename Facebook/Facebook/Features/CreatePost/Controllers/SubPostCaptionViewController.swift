@@ -63,7 +63,7 @@ class SubPostCaptionViewController: UIViewController {
     }
     
     private func bindKeyboardHeight() {
-        RxKeyboard.instance.visibleHeight.debug()
+        RxKeyboard.instance.visibleHeight
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self = self else { return }
                 self.view.setNeedsLayout()
@@ -91,8 +91,9 @@ class SubPostCaptionViewController: UIViewController {
             guard let self = self else { return }
             cell.configure(subpost: data)
             
-            cell.postContentView.captionTextView.rx.text.orEmpty.bind { [weak self] _ in
+            cell.postContentView.captionTextView.rx.text.orEmpty.bind { [weak self] text in
                 guard let self = self else { return }
+                self.subPostViewModel.storeContents(row: row, content: text)
                 self.subpostCaptionView.subpostsTableView.beginUpdates()
                 self.subpostCaptionView.subpostsTableView.endUpdates()
             }.disposed(by: self.disposeBag)

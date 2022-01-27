@@ -10,6 +10,7 @@ import UIKit
 class SubPostCaptionContentView: SubPostContentView {
     
     func configure(subpost: SubPost) {
+        captionTextView.text = subpost.content
         if let urlString = subpost.imageUrl {
             setImage(from: URL(string: urlString))
         } else if let image = subpost.prefetchedImage {
