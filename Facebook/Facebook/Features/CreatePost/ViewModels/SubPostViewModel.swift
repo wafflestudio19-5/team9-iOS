@@ -55,7 +55,7 @@ class SubPostViewModel {
         // Prefetch PHPickerResult
         var subpostsList = self.subposts.value
         for (index, subpost) in subposts.value.enumerated() {
-            if subpostsList[index].prefetchedImage != nil {
+            if subpostsList[index].prefetchedImage != nil || subpost.pickerResult == nil {
                 continue
             }
             group.enter()
@@ -135,12 +135,6 @@ class SubPostViewModel {
             if let completion = completion {
                 completion(selectedDataArray)
             }
-        }
-    }
-    
-    var contents: [String] {
-        return subposts.value.map { subpost in
-            return subpost.content ?? ""
         }
     }
 }

@@ -23,6 +23,7 @@ class EditPostViewController: CreatePostViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "게시물 수정"
+        bindSubPostsData()
         configure(with: postToEdit)
     }
     
@@ -34,4 +35,8 @@ class EditPostViewController: CreatePostViewController {
         view = CreatePostView(sharing: postToEdit.postSharing)
     }
     
+    func bindSubPostsData() {
+        let subposts = postToEdit.subposts?.map { SubPost(id: $0.id, pickerId: nil, pickerResult: nil, imageUrl: $0.file, prefetchedImage: nil, content: $0.content, data: nil)} ?? []
+        subPostViewModel.subposts.accept(subposts)
+    }
 }

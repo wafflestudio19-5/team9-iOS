@@ -30,7 +30,7 @@ class SubPostCaptionContentView: SubPostContentView {
         singleImageView.clipsToBounds = true
         singleImageView.snp.makeConstraints { make in
             make.leading.trailing.top.equalTo(self)
-            make.height.equalTo(400)  // default estimated height
+            make.height.equalTo(400).priority(.high)  // default estimated height
         }
         
         self.addSubview(captionTextView)

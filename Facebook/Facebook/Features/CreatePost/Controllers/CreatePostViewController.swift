@@ -16,7 +16,7 @@ import RxKeyboard
 class CreatePostViewController: UIViewController {
     let disposeBag = DisposeBag()
     private let pickerViewModel = PHPickerViewModel()
-    private let subPostViewModel = SubPostViewModel()
+    let subPostViewModel = SubPostViewModel()
     private var postToShare: Post?
     private var updateListAfterCreation = true
     
@@ -44,6 +44,7 @@ class CreatePostViewController: UIViewController {
         bindNavigationBarButtonStyle()
         bindPostButton()
         bindPhotosButton()
+        bindPickerToSubPost()
         bindImageGridView()
         bindKeyboardHeight()
     }
@@ -165,14 +166,16 @@ class CreatePostViewController: UIViewController {
             .disposed(by: disposeBag)
     }
     
-    
-    func bindImageGridView() {
+    private func bindPickerToSubPost() {
         pickerViewModel.pickerResults
             .map { [weak self] in self?.subPostViewModel.convertPickerToSubposts(results: $0) }
             .compactMap { $0 }
             .bind(to: subPostViewModel.subposts)
             .disposed(by: disposeBag)
-        
+    }
+    
+    
+    func bindImageGridView() {
         subPostViewModel.subposts
             .map { $0.prefix(5) }
             .bind(to: createPostView.imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in

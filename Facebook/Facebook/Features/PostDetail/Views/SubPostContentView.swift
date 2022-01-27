@@ -34,7 +34,7 @@ class SubPostContentView: PostContentView {
         self.addSubview(singleImageView)
         singleImageView.snp.makeConstraints { make in
             make.leading.trailing.top.equalTo(self)
-            make.height.equalTo(300)  // default estimated height
+            make.height.equalTo(300).priority(.high)  // default estimated height
         }
         
         self.addSubview(textContentLabel)
@@ -60,7 +60,7 @@ class SubPostContentView: PostContentView {
             .cacheMemoryOnly()
             .onSuccess { result in
                 self.singleImageView.snp.updateConstraints { make in
-                    make.height.equalTo(self.calcImageHeight(imageSize: result.image.size, viewWidth: self.frame.width))
+                    make.height.equalTo(self.calcImageHeight(imageSize: result.image.size, viewWidth: self.frame.width)).priority(.high)
                 }
                 self.layoutIfNeeded()
             }
