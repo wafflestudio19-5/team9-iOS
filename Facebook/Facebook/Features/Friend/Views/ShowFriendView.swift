@@ -60,6 +60,7 @@ class ShowFriendView: UIView {
         emptyBackgroundView.snp.makeConstraints { make in
             make.width.equalTo(showFriendTableView).priority(999)
         }
+        showFriendTableView.separatorStyle = .none
         showFriendTableView.register(FriendCell.self, forCellReuseIdentifier: FriendCell.reuseIdentifier)
         showFriendTableView.refreshControl = refreshControl
         showFriendTableView.delaysContentTouches = false

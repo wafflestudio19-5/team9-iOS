@@ -75,6 +75,7 @@ class FriendTabView: UIView {
         emptyBackgroundView.snp.makeConstraints { make in
             make.width.equalTo(friendTableView).priority(999)
         }
+        friendTableView.separatorStyle = .none
         friendTableView.register(FriendRequestCell.self, forCellReuseIdentifier: FriendRequestCell.reuseIdentifier)
         friendTableView.refreshControl = refreshControl
         friendTableView.delaysContentTouches = false
