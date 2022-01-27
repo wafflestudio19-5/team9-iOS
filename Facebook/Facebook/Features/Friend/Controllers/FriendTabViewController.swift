@@ -30,6 +30,8 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
         friendRequestViewModel.refresh()
     }
     
+    
+    
     func setNavigationBar() {
         let titleLabel = UILabel()
         titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)

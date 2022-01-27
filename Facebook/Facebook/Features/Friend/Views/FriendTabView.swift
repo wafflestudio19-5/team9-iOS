@@ -29,6 +29,8 @@ class FriendTabView: UIView {
         return view
     }()
     
+    let emptyBackgroundView = EmptyBackgroundView(image: UIImage(systemName: "exclamationmark.bubble.fill") ?? UIImage(), title: "표시할 친구 요청 없음", message: "다른 사람들로부터 받은 친구 요청이 없습니다.")
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
@@ -69,7 +71,10 @@ class FriendTabView: UIView {
     }
     
     private func configureTableView() {
-        friendTableView.backgroundView = EmptyBackgroundView(image: UIImage(systemName: "exclamationmark.bubble.fill") ?? UIImage(), title: "표시할 친구 요청 없음", message: "다른 사람들로부터 받은 친구 요청이 없습니다.")
+        friendTableView.backgroundView = emptyBackgroundView
+        emptyBackgroundView.snp.makeConstraints { make in
+            make.width.equalTo(friendTableView).priority(999)
+        }
         friendTableView.register(FriendRequestCell.self, forCellReuseIdentifier: FriendRequestCell.reuseIdentifier)
         friendTableView.refreshControl = refreshControl
         friendTableView.delaysContentTouches = false
