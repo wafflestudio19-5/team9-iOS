@@ -40,8 +40,6 @@ class ActivateAccountView: UIView {
     
     lazy var alertSpinner = AlertWithSpinner(message: "")
     
-    /// todo: 로그아웃, 회원탈퇴 버튼 추가
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
