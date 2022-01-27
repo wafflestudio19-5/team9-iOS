@@ -47,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if UserDefaultsManager.isLoggedIn {
                 StateManager.of.user.dispatch(cachedUser: UserDefaultsManager.cachedUser!)
                 NetworkService.registerToken(token: UserDefaultsManager.token!)
-                return RootTabBarController()
+                return (UserDefaultsManager.isValid ?? false) ? RootTabBarController() : UINavigationController(rootViewController: ActivateAccountViewController())
             }
             else { return UINavigationController(rootViewController: LoginViewController()) }
         }()
