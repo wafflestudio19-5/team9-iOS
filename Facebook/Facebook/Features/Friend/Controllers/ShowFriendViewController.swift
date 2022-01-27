@@ -29,10 +29,11 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
     private let userId: Int
     private let friendViewModel: FriendPaginationViewModel
     
-    init(userId: Int) {
+    init(userId: Int, username: String) {
         self.userId = userId
         friendViewModel = FriendPaginationViewModel(endpoint: .friend(id: self.userId, limit: 20))
         super.init(nibName: nil, bundle: nil)
+        self.title = username + "님의 친구"
     }
     
     required init?(coder: NSCoder) {
@@ -167,7 +168,7 @@ extension ShowFriendViewController {
     func createFriendMenuList(cell: FriendCell, friend: User) -> [Menu] {
         let menuList = [ Menu(image: UIImage(systemName: "person.2.fill") ?? UIImage(),
                               text: friend.username + "님의 친구 보기", action: {
-            let showFriendVC = ShowFriendViewController(userId: friend.id)
+            let showFriendVC = ShowFriendViewController(userId: friend.id, username: friend.username)
             self.push(viewController: showFriendVC)
         }),
                          Menu(image: UIImage(systemName: "person.fill.xmark") ?? UIImage(),

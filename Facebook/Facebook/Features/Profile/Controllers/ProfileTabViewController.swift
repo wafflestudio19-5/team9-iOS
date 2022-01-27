@@ -100,7 +100,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             
             cell.showFriendButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
-                let showFriendViewController = ShowFriendViewController(userId: self.userId)
+                let showFriendViewController = ShowFriendViewController(userId: self.userId, username: self.userProfile?.username ?? "")
                 self.push(viewController: showFriendViewController)
             }.disposed(by: cell.refreshingBag)
             
@@ -358,7 +358,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             }
             sectionButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
-                let showFriendViewController = ShowFriendViewController(userId: self.userId)
+                let showFriendViewController = ShowFriendViewController(userId: self.userId, username: self.userProfile?.username ?? "")
                 self.push(viewController: showFriendViewController)
             }.disposed(by: self.disposeBag)
         case 3:

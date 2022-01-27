@@ -95,7 +95,7 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
         
         tabView.showFriendButton.rx.tap
             .bind { [weak self] _ in
-                let showFriendViewController = ShowFriendViewController(userId: StateManager.of.user.profile.id)
+                let showFriendViewController = ShowFriendViewController(userId: StateManager.of.user.profile.id, username: StateManager.of.user.profile.username)
                 self?.push(viewController: showFriendViewController)
             }
             .disposed(by: disposeBag)

@@ -44,7 +44,7 @@ class ShowFriendView: UIView {
         
         self.addSubview(headerView)
         headerView.snp.makeConstraints { make in
-            make.height.equalTo(70)
+            make.height.equalTo(60)
             make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
         
