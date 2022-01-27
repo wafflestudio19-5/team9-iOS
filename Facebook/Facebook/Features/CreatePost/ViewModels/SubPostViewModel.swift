@@ -84,8 +84,14 @@ class SubPostViewModel {
         let group = DispatchGroup()
         var selectedDataArray: [SubPost] = []
         for subpost in self.subposts.value {
+            
+            // 이미지 데이터가 URL 형식으로 있는 경우
+            guard let result = subpost.pickerResult else {
+                selectedDataArray.append(subpost)
+                continue
+            }
+            
             group.enter()  // 루프 시작
-            let result = subpost.pickerResult!
             result.itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.image.identifier) { (url, error) in
                 guard let url = url else { return }
                 let sourceOptions = [kCGImageSourceShouldCache: false] as CFDictionary

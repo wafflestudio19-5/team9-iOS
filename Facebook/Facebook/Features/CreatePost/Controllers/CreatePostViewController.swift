@@ -96,8 +96,9 @@ class CreatePostViewController: UIViewController {
         // contentTextField의 내용 유무에 따라 버튼 활성화
         let empty = createPostView.contentTextView.isEmptyObservable
         let photoCount = pickerViewModel.selectionCount
-        Observable.combineLatest(empty, photoCount) { [weak self] isEmpty, selectedCount in
-            return !isEmpty || selectedCount > 0 || self?.postToShare != nil
+        let subpostCount = subPostViewModel.subposts.map({$0.count})
+        Observable.combineLatest(empty, photoCount, subpostCount) { [weak self] isEmpty, selectedCount, subpostCount in
+            return !isEmpty || selectedCount > 0 || subpostCount > 0 || self?.postToShare != nil
         }
         .bind(to: self.createPostView.postButton.rx.isEnabled)
         .disposed(by: disposeBag)

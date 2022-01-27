@@ -43,6 +43,32 @@ extension Endpoint {
         return Endpoint(path: "newsfeed/", multipartFormDataBuilder: builder)
     }
     
+    static func newsfeed(editing post: Post, subposts: [SubPost]) -> Self {
+        
+        let builder: (MultipartFormData) -> Void = { formData in
+            // content를 추가
+            formData.append(post.content.data(using: .utf8)!, withName: "content")
+            formData.append((post.scope?.rawValue ?? 1).description.data(using: .utf8)!, withName: "scope")
+            
+            for subpost in subposts {
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["id": subpost.id!, "content": subpost.content ?? ""]) else { continue }
+                formData.append(jsonData, withName: "subposts")
+            }
+            
+//            // subcontents의 내용을 추가
+//            for subcontent in subcontents {
+//                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["content": subcontent], options: .prettyPrinted) else { continue }
+//                formData.append(jsonData, withName: "subposts")
+//            }
+//
+//            // 각 file을 추가
+//            for i in 0..<filesCount {
+//                formData.append(files[i], withName: "file", fileName: "\(Date().timeIntervalSince1970).jpeg" , mimeType: "image/jpeg")
+//            }
+        }
+        return Endpoint(path: "newsfeed/\(post.id)/", multipartFormDataBuilder: builder)
+    }
+    
     static func newsfeed(postId: Int) -> Self {
         return Endpoint(path: "newsfeed/\(postId)/")
     }
