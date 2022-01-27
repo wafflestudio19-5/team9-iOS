@@ -22,19 +22,32 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        setNavigationBar()
         bind()
+    }
+    
+    init(isMain: Bool = true) {
+        super.init(nibName: nil, bundle: nil)
+        setNavigationBar(isMain: isMain)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         friendRequestViewModel.refresh()
     }
     
-    func setNavigationBar() {
-        let titleLabel = UILabel()
-        titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
-        titleLabel.text = "친구"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleLabel)
+    func setNavigationBar(isMain: Bool = true) {
+        if isMain {
+            let titleLabel = UILabel()
+            titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+            titleLabel.text = "친구"
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleLabel)
+        } else {
+            navigationItem.leftBarButtonItem = nil
+            self.navigationItem.title = "친구"
+        }
     }
     
     func bind() {
@@ -43,20 +56,18 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
             .bind(to: tableView.rx.items(cellIdentifier: FriendRequestCell.reuseIdentifier, cellType: FriendRequestCell.self)) { [weak self] row, requestFriend, cell in
                 guard let self = self else { return }
                 cell.configureCell(with: requestFriend.sender_profile)
+                cell.setTimeLabel(time: requestFriend.created ?? "")
                 
                 cell.acceptButton.rx.tap
                     .bind { [weak self] _ in
                         guard let self = self else { return }
-                        NetworkService.put(endpoint: .friendRequest(id: requestFriend.sender))
-                            .subscribe { [weak self] event in
-                                if event.isCompleted {
-                                    return
-                                }
-                                
-                                if event.element as? String != "수락 완료되었습니다." {
-                                    self?.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                                } else {
+                        FriendRequestManager.acceptRequest(from: requestFriend.sender)
+                            .subscribe { [weak self] success in
+                                switch success {
+                                case .success(true):
                                     cell.updateState(isAccepted: true)
+                                default:
+                                    self?.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                                 }
                             }.disposed(by: self.disposeBag)
                     }.disposed(by: cell.refreshingBag)
@@ -64,16 +75,13 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
                 cell.deleteButton.rx.tap
                     .bind { [weak self] _ in
                         guard let self = self else { return }
-                        NetworkService.delete(endpoint: .friendRequest(id: requestFriend.sender))
-                            .subscribe { [weak self] event in
-                                if event.isCompleted {
-                                    return
-                                }
-                                
-                                if !(event.element is NSNull) {
-                                    self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
-                                } else {
+                        FriendRequestManager.deleteRequest(from: requestFriend.sender)
+                            .subscribe { [weak self] success in
+                                switch success {
+                                case .success(true):
                                     cell.updateState(isAccepted: false)
+                                default:
+                                    self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                                 }
                             }.disposed(by: self.disposeBag)
                     }.disposed(by: cell.refreshingBag)
