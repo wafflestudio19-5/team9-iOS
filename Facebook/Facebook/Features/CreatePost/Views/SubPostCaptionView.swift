@@ -27,8 +27,6 @@ class SubPostCaptionView: UIView {
         subpostsTableView.separatorStyle = .none
         subpostsTableView.allowsSelection = false
         subpostsTableView.keyboardDismissMode = .interactive
-        subpostsTableView.rowHeight = UITableView.automaticDimension
-        subpostsTableView.estimatedRowHeight = 300
         subpostsTableView.snp.makeConstraints { make in
             make.edges.equalTo(0)
         }

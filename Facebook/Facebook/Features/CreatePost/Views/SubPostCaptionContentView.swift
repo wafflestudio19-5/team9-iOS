@@ -20,9 +20,11 @@ class SubPostCaptionContentView: SubPostContentView {
     func setImage(from image: UIImage?) {
         guard let image = image else { return }
         singleImageView.image = image
-        singleImageView.snp.updateConstraints { make in
-            make.height.equalTo(self.calcImageHeight(imageSize: image.size, viewWidth: self.frame.width))
+        singleImageView.snp.remakeConstraints { make in
+            make.leading.trailing.top.equalTo(self)
+            make.height.equalTo(self.calcImageHeight(imageSize: image.size, viewWidth: self.frame.width)).priority(.high)
         }
+        layoutIfNeeded()
     }
     
 

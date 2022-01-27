@@ -22,7 +22,6 @@ class PostCell<ContentView: PostContentView>: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        print("reuse")
         self.refreshingBag = DisposeBag()
     }
     
