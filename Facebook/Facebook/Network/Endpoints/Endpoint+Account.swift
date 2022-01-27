@@ -31,6 +31,10 @@ extension Endpoint {
     static func deleteAccount() -> Self {
         return Endpoint(path: "account/delete/")
     }
+    
+    static func checkAccountStatus(token: String) -> Self {
+        return Endpoint(path: "account/status/", parameters: ["token": token])
+    }
 
     static func refreshToken(token: String) -> Self {
         return Endpoint(path: "token/refresh/", parameters: ["token": token])
