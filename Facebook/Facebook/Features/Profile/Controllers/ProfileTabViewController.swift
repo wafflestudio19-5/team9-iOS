@@ -361,6 +361,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 let showFriendViewController = ShowFriendViewController(userId: self.userId, username: self.userProfile?.username ?? "")
                 self.push(viewController: showFriendViewController)
             }.disposed(by: self.disposeBag)
+            
+            if userId != UserDefaultsManager.cachedUser?.id {
+                sectionButton.isHidden = true
+            }
         case 3:
             if userId == UserDefaultsManager.cachedUser?.id {
                 let createHeaderView = CreatePostHeaderView()
