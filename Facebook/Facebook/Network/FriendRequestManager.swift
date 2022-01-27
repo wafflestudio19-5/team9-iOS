@@ -12,6 +12,20 @@ struct FriendRequestManager {
     
     static let disposeBag = DisposeBag()
     
+    /// 친구 요청 전송: 성공할 경우 onNext, 실패할 경우 onError이 수행됩니다.
+    static func makeRequest(to id: Int) -> Single<Bool> {
+        return Single<Bool>.create { (result) -> Disposable in
+            NetworkService.post(endpoint: .friendRequest(id: id), as: FriendRequestCreate.self)
+                .subscribe(onNext: { response in
+                    result(.success(true))
+                }, onError: { _ in
+                    result(.success(false))
+                })
+                .disposed(by: disposeBag)
+            return Disposables.create()
+        }
+    }
+    
     /// 친구 요청 수락: 성공할 경우 onCompleted, 실패할 경우 onError이 수행됩니다.
     static func acceptRequest(from id: Int) -> Single<Bool> {
         return Single<Bool>.create { (result) -> Disposable in
