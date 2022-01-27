@@ -22,11 +22,9 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     private lazy var configureCell: RxTableViewSectionedReloadDataSource<SectionModel<String, Notification>>.ConfigureCell = { [weak self] dataSource, tableView, indexPath, notification in
         guard let self = self else { return UITableViewCell() }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationCell.reuseIdentifier, for: indexPath) as? NotificationCell else { return UITableViewCell() }
-        cell.configure(with: notification)
         
-        cell.detailButton.rx.tap.bind { [weak self] in
-            self?.didTapDeleteButton(notification: notification)
-        }.disposed(by: cell.disposeBag)
+        /// cell configure
+        self.configure(cell: cell, with: notification)
         
         /// 친구 요청(FriendRequest) 알림일 때는 확인, 삭제 버튼에 대한 기능 binding
         if notification.content == .FriendRequest {
@@ -41,8 +39,6 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
         return cell
     }
     
-    private let isShowingBottomSheet: BehaviorRelay<Bool> = BehaviorRelay(value: false)
-    
     private let viewModel = NotificationPaginationViewModel(endpoint: .notification())
     
     /// 새로운 알림, 이전 알림
@@ -52,22 +48,11 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
     private let sectionList = BehaviorRelay<[SectionModel<String, Notification>]>(value: [])
     private var sections: [SectionModel<String, Notification>] = []
     
-//    private let menu = [ Menu(image: UIImage(systemName: "xmark.rectangle.fill") ?? UIImage(),
-//                              text: "이 알림 삭제",
-//                              action: { print("button tapped") }),
-//                         Menu(image: UIImage(systemName: "bell.slash.fill") ?? UIImage(),
-//                              text: "알림 해제",
-//                              action: { print("button tapped") })]
-//
-//    private var bottomSheetViewController = UIViewController()
-    
-    
+    private var menu: [Menu]?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: tabView.largeTitleLabel)
-        
-//        bottomSheetViewController = BottomSheetViewController(menuList: self.menu)
-//        bottomSheetViewController.modalPresentationStyle = .overFullScreen
         
         bind()
     }
@@ -126,21 +111,6 @@ class NotificationTabViewController: BaseTabViewController<NotificationTabView>,
                 }
             })
             .disposed(by: disposeBag)
-        
-//        tabView.rx.tapGesture().bind { [weak self] _ in
-//            guard let self = self else { return }
-//            print("touch recognized")
-//            if self.isShowingBottomSheet.value {
-//                self.isShowingBottomSheet.accept(false)
-//            }
-//        }.disposed(by: disposeBag)
-//
-//        isShowingBottomSheet
-//            .observe(on: MainScheduler.instance)
-//            .bind { [weak self] isShowing in
-//                guard let self = self else { return }
-//
-//            }.disposed(by: disposeBag)
 
         /// cell을 탭하면 알림을 확인한 것으로 간주함
         Observable.zip(tableView.rx.modelSelected(Notification.self), tableView.rx.itemSelected).bind { [weak self] (notification, indexPath) in
@@ -175,7 +145,13 @@ extension NotificationTabViewController {
         cell.configure(with: notification)
         
         cell.detailButton.rx.tap.bind { [weak self] in
-            self?.isShowingBottomSheet.accept(true)
+            guard let self = self else { return }
+            self.menu = [ Menu(image: UIImage(systemName: "xmark.rectangle.fill") ?? UIImage(),
+                          text: "이 알림 삭제",
+                          action: { self.delete(notification: notification) }) ]
+            let bottomSheetViewController = BottomSheetViewController(menuList: self.menu!)
+            bottomSheetViewController.modalPresentationStyle = .overFullScreen
+            self.present(bottomSheetViewController, animated: false)
         }.disposed(by: disposeBag)
     }
     
@@ -195,18 +171,6 @@ extension NotificationTabViewController {
                 guard let self = self else { return }
                 StateManager.of.notification.dispatch(delete: notification, at: self.viewModel.findDeletionIndex(of: notification))
             }).disposed(by: disposeBag)
-    }
-    
-    private func didTapDeleteButton(notification: Notification) {
-        let alert = UIAlertController(title: "알림 삭제",
-                                      message: "알림을 삭제하시겠습니까?",
-                                      preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
-        alert.addAction(UIAlertAction(title: "삭제", style: .destructive) { [weak self] _ in
-            guard let self = self else { return }
-            self.delete(notification: notification)
-        })
-        self.present(alert, animated: true, completion: nil)
     }
     
     private func acceptFriendRequest(from notification: Notification) {
