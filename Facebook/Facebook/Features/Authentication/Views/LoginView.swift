@@ -16,7 +16,7 @@ class LoginView: UIView {
     
     let kakaoLoginButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
     
-    let createAccountButton = RectangularSlimButton(title: "새 계정 만들기", titleColor: .tintColors.blue, backgroundColor: .tintColors.mildBlue)
+    let createAccountButton = RectangularSlimButton(title: "새 계정 만들기", titleColor: .tintColors.blue, backgroundColor: .tintColors.mildBlue, highlightColor: UIColor(red: 214.0 / 255.0, green: 233.0 / 255.0, blue: 250.0 / 255.0, alpha: 1.0))
     
     let emailTextField = FacebookTextField(placeholderText: "이메일 주소")
     let passwordTextField = FacebookTextField(placeholderText: "비밀번호")

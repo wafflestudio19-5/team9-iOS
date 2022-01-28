@@ -25,13 +25,13 @@ class Spinner: UIView {
     }
 }
 
-// 짧은 안내 메시지를 위한 spinner + 메시지 형태의 alert입니다
+/// 짧은 안내 메시지를 위한 spinner + 메시지 형태의 alert입니다
 struct AlertWithSpinner {
     
     private let alert: UIAlertController
     private let spinner = UIActivityIndicatorView()
     
-    private var message: String
+    var message: String
     
     init(message: String) {
         self.message = message

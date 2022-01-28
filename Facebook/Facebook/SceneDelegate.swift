@@ -13,19 +13,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
-    func changeRootViewController(_ viewController: UIViewController, wrap: Bool = false, animated: Bool = true) {
+    func changeRootViewController(_ viewController: UIViewController, wrap: Bool = false, isImmediate: Bool = false) {
         guard let window = self.window else {
             return
         }
         
         window.rootViewController = wrap ? UINavigationController(rootViewController: viewController) : viewController
         
-        if animated {
-            let options: UIView.AnimationOptions = .transitionCrossDissolve
-            let duration: TimeInterval = 0.4
-
-            UIView.transition(with: window, duration: duration, options: options, animations: { }, completion: nil)
-        }
+        let options: UIView.AnimationOptions = .transitionCrossDissolve
+        let duration: TimeInterval = isImmediate ? 0.1 : 0.4
+        
+        UIView.transition(with: window, duration: duration, options: options, animations: { }, completion: nil)
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
