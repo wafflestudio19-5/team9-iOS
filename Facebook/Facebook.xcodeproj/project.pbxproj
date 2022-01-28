@@ -44,6 +44,7 @@
 		775F150C2772DF0E00C9872F /* LabelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150A2772DF0E00C9872F /* LabelTableViewCell.swift */; };
 		775F150F27730BA000C9872F /* DataSourceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775F150E27730BA000C9872F /* DataSourceModel.swift */; };
 		7779931D2750843C007A3898 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7779931C2750843B007A3898 /* SearchViewController.swift */; };
+		7797363E27A391F600A9ACCB /* FriendDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7797363D27A391F600A9ACCB /* FriendDispatcher.swift */; };
 		779775B0279ABFD400AEF7B4 /* BottomSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779775AF279ABFD400AEF7B4 /* BottomSheetView.swift */; };
 		779775B2279ABFE300AEF7B4 /* BottomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779775B1279ABFE300AEF7B4 /* BottomSheetViewController.swift */; };
 		779775BA279AC1D000AEF7B4 /* BottomSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 779775B9279AC1D000AEF7B4 /* BottomSheetCell.swift */; };
@@ -62,11 +63,11 @@
 		77FE72892775E0A100482CE7 /* SelectInformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE72882775E0A100482CE7 /* SelectInformationViewController.swift */; };
 		77FE728B2776021600482CE7 /* SearchHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728A2776021600482CE7 /* SearchHeaderView.swift */; };
 		77FE728D2777512000482CE7 /* DateSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */; };
-		B80318F827A1B69E00983AB1 /* ActivateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318F727A1B69E00983AB1 /* ActivateAccountView.swift */; };
-		B80318FA27A1B77500983AB1 /* ActivateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318F927A1B77500983AB1 /* ActivateAccountViewController.swift */; };
 		B80318E52799D5B400983AB1 /* Endpoint+Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318E42799D5B400983AB1 /* Endpoint+Notification.swift */; };
 		B80318E727A02FDA00983AB1 /* HeaderViewWithTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318E627A02FDA00983AB1 /* HeaderViewWithTitle.swift */; };
 		B80318EF27A1220A00983AB1 /* NotificationPaginationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318EE27A1220A00983AB1 /* NotificationPaginationViewModel.swift */; };
+		B80318F827A1B69E00983AB1 /* ActivateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318F727A1B69E00983AB1 /* ActivateAccountView.swift */; };
+		B80318FA27A1B77500983AB1 /* ActivateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318F927A1B77500983AB1 /* ActivateAccountViewController.swift */; };
 		B80318FC27A2890800983AB1 /* FriendRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B80318FB27A2890800983AB1 /* FriendRequestManager.swift */; };
 		B821C061279487D7000BA22D /* Endpoint+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = B821C060279487D7000BA22D /* Endpoint+Account.swift */; };
 		B82EC91E2787F92F00750397 /* KakaoLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */; };
@@ -229,6 +230,7 @@
 		7779931C2750843B007A3898 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		777993232750D280007A3898 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		777993242750D280007A3898 /* NotificationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationTableViewCell.xib; sourceTree = "<group>"; };
+		7797363D27A391F600A9ACCB /* FriendDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendDispatcher.swift; sourceTree = "<group>"; };
 		779775AF279ABFD400AEF7B4 /* BottomSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetView.swift; sourceTree = "<group>"; };
 		779775B1279ABFE300AEF7B4 /* BottomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetViewController.swift; sourceTree = "<group>"; };
 		779775B9279AC1D000AEF7B4 /* BottomSheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetCell.swift; sourceTree = "<group>"; };
@@ -248,11 +250,11 @@
 		77FE728A2776021600482CE7 /* SearchHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
 		77FE728C2777512000482CE7 /* DateSelectTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectTableViewCell.swift; sourceTree = "<group>"; };
 		AF0AA20D3E5E391258D676CE /* Pods-Facebook.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Facebook.release.xcconfig"; path = "Target Support Files/Pods-Facebook/Pods-Facebook.release.xcconfig"; sourceTree = "<group>"; };
-		B80318F727A1B69E00983AB1 /* ActivateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivateAccountView.swift; sourceTree = "<group>"; };
-		B80318F927A1B77500983AB1 /* ActivateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivateAccountViewController.swift; sourceTree = "<group>"; };
 		B80318E42799D5B400983AB1 /* Endpoint+Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Notification.swift"; sourceTree = "<group>"; };
 		B80318E627A02FDA00983AB1 /* HeaderViewWithTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewWithTitle.swift; sourceTree = "<group>"; };
 		B80318EE27A1220A00983AB1 /* NotificationPaginationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationPaginationViewModel.swift; sourceTree = "<group>"; };
+		B80318F727A1B69E00983AB1 /* ActivateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivateAccountView.swift; sourceTree = "<group>"; };
+		B80318F927A1B77500983AB1 /* ActivateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivateAccountViewController.swift; sourceTree = "<group>"; };
 		B80318FB27A2890800983AB1 /* FriendRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestManager.swift; sourceTree = "<group>"; };
 		B821C060279487D7000BA22D /* Endpoint+Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Endpoint+Account.swift"; sourceTree = "<group>"; };
 		B82EC91D2787F92F00750397 /* KakaoLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoLoginViewController.swift; sourceTree = "<group>"; };
@@ -617,6 +619,7 @@
 				BE0D4380278C5B4C00E2162F /* UserDefaultsManager.swift */,
 				BE0D437C278AF1E500E2162F /* CommentDispatcher.swift */,
 				B8922CD72799435C00D02232 /* NotificationDispatcher.swift */,
+				7797363D27A391F600A9ACCB /* FriendDispatcher.swift */,
 			);
 			path = StateManager;
 			sourceTree = "<group>";
@@ -1252,6 +1255,7 @@
 				B846BDAC2754FEFB00513B77 /* RectangularSlimButton.swift in Sources */,
 				7754B86D2781A0B900775D81 /* Endpoint+Profile.swift in Sources */,
 				BE6F62FA279ECC8C00F62111 /* CommentModalViewConroller.swift in Sources */,
+				7797363E27A391F600A9ACCB /* FriendDispatcher.swift in Sources */,
 				B8619503276103AE00957BBC /* SelectGenderView.swift in Sources */,
 				BE0D4379278AE07E00E2162F /* StateManager.swift in Sources */,
 				B82EC92F278BE20600750397 /* MenuTabViewController.swift in Sources */,

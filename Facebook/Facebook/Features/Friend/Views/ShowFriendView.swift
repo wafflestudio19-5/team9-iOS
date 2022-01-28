@@ -37,7 +37,7 @@ class ShowFriendView: UIView {
         headerView.frame = CGRect(x: 0, y: 0, width: showFriendTableView.frame.width, height: 70)
         headerView.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
-            make.height.equalTo(50)
+            make.height.equalTo(50).priority(999)
             make.top.bottom.equalToSuperview().inset(10)
             make.leading.trailing.equalToSuperview().inset(15)
         }

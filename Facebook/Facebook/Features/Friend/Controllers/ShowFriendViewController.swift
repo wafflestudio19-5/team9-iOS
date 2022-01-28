@@ -81,6 +81,8 @@ class ShowFriendViewController<View: ShowFriendView>: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        StateManager.of.friend.bind(with: friendViewModel.dataList).disposed(by: disposeBag)
+        
         tableView.rx.itemSelected
             .subscribe(onNext: { [weak self] idxPath in
                 self?.tableView.deselectRow(at: idxPath, animated: true)
@@ -202,7 +204,7 @@ extension ShowFriendViewController {
                 guard let self = self else { return }
                 switch success {
                 case .success(true):
-                    self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "sent"))
+                    StateManager.of.friend.dispatch(sent: friend)
                 default:
                     self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
@@ -215,7 +217,7 @@ extension ShowFriendViewController {
                 guard let self = self else { return }
                 switch success {
                 case .success(true):
-                    self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "friend"))
+                    StateManager.of.friend.dispatch(accept: friend)
                 default:
                     self.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
@@ -228,7 +230,7 @@ extension ShowFriendViewController {
                 guard let self = self else { return }
                 switch success {
                 case .success(true):
-                    self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "nothing"))
+                    StateManager.of.friend.dispatch(delete: friend)
                 default:
                     self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
@@ -251,7 +253,7 @@ extension ShowFriendViewController {
                     if !(event.element is NSNull) {
                         self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                     } else {
-                        self.friendViewModel.reload(friend: User.changeFriendInfo(user: friend, friendInfo: "nothing"))
+                        StateManager.of.friend.dispatch(delete: friend)
                     }
                 }.disposed(by: self.disposeBag)
         }

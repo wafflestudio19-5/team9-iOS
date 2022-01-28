@@ -14,4 +14,5 @@ class StateManager {
     let user = UserDispatcher()
     let comment = CommentDispatcher()
     let notification = NotificationDispatcher()
+    let friend = FriendDispatcher()
 }
