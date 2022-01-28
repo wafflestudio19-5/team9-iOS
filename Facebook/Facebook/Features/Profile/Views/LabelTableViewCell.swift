@@ -24,7 +24,6 @@ class LabelTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.frame.size.width = UIScreen.main.bounds.width // important for initial layout
     }
     
     required init?(coder: NSCoder) {
@@ -80,14 +79,10 @@ class LabelTableViewCell: UITableViewCell {
             }
         case .style2:
             self.contentView.addSubview(label)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                label.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                label.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
-                label.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -15),
-                label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15)
-            ])
+            label.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.top.bottom.left.equalToSuperview().inset(15)
+            }
         }
     }
     

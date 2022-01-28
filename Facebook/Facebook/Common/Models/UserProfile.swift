@@ -18,7 +18,7 @@ struct UserProfile: Codable, Identifiable  {
     let self_intro: String
     let profile_image: String?
     let cover_image: String?
-    var friend_info: String
+    var friend_info: String?
     var company: [Company]
     var university: [University]
     

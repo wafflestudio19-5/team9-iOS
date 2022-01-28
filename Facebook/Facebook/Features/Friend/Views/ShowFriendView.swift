@@ -20,6 +20,7 @@ class ShowFriendView: UIView {
         
         return searchBar
     }()
+    let emptyBackgroundView = EmptyBackgroundView(image: UIImage(systemName: "person.fill.questionmark") ?? UIImage(), title: "표시할 친구 없음", message: "검색 결과가 없습니다.")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,7 +44,7 @@ class ShowFriendView: UIView {
         
         self.addSubview(headerView)
         headerView.snp.makeConstraints { make in
-            make.height.equalTo(70)
+            make.height.equalTo(60)
             make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide)
         }
         
@@ -55,7 +56,11 @@ class ShowFriendView: UIView {
     }
     
     private func configureTableView() {
-        showFriendTableView.backgroundView = EmptyBackgroundView(image: UIImage(systemName: "person.fill.questionmark") ?? UIImage(), title: "표시할 친구 없음", message: "검색 결과가 없습니다.")
+        showFriendTableView.backgroundView = emptyBackgroundView
+        emptyBackgroundView.snp.makeConstraints { make in
+            make.width.equalTo(showFriendTableView).priority(999)
+        }
+        showFriendTableView.separatorStyle = .none
         showFriendTableView.register(FriendCell.self, forCellReuseIdentifier: FriendCell.reuseIdentifier)
         showFriendTableView.refreshControl = refreshControl
         showFriendTableView.delaysContentTouches = false

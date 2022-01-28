@@ -41,7 +41,7 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.configureCell(cellStyle: style, imageUrl: imageUrl)
             
             cell.imgView.rx
-                .tapGesture()
+                .tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
                 .when(.recognized)
                 .subscribe(onNext: { [weak self] _ in
                     guard let self = self else { return }
@@ -65,10 +65,12 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.initialSetup(cellStyle: style)
             cell.configureCell(image: image, information: information)
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let editDetailInformationViewController = EditDetailInformationViewController()
-                self?.push(viewController: editDetailInformationViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    let editDetailInformationViewController = EditDetailInformationViewController()
+                    self?.push(viewController: editDetailInformationViewController)
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .LabelItem(style, labelText):
@@ -77,18 +79,18 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.initialSetup(cellStyle: style)
             cell.configureCell(labelText: labelText)
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                
-                if (labelText == "회원님에 대해 설명해주세요...") {
-                    let addSelfIntroViewController = AddSelfIntroViewController()
-                    let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
-                    navigationController.modalPresentationStyle = .fullScreen
-                    self.present(navigationController, animated: true, completion: nil)
-                } else {
-                    self.showAlertSelfIntroMenu()
-                }
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized).subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    
+                    if (labelText == "회원님에 대해 설명해주세요...") {
+                        let addSelfIntroViewController = AddSelfIntroViewController()
+                        let navigationController = UINavigationController(rootViewController: addSelfIntroViewController)
+                        navigationController.modalPresentationStyle = .fullScreen
+                        self.present(navigationController, animated: true, completion: nil)
+                    } else {
+                        self.showAlertSelfIntroMenu()
+                    }
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .CompanyItem(company):
@@ -98,10 +100,12 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.configureCell(image: UIImage(systemName: "briefcase") ?? UIImage(),
                                information: company.name ?? "")
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let editDetailInformationViewController = EditDetailInformationViewController()
-                self?.push(viewController: editDetailInformationViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    let editDetailInformationViewController = EditDetailInformationViewController()
+                    self?.push(viewController: editDetailInformationViewController)
+                }).disposed(by: cell.disposeBag)
 
             
             return cell
@@ -112,10 +116,12 @@ class EditProfileViewController<View: EditProfileView>: UIViewController, UITabl
             cell.configureCell(image: UIImage(systemName: "graduationcap") ?? UIImage(),
                                information: university.name ?? "")
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                let editDetailInformationViewController = EditDetailInformationViewController()
-                self?.push(viewController: editDetailInformationViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    let editDetailInformationViewController = EditDetailInformationViewController()
+                    self?.push(viewController: editDetailInformationViewController)
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .ButtonItem(style, buttonText):

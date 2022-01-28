@@ -62,7 +62,7 @@ class AddInformationView: UIView {
     private func configureTableView() {
         addInformationTableView.separatorStyle = .singleLine
         addInformationTableView.backgroundColor = .systemGray5
-        addInformationTableView.tableHeaderView = UIView(frame: .zero)
+        addInformationTableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         addInformationTableView.register(SimpleInformationTableViewCell.self, forCellReuseIdentifier: SimpleInformationTableViewCell.reuseIdentifier)
         addInformationTableView.register(LabelTableViewCell.self, forCellReuseIdentifier: LabelTableViewCell.reuseIdentifier)
         addInformationTableView.register(TextViewTableViewCell.self, forCellReuseIdentifier: TextViewTableViewCell.reuseIdentifier)

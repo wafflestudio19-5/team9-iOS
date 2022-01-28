@@ -40,11 +40,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.initialSetup(cellStyle: style)
             cell.configureCell(image: image, information: information)
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
-                self.push(viewController: detailProfileViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                    self.push(viewController: detailProfileViewController)
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .ButtonItem(style, buttonText):
@@ -66,11 +68,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.configureCell(image: UIImage(systemName: "briefcase.fill") ?? UIImage(),
                                information: company.name ?? "")
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
-                self.push(viewController: detailProfileViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                    self.push(viewController: detailProfileViewController)
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .UniversityItem(university):
@@ -80,11 +84,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             cell.configureCell(image: UIImage(systemName: "graduationcap.fill") ?? UIImage(),
                                information: university.name ?? "")
             
-            cell.rx.tapGesture().when(.recognized).subscribe(onNext: { [weak self] _ in
-                guard let self = self else { return }
-                let detailProfileViewController = DetailProfileViewController(userId: self.userId)
-                self.push(viewController: detailProfileViewController)
-            }).disposed(by: cell.disposeBag)
+            cell.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+                .when(.recognized)
+                .subscribe(onNext: { [weak self] _ in
+                    guard let self = self else { return }
+                    let detailProfileViewController = DetailProfileViewController(userId: self.userId)
+                    self.push(viewController: detailProfileViewController)
+                }).disposed(by: cell.disposeBag)
             
             return cell
         case let .FriendGridItem(friendsData):
@@ -94,7 +100,7 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             
             cell.showFriendButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
-                let showFriendViewController = ShowFriendViewController(userId: self.userId)
+                let showFriendViewController = ShowFriendViewController(userId: self.userId, username: self.userProfile?.username ?? "")
                 self.push(viewController: showFriendViewController)
             }.disposed(by: cell.refreshingBag)
             
@@ -158,6 +164,10 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
         bind()
         self.navigationItem.backButtonTitle = ""
         view.backgroundColor = .systemBackground
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        createSection()
     }
     
     
@@ -264,14 +274,14 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
                                                   information: (userId == UserDefaultsManager.cachedUser?.id)  ?
-                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기")
+                                                  "내 정보 보기" : "\(userProfile.username)님의 정보 보기")
             ]
         } else {
             otherItems = [
                 SectionItem.SimpleInformationItem(style: .style1,
                                                   image: UIImage(systemName: "ellipsis") ?? UIImage(),
                                                   information: (userId == UserDefaultsManager.cachedUser?.id)  ?
-                                                  "내 정보 보기" : "\(userProfile.username ?? "회원")님의 정보 보기")
+                                                  "내 정보 보기" : "\(userProfile.username)님의 정보 보기")
             ]
         }
         //다른 사람 프로필일 경우 정보 수정 버튼 삭제
@@ -352,9 +362,13 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             }
             sectionButton.rx.tap.bind { [weak self] in
                 guard let self = self else { return }
-                let showFriendViewController = ShowFriendViewController(userId: self.userId)
+                let showFriendViewController = ShowFriendViewController(userId: self.userId, username: self.userProfile?.username ?? "")
                 self.push(viewController: showFriendViewController)
             }.disposed(by: self.disposeBag)
+            
+            if userId != UserDefaultsManager.cachedUser?.id {
+                sectionButton.isHidden = true
+            }
         case 3:
             if userId == UserDefaultsManager.cachedUser?.id {
                 let createHeaderView = CreatePostHeaderView()
@@ -552,7 +566,7 @@ extension ProfileTabViewController {
             
             //프로필 이미지
             cell.profileImage.rx
-                .tapGesture()
+                .tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
                 .when(.recognized)
                 .subscribe(onNext: { [weak self] _ in
                     guard let self = self else { return }
@@ -566,7 +580,7 @@ extension ProfileTabViewController {
             
             //자기소개 관련 동작
             cell.selfIntroLabel.rx
-                .tapGesture()
+                .tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
                 .when(.recognized)
                 .subscribe(onNext: { [weak self] _ in
                     if selfIntro == "" {
