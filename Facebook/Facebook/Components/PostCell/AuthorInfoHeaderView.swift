@@ -71,6 +71,13 @@ class AuthorInfoHeaderView: UIView {
         } else {
             scopeSymbol.isHidden = true
         }
+        
+        if post.author?.id != StateManager.of.user.profile.id {
+            ellipsisButton.isHidden = true
+        } else {
+            ellipsisButton.isHidden = false
+            
+        }
     }
     
     required init?(coder: NSCoder) {
