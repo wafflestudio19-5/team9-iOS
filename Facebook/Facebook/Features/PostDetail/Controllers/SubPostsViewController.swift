@@ -96,7 +96,7 @@ class SubPostsViewController: UIViewController {
         
         /// Subposts ~ 테이블뷰 바인딩
         subpostsDataSource
-            .bind(to: tableView.rx.items(cellIdentifier: SubPostCell.reuseIdentifier, cellType: SubPostCell.self)) { row, post, cell in
+            .bind(to: tableView.rx.items(cellIdentifier: SubPostCell.reuseIdentifier, cellType: SubPostCell.self)) { [weak self] row, post, cell in
                 cell.configure(with: post)
 
                 // 좋아요 버튼 바인딩
