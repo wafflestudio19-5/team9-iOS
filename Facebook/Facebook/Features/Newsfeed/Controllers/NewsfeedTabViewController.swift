@@ -26,6 +26,7 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: tabView.logoView)
         bind()
     }
     

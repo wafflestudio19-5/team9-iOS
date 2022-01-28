@@ -13,4 +13,5 @@ class StateManager {
     let post = PostDispatcher()
     let user = UserDispatcher()
     let comment = CommentDispatcher()
+    let notification = NotificationDispatcher()
 }

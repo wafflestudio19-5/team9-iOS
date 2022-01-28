@@ -27,6 +27,10 @@ class UserDispatcher: Dispatcher<UserProfile> {
         return profileDataSource.asObservable()
     }
     
+    func dispatch(isValid: Bool) {
+        UserDefaultsManager.isValid = isValid
+    }
+    
     func dispatch(authResponse: AuthResponse) {
         UserDefaultsManager.token = authResponse.token
         UserDefaultsManager.cachedUser = authResponse.user
