@@ -32,6 +32,7 @@ class FriendGridCell: UICollectionViewCell {
     let nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        label.adjustsFontSizeToFitWidth = true
         
         return label
     }()
@@ -40,6 +41,7 @@ class FriendGridCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 11)
         label.textColor = .gray
+        label.adjustsFontSizeToFitWidth = true
         
         return label
     }()
@@ -67,8 +69,20 @@ class FriendGridCell: UICollectionViewCell {
             verticalStackView.snp.updateConstraints { make in
                 make.height.equalTo(35)
             }
-            mutualFriendsLabel.isHidden = false
-            mutualFriendsLabel.text = (friendData.mutual_friends != nil) ? "함께 아는 친구 \(friendData.mutual_friends?.count ?? 0)명" : "   "
+            
+            guard let mutualFriendCount = friendData.mutual_friends?.count else {
+                mutualFriendsLabel.text = "   "
+                mutualFriendsLabel.isHidden = false
+                return
+            }
+            
+            if mutualFriendCount != 0 {
+                mutualFriendsLabel.text = "함께 아는 친구 \(mutualFriendCount)명"
+                mutualFriendsLabel.isHidden = false
+            } else {
+                mutualFriendsLabel.text = "   "
+                mutualFriendsLabel.isHidden = false
+            }
         }
     }
     
