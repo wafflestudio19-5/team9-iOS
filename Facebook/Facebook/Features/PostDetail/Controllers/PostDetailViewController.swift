@@ -134,8 +134,8 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         postView.commentTableView.adjustHeaderHeight()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
