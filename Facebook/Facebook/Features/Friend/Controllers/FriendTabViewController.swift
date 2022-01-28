@@ -66,6 +66,7 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
                                 switch success {
                                 case .success(true):
                                     cell.updateState(isAccepted: true)
+                                    StateManager.of.friend.dispatch(accept: requestFriend.sender_profile)
                                 default:
                                     self?.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                                 }
@@ -80,6 +81,7 @@ class FriendTabViewController: BaseTabViewController<FriendTabView> {
                                 switch success {
                                 case .success(true):
                                     cell.updateState(isAccepted: false)
+                                    StateManager.of.friend.dispatch(delete:  requestFriend.sender_profile)
                                 default:
                                     self?.alert(title: "친구 요청 거절 오류", message: "요청을 거절하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                                 }

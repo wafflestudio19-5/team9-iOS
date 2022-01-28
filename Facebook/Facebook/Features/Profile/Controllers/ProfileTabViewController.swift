@@ -763,6 +763,9 @@ extension ProfileTabViewController {
                 case .success(true):
                     self.userProfile?.friend_info = "sent"
                     self.createSection()
+                    guard let userProfile = self.userProfile else { return }
+                    let friend = User.getUserFromProfile(userProfile: userProfile, is_freind: false)
+                    StateManager.of.friend.dispatch(sent: friend)
                 default:
                     self.alert(title: "친구 요청 오류", message: "요청 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
@@ -779,7 +782,7 @@ extension ProfileTabViewController {
                     self.createSection()
                     guard let userProfile = self.userProfile else { return }
                     let friend = User.getUserFromProfile(userProfile: userProfile, is_freind: false)
-                    StateManager.of.friend.dispatch(sent: friend)
+                    StateManager.of.friend.dispatch(accept: friend)
                 default:
                     self.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
