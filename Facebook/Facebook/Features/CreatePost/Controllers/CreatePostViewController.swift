@@ -134,7 +134,7 @@ class CreatePostViewController: UIViewController {
                     NetworkService.upload(endpoint: .newsfeed(content: self.createPostView.contentTextView.text ?? "",
                                                               files: subposts.map{$0.data}.compactMap{$0},
                                                               subcontents: subposts.map{$0.content ?? ""},
-                                                              scope: self.createPostView.createHeaderView.selectedScope,
+                                                              scope: self.createPostView.createHeaderView.selectedScope.value,
                                                               sharing: self.postToShare?.id
                                                              ))
                         .subscribe { event in

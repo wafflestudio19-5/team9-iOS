@@ -31,6 +31,9 @@ class EditPostViewController: CreatePostViewController {
     
     func configure(with post: Post) {
         createPostView.contentTextView.text = post.content
+        if let scope = post.scope {
+            createPostView.createHeaderView.selectedScope.accept(scope)
+        }
     }
     
     override func loadView() {
@@ -45,6 +48,10 @@ class EditPostViewController: CreatePostViewController {
     func bindEditing() {
         self.createPostView.contentTextView.rx.text.orEmpty.bind { [weak self] text in
             self?.postToEdit.content = text
+        }.disposed(by: disposeBag)
+        
+        self.createPostView.createHeaderView.selectedScope.bind { [weak self] scope in
+            self?.postToEdit.scope = scope
         }.disposed(by: disposeBag)
     }
     
