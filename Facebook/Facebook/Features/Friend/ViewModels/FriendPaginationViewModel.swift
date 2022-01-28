@@ -17,13 +17,6 @@ class FriendPaginationViewModel: PaginationViewModel<User> {
         return count
     }
     
-    func reload(friend: User) {
-        var friendList = dataList.value
-        guard let index = friendList.firstIndex(where: { $0.id == friend.id }) else { return }
-        friendList[index] = friend
-        self.dataList.accept(friendList)
-    }
-    
     func searchFriend(key: String) {
         if allFriendList.count == 0 {
             var endpoint = Endpoint.friend(id: 0, limit: count)
