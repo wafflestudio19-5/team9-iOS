@@ -52,20 +52,14 @@ struct KakaoAuthManager {
         }
     }
     
+    /// 카카오 계정 연결 요청: 성공할 경우 onNext, 실패할 경우 onError이 수행됩니다.
     private static func connectKakaoAccount(accessToken: String) -> Single<Bool> {
-        // 카카오 access token과 유저의 JWT 토큰으로 서버에 "카카오 계정 연결" 요청
-
         return Single<Bool>.create { (result) -> Disposable in
             NetworkService.post(endpoint: .connectWithKakao(accessToken: accessToken), as: String.self)
                 .subscribe(onNext: { response in
-                    if response.0.statusCode == 201 {
-                        result(.success(true))
-                    }
-                    else {
-                        result(.success(false))
-                    }
+                    result(.success(true))
                 }, onError: { error in
-                    result(.failure(error))
+                    result(.success(false))
                 }).disposed(by: self.disposeBag)
             return Disposables.create()
         }

@@ -70,6 +70,7 @@ class EnterPasswordViewController: BaseSignUpViewController<EnterPasswordView> {
                 
                 if isValidPassword == .valid {
                     NewUser.shared.password = self.password.value
+                    
                     self.registerUser()
                 }
         }.disposed(by: disposeBag)
@@ -89,5 +90,19 @@ extension EnterPasswordViewController {
             }
             return PasswordValidation.invalidLetters
         }
+    }
+    
+    private func registerUser() {
+        AuthManager.signup(user: NewUser.shared)
+            .subscribe { [weak self] success in
+                print(success)
+                switch success {
+                case .success(true):
+                    self?.changeRootViewController(to: KakaoLoginViewController(), wrap: true, isImmediate: true)
+                default:
+                    self?.alert(title: "회원가입 실패", message: "이미 등록되어 있거나 가입할 수 없는 계정입니다. 입력하신 정보를 다시 확인해주시기 바랍니다.", action: "확인")
+                }
+                self?.customView.nextButton.stopActivityIndicator()
+            }.disposed(by: disposeBag)
     }
 }

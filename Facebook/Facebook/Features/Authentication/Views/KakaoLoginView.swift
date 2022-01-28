@@ -11,7 +11,7 @@ import SnapKit
 class KakaoLoginView: UIView {
 
     let instructionLabel = UILabel()
-    let skipButton = RectangularSlimButton(title: "건너뛰기", titleColor: .black, backgroundColor: .grayscales.button)
+    let skipButton = RectangularSlimButton(title: "건너뛰기", titleColor: .black, backgroundColor: .grayscales.button, highlightColor: .systemGray3)
     let kakaoLoginButton = UIImageView(image: UIImage(named: "KakaoLoginButton"))
     
     let backgroundImage = UIImageView(image: UIImage(named: "KakaoBackgroundIllust"))

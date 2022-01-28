@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class BaseSignUpView: UIView {
     
@@ -14,6 +15,8 @@ class BaseSignUpView: UIView {
     
     let alertLabel = LabelWithPadding(padding: UIEdgeInsets(top: 10.0, left: 7.0, bottom: 10.0, right: 7.0))
     let verticalStackWithAlertLabel = UIStackView()
+    
+    lazy var alertSpinner = AlertWithSpinner(message: "")
     
     var customView: UIView = UIView()
     
@@ -83,17 +86,19 @@ class BaseSignUpView: UIView {
         instructionLabel.translatesAutoresizingMaskIntoConstraints = false
         verticalStackWithAlertLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 16.0),
-            titleLabel.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
-            
-            instructionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6.0),
-            instructionLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20.0),
-            instructionLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20.0),
-            
-            verticalStackWithAlertLabel.topAnchor.constraint(equalTo: instructionLabel.bottomAnchor, constant: 24.0),
-            verticalStackWithAlertLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 18.0),
-            verticalStackWithAlertLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -18.0),
-        ])
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(16)
+            make.centerX.equalTo(self.safeAreaLayoutGuide)
+        }
+        
+        instructionLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(6)
+            make.left.right.equalTo(self.safeAreaLayoutGuide).inset(20)
+        }
+        
+        verticalStackWithAlertLabel.snp.makeConstraints { make in
+            make.top.equalTo(instructionLabel.snp.bottom).offset(24)
+            make.left.right.equalTo(self.safeAreaLayoutGuide).inset(18)
+        }
     }
 }
