@@ -184,6 +184,15 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
             StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
         }
         
+        StateManager.of.friend.asObservable()
+            .bind { [weak self] friendInfoChange in
+                guard let self = self else { return }
+                if friendInfoChange.id == self.userProfile?.id {
+                    self.userProfile?.friend_info = friendInfoChange.friend_info
+                    self.createSection()
+                }
+            }.disposed(by: disposeBag)
+        
         // 이게 최선인가?
         postDataViewModel.dataList.bind { [weak self] _ in
             self?.createSection()
@@ -709,6 +718,9 @@ extension ProfileTabViewController {
                     } else {
                         self.userProfile?.friend_info = "nothing"
                         self.createSection()
+                        guard let userProfile = self.userProfile else { return }
+                        let friend = User.getUserFromProfile(userProfile: userProfile, is_freind: false)
+                        StateManager.of.friend.dispatch(delete: friend)
                     }
                 }.disposed(by: self.disposeBag)
         }
@@ -765,6 +777,9 @@ extension ProfileTabViewController {
                 case .success(true):
                     self.userProfile?.friend_info = "friend"
                     self.createSection()
+                    guard let userProfile = self.userProfile else { return }
+                    let friend = User.getUserFromProfile(userProfile: userProfile, is_freind: false)
+                    StateManager.of.friend.dispatch(sent: friend)
                 default:
                     self.alert(title: "친구 요청 수락 오류", message: "요청을 수락하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
@@ -779,6 +794,9 @@ extension ProfileTabViewController {
                 case .success(true):
                     self.userProfile?.friend_info = "nothing"
                     self.createSection()
+                    guard let userProfile = self.userProfile else { return }
+                    let friend = User.getUserFromProfile(userProfile: userProfile, is_freind: false)
+                    StateManager.of.friend.dispatch(delete: friend)
                 default:
                     self.alert(title: "친구 요청 취소 오류", message: "요청을 취소하던 도중에 에러가 발생했습니다. 다시 시도해주시기 바랍니다.", action: "확인")
                 }
