@@ -33,6 +33,7 @@ class EnterUsernameViewController: BaseSignUpViewController<EnterUsernameView> {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NewUser.shared.reset()
         bindView()
     }
     

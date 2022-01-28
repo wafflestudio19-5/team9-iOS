@@ -35,6 +35,10 @@ class EnterEmailViewController: BaseSignUpViewController<EnterEmailView> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let emailAddress = NewUser.shared.email {
+            customView.emailTextField.text = emailAddress
+        }
         bindView()
     }
     

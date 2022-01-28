@@ -33,6 +33,9 @@ class EnterPasswordViewController: BaseSignUpViewController<EnterPasswordView> {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let password = NewUser.shared.password {
+            customView.passwordTextField.text = password
+        }
         bindView()
     }
     
