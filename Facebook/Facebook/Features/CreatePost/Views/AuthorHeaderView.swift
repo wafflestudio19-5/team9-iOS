@@ -7,16 +7,13 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class CreateHeaderView: UIView {
     
     /// 피드 상단, 게시자의 프로필 이미지와 공개 범위 버튼이 표시되는 뷰
     
-    var selectedScope: Scope = .all {
-        didSet {
-            scopeButton.configure(with: selectedScope)
-        }
-    }
+    var selectedScope = BehaviorRelay<Scope>(value: .all)
     var disposeBag = DisposeBag()
     
     init(imageWidth: CGFloat = .profileImageSize) {
@@ -62,6 +59,10 @@ class CreateHeaderView: UIView {
         scopeButton.menu = scopeMenu
         scopeButton.showsMenuAsPrimaryAction = true
         scopeButton.configure(with: .all)
+        
+        selectedScope.bind { [weak self] scope in
+            self?.scopeButton.configure(with: scope)
+        }.disposed(by: disposeBag)
     }
     
     let profileImageView = ProfileImageView()
@@ -71,7 +72,7 @@ class CreateHeaderView: UIView {
     private var scopeMenues: [UIAction] {
         return Scope.allCases.map { scope in
             return UIAction(title: scope.text, image: scope.getImage(fill: false, color: .label), handler: { _ in
-                self.selectedScope = scope
+                self.selectedScope.accept(scope)
             })
         }
     }

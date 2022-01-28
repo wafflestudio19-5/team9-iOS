@@ -11,7 +11,7 @@ import Kingfisher
 
 class PostContentView: UIView {
 
-    private let disposeBag = DisposeBag()
+    let disposeBag = DisposeBag()
     
     var post: Post = Post.getDummyPost() {
         didSet {
@@ -59,10 +59,34 @@ class PostContentView: UIView {
         textContentLabel.text = post.content
         postHeader.configure(with: post)
         
-        if !showGrid {
+        if !showGrid {  // for MainPostHeader of SubPostVC
             return
         }
         
+        configureImageGrid(with: newPost)
+        configureSharedPost(with: newPost)
+        
+    }
+    
+    func configureSharedPost(with post: Post) {
+        if post.is_sharing ?? false {
+            sharedPostView.isHidden = false
+            sharedPostView.configure(sharing: post.postSharing)  // recursive call!
+            sharedPostView.snp.remakeConstraints { make in
+                make.top.equalTo(imageGridCollectionView.snp.bottom).offset(CGFloat.standardTopMargin)
+                make.leading.trailing.equalTo(0).inset(10)
+            }
+        } else {
+            sharedPostView.isHidden = true
+            sharedPostView.snp.remakeConstraints { make in
+                make.top.equalTo(imageGridCollectionView.snp.bottom)
+                make.leading.trailing.equalTo(0).inset(10)
+                make.height.equalTo(0)
+            }
+        }
+    }
+    
+    func configureImageGrid(with post: Post) {
         // CollectionView Layout
         self.imageGridCollectionView.numberOfImages = post.subpostUrls.count
         imageGridCollectionView.dataSource = nil
@@ -75,26 +99,6 @@ class PostContentView: UIView {
         
         imageGridCollectionView.snp.updateConstraints { make in
             make.top.equalTo(textContentLabel.snp.bottom).offset(imageGridCollectionView.numberOfImages == 0 ? 0 : CGFloat.standardTopMargin)
-        }
-        
-        if let _ = self as? SharedPostContentView {
-            return  // prevent recursive loop
-        }
-        
-        if post.is_sharing ?? false {
-            sharedPostView.isHidden = false
-            sharedPostView.configure(with: post.postToShare)  // recursive call!
-            sharedPostView.snp.remakeConstraints { make in
-                make.top.equalTo(imageGridCollectionView.snp.bottom).offset(CGFloat.standardTopMargin)
-                make.leading.trailing.equalTo(0).inset(10)
-            }
-        } else {
-            sharedPostView.isHidden = true
-            sharedPostView.snp.remakeConstraints { make in
-                make.top.equalTo(imageGridCollectionView.snp.bottom)
-                make.leading.trailing.equalTo(0).inset(10)
-                make.height.equalTo(0)
-            }
         }
     }
     

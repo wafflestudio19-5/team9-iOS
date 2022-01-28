@@ -12,7 +12,7 @@ import RxRelay
 
 enum Operation {
     case insert(index: Int)
-    case delete(index: Int)
+    case delete(index: Int?)
     case deleteRows(indices: [Int])
     case edit
 }
@@ -79,6 +79,7 @@ class Dispatcher<DataModel: Identifiable> {
     func _delete(dataSource: BehaviorRelay<[DataModel]>, signal: Signal<DataModel>) {
         guard case .delete(let index) = signal.operation else { return }
         var dataList = dataSource.value
+        guard let index = index else { return }
         dataList.remove(at: index)
         dataSource.accept(dataList)
     }

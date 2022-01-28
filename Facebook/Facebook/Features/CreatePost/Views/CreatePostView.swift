@@ -39,11 +39,27 @@ class CreatePostView: UIView {
         
         let scrollViewStack = UIStackView()
         scrollViewStack.axis = .vertical
+        scrollViewStack.alignment = .center
         scrollViewStack.addArrangedSubview(createHeaderView)
         scrollViewStack.addArrangedSubview(contentTextView)
         scrollViewStack.addArrangedSubview(imageGridCollectionView)
         if isSharing {
             scrollViewStack.addArrangedSubview(sharingPostView)
+            sharingPostView.snp.makeConstraints { make in
+                make.leading.trailing.equalToSuperview()
+            }
+        }
+        
+        createHeaderView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+        }
+        
+        contentTextView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(10)
+        }
+        
+        imageGridCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
         }
         
         self.addSubview(scrollView)
@@ -89,7 +105,7 @@ class CreatePostView: UIView {
     let imageGridCollectionView = ImageGridCollectionView()
     lazy var sharingPostView: SharedPostContentView = {
         let view = SharedPostContentView(fullWidthImageGrid: false)
-        view.configure(with: postToShare!)
+        view.configure(sharing: postToShare)
         return view
     }()
     
@@ -98,7 +114,6 @@ class CreatePostView: UIView {
         textView.isScrollEnabled = false
         textView.placeholder = self.placeholder
         textView.font = .systemFont(ofSize: 17)
-        textView.contentInset = .init(top: 0, left: 10, bottom: 0, right: 10)
         return textView
     }()
     

@@ -17,6 +17,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var asFirstResponder: Bool
     let disposeBag = DisposeBag()
     var didConfigurePostDetailView: Bool = false
+    var postRelay: BehaviorRelay<[Post]>  // stores current post
     
     /// 댓글 셀의 정보를 임시로 저장한다.
     struct FocusedItem {
@@ -42,9 +43,14 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return CommentPaginationViewModel(endpoint: .comment(postId: post.id))
     }()
     
+    var sharedPostView: SharedPostContentView {
+        return self.postView.postContentHeaderView.postContentView.sharedPostView
+    }
+    
     init(post: Post, asFirstResponder: Bool = false) {
         self.post = post
         self.asFirstResponder = asFirstResponder
+        self.postRelay = BehaviorRelay<[Post]>(value: [post])
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -81,35 +87,8 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return postHeader.loadPreviousButton
     }
     
-    lazy var authorHeaderView: AuthorInfoHeaderView = {
-        let view = AuthorInfoHeaderView(imageWidth: 38)
-        view.configure(with: post)
-        return view
-    }()
-    
-    private lazy var leftChevronButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.image = UIImage(systemName: "chevron.backward", withConfiguration: UIImage.SymbolConfiguration(weight: .semibold))
-        config.imagePadding = 0
-        config.contentInsets = .init(top: 10, leading: 0, bottom: 10, trailing: 8)
-        
-        
-        let button = UIButton.init(configuration: config)
-        button.rx.tap.bind { [weak self] _ in
-            self?.navigationController?.popViewController(animated: true)
-        }.disposed(by: disposeBag)
-        return button
-    }()
-    
     func setNavBarItems() {
-        let stackview = UIStackView.init(arrangedSubviews: [leftChevronButton, authorHeaderView])
-        stackview.distribution = .equalSpacing
-        stackview.axis = .horizontal
-        stackview.alignment = .center
-        stackview.spacing = 0
-        
-        let leftBarButtons = UIBarButtonItem(customView: stackview)
-        navigationItem.leftBarButtonItem = leftBarButtons
+        // nav bar is hidden in this VC
     }
     
     // MARK: View LifeCycle
@@ -117,9 +96,8 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         bindTableView()
-        bindLikeButton()
         bindReply()
-        bindCommentButton()
+        bindButtons()
         setNavBarItems()
         setKeyboardToolbar()
     }
@@ -127,6 +105,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationController?.setNavigationBarHidden(true, animated: false)
         navigationController?.interactivePopGestureRecognizer!.delegate = self
         navigationController?.interactivePopGestureRecognizer!.isEnabled = true
         
@@ -149,10 +128,15 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if !didConfigurePostDetailView {
-            postHeader.configure(with: post)
+            postView.configure(with: post)
             didConfigurePostDetailView = true
         }
         postView.commentTableView.adjustHeaderHeight()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     // MARK: Keyboard Accessory Logics
@@ -198,39 +182,20 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     }
 }
 
-// MARK: Handle Buttons
-
-extension PostDetailViewController {
-    private func bindLikeButton() {
-        postView.likeButton.rx.tap
-            .bind { [weak self] _ in
-                guard let self = self else { return }
-                self.postHeader.like()
-                NetworkService.put(endpoint: .newsfeedLike(postId: self.post.id), as: LikeResponse.self)
-                    .bind { response in
-                        self.postHeader.like(syncWith: response.1)
-                    }
-                    .disposed(by: self.disposeBag)
-            }
-            .disposed(by: disposeBag)
-    }
-    
-    private func bindCommentButton() {
-        postView.commentButton.rx.tap
-            .bind { [weak self] _ in
-                guard let self = self else { return }
-                self.keyboardTextView.becomeFirstResponder()
-            }
-            .disposed(by: disposeBag)
-    }
-}
-
 // MARK: Binding
 
 extension PostDetailViewController {
     func bindTableView(){
-        /// 댓글 상태 바인딩
+        /// StateManager 상태 바인딩
         StateManager.of.comment.bind(postId: self.post.id, with: commentViewModel.dataList).disposed(by: disposeBag)
+        StateManager.of.post.bind(with: self.postRelay).disposed(by: disposeBag)
+        
+        self.postRelay.bind { [weak self] postArray in
+            guard let self = self else { return }
+            guard let post = postArray.first else { return }
+            self.postView.configure(with: post)
+            self.postView.commentTableView.adjustHeaderHeight()
+        }.disposed(by: disposeBag)
         
         /// 댓글 데이터 테이블뷰 바인딩
         commentViewModel.dataList
@@ -388,6 +353,80 @@ extension PostDetailViewController {
             }
             .disposed(by: disposeBag)
     }
+    
+    
+    private func bindButtons() {
+        postView.likeButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.postHeader.like()
+                NetworkService.put(endpoint: .newsfeedLike(postId: self.post.id), as: LikeResponse.self)
+                    .bind { response in
+                        self.postHeader.like(syncWith: response.1)
+                    }
+                    .disposed(by: self.disposeBag)
+            }
+            .disposed(by: disposeBag)
+        
+        postView.commentButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.keyboardTextView.becomeFirstResponder()
+            }
+            .disposed(by: disposeBag)
+        
+        postView.shareButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.presentCreatePostVC(sharing: self.post, update: false)
+            }
+            .disposed(by: disposeBag)
+        
+        postView.leftChevronButton.rx.tap
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                self.navigationController?.popViewController(animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        
+        let authorNameTapped = postView.authorHeaderView.authorNameLabel.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)  // not working...
+        let profileImageTapped = postView.authorHeaderView.profileImageView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)
+        Observable.of(authorNameTapped, profileImageTapped)
+            .merge()
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let profileVC = ProfileTabViewController(userId: self.post.author?.id)
+                self.push(viewController: profileVC)
+            }
+            .disposed(by: disposeBag)
+        
+        let sharedAuthorNameTapped = sharedPostView.postHeader.authorNameLabel.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)  // not working...
+        let sharedProfileImageTapped = sharedPostView.postHeader.profileImageView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)
+        Observable.of(sharedAuthorNameTapped, sharedProfileImageTapped)
+            .merge()
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let profileVC = ProfileTabViewController(userId: self.post.shared_post?.author.id)
+                self.push(viewController: profileVC)
+            }
+            .disposed(by: disposeBag)
+        
+        postView.authorHeaderView.ellipsisButton.showsMenuAsPrimaryAction = true
+        postView.authorHeaderView.ellipsisButton.menu = getPostMenus(of: post, deleteHandler: {
+            self.navigationController?.popViewController(animated: true)
+        })
+        
+        postView.postContentHeaderView.postContentView.sharedPostView.postHeader.labelStack.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+            .when(.recognized)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let vc = PostDetailViewController(post: self.sharedPostView.post, asFirstResponder: false)
+                self.push(viewController: vc)
+            }
+            .disposed(by: disposeBag)
+    }
+    
     
 }
 

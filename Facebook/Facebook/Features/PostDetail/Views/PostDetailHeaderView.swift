@@ -55,12 +55,8 @@ class PostDetailHeaderView: UIStackView {
         StateManager.of.post.dispatch(post, syncWith: response)
     }
     
-    let contentLabel = PostContentLabel()
     let buttonStackView = InteractionButtonStackView(useBottomBorder: true)
-    let authorHeaderView = AuthorInfoHeaderView()
-    
-    // 이미지 그리드 뷰
-    let imageGridCollectionView = ImageGridCollectionView()
+    var postContentView = PostDetailContentView()
     
     // 좋아요 수 라벨
     private let likeCountLabel: UILabel = InfoLabel(color: .grayscales.label, weight: .semibold)
@@ -87,16 +83,7 @@ class PostDetailHeaderView: UIStackView {
     
     func configure(with newPost: Post) {
         post = newPost
-        contentLabel.text = post.content
-        authorHeaderView.configure(with: post)
-        
-        imageGridCollectionView.numberOfImages = post.subpostUrls.count
-        imageGridCollectionView.dataSource = nil
-        Observable.just(post.subpostUrls.prefix(5))
-            .bind(to: imageGridCollectionView.rx.items(cellIdentifier: ImageGridCell.reuseIdentifier, cellType: ImageGridCell.self)) { row, data, cell in
-                cell.displayMedia(from: data)
-            }
-            .disposed(by: disposeBag)
+        postContentView.configure(with: newPost)
     }
     
     func setLayout() {
@@ -106,19 +93,14 @@ class PostDetailHeaderView: UIStackView {
         self.spacing = .standardTopMargin
         self.alignment = .center
         
-        self.addArrangedSubview(contentLabel)
-        self.addArrangedSubview(imageGridCollectionView)
+        self.addArrangedSubview(postContentView)
         self.addArrangedSubview(buttonStackView)
         self.addArrangedSubview(likeCountLabelWithIcon)
         self.addArrangedSubview(loadButtonHStack)
         self.addArrangedSubview(spinner)
         
-        contentLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(CGFloat.standardLeadingMargin)
-        }
-        
-        imageGridCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(0)
+        postContentView.snp.makeConstraints { make in
+            make.width.equalTo(self)
         }
         
         buttonStackView.snp.makeConstraints { make in

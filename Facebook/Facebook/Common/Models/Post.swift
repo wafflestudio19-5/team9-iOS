@@ -32,13 +32,20 @@ struct Post: Codable, Identifiable {
     }
     
     /// 이 `Post`를 공유하고자 할 때, `shared_post`가 존재하면 이 `Post`가 아닌 `shared_post`를 공유한다.
-    /// 이 `Post`가 공유하는 `SharedPost`에 접근하고자 할 때에도 사용한다.
     var postToShare: Post {
-        if let shared_post = shared_post {
-            return Post(id: shared_post.id, author: shared_post.author, content: shared_post.content, likes: shared_post.likes, is_liked: shared_post.is_liked, posted_at: shared_post.posted_at, comments: shared_post.comments, file: shared_post.file, scope: shared_post.scope, mainpost: nil, subposts: shared_post.subposts, is_sharing: false, shared_counts: shared_post.shared_counts)
+        if let shared_post = postSharing {
+            return shared_post
         } else {
             return self
         }
+    }
+    
+    /// 이 `Post`가 공유하는 `SharedPost`에 접근하고자 할 때 사용한다.
+    var postSharing: Post? {
+        if let shared_post = shared_post {
+            return Post(id: shared_post.id, author: shared_post.author, content: shared_post.content, likes: shared_post.likes, is_liked: shared_post.is_liked, posted_at: shared_post.posted_at, comments: shared_post.comments, file: shared_post.file, scope: shared_post.scope, mainpost: nil, subposts: shared_post.subposts, is_sharing: false, shared_counts: shared_post.shared_counts)
+        }
+        return nil
     }
     
     func asSharedPost() -> SharedPost {

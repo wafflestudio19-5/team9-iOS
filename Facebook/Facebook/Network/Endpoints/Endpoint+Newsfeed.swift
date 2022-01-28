@@ -30,7 +30,8 @@ extension Endpoint {
             
             // subcontents의 내용을 추가
             for subcontent in subcontents {
-                formData.append(subcontent.data(using: .utf8)!, withName: "subposts")
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["content": subcontent], options: .prettyPrinted) else { continue }
+                formData.append(jsonData, withName: "subposts")
             }
             
             // 각 file을 추가
@@ -39,6 +40,43 @@ extension Endpoint {
             }
         }
         return Endpoint(path: "newsfeed/", multipartFormDataBuilder: builder)
+    }
+    
+    static func newsfeed(editing post: Post, subposts: [SubPost], removed_subposts: [Int] = []) -> Self {
+        
+        let builder: (MultipartFormData) -> Void = { formData in
+            // content를 추가
+            formData.append(post.content.data(using: .utf8)!, withName: "content")
+            formData.append((post.scope?.rawValue ?? 1).description.data(using: .utf8)!, withName: "scope")
+            print("scope", post.scope?.rawValue ?? 1)
+            
+            for subpost in subposts {
+                guard let subpostId = subpost.id else { continue }
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["id": subpostId, "content": subpost.content ?? ""]) else { continue }
+                formData.append(jsonData, withName: "subposts")
+            }
+            
+            // 추가되는 이미지
+            let files = subposts.map {$0.data}.compactMap{$0}
+            let subcontents = subposts.map {$0.data != nil ? $0.content ?? "" : nil}.compactMap{$0}
+            assert(files.count == subcontents.count)
+            for i in 0..<files.count {
+                formData.append(files[i], withName: "file", fileName: "\(Date().timeIntervalSince1970).jpeg" , mimeType: "image/jpeg")
+            }
+            for subcontent in subcontents {
+                guard let jsonData = try? JSONSerialization.data(withJSONObject: ["content": subcontent], options: .prettyPrinted) else { continue }
+                formData.append(jsonData, withName: "new_subposts")
+            }
+            
+            for removedId in removed_subposts {
+                formData.append(removedId.description.data(using: .utf8)!, withName: "removed_subposts")
+            }
+        }
+        return Endpoint(path: "newsfeed/\(post.id)/", multipartFormDataBuilder: builder)
+    }
+    
+    static func newsfeed(postId: Int) -> Self {
+        return Endpoint(path: "newsfeed/\(postId)/")
     }
     
     static func newsfeedLike(postId: Int) -> Self {

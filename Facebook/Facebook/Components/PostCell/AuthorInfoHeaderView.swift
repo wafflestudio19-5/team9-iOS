@@ -20,14 +20,11 @@ class AuthorInfoHeaderView: UIView {
         postDateLabel.text = "17시간 전"
         
         self.addSubview(profileImageView)
-        NSLayoutConstraint.activate([
-            profileImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            profileImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            profileImageView.widthAnchor.constraint(equalToConstant: imageWidth),
-            profileImageView.heightAnchor.constraint(equalToConstant: imageWidth)
-        ])
+        profileImageView.snp.makeConstraints { make in
+            make.centerY.leading.equalTo(self)
+            make.width.height.equalTo(imageWidth)
+        }
         
-        let labelStack = UIView()
         labelStack.translatesAutoresizingMaskIntoConstraints = false
         labelStack.addSubview(authorNameLabel)
         labelStack.addSubview(postDateLabel)
@@ -48,10 +45,18 @@ class AuthorInfoHeaderView: UIView {
         }
         
         self.addSubview(labelStack)
-        NSLayoutConstraint.activate([
-            labelStack.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            labelStack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 8)
-        ])
+        labelStack.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(profileImageView.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().offset(CGFloat.standardTrailingMargin)
+        }
+        
+        self.addSubview(ellipsisButton)
+        ellipsisButton.snp.makeConstraints { make in
+            make.trailing.equalTo(0)
+            make.centerY.equalTo(self).offset(-10)
+            make.width.equalTo(20)
+        }
     }
     
     func configure(with post: Post) {
@@ -72,6 +77,8 @@ class AuthorInfoHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    let labelStack = UIView()
+    
     // Profile Image가 표시되는 뷰 (현재는 아이콘으로 구현)
     let profileImageView = ProfileImageView()
     
@@ -84,6 +91,16 @@ class AuthorInfoHeaderView: UIView {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         return view
+    }()
+    
+    // 점 세개
+    var ellipsisButton: UIButton = {
+        var configuration = UIButton.Configuration.plain()
+        configuration.baseForegroundColor = .grayscales.label
+        configuration.baseBackgroundColor = .clear
+        configuration.image = UIImage(systemName: "ellipsis", withConfiguration: UIImage.SymbolConfiguration(pointSize: 12, weight: .black))
+        let button = UIButton(configuration: configuration)
+        return button
     }()
 }
 

@@ -63,6 +63,7 @@ extension ImageGridCell {
             return
         }
 
+
         KF.url(url)
           .setProcessor(KFProcessors.shared.downsampling)
           .loadDiskFileSynchronously()
@@ -169,7 +170,7 @@ extension ImageGridCell {
         progressView.isHidden = true
     }
     
-    private func displayImage(_ image: UIImage?) {
+    func displayImage(_ image: UIImage?) {
         imageView.image = UIImage(data: (image?.jpegData(compressionQuality: 0.2))!, scale: 0.2)
         imageView.isHidden = image == nil
         livePhotoView.livePhoto = nil
