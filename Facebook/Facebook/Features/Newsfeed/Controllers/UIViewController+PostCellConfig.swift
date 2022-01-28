@@ -172,6 +172,21 @@ extension UIViewController {
             .bind { [weak self] _ in
                 self?.pushToDetailVC(cell: cell, asFirstResponder: false)
             }.disposed(by: cell.refreshingBag)
+        
+        cell.postContentView.postHeader.labelStack.rx
+            .tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+            .when(.recognized)
+            .bind { [weak self] _ in
+                self?.pushToDetailVC(cell: cell, asFirstResponder: false)
+            }.disposed(by: cell.refreshingBag)
+        
+        cell.postContentView.sharedPostView.postHeader.labelStack.rx
+            .tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+            .when(.recognized)
+            .bind { [weak self] _ in
+                let vc = PostDetailViewController(post: cell.postContentView.sharedPostView.post, asFirstResponder: false)
+                self?.push(viewController: vc)
+            }.disposed(by: cell.refreshingBag)
     }
 }
 
