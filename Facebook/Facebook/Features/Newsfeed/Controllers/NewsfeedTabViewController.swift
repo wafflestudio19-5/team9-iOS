@@ -63,6 +63,24 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
             }
             .disposed(by: disposeBag)
         
+        viewModel.dataList
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] data in
+                guard let self = self else { return }
+                if data.count == 0 {
+                    let welcome = WelcomeView()
+                    self.tableView.tableFooterView = welcome
+                    welcome.snp.remakeConstraints { make in
+                        make.width.equalToSuperview()
+                    }
+                    welcome.startAnimating()
+                    self.tableView.bringSubviewToFront(self.tabView.mainTableHeaderView)
+                } else {
+                    self.tableView.tableFooterView = nil
+                }
+            }
+            .disposed(by: disposeBag)
+        
         /// `StateManager`와 `dataList`를 바인딩합니다.
         StateManager.of.post.bind(with: viewModel.dataList).disposed(by: disposeBag)
         
@@ -70,6 +88,9 @@ class NewsfeedTabViewController: BaseTabViewController<NewsfeedTabView> {
         viewModel.isLoading
             .asDriver()
             .drive(onNext: { [weak self] isLoading in
+                if self?.viewModel.dataList.value.count == 0 {
+                    return
+                }
                 if isLoading {
                     self?.tableView.showBottomSpinner()
                 } else {

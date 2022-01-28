@@ -143,6 +143,8 @@
 		BE33B20A27A19BC5003D6410 /* SubPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33B20927A19BC5003D6410 /* SubPostViewModel.swift */; };
 		BE33B20C27A1A99D003D6410 /* SubPostCaptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33B20B27A1A99D003D6410 /* SubPostCaptionCell.swift */; };
 		BE33B20E27A1AA4B003D6410 /* SubPostCaptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33B20D27A1AA4B003D6410 /* SubPostCaptionView.swift */; };
+		BE33B21027A42B76003D6410 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33B20F27A42B76003D6410 /* WelcomeView.swift */; };
+		BE33B21227A43C52003D6410 /* UIView+Animation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE33B21127A43C52003D6410 /* UIView+Animation.swift */; };
 		BE50BFF7279BE9EC00876D10 /* PostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFF6279BE9EC00876D10 /* PostContentView.swift */; };
 		BE50BFF9279BF3A700876D10 /* SubPostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFF8279BF3A700876D10 /* SubPostContentView.swift */; };
 		BE50BFFD279C6B1D00876D10 /* SharedPostContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE50BFFC279C6B1D00876D10 /* SharedPostContentView.swift */; };
@@ -332,6 +334,8 @@
 		BE33B20927A19BC5003D6410 /* SubPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostViewModel.swift; sourceTree = "<group>"; };
 		BE33B20B27A1A99D003D6410 /* SubPostCaptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostCaptionCell.swift; sourceTree = "<group>"; };
 		BE33B20D27A1AA4B003D6410 /* SubPostCaptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostCaptionView.swift; sourceTree = "<group>"; };
+		BE33B20F27A42B76003D6410 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		BE33B21127A43C52003D6410 /* UIView+Animation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Animation.swift"; sourceTree = "<group>"; };
 		BE50BFF6279BE9EC00876D10 /* PostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostContentView.swift; sourceTree = "<group>"; };
 		BE50BFF8279BF3A700876D10 /* SubPostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubPostContentView.swift; sourceTree = "<group>"; };
 		BE50BFFC279C6B1D00876D10 /* SharedPostContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPostContentView.swift; sourceTree = "<group>"; };
@@ -689,6 +693,7 @@
 				B8A7F8362767690F00F659D2 /* UIViewController+Extensions.swift */,
 				BE9C7CA0276ECA1F0089247F /* Int+Formatter.swift */,
 				BEF254F1277B079D00FBAACB /* CGFloat+LayoutConstants.swift */,
+				BE33B21127A43C52003D6410 /* UIView+Animation.swift */,
 				BE86BAE32784183600948CAA /* UITableView+DynamicHeader.swift */,
 				BE1F75B227858A0600E51A28 /* UITableView+BottomSpinner.swift */,
 				BE7D1DF8277DC63800E080E3 /* NSLayoutConstraints+Activate.swift */,
@@ -765,6 +770,7 @@
 				BE9C7C95276DB3C30089247F /* PostCell.swift */,
 				BE50BFF6279BE9EC00876D10 /* PostContentView.swift */,
 				BE50BFFC279C6B1D00876D10 /* SharedPostContentView.swift */,
+				BE33B20F27A42B76003D6410 /* WelcomeView.swift */,
 				BE6F630327A04F4A00F62111 /* ForbiddenShareContentView.swift */,
 				B897A921274E612B00FB67D3 /* NewsfeedTabView.swift */,
 				BE64AF3627809F5400C25967 /* Headers */,
@@ -1205,6 +1211,7 @@
 				B85D67E4277C964F002CCC04 /* AuthResponse.swift in Sources */,
 				BE50BFF9279BF3A700876D10 /* SubPostContentView.swift in Sources */,
 				BE9C7C9D276E413B0089247F /* URL+QueryParameters.swift in Sources */,
+				BE33B21027A42B76003D6410 /* WelcomeView.swift in Sources */,
 				BEDA608327845F2F0002A231 /* PlaceholderTextView.swift in Sources */,
 				BE33B20427A17B8A003D6410 /* EditPostViewController.swift in Sources */,
 				B85D67E02775AC04002CCC04 /* NewUser.swift in Sources */,
@@ -1346,6 +1353,7 @@
 				77E12FA42769A98900B8F191 /* CreatePostViewController.swift in Sources */,
 				BE0D4374278ADF1B00E2162F /* BaseDispatcher.swift in Sources */,
 				BE86BAD52783047500948CAA /* LikeResponse.swift in Sources */,
+				BE33B21227A43C52003D6410 /* UIView+Animation.swift in Sources */,
 				BE33B20E27A1AA4B003D6410 /* SubPostCaptionView.swift in Sources */,
 				BEDA60862784658E0002A231 /* Divider.swift in Sources */,
 				BEA834B527513B7700D6EC95 /* NetworkService.swift in Sources */,
