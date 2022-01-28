@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class NewsfeedTabView: UIView {
     
@@ -13,9 +14,23 @@ class NewsfeedTabView: UIView {
     let refreshControl = UIRefreshControl()
     let mainTableHeaderView = MainHeaderView()
     
+    let logoView = UIView()
+    
+    let logoImage = UIImageView(image: UIImage(named: "WafflebookLogo"))
+    
+    lazy var logoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Wafflebook"
+        label.font = .systemFont(ofSize: 16.0, weight: .bold)
+        label.textColor = UIColor(red: 248.0 / 255.0, green: 184.0 / 255.0, blue: 48.0 / 255.0, alpha: 1.0)
+        return label
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setLayoutForView()
+        setStyleForLogoImage()
+        configureLogoView()
         configureTableView()
     }
     
@@ -27,6 +42,28 @@ class NewsfeedTabView: UIView {
         self.addSubview(newsfeedTableView)
         newsfeedTableView.snp.makeConstraints { make in
             make.edges.equalTo(self.safeAreaLayoutGuide)
+        }
+    }
+    
+    private func setStyleForLogoImage() {
+        logoImage.contentMode = .scaleAspectFill
+        logoImage.layer.cornerCurve = .continuous
+        logoImage.layer.cornerRadius = 5.0
+        logoImage.clipsToBounds = true
+    }
+    
+    private func configureLogoView() {
+        logoView.addSubview(logoImage)
+        logoView.addSubview(logoLabel)
+        
+        logoImage.snp.makeConstraints { make in
+            make.centerY.equalTo(logoView)
+            make.width.height.equalTo(24.0)
+        }
+        
+        logoLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(logoView)
+            make.left.equalTo(logoImage.snp.right).offset(6)
         }
     }
     
