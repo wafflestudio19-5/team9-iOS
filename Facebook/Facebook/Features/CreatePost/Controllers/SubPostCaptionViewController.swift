@@ -92,7 +92,6 @@ class SubPostCaptionViewController: UIViewController {
             
             cell.postContentView.captionTextView.rx.text.orEmpty.distinctUntilChanged().skip(1).bind { [weak self] text in
                 guard let self = self else { return }
-                print("text",text)
                 self.subPostViewModel.storeContents(row: row, content: text)
                 self.subpostCaptionView.subpostsTableView.beginUpdates()
                 self.subpostCaptionView.subpostsTableView.endUpdates()

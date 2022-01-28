@@ -17,6 +17,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     var asFirstResponder: Bool
     let disposeBag = DisposeBag()
     var didConfigurePostDetailView: Bool = false
+    var postRelay: BehaviorRelay<[Post]>  // stores current post
     
     /// 댓글 셀의 정보를 임시로 저장한다.
     struct FocusedItem {
@@ -45,6 +46,7 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
     init(post: Post, asFirstResponder: Bool = false) {
         self.post = post
         self.asFirstResponder = asFirstResponder
+        self.postRelay = BehaviorRelay<[Post]>(value: [post])
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -180,8 +182,16 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 
 extension PostDetailViewController {
     func bindTableView(){
-        /// 댓글 상태 바인딩
+        /// StateManager 상태 바인딩
         StateManager.of.comment.bind(postId: self.post.id, with: commentViewModel.dataList).disposed(by: disposeBag)
+        StateManager.of.post.bind(with: self.postRelay).disposed(by: disposeBag)
+        
+        self.postRelay.bind { [weak self] postArray in
+            guard let self = self else { return }
+            guard let post = postArray.first else { return }
+            self.postView.configure(with: post)
+            self.postView.commentTableView.adjustHeaderHeight()
+        }.disposed(by: disposeBag)
         
         /// 댓글 데이터 테이블뷰 바인딩
         commentViewModel.dataList
@@ -398,7 +408,10 @@ extension PostDetailViewController {
             }
             .disposed(by: disposeBag)
         
-        
+        postView.authorHeaderView.ellipsisButton.showsMenuAsPrimaryAction = true
+        postView.authorHeaderView.ellipsisButton.menu = getPostMenus(of: post, deleteHandler: {
+            self.navigationController?.popViewController(animated: true)
+        })
     }
     
     

@@ -38,7 +38,7 @@ extension UIViewController {
         }
     }
     
-    private func getPostMenus(of post: Post) -> UIMenu {
+    func getPostMenus(of post: Post, deleteHandler: (() -> Void)? = nil) -> UIMenu {
         return UIMenu(title: "", image: nil, identifier: nil, options: [], children: [
             // EDIT
             UIAction(title: PostMenu.edit.text, image: PostMenu.edit.symbol, handler: { _ in
@@ -51,6 +51,10 @@ extension UIViewController {
                 alert.addAction(UIAlertAction(title: "삭제", style: .destructive, handler: { _ in
                     let _ = NetworkService.delete(endpoint: .newsfeed(postId: post.id)).bind(onNext: {_ in})  // single observable: no need to dispose
                     StateManager.of.post.dispatch(.init(data: post, operation: .delete(index: nil)))
+                    guard let deleteHandler = deleteHandler else {
+                        return
+                    }
+                    deleteHandler()
                 }))
                 self.present(alert, animated: true, completion: nil)
             })
