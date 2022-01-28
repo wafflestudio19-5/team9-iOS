@@ -25,7 +25,6 @@ class AuthorInfoHeaderView: UIView {
             make.width.height.equalTo(imageWidth)
         }
         
-        let labelStack = UIView()
         labelStack.translatesAutoresizingMaskIntoConstraints = false
         labelStack.addSubview(authorNameLabel)
         labelStack.addSubview(postDateLabel)
@@ -77,6 +76,8 @@ class AuthorInfoHeaderView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    let labelStack = UIView()
     
     // Profile Image가 표시되는 뷰 (현재는 아이콘으로 구현)
     let profileImageView = ProfileImageView()

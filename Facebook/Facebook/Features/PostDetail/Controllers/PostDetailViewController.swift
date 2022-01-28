@@ -43,6 +43,10 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         return CommentPaginationViewModel(endpoint: .comment(postId: post.id))
     }()
     
+    var sharedPostView: SharedPostContentView {
+        return self.postView.postContentHeaderView.postContentView.sharedPostView
+    }
+    
     init(post: Post, asFirstResponder: Bool = false) {
         self.post = post
         self.asFirstResponder = asFirstResponder
@@ -397,8 +401,8 @@ extension PostDetailViewController {
             }
             .disposed(by: disposeBag)
         
-        let sharedAuthorNameTapped = postView.postContentHeaderView.postContentView.sharedPostView.postHeader.authorNameLabel.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)  // not working...
-        let sharedProfileImageTapped = postView.postContentHeaderView.postContentView.sharedPostView.postHeader.profileImageView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)
+        let sharedAuthorNameTapped = sharedPostView.postHeader.authorNameLabel.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)  // not working...
+        let sharedProfileImageTapped = sharedPostView.postHeader.profileImageView.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig).when(.recognized)
         Observable.of(sharedAuthorNameTapped, sharedProfileImageTapped)
             .merge()
             .bind { [weak self] _ in
@@ -412,6 +416,15 @@ extension PostDetailViewController {
         postView.authorHeaderView.ellipsisButton.menu = getPostMenus(of: post, deleteHandler: {
             self.navigationController?.popViewController(animated: true)
         })
+        
+        postView.postContentHeaderView.postContentView.sharedPostView.postHeader.labelStack.rx.tapGesture(configuration: TapGestureConfigurations.scrollViewTapConfig)
+            .when(.recognized)
+            .bind { [weak self] _ in
+                guard let self = self else { return }
+                let vc = PostDetailViewController(post: self.sharedPostView.post, asFirstResponder: false)
+                self.push(viewController: vc)
+            }
+            .disposed(by: disposeBag)
     }
     
     
