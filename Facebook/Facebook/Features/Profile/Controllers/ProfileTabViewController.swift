@@ -180,9 +180,9 @@ class ProfileTabViewController: BaseTabViewController<ProfileTabView>, UITableVi
                 .bind { [weak self] _ in
                     self?.createSection()
                 }.disposed(by: disposeBag)
-            
-            StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
         }
+        
+        StateManager.of.post.bind(with: postDataViewModel.dataList).disposed(by: disposeBag)
         
         StateManager.of.friend.asObservable()
             .bind { [weak self] friendInfoChange in

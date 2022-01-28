@@ -134,8 +134,8 @@ class PostDetailViewController: UIViewController, UIGestureRecognizerDelegate {
         postView.commentTableView.adjustHeaderHeight()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
@@ -189,12 +189,15 @@ extension PostDetailViewController {
         /// StateManager 상태 바인딩
         StateManager.of.comment.bind(postId: self.post.id, with: commentViewModel.dataList).disposed(by: disposeBag)
         StateManager.of.post.bind(with: self.postRelay).disposed(by: disposeBag)
-        
         self.postRelay.bind { [weak self] postArray in
             guard let self = self else { return }
             guard let post = postArray.first else { return }
-            self.postView.configure(with: post)
-            self.postView.commentTableView.adjustHeaderHeight()
+            if self.post.comments == post.comments {
+                // 댓글 달았을 때(댓글 수가 변경되었을 때)는 configure 호출하지 않음
+                self.postView.configure(with: post)
+                self.postView.commentTableView.adjustHeaderHeight()
+            }
+            self.post = post
         }.disposed(by: disposeBag)
         
         /// 댓글 데이터 테이블뷰 바인딩
@@ -328,8 +331,7 @@ extension PostDetailViewController {
                             guard var comment = dataResponse.value else { return }
                             let indexPath = self.commentViewModel.findInsertionIndexPath(of: comment)
                             comment.post_id = self.post.id  // to be deprecated
-                            self.post.comments += 1
-                            StateManager.of.post.dispatch(self.post, commentCount: self.post.comments)
+                            StateManager.of.post.dispatch(self.post, commentCount: self.post.comments + 1)
                             StateManager.of.comment.dispatch(.init(data: comment, operation: .insert(index: indexPath.row)))
                             self.commentTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
                             

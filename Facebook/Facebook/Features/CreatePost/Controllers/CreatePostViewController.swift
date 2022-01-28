@@ -118,7 +118,6 @@ class CreatePostViewController: UIViewController {
                 
                 // dismiss current VC first
                 self.dismiss(animated: true, completion: nil)
-                newsfeedVC.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .none, animated: true)
                 
                 // show progress bar with initial value (1%)
                 let tempProgress = Progress()

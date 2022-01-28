@@ -92,13 +92,8 @@ extension UIViewController {
         cell.configure(with: post)
         
         let ellipsis = cell.postContentView.postHeader.ellipsisButton
-        if post.author?.id != StateManager.of.user.profile.id {
-            ellipsis.isHidden = true
-        } else {
-            ellipsis.isHidden = false
-            ellipsis.showsMenuAsPrimaryAction = true
-            ellipsis.menu = getPostMenus(of: post)
-        }
+        ellipsis.showsMenuAsPrimaryAction = true
+        ellipsis.menu = getPostMenus(of: post)
         
         // 좋아요 버튼 바인딩
         cell.postContentView.buttonHorizontalStackView.likeButton.rx.tap.bind { _ in

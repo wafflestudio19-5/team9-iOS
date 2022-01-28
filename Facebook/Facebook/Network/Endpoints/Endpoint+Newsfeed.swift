@@ -48,7 +48,6 @@ extension Endpoint {
             // content를 추가
             formData.append(post.content.data(using: .utf8)!, withName: "content")
             formData.append((post.scope?.rawValue ?? 1).description.data(using: .utf8)!, withName: "scope")
-            print("scope", post.scope?.rawValue ?? 1)
             
             for subpost in subposts {
                 guard let subpostId = subpost.id else { continue }
