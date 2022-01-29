@@ -73,8 +73,9 @@ class EnterPasswordViewController: BaseSignUpViewController<EnterPasswordView> {
                 
                 if isValidPassword == .valid {
                     NewUser.shared.password = self.password.value
-                    
                     self.registerUser()
+                } else {
+                    self.customView.nextButton.stopActivityIndicator()
                 }
         }.disposed(by: disposeBag)
     }
@@ -98,7 +99,6 @@ extension EnterPasswordViewController {
     private func registerUser() {
         AuthManager.signup(user: NewUser.shared)
             .subscribe { [weak self] success in
-                print(success)
                 switch success {
                 case .success(true):
                     self?.changeRootViewController(to: KakaoLoginViewController(), wrap: true, isImmediate: true)
